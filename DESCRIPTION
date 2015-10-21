@@ -11,3 +11,5 @@ License: GPL (>= 2)
 LazyData: false
 Depends: mvtnorm
 Imports: graphics, MASS
+URL: http://github.com/markajoc/condvis
+BugReports: http://github.com/markajoc/condvis/issues
