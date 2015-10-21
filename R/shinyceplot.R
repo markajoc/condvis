@@ -133,7 +133,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                         }
             
                 }
-                cat(unlist(lapply(Xc.cond, is.factor)))  
+                cat(unlist(lapply(Xc.cond, as.character)))  
                 cat('\n')  
                 assign('Xc.cond', Xc.cond, envir = tmp) 
             }            
