@@ -1,0 +1,62 @@
+visualweight <- 
+function(xc, xc.cond, sigma = NULL, threshold = NULL, type = "gaussian")
+{
+    if(!is.data.frame(xc)) 
+        stop("'xc' should be a data.frame.")
+    if(!is.data.frame(xc.cond) || !(all(names(xc) %in% names(xc.cond)))) 
+        stop("'xc.cond' must be a data.frame with 1 row,",
+             " and same names as 'xc'.")
+    sigma <- if (is.null(sigma))
+        1
+    else sigma      
+    threshold <- if (is.null(threshold))
+        0.1
+    else threshold       
+    xc.cond <- xc.cond[, colnames(xc), drop = FALSE]        
+    arefactors <- vapply(xc, is.factor, logical(1))
+    xc.factors <- xc[, arefactors, drop = FALSE]
+    xc.cond.factors <- xc.cond[, arefactors, drop = FALSE]
+    xc.num <- xc[, !arefactors, drop = FALSE]
+    xc.cond.num <- xc.cond[, !arefactors, drop = FALSE]    
+    factormatches <- if (any(arefactors)){ 
+        factormatches <- apply(as.matrix(xc.factors), 1, 
+        function(x) all(x == xc.cond.factors))
+    } else rep(TRUE, nrow(xc))
+    k <- rep(0, nrow(xc))  
+    if (all(!factormatches)) 
+        return(list(k = rep(0, nrow(xc)), order = integer(0)))
+    if (all(arefactors)){
+        k[factormatches] <- 1
+        return(list(k = k, order = which(k == 1)))
+    }
+    if (identical(type, "gaussian")){
+        k[factormatches] <- mvtnorm::dmvnorm(x = xc.num[factormatches, , drop = FALSE], 
+            mean = unlist(xc.cond.num), 
+            sigma = (sigma) * diag(apply(xc.num, 2, var), nrow = ncol(xc.num)))
+        k <- k / mvtnorm::dmvnorm(x = xc.cond.num, mean = unlist(xc.cond.num), 
+            sigma = (sigma) * diag(apply(xc.num, 2, var), nrow = ncol(xc.num)))
+    } else if (identical(type, "spherical")){
+        x <- xc.num[factormatches, , drop = FALSE]
+        x.mean <- colMeans(xc.num)
+        x.sd <- apply(xc.num, 2L, sd)
+        x.scaled <- scale(x)[, ]
+        xcond.scaled <- (xc.cond.num - x.mean) / x.sd
+        d <- mydist(xcond.scaled, x.scaled, p = 2, inf = FALSE)
+        k[factormatches][d < (sigma ^ 2)] <- 0.4  
+        k[factormatches][d < ((0.6 * sigma) ^ 2)] <- 0.7        
+        k[factormatches][d < ((0.3 * sigma) ^ 2)] <- 1
+    } else if (identical(type, "box")){
+        x <- xc.num[factormatches, , drop = FALSE]
+        x.mean <- colMeans(xc.num)
+        x.sd <- apply(xc.num, 2L, sd)
+        x.scaled <- scale(x)[, ]
+        xcond.scaled <- (xc.cond.num - x.mean) / x.sd
+        d <- mydist(xcond.scaled, x.scaled, inf = TRUE)
+        k[factormatches][d < sigma] <- 0.4  
+        k[factormatches][d < (0.6 * sigma)] <- 0.7        
+        k[factormatches][d < (0.3 * sigma)] <- 1
+    }  
+    k.order <- order(k) 
+    k.order.trimmed <- k.order[k[k.order] > threshold]
+    list(k = k, order = k.order.trimmed)
+}
