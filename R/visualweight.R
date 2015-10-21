@@ -36,20 +36,18 @@ function(xc, xc.cond, sigma = NULL, threshold = NULL, type = "gaussian")
         k <- k / mvtnorm::dmvnorm(x = xc.cond.num, mean = unlist(xc.cond.num), 
             sigma = (sigma) * diag(apply(xc.num, 2, var), nrow = ncol(xc.num)))
     } else if (identical(type, "spherical")){
-        x <- xc.num[factormatches, , drop = FALSE]
         x.mean <- colMeans(xc.num)
         x.sd <- apply(xc.num, 2L, sd)
-        x.scaled <- scale(x)[, ]
+        x.scaled <- scale(xc.num)[factormatches, ]
         xcond.scaled <- (xc.cond.num - x.mean) / x.sd
         d <- mydist(xcond.scaled, x.scaled, p = 2, inf = FALSE)
         k[factormatches][d < (sigma ^ 2)] <- 0.4  
         k[factormatches][d < ((0.6 * sigma) ^ 2)] <- 0.7        
         k[factormatches][d < ((0.3 * sigma) ^ 2)] <- 1
     } else if (identical(type, "box")){
-        x <- xc.num[factormatches, , drop = FALSE]
         x.mean <- colMeans(xc.num)
         x.sd <- apply(xc.num, 2L, sd)
-        x.scaled <- scale(x)[, ]
+        x.scaled <- scale(xc.num)[factormatches, ]
         xcond.scaled <- (xc.cond.num - x.mean) / x.sd
         d <- mydist(xcond.scaled, x.scaled, inf = TRUE)
         k[factormatches][d < sigma] <- 0.4  
