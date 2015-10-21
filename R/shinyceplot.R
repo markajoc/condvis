@@ -102,6 +102,10 @@ function(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             }
             ", sep = "", collapse = ""),"
                     vw <- visualweight(xc = Xc, xc.cond = get('Xc.cond', envir = tmp), sigma = input$sigma, threshold = 0.2, type = input$type)
+                    cat(vw[[1]])
+                    cat('\n')
+                    cat(vw[[2]])
+                    cat('\n')
                     k <- vw$k
                     data.colour <- rgb(1 - k, 1 - k, 1 - k)
                     data.order <- vw$order
