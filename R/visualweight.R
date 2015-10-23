@@ -1,5 +1,5 @@
 visualweight <- 
-function(xc, xc.cond, sigma = NULL, threshold = NULL, type = "gaussian")
+function(xc, xc.cond, sigma = NULL, threshold = NULL, type = "euclidean")
 {
     if(!is.data.frame(xc)) 
         stop("'xc' should be a data.frame.")
@@ -29,13 +29,7 @@ function(xc, xc.cond, sigma = NULL, threshold = NULL, type = "gaussian")
         k[factormatches] <- 1
         return(list(k = k, order = which(k == 1)))
     }
-    if (identical(type, "gaussian")){
-        k[factormatches] <- mvtnorm::dmvnorm(x = xc.num[factormatches, , drop = FALSE], 
-            mean = unlist(xc.cond.num), 
-            sigma = (sigma) * diag(apply(xc.num, 2, var), nrow = ncol(xc.num)))
-        k <- k / mvtnorm::dmvnorm(x = xc.cond.num, mean = unlist(xc.cond.num), 
-            sigma = (sigma) * diag(apply(xc.num, 2, var), nrow = ncol(xc.num)))
-    } else if (identical(type, "spherical")){
+    if (identical(type, "euclidean")){
         x.mean <- colMeans(xc.num)
         x.sd <- apply(xc.num, 2L, sd)
         x.scaled <- scale(xc.num)[factormatches, ]
@@ -44,7 +38,7 @@ function(xc, xc.cond, sigma = NULL, threshold = NULL, type = "gaussian")
         k[factormatches][d < (sigma ^ 2)] <- 0.4  
         k[factormatches][d < ((0.6 * sigma) ^ 2)] <- 0.7        
         k[factormatches][d < ((0.3 * sigma) ^ 2)] <- 1
-    } else if (identical(type, "box")){
+    } else if (identical(type, "chebyshev")){
         x.mean <- colMeans(xc.num)
         x.sd <- apply(xc.num, 2L, sd)
         x.scaled <- scale(xc.num)[factormatches, ]

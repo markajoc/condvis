@@ -1,6 +1,6 @@
 shinyceplot <-
 function(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
-    threshold = NULL, type = "gaussian", cex.axis = NULL, cex.lab = NULL, tck = NULL,
+    threshold = NULL, type = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL,
     view3d = FALSE, method = "default", selectortype = "minimal")
 {
     if(!require("shiny"))
@@ -68,7 +68,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 )
                 , column(2,
                     sliderInput('sigma', 'Weighting function parameter: ', 0.01, 5, step = 0.01, value = 1),
-                    radioButtons('type', 'Weighting function type:', c('gaussian', 'spherical', 'box'))
+                    radioButtons('type', 'Weighting function type:', c('euclidean', 'spherical', 'chebyshev'))
                 , offset = 1)
             )
         )

@@ -1,6 +1,6 @@
 stanplot <-
 function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, 
-    threshold = NULL, type = "gaussian", cex.axis = NULL, cex.lab = NULL, tck = NULL, 
+    threshold = NULL, type = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, 
     view3d = FALSE, method = "default")
 {
     C <- if (all(vapply(C, is.numeric, logical(1))))

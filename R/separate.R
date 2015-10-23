@@ -1,6 +1,6 @@
 separate <- 
 function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, 
-    threshold = NULL, type = "gaussian", cex.axis = NULL, cex.lab = NULL, tck = NULL, 
+    threshold = NULL, type = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, 
     view3d = FALSE, method = "default", selectortype = "minimal")
 {
     model <- if (!identical(class(model), "list"))
