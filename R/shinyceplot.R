@@ -66,9 +66,10 @@ function(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     paste("plotOutput('plotC", 1:length(C), "', height = 200, width = 200, click = 'plotC", 1:length(C), "click')", sep = "", collapse = ",\n")
                 ,", textOutput('text')
                 )
-                , column(2,
-                    sliderInput('sigma', 'Weighting function parameter: ', 0.01, 5, step = 0.01, value = 1),
-                    radioButtons('type', 'Weighting function type:', c('euclidean', 'chebyshev'))
+                , column(2
+                    , sliderInput('sigma', 'Weighting function parameter: ', 0.01, 5, step = 0.01, value = 1)
+                    , radioButtons('type', 'Weighting function type:', c('euclidean', 'chebyshev'))
+                    , textOutput('text')
                 , offset = 1)
             )
         )
@@ -102,10 +103,10 @@ function(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             }
             ", sep = "", collapse = ""),"
                     vw <- visualweight(xc = Xc, xc.cond = get('Xc.cond', envir = tmp), sigma = input$sigma, threshold = 0.2, type = input$type)
-                    cat(vw[[1]])
-                    cat('\n')
-                    cat(vw[[2]])
-                    cat('\n')
+                    #cat(vw[[1]])
+                    #cat('\n')
+                    #cat(vw[[2]])
+                    #cat('\n')
                     k <- vw$k
                     data.colour <- rgb(1 - k, 1 - k, 1 - k)
                     data.order <- vw$order
@@ -129,7 +130,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     if (all(arefactors)){
             
                     } else if (any(arefactors)){
-                       Xc.cond[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]] <- factor(levels(data[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]])[which.min(abs(input$plotC", 1:length(C), "click$x - (1:length(levels(data[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]])))))], levels = levels(data[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]]))
+                        Xc.cond[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]] <- factor(levels(data[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]])[which.min(abs(input$plotC", 1:length(C), "click$x - (1:length(levels(data[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]])))))], levels = levels(data[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]]))
                         Xc.cond[, names(data)[C[[", 1:length(C), "]]][which(!arefactors)]] <- input$plotC", 1:length(C), "click$y
                         } else {
                             Xc.cond[, names(data)[C[[", 1:length(C), "]]][1]] <- input$plotC", 1:length(C), "click$x
@@ -137,8 +138,8 @@ function(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                         }
             
                 }
-                cat(unlist(lapply(Xc.cond, as.character)))  
-                cat('\n')  
+                #cat(unlist(lapply(Xc.cond, as.character)))  
+                #cat('\n')  
                 assign('Xc.cond', Xc.cond, envir = tmp) 
             }            
             
@@ -147,6 +148,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                    select.colour = 'blue', select.lwd = 2, cex.axis = cex.axis,
                    cex.lab = cex.lab, tck = tck)
             })", sep = "", collapse = "\n"),"
+            output$text <- renderText({get('Xc.cond', envir = tmp)})
         }
     ")))
 
