@@ -34,7 +34,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     C <- if (all(vapply(C, is.numeric, logical(1))))
         as.list(C)
     else if (all(vapply(C, is.character, logical(1))))
-            lapply(C, names2index, names = colnames(data))
+            lapply(C, match, table = colnames(data))
         else
             stop("'C' should be a vector or list (containing vectors of length",
                  " 1 or 2) with integer column indices or character variable",
