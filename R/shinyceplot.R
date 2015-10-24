@@ -68,7 +68,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 )
                 , column(2,
                     sliderInput('sigma', 'Weighting function parameter: ', 0.01, 5, step = 0.01, value = 1),
-                    radioButtons('type', 'Weighting function type:', c('euclidean', 'spherical', 'chebyshev'))
+                    radioButtons('type', 'Weighting function type:', c('euclidean', 'chebyshev'))
                 , offset = 1)
             )
         )
