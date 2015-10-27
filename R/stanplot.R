@@ -3,6 +3,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     threshold = NULL, type = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, 
     view3d = FALSE, method = "default")
 {
+    data <- na.omit(data)
     C <- if (all(vapply(C, is.numeric, logical(1))))
         as.list(C)
     else if (all(vapply(C, is.character, logical(1))))

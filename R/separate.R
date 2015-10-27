@@ -3,6 +3,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     threshold = NULL, type = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, 
     view3d = FALSE, method = "default", selectortype = "minimal")
 {
+    data <- na.omit(data)
     model <- if (!identical(class(model), "list"))
         list(model)
     else model

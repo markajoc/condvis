@@ -1,5 +1,6 @@
 arrangeC <- function (data, method = "default")
 {
+    data <- na.omit(data)
     if (ncol(data) <= 2L)
         return(list(colnames(data)))
     saving <- matrix(nrow = ncol(data), ncol = ncol(data))
