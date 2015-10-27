@@ -61,6 +61,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             fluidRow(
                 column(4
                     , plotOutput('plotS', height = 400, width = 400)
+                    , plotOutput('legend', height = 400, width = 100)
                 )
                 , column(2,",
                     paste("plotOutput('plotC", 1:length(C), "', height = 200, width = 200, click = 'plotC", 1:length(C), "click')", sep = "", collapse = ",\n")
@@ -74,7 +75,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             )
         )
     ")))
-
+    
     eval(parse(text = paste("
         server <-
         function (input, output){
@@ -103,6 +104,9 @@ function(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             }
             ", sep = "", collapse = ""),"
             Xc.cond
+            })
+            output$legend <- renderPlot({
+                xslegend(y = data[, response], name = colnames(data)[response])
             })
             output$plotS <- renderPlot({
             Xc.cond <- get('Xc.cond', envir = tmp)", paste("
