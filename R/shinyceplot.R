@@ -53,25 +53,46 @@ function(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     if (!identical(length(intersect(S, uniqC)), 0L))
         stop("cannot have variables common to both 'S' and 'C'")
     Xc.cond <- data[1, uniqC, drop = FALSE]
+    rownames(Xc.cond) <- "Xc.cond"
     tmp <- new.env()
     assign("Xc.cond", Xc.cond, tmp)
     Xc <- data[, uniqC, drop = FALSE]
+    xcplotsize <- 190
     eval(parse(text = paste("
         ui <- fluidPage(
             fluidRow(
-                column(4
-                    , plotOutput('plotS', height = 400, width = 400)
-                    , plotOutput('legend', height = 400, width = 100)
-                )
-                , column(2,",
-                    paste("plotOutput('plotC", 1:length(C), "', height = 200, width = 200, click = 'plotC", 1:length(C), "click')", sep = "", collapse = ",\n")
-                ,"
-                )
-                , column(2
+                column(5
+                    , fluidRow(
+                        column(8, plotOutput('plotS', height = '100%', width = '80%')),
+                        column(3, if (identical(length(S), 2L)) plotOutput('legend', height = 400, width = '20%'))
+                    )
+                    , helpText(strong('Weighting function settings'))
                     , sliderInput('sigma', 'Weighting function parameter: ', 0.01, 5, step = 0.01, value = 1)
                     , radioButtons('type', 'Weighting function type:', c('euclidean', 'chebyshev'))
-                    , tableOutput('text')
-                , offset = 1)
+                ),
+                column(7,
+                    fluidRow( helpText(strong('Condition selector plots')) ),
+                    fluidRow(
+                    column(3,",
+                        paste(" if (length(C) >= ", 1:4, ") {plotOutput('plotC", 1:4, "', height = ", xcplotsize,", width = ", xcplotsize,", click = 'plotC", 1:4, "click') }", sep = "", collapse = ",\n")
+                    ,"
+                    )
+                    , column(3,",
+                        paste("if (length(C) >= ", 5:8, ") {plotOutput('plotC", 5:8, "', height = ", xcplotsize,", width = ", xcplotsize,", click = 'plotC", 5:8, "click') }", sep = "", collapse = ",\n")
+                    ,"
+                    )
+                    , column(3,",
+                        paste("if (length(C) >= ", 9:12, ") {plotOutput('plotC", 9:12, "', height = ", xcplotsize,", width = ", xcplotsize,", click = 'plotC", 9:12, "click') }", sep = "", collapse = ",\n")
+                    ,"
+                    )  
+                    , column(3,",
+                        paste("if (length(C) >= ", 13:16, ") {plotOutput('plotC", 13:16, "', height = ", xcplotsize,", width = ", xcplotsize,", click = 'plotC", 13:16, "click') }", sep = "", collapse = ",\n")
+                    ,"
+                    ) 
+                    )
+                    , fluidRow( helpText(strong('Current condition/section')) )
+                    , fluidRow( tableOutput('text') )
+                )               
             )
         )
     ")))
@@ -103,11 +124,12 @@ function(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 assign('Xc.cond', Xc.cond, envir = tmp) 
             }
             ", sep = "", collapse = ""),"
+            colnames(Xc.cond) <- vapply(colnames(Xc.cond), substr, character(1), 1, 3)
             Xc.cond
             })
             output$legend <- renderPlot({
                 xslegend(y = data[, response], name = colnames(data)[response])
-            })
+            }, width = 100, height = 400)
             output$plotS <- renderPlot({
             Xc.cond <- get('Xc.cond', envir = tmp)", paste("
             if (!is.null(input$plotC", 1:length(C), "click$x)){
@@ -141,7 +163,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                         model.colour = NULL, model.lwd = NULL, model.lty = NULL,
                         model.name = model.name, yhat = NULL, mar = NULL,
                         data.colour = data.colour, data.order = data.order, view3d = view3d)
-            })
+            }, width = 400, height = 400)
             ", paste("
             output$plotC", 1:length(C), " <- renderPlot({
                 o <- plotxc(xc = data[, C[[", 1:length(C), "]]], 
