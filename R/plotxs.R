@@ -137,9 +137,9 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
 			rect(xleft = xrect - xoffset, xright = xrect + xoffset,
 			     ybottom = yrect - yoffset, ytop = yrect + yoffset,
 				 col = color)
-            if (nrow(xs.new) > 0)      
-			    points(jitter(as.integer(xs.new[, 1L])), jitter(as.integer(
-                    xs.new[, 2L])), bg = ybg, col = data.colour, pch = 21)	 
+            if (nrow(xs.new) > 0) 
+          	    points(jitter(as.integer(xs.new[, 1L]), amount = 0.6 * xoffset), jitter(as.integer(
+                    xs.new[, 2L]), amount = 0.6 * yoffset), bg = ybg, col = data.colour, pch = 21)	 
 		    axis(1L, at = unique(xrect), labels = levels(xs[, 1L]), 
                 tick = FALSE)
 			axis(2L, at = unique(yrect), labels = levels(xs[, 2L]),
