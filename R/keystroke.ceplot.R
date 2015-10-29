@@ -3,7 +3,7 @@ function (key)
 {
     if (identical(key, "q")) return(invisible(1))
     if (any(vapply(c("Up", "Down", "Left", "Right"), identical, logical(1), key))){
-    plotobject <- get("plotobject", envir = parent.frame())
+        plotobject <- get("plotobject", envir = parent.frame())
         if (plotobject$xsplot$view3d){
             try(plotobject$xsplot$xc.cond <- get("Xc.cond", envir = parent.frame()), silent = TRUE)
             if (identical(key, "Down"))
@@ -19,6 +19,13 @@ function (key)
             do.call(plotxs, plotobject$xsplot)
             assign(x = "plotobject", value = plotobject, envir = parent.frame())
         }    
+    }
+    if (identical(key, "s")){
+        plotobject <- get("plotobject", envir = parent.frame())
+        filename <- paste("snapshot_", gsub(":", ".", gsub(" ", "_", Sys.time())), sep = "")
+        pdf(file = filename)
+        
+        dev.off()
     }
     points(NULL)
 }

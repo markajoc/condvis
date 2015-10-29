@@ -5,8 +5,7 @@ function (height = 8, width = 10, separate = FALSE, ...)
         separate(...)
     } else {
         if (identical(version$os, "linux-gnu"))
-            x11(type = "Xlib", 
-            height = height, width = width)
+            x11(type = "Xlib", height = height, width = width)
         else
             x11(height = height, width = width)
 	    setGraphicsEventHandlers(
