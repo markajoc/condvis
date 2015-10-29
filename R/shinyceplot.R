@@ -58,14 +58,25 @@ function(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     assign("Xc.cond", Xc.cond, tmp)
     Xc <- data[, uniqC, drop = FALSE]
     xcplotsize <- 190
+    contplot <- !is.factor(data[, response]) & !any(vapply(data[, S, drop = FALSE], is.factor, logical(1))) & identical(length(S), 2L)
     eval(parse(text = paste("
         ui <- fluidPage(
             fluidRow(
                 column(5
                     , fluidRow(
-                        column(8, plotOutput('plotS', height = '100%', width = '80%')),
+                        column(8, 
+                            if (contplot) {
+                                tabsetPanel(
+                                    tabPanel('Contour', plotOutput('plotS', height = '100%', width = '80%'), value = 1),
+                                    tabPanel('Perspective', plotOutput('plotS2', height = '100%', width = '80%'), value = 2)
+                                , id = 'tab')
+                            } else plotOutput('plotS', height = '100%', width = '80%')
+                        ),
                         column(3, if (identical(length(S), 2L)) plotOutput('legend', height = 400, width = '20%'))
                     )
+                    , conditionalPanel(condition = 'input.tab == 2', helpText(strong('Perspective plot rotation'))) 
+                    , conditionalPanel(condition = 'input.tab == 2', numericInput('phi', 'phi (vertical rotation): ', 20, -180, 180))
+                    , conditionalPanel(condition = 'input.tab == 2', numericInput('theta', 'theta (horizontal rotation): ', 45, -180, 180))
                     , helpText(strong('Weighting function settings'))
                     , sliderInput('sigma', 'Weighting function parameter: ', 0.01, 5, step = 0.01, value = 1)
                     , radioButtons('type', 'Weighting function type:', c('euclidean', 'chebyshev'))
@@ -162,7 +173,41 @@ function(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                         y = data[, response, drop = FALSE], xc.cond = get('Xc.cond', envir = tmp), model = model,
                         model.colour = NULL, model.lwd = NULL, model.lty = NULL,
                         model.name = model.name, yhat = NULL, mar = NULL,
-                        data.colour = data.colour, data.order = data.order, view3d = view3d)
+                        data.colour = data.colour, data.order = data.order, view3d = FALSE)
+            }, width = 400, height = 400)
+            output$plotS2 <- renderPlot({
+            Xc.cond <- get('Xc.cond', envir = tmp)", paste("
+            if (!is.null(input$plotC", 1:length(C), "click$x)){
+                arefactors <- unlist(lapply(data[, C[[", 1:length(C), "]], drop = FALSE], is.factor))
+                if (identical(length(arefactors), 1L)){
+                    if(arefactors)
+                        Xc.cond[, names(data)[C[[", 1:length(C), "]]]] <- factor(levels(data[, names(data)[C[[", 1:length(C), "]]]])[which.min(abs(input$plotC", 1:length(C), "click$x - (1:length(levels(data[, names(data)[C[[", 1:length(C), "]]]])))))], levels = levels(data[, names(data)[C[[", 1:length(C), "]]]]))
+                    else Xc.cond[, names(data)[C[[", 1:length(C), "]]]] <- input$plotC", 1:length(C), "click$x
+                }
+                if (identical(length(arefactors), 2L)){
+                    if (all(arefactors)){
+            
+                    } else if (any(arefactors)){
+                       Xc.cond[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]] <- factor(levels(data[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]])[which.min(abs(input$plotC", 1:length(C), "click$x - (1:length(levels(data[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]])))))], levels = levels(data[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]]))
+                        Xc.cond[, names(data)[C[[", 1:length(C), "]]][which(!arefactors)]] <- input$plotC", 1:length(C), "click$y
+                        } else {
+                            Xc.cond[, names(data)[C[[", 1:length(C), "]]][1]] <- input$plotC", 1:length(C), "click$x
+                            Xc.cond[, names(data)[C[[", 1:length(C), "]]][2]] <- input$plotC", 1:length(C), "click$y
+                        }
+            
+                }
+                assign('Xc.cond', Xc.cond, envir = tmp) 
+            }
+            ", sep = "", collapse = ""),"
+                    vw <- visualweight(xc = Xc, xc.cond = get('Xc.cond', envir = tmp), sigma = input$sigma, threshold = 0.2, type = input$type)
+                    k <- vw$k
+                    data.colour <- rgb(1 - k, 1 - k, 1 - k)
+                    data.order <- vw$order
+                    plotxsobject <- plotxs.shiny(xs = data[, S, drop = FALSE],
+                        y = data[, response, drop = FALSE], xc.cond = get('Xc.cond', envir = tmp), model = model,
+                        model.colour = NULL, model.lwd = NULL, model.lty = NULL,
+                        model.name = model.name, yhat = NULL, mar = NULL,
+                        data.colour = data.colour, data.order = data.order, view3d = TRUE, phi3d = input$phi, theta3d = input$theta)
             }, width = 400, height = 400)
             ", paste("
             output$plotC", 1:length(C), " <- renderPlot({
