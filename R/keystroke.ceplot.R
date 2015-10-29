@@ -44,8 +44,9 @@ function (key)
         do.call(plotxs, plotobject$xsplot)
         for (i in 1:lenC){
             screen(selectors[i])
-            plotxc(xc = plotobject$xcplots[[i]]$xc, xc.cond = Xc.cond[1, plotobject$xcplots[[i]]$name], 
-                select.lwd = select.lwd, select.col = select.col, name = plotobject$xcplots[[i]]$name)
+            name <- plotobject$xcplots[[i]]$name
+            plotxc(xc = plotobject$xcplots[[i]]$xc, xc.cond = Xc.cond[1, name], 
+                select.lwd = select.lwd, select.col = select.col, name = name)
         }
         dev.off()
         cat(paste("\nSnapshot saved: '", filename,"'", sep = ""))
