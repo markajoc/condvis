@@ -6,18 +6,16 @@ function (data, model, type = "default", response = NULL, S = NULL, C = NULL,
 {
     if (identical(type, "default")){
         interactiveceplot(data = data, model = model, response = response, 
-            S = S, C = C, sigma = sigma, threshold = NULL, type = distance, 
+            S = S, C = C, sigma = sigma, type = distance, 
             cex.axis = cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, 
             method = Corder, width = width, height = height)
     } else if (identical(type, "separate")){
         separate(data = data, model = model, response = response, S = S, C = C, sigma = sigma, 
-            threshold = NULL, type = distance, cex.axis = cex.axis, cex.lab = 
-            cex.lab, tck = tck, view3d = view3d, method = Corder, selectortype =
-            selectortype)
+            type = distance, cex.axis = cex.axis, cex.lab = cex.lab, tck = tck, 
+            view3d = view3d, method = Corder, selectortype = selectortype)
     } else if (identical(type, "shiny")){
         shinyceplot(data = data, model = model, response = response, S = S, 
-            C = C, sigma = sigma, threshold = NULL, type = distance, 
-            cex.axis = cex.axis, cex.lab = cex.lab, tck = tck, view3d = 
-            view3d, method = Corder, selectortype = "minimal")
+            C = C, sigma = sigma, type = distance, cex.axis = cex.axis, 
+            cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = Corder)
     }
 }

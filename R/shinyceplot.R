@@ -1,7 +1,7 @@
 shinyceplot <-
 function(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     threshold = NULL, type = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL,
-    view3d = FALSE, method = "default", selectortype = "minimal")
+    view3d = FALSE, Corder = "default")
 {
     data <- na.omit(data)
     if(!require("shiny"))
@@ -30,7 +30,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             possibleC <- unique(unlist(lapply(
                 lapply(model, getvarnames), `[[`, 2)))
             arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])],
-                drop = FALSE], method = method)
+                drop = FALSE], method = Corder)
         } else arrangeC(data[, -c(response, S)])
     else C
     C <- if (all(vapply(C, is.numeric, logical(1))))
