@@ -1,4 +1,4 @@
-wrapper <- 
+ceplot <- 
 function (data, model, type = "default", response = NULL, S = NULL, C = NULL, 
     sigma = NULL, distance = "euclidean", cex.axis = NULL, cex.lab = NULL, 
     tck = NULL, view3d = FALSE, Corder = "default", selectortype = "minimal", 
