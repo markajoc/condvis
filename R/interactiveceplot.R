@@ -17,7 +17,7 @@ function (height = 8, width = 10, separate = FALSE, ...)
         tmp <- list(...)
         tmp <- tmp[!vapply(names(tmp), identical, logical(1), "selectortype")]
         if (class(tmp$model)[1L] != "stanfit")
-            assign(x = "plotobject", value = do.call(ceplot, args = tmp), envir = eventEnv)
+            assign(x = "plotobject", value = do.call(staticceplot, args = tmp), envir = eventEnv)
         else assign(x = "plotobject", value = do.call(stanplot, args = tmp), envir = eventEnv)
         getGraphicsEvent()
         on.exit(cat("\nInteractive session ended.\n")) 
