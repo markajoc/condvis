@@ -9,5 +9,4 @@ Suggests: scagnostics, hdrcde, RColorBrewer, e1071, gam
 Description: Exploring fitted model structures interactively.
 License: GPL (>= 2)
 LazyData: false
-Depends: mvtnorm
 Imports: graphics, MASS
