@@ -97,7 +97,7 @@ function (buttons, x, y)
                select.lwd = plotxcobject$xcplots[[screen.index]]$select.lwd) 
         dev.set(expectationwindow)
         par(bg = "white")
-        close.screen(all = TRUE)
+        close.screen(all.screens = TRUE)
         xsplot <- plotxsobject
         xsplot$xc.cond <- Xc.cond
         vwargs <- get("vwargs", envir = parent.frame())

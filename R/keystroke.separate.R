@@ -20,7 +20,7 @@ function (key)
                 plotxsobject$theta3d <- plotxsobject$theta3d - 2
             dev.set(expectationwindow)
             par(bg = "white")
-            close.screen(all = TRUE)
+            close.screen(all.screens = TRUE)
             do.call(plotxs, plotxsobject)
             assign(x = "plotxsobject", value = plotxsobject, envir = parent.frame())
         }    

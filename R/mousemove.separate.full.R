@@ -58,7 +58,7 @@ function (buttons, x, y)
     
     dev.set(expectationwindow)
     par(bg = "white")
-    close.screen(all = TRUE)
+    close.screen(all.screens = TRUE)
     plotxsobject$xc.cond <- Xc.cond
     vwargs <- get("vwargs", envir = parent.frame())
     vw <- visualweight(xc = Xc, xc.cond = Xc.cond, 

@@ -21,7 +21,7 @@ function (Xc, type = "minimal", method = "default", ...)
             Xc.num <- vapply(Xc, as.numeric, numeric(nrow(Xc)))
             Xc.cond <- Xc[1, , drop = FALSE]
             Xc.cond.num <- vapply(Xc.cond, as.numeric, numeric(1L))
-            close.screen(all = TRUE)
+            close.screen(all.screens = TRUE)
             scr <- split.screen(c(ncol(Xc) + 2, ncol(Xc) + 2))
             scr2 <- as.vector(matrix(scr, ncol = ncol(Xc) + 2)[c(-1, 
                 -(ncol(Xc) + 2)), c(-1, -(ncol(Xc) + 2))])

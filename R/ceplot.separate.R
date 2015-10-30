@@ -53,7 +53,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         stop("cannot have variables common to both 'S' and 'C'") 
     Xc.cond <- data[1, uniqC, drop = FALSE]    
     Xc <- data[, uniqC, drop = FALSE]
-    close.screen(all = TRUE)
+    close.screen(all.screens = TRUE)
     if (identical(version$os, "linux-gnu"))
         x11(type = "Xlib")
     else
@@ -62,7 +62,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     k <- vw$k
     data.colour <- rgb(1 - k, 1 - k, 1 - k)
     data.order <- vw$order
-    close.screen(all = TRUE)
+    close.screen(all.screens = TRUE)
     plotxsobject <- plotxs(xs = data[, S, drop = FALSE],
         y = data[, response, drop = FALSE], xc.cond = Xc.cond, model = model,
         model.colour = NULL, model.lwd = NULL, model.lty = NULL,
