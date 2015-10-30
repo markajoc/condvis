@@ -16,13 +16,13 @@ factor2color(x, colors = NULL)
       \code{RColorBrewer} package if available, or \code{\link{rainbow}}.}
 }
 \value{
-A character vector containing colors.
+  A character vector containing colors.
 }
 \author{
-Mark O'Connell
+  Mark O'Connell
 }
 \seealso{
-\code{\link{cont2color}}
+  \code{\link{cont2color}}
 }
 \examples{
 plot(iris[, c("Petal.Length", "Petal.Width")], pch = 21,

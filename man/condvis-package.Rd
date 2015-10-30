@@ -7,7 +7,7 @@ Conditional visualization for statistical models
 }
 \description{
   Visualizations for exploring statistical models. The main function for end 
-  users is \code{\link{interactiveceplot}} (see example below).
+  users is \code{\link{ceplot}} (see example below).
 }
 \details{
   \tabular{ll}{
@@ -30,6 +30,5 @@ library(gam)
 model1 <- list(quadratic = lm(mpg ~ cyl + am + qsec + wt + I(wt^2), data = mtcars),
                additive = gam(mpg ~ cyl + am + qsec + s(wt), data = mtcars))
 
-interactiveceplot(data = mtcars, model = model1, 
-    S = c("wt"), width = 10, height = 7)
+ceplot(data = mtcars, model = model1, S = "wt")
 }

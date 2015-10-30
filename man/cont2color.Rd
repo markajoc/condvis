@@ -26,16 +26,16 @@ cont2color(x, range, breaks = NULL, colors = NULL)
     length equal to \code{breaks}.}
 }
 \details{
-Uses the \code{RColorBrewer} package, if installed.
+  Uses the \code{RColorBrewer} package, if installed.
 }
 \value{
-A vector of colors.
+  A vector of colors.
 }
 \author{
-Mark O'Connell
+  Mark O'Connell
 }
 \seealso{
-\code{\link{factor2color}}
+  \code{\link{factor2color}}
 }
 \examples{
 x <- runif(200)

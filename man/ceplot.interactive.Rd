@@ -1,5 +1,5 @@
-\name{ceplot}
-\alias{ceplot}
+\name{ceplot.interactive}
+\alias{ceplot.interactive}
 \title{Interactive conditional expectation plot}
 \description{
   Creates an interactive conditional expectation plot, which consists of two
@@ -9,10 +9,9 @@
   be altered by clicking with the mouse.
 }
 \usage{
-ceplot(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, 
+ceplot.interactive(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, 
     distance = "euclidean", type = "default", cex.axis = NULL, cex.lab = NULL, 
-    tck = NULL, view3d = FALSE, Corder = "default", selectortype = "minimal", 
-    width = 9, height = 7)
+    tck = NULL, view3d = FALSE, Corder = "default", width = 9, height = 7)
 }
 \arguments{
   \item{data}{ a dataframe containing the training data for the model(s) 
@@ -42,11 +41,6 @@ ceplot(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     prespective plot if possible.}
   \item{Corder}{ method of arranging variables in \code{C} if \code{C} is not 
     supplied. See \code{\link{arrangeC}}}
-  \item{selectortype}{ only used if \code{type = "separate"}. \code{"minimal"} is the default behaviour, simply calling
-    \code{\link{plotxc}} on the variables given by \code{C}. \code{"pcp"} gives 
-    a parallel coordinates plots from which to choose sections/conditions. 
-    \code{"full"} produces a full scatterplot matrix from which to choose
-    sections/conditions.}  
   \item{width}{ only used in }  
 }
 \value{
@@ -140,4 +134,4 @@ model6 <- list(svm(cyl ~ carb + wt + hp, data = mtcars, family = "binomial"))
 ceplot(data = mtcars, model = model6, sigma = 1, threshold = 0.5, 
     S = c("carb", "wt"), C = "hp", width = 10, height = 6)
 }
-\keyword{ceplot}
+\keyword{ceplot.interactive}

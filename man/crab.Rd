@@ -40,7 +40,8 @@
 }
 
 \references{
-  Brockmann, H. (1996), "Satellite male groups in horseshoe crabs," \emph{Ethology}, \bold{102}-1, pp. 1-21.
+  Brockmann, H. (1996), "Satellite male groups in horseshoe crabs," 
+  \emph{Ethology}, \bold{102}-1, pp. 1-21.
 }
 
 \examples{
