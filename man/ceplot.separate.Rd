@@ -48,7 +48,7 @@ ceplot.separate(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     sections/conditions.}  
 }
 \value{
-  \item{}{}
+  No return value. Side effect of creating an interactive plot.
 }
 \seealso{
   \code{\link{ceplot}}

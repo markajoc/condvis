@@ -21,9 +21,6 @@
   A numeric vector.
 }
 
-\seealso{
-
-}
 \examples{
 x <- runif(5000)
 y <- runif(5000)

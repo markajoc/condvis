@@ -114,7 +114,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     assign(x = "expectationwindow", value = expectationwindow, envir = eventEnv)
     assign(x = "selectorwindow", value = selectorwindow, envir = eventEnv)
     assign(x = "Xc", value = Xc, envir = eventEnv)
-    assign(x = "vwargs", value = list(sigma = sigma, threshold = threshold, distance = distance), envir = eventEnv)
+    assign(x = "vwargs", value = list(sigma = sigma, distance = distance), envir = eventEnv)
     getGraphicsEvent()
     #on.exit(cat("\nInteractive session ended")) 
     on.exit(dev.off())  
