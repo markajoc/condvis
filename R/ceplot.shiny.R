@@ -4,7 +4,6 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
 {
     ui <- NULL
     server <- NULL
-    shinyApp <- function() {}
     data <- na.omit(data)
     if(!requireNamespace("shiny", quietly = TRUE))
         stop("requires package 'shiny'")
@@ -266,5 +265,5 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
     ")))
 
 
-    shinyApp(ui, server)
+    shiny::shinyApp(ui, server)
 }
