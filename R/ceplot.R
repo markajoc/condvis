@@ -15,7 +15,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = Corder, 
             selectortype = selectortype)
     } else if (identical(type, "shiny")){
-        shinyceplot(data = data, model = model, response = response, S = S, 
+        ceplot.shiny(data = data, model = model, response = response, S = S, 
             C = C, cex.axis = cex.axis, cex.lab = cex.lab, tck = tck, 
             Corder = Corder)
     }
