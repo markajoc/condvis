@@ -70,7 +70,9 @@ Originally Achim Zeileis, edited by Mark O'Connell
 }
 
 \examples{
-obj <- spineplot2(mtcars$cyl, as.factor(mtcars$am))
+\dontrun{
+obj <- condvis:::spineplot2(mtcars$cyl, as.factor(mtcars$am))
 print(obj)
+}
 }
 \keyword{ spineplot }

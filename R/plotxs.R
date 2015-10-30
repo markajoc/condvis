@@ -3,7 +3,6 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     model.lty = NULL, model.name = NULL, yhat = NULL, mar = NULL, 
     data.colour = NULL, data.order = NULL, view3d = FALSE, theta3d = 45, phi3d = 20)
 {
-    if (class(model)[1L] != "stanfit"){
     model.colour <- if (is.null(model.colour)) 
         if (requireNamespace("RColorBrewer", quietly = TRUE))
 		    RColorBrewer::brewer.pal(n = max(length(model), 3L), name = "Dark2")
@@ -217,22 +216,6 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                  range(y[, 1L])), border = NA)
 		    box()
 		}
-    }
-    } else {
-        if (requireNamespace("rstan", quietly = TRUE)){
-        o <- rstan::extract(model)
-        xsnew <- seq(min(xs, na.rm = TRUE), max(xs, na.rm = TRUE), length.out = 100)
-        Xnew <- makenewdata(as.data.frame(xsnew), xc.cond)
-        beta <- o$b[1,]
-        ypred <- as.matrix(Xnew) %*% beta
-        plot(if (is.data.frame(xs)) xs[, 1] else xs, if (is.data.frame(y)) 
-            y[, 1] else y, col = NULL, xlab = colnames(xs), ylab = colnames(y))
-        for (i in sample(1:nrow(o$b), 100)){
-            beta <- o$b[i, ]
-            ypred <- as.matrix(Xnew) %*% beta
-            points(xsnew, ypred, pch = ".")
-        }
-        } else stop("requires 'rstan' package")
     }
     
     list(xs = xs, y = y, xc.cond = xc.cond, model = model, model.colour = 

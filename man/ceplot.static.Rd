@@ -1,6 +1,6 @@
 \name{ceplot.static}
 \alias{ceplot.static}
-\title{Conditional expectation plot}
+\title{Conditional expectation plot; static}
 \description{
   Creates a conditional expectation plot, which consists of two main parts. The
   left-hand side is a section through a fitted model surface, or a conditional
@@ -34,6 +34,8 @@ ceplot.static(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   \item{cex.axis}{ scaling parameter for axis text. Default is 0.7.}
   \item{cex.lab}{ scaling parameter for axis labels. Default is 0.8.}
   \item{tck}{ parameter for axis ticks. Default is -0.05.}
+  \item{view3d}{ logical; if \code{TRUE}, a 3-d perspective plot is produced 
+    if possible}
   \item{Corder}{ method of arranging variables in \code{C} if \code{C} is not 
     supplied. See \code{\link{arrangeC}}}
 }    

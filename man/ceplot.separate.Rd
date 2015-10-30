@@ -1,6 +1,6 @@
 \name{ceplot.separate}
 \alias{ceplot.separate}
-\title{Interactive conditional expectation plot; separate windows}
+\title{Interactive conditional expectation plot; separate devices}
 \description{
   Creates an interactive conditional expectation plot, which consists of two
   main parts on separate devices. One device shows a single plot depicting a 
@@ -31,9 +31,6 @@ ceplot.separate(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     conditioning, passed to \code{\link{visualweight}}.}  
   \item{distance}{ distance metric to be used in \code{\link{visualweight}}, 
     choice of: \code{"euclidean"} (default) or \code{"chebyshev"}}  
-  \item{type}{ type of interactive plot. \code{"default"} plots everything on 
-    one device. \code{"separate"} plots the condition selector plots on a 
-    separate device. \code{"shiny"} creates and opens a Shiny web application.}  
   \item{cex.axis}{ scaling parameter for axis text. Default is 0.7.}
   \item{cex.lab}{ scaling parameter for axis labels. Default is 0.8.}
   \item{tck}{ parameter for axis ticks. Default is -0.05.}

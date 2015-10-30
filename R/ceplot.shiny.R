@@ -5,7 +5,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
     ui <- NULL
     server <- NULL
     data <- na.omit(data)
-    if(!require("shiny"))
+    if(!requireNamespace("shiny", quietly = TRUE))
         stop("requires package 'shiny'")
     model <- if (!identical(class(model), "list"))
         list(model)

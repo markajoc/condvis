@@ -9,7 +9,8 @@
 \usage{
 plotxs(xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
        model.lty = NULL, model.name = NULL, yhat = NULL, mar = NULL, 
-       data.colour = NULL, data.order = NULL)
+       data.colour = NULL, data.order = NULL, view3d = FALSE, theta3d = 45,
+       phi3d = 20)
 }
 \arguments{
   \item{xs}{ a vector or \code{data.frame} with two columns.}
@@ -26,7 +27,11 @@ plotxs(xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
   \item{mar}{ margins for plotting.}
   \item{data.colour }{vector of colours for plotting the raw data (\code{xs} 
     and/or \code{y})}
-  \item{data.order }{integer vector giving the order in which to plot raw data}  
+  \item{data.order }{integer vector giving the order in which to plot raw data} 
+  \item{view3d}{ logical; if \code{TRUE}, a 3-d perspective plot is produced if 
+    possible} 
+  \item{theta3d}{ horizontal rotation of perspective plot}
+  \item{phi3d}{ vertical rotation of perspective plot}  
 
 }
 \value{
@@ -43,6 +48,9 @@ plotxs(xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     \item{mar}{}
     \item{data.colour }{}
     \item{data.order}{} 
+    \item{view3d}{} 
+    \item{theta3d}{}
+    \item{phi3d}{}      
 }
 \author{Mark O'Connell}
 \seealso{

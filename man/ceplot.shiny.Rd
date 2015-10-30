@@ -1,6 +1,6 @@
 \name{ceplot.shiny}
 \alias{ceplot.shiny}
-\title{Interactive conditional expectation plot}
+\title{Interactive conditional expectation plot; Shiny web application}
 \description{
   Creates an interactive conditional expectation plot, which consists of two
   main parts.  The left-hand side is a single plot depicting a section through a
@@ -10,9 +10,8 @@
   web application.
 }
 \usage{
-ceplot.shiny(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, 
-    distance = "euclidean", cex.axis = NULL, cex.lab = NULL, 
-    tck = NULL, Corder = "default")
+ceplot.shiny(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL, 
+    cex.lab = NULL, tck = NULL, Corder = "default")
 }
 \arguments{
   \item{data}{ a dataframe containing the training data for the model(s) 
@@ -28,18 +27,9 @@ ceplot.shiny(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     \code{data} or a vector of integer indices of length 2 (\code{character} 
     variable names are also acceptable). Defaults to the list produced by
     \code{\link{arrangeC}}.}
-  \item{sigma}{ tuning parameter for colouring data by proximity to current 
-    conditioning, passed to \code{\link{visualweight}}.}  
-  \item{distance}{ distance metric to be used in \code{\link{visualweight}}, 
-    choice of: \code{"euclidean"} (default) or \code{"chebyshev"}}  
-  \item{type}{ type of interactive plot. \code{"default"} plots everything on 
-    one device. \code{"separate"} plots the condition selector plots on a 
-    separate device. \code{"shiny"} creates and opens a Shiny web application.}  
   \item{cex.axis}{ scaling parameter for axis text. Default is 0.7.}
   \item{cex.lab}{ scaling parameter for axis labels. Default is 0.8.}
   \item{tck}{ parameter for axis ticks. Default is -0.05.}
-  \item{view3d}{ logical. If \code{TRUE}, displays the model section as a 
-    prespective plot if possible.}
   \item{Corder}{ method of arranging variables in \code{C} if \code{C} is not 
     supplied. See \code{\link{arrangeC}}}
 }
@@ -54,6 +44,7 @@ ceplot.shiny(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   \code{\link{ceplot}}
 }
 \examples{
+\dontrun{
 ## Example 1: Multivariate regression, xs one continuous predictor
 
 mtcars$cyl <- as.factor(mtcars$cyl)
@@ -80,5 +71,6 @@ model2 <- list(
     gam = gam(am ~ mpg + s(wt) + cyl, data = mtcars, family = "binomial"))
 
 ceplot.shiny(data = mtcars, model = model2, S = "cyl")
+}
 }
 \keyword{ceplot.shiny}
