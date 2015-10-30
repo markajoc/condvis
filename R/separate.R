@@ -1,7 +1,7 @@
 separate <- 
 function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, 
-    threshold = NULL, type = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, 
-    view3d = FALSE, method = "default", selectortype = "minimal")
+    threshold = NULL, distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, 
+    view3d = FALSE, Corder = "default", selectortype = "minimal")
 {
     data <- na.omit(data)
     model <- if (!identical(class(model), "list"))
@@ -29,7 +29,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             possibleC <- unique(unlist(lapply(
                 lapply(model, getvarnames), `[[`, 2)))
             arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])], 
-                drop = FALSE], method = method)
+                drop = FALSE], method = Corder)
         } else arrangeC(data[, -c(response, S)])
     else C
     C <- if (all(vapply(C, is.numeric, logical(1))))
@@ -58,7 +58,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         x11(type = "Xlib")
     else
         x11()
-    vw <- visualweight(Xc, Xc.cond, sigma, threshold, type = type)
+    vw <- visualweight(Xc, Xc.cond, sigma, threshold, type = distance)
     k <- vw$k
     data.colour <- rgb(1 - k, 1 - k, 1 - k)
     data.order <- vw$order
@@ -114,7 +114,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     assign(x = "expectationwindow", value = expectationwindow, envir = eventEnv)
     assign(x = "selectorwindow", value = selectorwindow, envir = eventEnv)
     assign(x = "Xc", value = Xc, envir = eventEnv)
-    assign(x = "vwargs", value = list(sigma = sigma, threshold = threshold, type = type), envir = eventEnv)
+    assign(x = "vwargs", value = list(sigma = sigma, threshold = threshold, type = distance), envir = eventEnv)
     getGraphicsEvent()
     #on.exit(cat("\nInteractive session ended")) 
     on.exit(dev.off())  

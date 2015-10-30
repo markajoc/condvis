@@ -1,7 +1,7 @@
 staticceplot <-
 function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, 
-    threshold = NULL, type = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, 
-    view3d = FALSE, method = "default")
+    distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, 
+    view3d = FALSE, Corder = "default")
 {
     data <- na.omit(data)
     model <- if (!identical(class(model), "list"))
@@ -29,7 +29,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             possibleC <- unique(unlist(lapply(
                 lapply(model, getvarnames), `[[`, 2)))
             arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])], 
-                drop = FALSE], method = method)
+                drop = FALSE], method = Corder)
         } else arrangeC(data[, -c(response, S)])
     else C
     C <- if (all(vapply(C, is.numeric, logical(1))))
@@ -72,8 +72,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     }
     screen(main[1])
     Xc <- data[, uniqC, drop = FALSE]
-    vw <- visualweight(xc = Xc, xc.cond = Xc.cond, sigma = sigma, threshold = 
-        threshold, type = type)
+    vw <- visualweight(xc = Xc, xc.cond = Xc.cond, sigma = sigma, type = distance)
     k <- vw$k
     data.colour <- rgb(1 - k, 1 - k, 1 - k)
     data.order <- vw$order
@@ -83,7 +82,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         model.name = model.name, yhat = NULL, mar = NULL, 
         data.colour = data.colour, data.order = data.order, view3d = view3d)
     dev.flush()
-    output <- list(Xc = Xc, sigma = sigma, threshold = threshold, type = type, 
+    output <- list(Xc = Xc, sigma = sigma, type = distance, 
         xcplots = xcplots, xsplot = xsplot,
 	    screens = list(main = main, selectors = selectors))
 	class(output) <- "ceplot"

@@ -1,5 +1,5 @@
 interactiveceplot <- 
-function (height = 8, width = 10, separate = FALSE, ...)
+function (height = 7, width = 10, separate = FALSE, ...)
 {
     if (separate){
         separate(...)

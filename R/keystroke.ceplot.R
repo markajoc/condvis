@@ -50,7 +50,7 @@ function (key)
         }
         dev.off()
         cat(paste("\nSnapshot saved: '", filename,"'", sep = ""))
-        cat(paste("\ndistance: ", plotobject$type, ", sigma: ", sigma, sep = ""))
+        #cat(paste("\ndistance: ", plotobject$type, ", sigma: ", sigma, sep = ""))
     }
     points(NULL)
 }
