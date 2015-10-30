@@ -170,10 +170,10 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                     zfacet <- (z[-1, -1] + z[-1, -ncol(z)] + z[-nrow(z), -1] + 
                         z[-nrow(z), -ncol(z)]) / 4
                     colorfacet <- cont2color(zfacet, range(y[, 1L]))
-                    persp(x = unique(xs.grid[, 1L]), y = unique(xs.grid[, 2L]), border = rgb(0.3, 0.3, 0.3), lwd = 0.1,
+                    suppressWarnings(persp(x = unique(xs.grid[, 1L]), y = unique(xs.grid[, 2L]), border = rgb(0.3, 0.3, 0.3), lwd = 0.1,
                         z = z, col = colorfacet, zlim = range(y), xlab = colnames(xs)[1L], 
                         ylab = colnames(xs)[2L], zlab = colnames(y)[1L], d = 10, ticktype = "detailed",
-                        main = "Conditional expectation", theta = theta3d, phi = phi3d) -> persp.object
+                        main = "Conditional expectation", theta = theta3d, phi = phi3d)) -> persp.object
                     if (nrow(xs.new) > 0){     
                         points(trans3d(xs.new[, 1], xs.new[, 2], y.new[, 1], 
                             pmat = persp.object), col = data.colour)  
