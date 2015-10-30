@@ -4,9 +4,11 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
 {
     ui <- NULL
     server <- NULL
+    shinyApp <- function() {}
     data <- na.omit(data)
     if(!requireNamespace("shiny", quietly = TRUE))
         stop("requires package 'shiny'")
+    else attachNamespace("shiny")    
     model <- if (!identical(class(model), "list"))
         list(model)
     else model
