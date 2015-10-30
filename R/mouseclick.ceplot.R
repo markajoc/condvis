@@ -97,8 +97,7 @@ function (buttons, x, y)
         xsplot <- plotobject$xsplot
         xsplot$xc.cond <- Xc.cond
         vw <- visualweight(xc = plotobject$Xc, xc.cond = Xc.cond, 
-            sigma = plotobject$sigma, threshold = plotobject$threshold, 
-            type = plotobject$type)
+            sigma = plotobject$sigma, distance = plotobject$distance)
         k <- vw$k
         xsplot$data.colour <- rgb(1-k,1-k,1-k)
         xsplot$data.order <- vw$order

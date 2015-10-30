@@ -11,13 +11,16 @@
   than two univariate marginal views.
 }
 \usage{
-savingby2d(x, y = NULL)
+savingby2d(x, y = NULL, method = "default")
 }
 
 \arguments{
   \item{x}{ a numeric vector or factor. Can also be a dataframe containing x
   and y.}
   \item{y}{ a numeric vector or factor.}
+  \item{method}{ criterion used to quantify bivariate relationships. Can be 
+    \code{"default"}, a scagnostic measure, or \code{"DECR"} to use a density 
+    estimate confidence region.}
 }
 \details{
   If given two continuous variables, the variables are both scaled to mean 0 and

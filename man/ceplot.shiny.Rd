@@ -6,7 +6,8 @@
   main parts.  The left-hand side is a single plot depicting a section through a
   fitted model surface, or conditional expectation.  The right-hand side of the
   plot shows small data summaries which give the current condition, which can
-  be altered by clicking with the mouse.
+  be altered by clicking with the mouse. This version is rendered in a Shiny 
+  web application.
 }
 \usage{
 ceplot.shiny(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, 
@@ -50,7 +51,7 @@ ceplot.shiny(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
 }
 \author{Mark O'Connell}
 \seealso{
-  \code{\link{getGraphicsEvent}}
+  \code{\link{ceplot}}
 }
 \examples{
 ## Example 1: Multivariate regression, xs one continuous predictor
@@ -63,8 +64,8 @@ model1 <- list(quadratic = lm(mpg ~ cyl + hp + wt + I(wt^2), data = mtcars),
 
 conditionvars1 <- list(c("cyl", "hp"))
 
-ceplot(data = mtcars, model = model1, response = "mpg", S = "wt", 
-    C = conditionvars1, sigma = 0.1, width = 10, height = 6)
+ceplot.shiny(data = mtcars, model = model1, response = "mpg", S = "wt", 
+    C = conditionvars1)
 
 ## Example 2: Binary classification, xs one categorical predictor
 
@@ -78,59 +79,6 @@ model2 <- list(
     glm = glm(am ~ mpg + wt + cyl, data = mtcars, family = "binomial"),
     gam = gam(am ~ mpg + s(wt) + cyl, data = mtcars, family = "binomial"))
 
-ceplot(data = mtcars, model = model2, S = "cyl", sigma = 0.1, 
-    width = 10, height = 6)
-
-## Example 3: Multivariate regression, xs both continuous
-
-mtcars$cyl <- as.factor(mtcars$cyl)
-mtcars$gear <- as.factor(mtcars$gear)
-
-library(e1071)
-model3 <- list(svm(mpg ~ wt + qsec + cyl + hp + gear, 
-    data = mtcars, family = "binomial"))
-
-conditionvars3 <- list(c("cyl","gear"), "hp")
-
-ceplot(data = mtcars, model = model3, S = c("wt", "qsec"), 
-    sigma = 1, C = conditionvars3, width = 10, height = 6)
-
-## Example 4: Multi-class classification, xs both categorical
-
-mtcars$cyl <- as.factor(mtcars$cyl)
-mtcars$vs <- as.factor(mtcars$vs)
-mtcars$am <- as.factor(mtcars$am)
-mtcars$gear <- as.factor(mtcars$gear)
-mtcars$carb <- as.factor(mtcars$carb)
-
-library(e1071)
-model4 <- list(svm(carb ~ ., data = mtcars, family = "binomial"))
-
-ceplot(data = mtcars, model = model4, S = c("cyl", "am"), 
-    sigma = 3, threshold = 0.1, width = 10, height = 6, separate = TRUE, 
-    selectortype = "pcp")
-
-## Example 5: Multi-class classification, xs both continuous
-
-data(wine)
-wine$Class <- as.factor(wine$Class)
-library(e1071)
-
-model5 <- list(svm(Class ~ ., data = wine))
-
-ceplot(data = wine, model = model5, S = c("Alcohol", "Hue"), 
-    sigma = 5, threshold = 0.1, width = 10, height = 6)
-
-## Example 6: Multi-class classification, xs with one categorical predictor,
-##            and one continuous predictor.
-
-mtcars$cyl <- as.factor(mtcars$cyl)
-mtcars$carb <- as.factor(mtcars$carb)
-
-library(e1071)
-model6 <- list(svm(cyl ~ carb + wt + hp, data = mtcars, family = "binomial"))
-
-ceplot(data = mtcars, model = model6, sigma = 1, threshold = 0.5, 
-    S = c("carb", "wt"), C = "hp", width = 10, height = 6)
+ceplot.shiny(data = mtcars, model = model2, S = "cyl")
 }
 \keyword{ceplot.shiny}

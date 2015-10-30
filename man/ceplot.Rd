@@ -47,7 +47,10 @@ ceplot(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     a parallel coordinates plots from which to choose sections/conditions. 
     \code{"full"} produces a full scatterplot matrix from which to choose
     sections/conditions.}  
-  \item{width}{ only used in }  
+  \item{width}{ width of device in inches, only used when 
+    \code{type == "default"} }  
+  \item{height}{ height of device in inches, only used when 
+    \code{type == "default"} } 
 }
 \value{
   Returns no value, but produces an interactive plot as a side-effect.  The
@@ -114,8 +117,7 @@ library(e1071)
 model4 <- list(svm(carb ~ ., data = mtcars, family = "binomial"))
 
 ceplot(data = mtcars, model = model4, S = c("cyl", "am"), 
-    sigma = 3, threshold = 0.1, width = 10, height = 6, separate = TRUE, 
-    selectortype = "pcp")
+    sigma = 3, type = "separate", selectortype = "pcp")
 
 ## Example 5: Multi-class classification, xs both continuous
 
@@ -125,8 +127,7 @@ library(e1071)
 
 model5 <- list(svm(Class ~ ., data = wine))
 
-ceplot(data = wine, model = model5, S = c("Alcohol", "Hue"), 
-    sigma = 5, threshold = 0.1, width = 10, height = 6)
+ceplot(data = wine, model = model5, S = c("Alcohol", "Hue"), sigma = 5)
 
 ## Example 6: Multi-class classification, xs with one categorical predictor,
 ##            and one continuous predictor.
@@ -137,7 +138,6 @@ mtcars$carb <- as.factor(mtcars$carb)
 library(e1071)
 model6 <- list(svm(cyl ~ carb + wt + hp, data = mtcars, family = "binomial"))
 
-ceplot(data = mtcars, model = model6, sigma = 1, threshold = 0.5, 
-    S = c("carb", "wt"), C = "hp", width = 10, height = 6)
+ceplot(data = mtcars, model = model6, sigma = 1, S = c("carb", "wt"), C = "hp")
 }
 \keyword{ceplot}

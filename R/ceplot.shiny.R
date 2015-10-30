@@ -164,7 +164,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
                 assign('Xc.cond', Xc.cond, envir = tmp) 
             }
             ", sep = "", collapse = ""),"
-                    vw <- visualweight(xc = Xc, xc.cond = get('Xc.cond', envir = tmp), sigma = input$sigma, threshold = 0.2, type = input$type)
+                    vw <- visualweight(xc = Xc, xc.cond = get('Xc.cond', envir = tmp), sigma = input$sigma, distance = input$type)
                     k <- vw$k
                     data.colour <- rgb(1 - k, 1 - k, 1 - k)
                     data.order <- vw$order
@@ -198,7 +198,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
                 assign('Xc.cond', Xc.cond, envir = tmp) 
             }
             ", sep = "", collapse = ""),"
-                    vw <- visualweight(xc = Xc, xc.cond = get('Xc.cond', envir = tmp), sigma = input$sigma, threshold = 0.2, type = input$type)
+                    vw <- visualweight(xc = Xc, xc.cond = get('Xc.cond', envir = tmp), sigma = input$sigma, distance = input$type)
                     k <- vw$k
                     data.colour <- rgb(1 - k, 1 - k, 1 - k)
                     data.order <- vw$order

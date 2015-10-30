@@ -72,7 +72,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     }
     screen(main[1])
     Xc <- data[, uniqC, drop = FALSE]
-    vw <- visualweight(xc = Xc, xc.cond = Xc.cond, sigma = sigma, type = distance)
+    vw <- visualweight(xc = Xc, xc.cond = Xc.cond, sigma = sigma, distance = distance)
     k <- vw$k
     data.colour <- rgb(1 - k, 1 - k, 1 - k)
     data.order <- vw$order
@@ -82,7 +82,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         model.name = model.name, yhat = NULL, mar = NULL, 
         data.colour = data.colour, data.order = data.order, view3d = view3d)
     dev.flush()
-    output <- list(Xc = Xc, sigma = sigma, type = distance, 
+    output <- list(Xc = Xc, sigma = sigma, distance = distance, 
         xcplots = xcplots, xsplot = xsplot,
 	    screens = list(main = main, selectors = selectors))
 	class(output) <- "ceplot"

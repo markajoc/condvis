@@ -1,5 +1,5 @@
 visualweight <- 
-function(xc, xc.cond, sigma = NULL, threshold = NULL, type = "euclidean")
+function(xc, xc.cond, sigma = NULL, distance = "euclidean")
 {
     if(!is.data.frame(xc)) 
         stop("'xc' should be a data.frame.")
@@ -9,9 +9,6 @@ function(xc, xc.cond, sigma = NULL, threshold = NULL, type = "euclidean")
     sigma <- if (is.null(sigma))
         1
     else sigma      
-    threshold <- if (is.null(threshold))
-        0.1
-    else threshold       
     xc.cond <- xc.cond[, colnames(xc), drop = FALSE]        
     arefactors <- vapply(xc, is.factor, logical(1))
     xc.factors <- xc[, arefactors, drop = FALSE]
@@ -29,7 +26,7 @@ function(xc, xc.cond, sigma = NULL, threshold = NULL, type = "euclidean")
         k[factormatches] <- 1
         return(list(k = k, order = which(k == 1)))
     }
-    if (identical(type, "euclidean")){
+    if (identical(distance, "euclidean")){
         x.mean <- colMeans(xc.num)
         x.sd <- apply(xc.num, 2L, sd)
         x.scaled <- scale(xc.num)[factormatches, ]
@@ -38,7 +35,7 @@ function(xc, xc.cond, sigma = NULL, threshold = NULL, type = "euclidean")
         k[factormatches][d < (sigma ^ 2)] <- 0.4  
         k[factormatches][d < ((0.6 * sigma) ^ 2)] <- 0.7        
         k[factormatches][d < ((0.3 * sigma) ^ 2)] <- 1
-    } else if (identical(type, "chebyshev")){
+    } else if (identical(distance, "chebyshev")){
         x.mean <- colMeans(xc.num)
         x.sd <- apply(xc.num, 2L, sd)
         x.scaled <- scale(xc.num)[factormatches, ]
@@ -49,6 +46,5 @@ function(xc, xc.cond, sigma = NULL, threshold = NULL, type = "euclidean")
         k[factormatches][d < (0.3 * sigma)] <- 1
     }  
     k.order <- order(k) 
-    k.order.trimmed <- k.order[k[k.order] > threshold]
-    list(k = k, order = k.order.trimmed)
+    list(k = k, order = k.order)
 }

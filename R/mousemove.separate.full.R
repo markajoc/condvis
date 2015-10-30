@@ -62,7 +62,7 @@ function (buttons, x, y)
     plotxsobject$xc.cond <- Xc.cond
     vwargs <- get("vwargs", envir = parent.frame())
     vw <- visualweight(xc = Xc, xc.cond = Xc.cond, 
-        sigma = vwargs$sigma, threshold = vwargs$threshold, type = vwargs$type)
+        sigma = vwargs$sigma, distance = vwargs$distance)
     k <- vw$k
     plotxsobject$data.colour <- rgb(1-k,1-k,1-k)
     plotxsobject$data.order <- vw$order

@@ -15,7 +15,7 @@ arrangeC(data, method = "default")
 }
 \arguments{
   \item{data}{ a \code{data.frame} containing numeric values or factors.}
-  \item{data}{ character vector defining the criterion by which to arrange the 
+  \item{method}{ character vector defining the criterion by which to arrange the 
     variables, passed to \code{\link{savingby2d}}}
 }
 \value{

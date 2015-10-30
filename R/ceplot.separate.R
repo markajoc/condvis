@@ -1,6 +1,6 @@
 ceplot.separate <- 
 function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, 
-    threshold = NULL, distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, 
+    distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, 
     view3d = FALSE, Corder = "default", selectortype = "minimal")
 {
     data <- na.omit(data)
@@ -58,7 +58,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         x11(type = "Xlib")
     else
         x11()
-    vw <- visualweight(Xc, Xc.cond, sigma, threshold, type = distance)
+    vw <- visualweight(Xc, Xc.cond, sigma, distance = distance)
     k <- vw$k
     data.colour <- rgb(1 - k, 1 - k, 1 - k)
     data.order <- vw$order
@@ -114,7 +114,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     assign(x = "expectationwindow", value = expectationwindow, envir = eventEnv)
     assign(x = "selectorwindow", value = selectorwindow, envir = eventEnv)
     assign(x = "Xc", value = Xc, envir = eventEnv)
-    assign(x = "vwargs", value = list(sigma = sigma, threshold = threshold, type = distance), envir = eventEnv)
+    assign(x = "vwargs", value = list(sigma = sigma, threshold = threshold, distance = distance), envir = eventEnv)
     getGraphicsEvent()
     #on.exit(cat("\nInteractive session ended")) 
     on.exit(dev.off())  
