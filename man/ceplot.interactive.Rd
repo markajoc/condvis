@@ -12,15 +12,14 @@
 ceplot.interactive(height = 7, width = 10, ...)
 }
 \arguments{
-  \{height}{ height of device in inches}
-  \{width}{ width of device in inches}
-  \{...}{ arguments passed to \code{\link{ceplot.static}}}
+  \item{height}{ height of device in inches}
+  \item{width}{ width of device in inches}
+  \item{...}{ arguments passed to \code{\link{ceplot.static}}}
 }
 \value{
   Returns no value, but produces an interactive plot as a side-effect.  The
   current \R session is busy until the interactive session is ended by the user,
-  or the graphics device is closed. If using the Shiny option, "Esc" can be 
-  pressed to free up the \R session.
+  or the graphics device is closed. 
 }
 \author{Mark O'Connell}
 \seealso{
