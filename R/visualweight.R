@@ -46,5 +46,6 @@ function(xc, xc.cond, sigma = NULL, distance = "euclidean")
         k[factormatches][d < (0.3 * sigma)] <- 1
     }  
     k.order <- order(k) 
-    list(k = k, order = k.order)
+    k.order.trimmed <- k.order[k[k.order] > 0]
+    list(k = k, order = k.order.trimmed)
 }
