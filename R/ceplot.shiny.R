@@ -85,6 +85,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
                 ),
                 column(7,
                     fluidRow( helpText(strong('Condition selector plots')) ),
+                    fluidRow(actionButton('saveButton', 'Save current plots')),
                     fluidRow(
                     column(3,",
                         paste(" if (length(C) >= ", 1:4, ") {plotOutput('plotC", 1:4, "', height = ", xcplotsize,", width = ", xcplotsize,", click = 'plotC", 1:4, "click') }", sep = "", collapse = ",\n")
@@ -261,6 +262,20 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
                     cex.lab = cex.lab, tck = tck)
             })
             ", sep = "", collapse = "\n"),"
+            observeEvent(input$saveButton, {
+                Xc.cond <- get('Xc.cond', envir = tmp)
+                n.selector.cols <- ceiling(length(C) / 4L)
+                select.colwidth <- max(min(0.18 * n.selector.cols, 0.45), 0.2)  
+                width <- 10 + 2 * n.selector.cols 
+                filename <- paste('snapshot_', gsub(':', '.', gsub(' ', '_', Sys.time())), '.pdf', sep = '') 
+                pdf(file = filename, width = width, height = 7)
+                ceplot.static(data = data, model = model, response = response, 
+                    S = S, C = C, sigma = input$sigma, distance = input$type, 
+                    cex.axis = cex.axis, cex.lab = cex.lab, tck = tck, 
+                    view3d = input$tab == 2, Xc.cond = Xc.cond, 
+                    theta3d = input$theta, phi3d = input$phi)
+                dev.off()
+            })
         }
     ")))
 

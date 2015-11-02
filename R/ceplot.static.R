@@ -1,7 +1,7 @@
 ceplot.static <-
 function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, 
     distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, 
-    view3d = FALSE, Corder = "default")
+    view3d = FALSE, theta3d = NULL, phi3d = NULL, Corder = "default", Xc.cond = NULL)
 {
     data <- na.omit(data)
     model <- if (!identical(class(model), "list"))
@@ -50,7 +50,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         stop("cannot compare models with different response variables") 
     if (!identical(length(intersect(S, uniqC)), 0L))
         stop("cannot have variables common to both 'S' and 'C'")    
-    Xc.cond <- data[1, uniqC, drop = FALSE]
+    Xc.cond <- if (is.null(Xc.cond))
+        data[1, uniqC, drop = FALSE]
+    else Xc.cond    
     xcplots <- list()
     close.screen(all.screens = T)
     n.selector.cols <- ceiling(length(C) / 4L)
@@ -65,7 +67,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         for(C.index in seq_along(C)){
             screen(selectors[C.index])
             xcplots[[C.index]] <- plotxc(xc = data[, C[[C.index]]], xc.cond = 
-                data[1L, C[[C.index]]], name = colnames(data)[C[[C.index]]],
+                Xc.cond[1L, C[[C.index]]], name = colnames(data)[C[[C.index]]],
                 select.colour = "blue", select.lwd = 2, cex.axis = cex.axis, 
                 cex.lab = cex.lab, tck = tck)
         }
@@ -80,7 +82,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         y = data[, response, drop = FALSE], xc.cond = Xc.cond, model = model,
         model.colour = NULL, model.lwd = NULL, model.lty = NULL,
         model.name = model.name, yhat = NULL, mar = NULL, 
-        data.colour = data.colour, data.order = data.order, view3d = view3d)
+        data.colour = data.colour, data.order = data.order, view3d = view3d, 
+        theta3d = theta3d, phi3d = phi3d)
     dev.flush()
     output <- list(Xc = Xc, sigma = sigma, distance = distance, 
         xcplots = xcplots, xsplot = xsplot,
