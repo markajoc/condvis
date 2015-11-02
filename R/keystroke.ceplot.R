@@ -36,7 +36,7 @@ function (key)
         width <- dev.size()[1]  
         height <- dev.size()[2]         
         pdf(file = filename, width = width, height = height)
-        close.screen(all.screens = T)
+        close.screen(all.screens = TRUE)
         main <- split.screen(figs = matrix(c(0, 1 - (select.colwidth), 1 - (select.colwidth), 1, 0, 0, 1, 1), ncol = 4))
         selectors <- split.screen(figs = c(max(ceiling(lenC / n.selector.cols), 3), n.selector.cols),
         screen = main[2])   
@@ -50,6 +50,7 @@ function (key)
         }
         dev.off()
         cat(paste("\nSnapshot saved: '", filename,"'", sep = ""))
+        cat("\n")
         #cat(paste("\ndistance: ", plotobject$type, ", sigma: ", sigma, sep = ""))
     }
     points(NULL)

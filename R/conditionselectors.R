@@ -1,7 +1,10 @@
 conditionselectors <-
-function (Xc, type = "minimal", method = "default", ...)
+function (Xc, type = "minimal", method = "default", Xc.cond = NULL, ...)
 {
     C <- arrangeC(data = Xc, method = method)
+    Xc.cond <- if (is.null(Xc.cond))
+        Xc[1, , drop = FALSE]
+    else Xc.cond
     if (identical(type, "minimal")){
         xcplots <- list()
         n.selector.cols <- ceiling(length(C) / 4L)
@@ -10,16 +13,16 @@ function (Xc, type = "minimal", method = "default", ...)
             n.selector.cols))
         for (i in seq_along(C)){
             screen(selectors[i])
-            xcplots[[i]] <- plotxc(xc = Xc[, C[[i]]], xc.cond = Xc[1, C[[i]]], 
-                name = C[[i]], ...)
+            xcplots[[i]] <- plotxc(xc = Xc[, C[[i]]], xc.cond = Xc.cond[1, C[[i]]], 
+                name = C[[i]], select.colour = "blue", ...)
         }
-        output <- list(Xc = Xc, Xc.cond = Xc[1L, ], xcplots = xcplots, 
-            screens = selectors)
+        output <- list(Xc = Xc, Xc.cond = Xc.cond, xcplots = xcplots, 
+            screens = selectors, type = type, method = method)
     } else {
         if (identical(type, "full")){
             factorindex <- vapply(Xc, is.factor, logical(1))
             Xc.num <- vapply(Xc, as.numeric, numeric(nrow(Xc)))
-            Xc.cond <- Xc[1, , drop = FALSE]
+            #Xc.cond <- Xc[1, , drop = FALSE]
             Xc.cond.num <- vapply(Xc.cond, as.numeric, numeric(1L))
             close.screen(all.screens = TRUE)
             scr <- split.screen(c(ncol(Xc) + 2, ncol(Xc) + 2))
@@ -48,12 +51,13 @@ function (Xc, type = "minimal", method = "default", ...)
             names(coords) <- c("xleft", "xright", "ybottom", "ytop")
             coords$xcplots.index <- scr2
             dev.flush()  
-            output <- list(Xc = Xc, Xc.cond = Xc.cond, rows = rows, cols = cols, scr2 = scr2, coords = coords)            
+            output <- list(Xc = Xc, Xc.cond = Xc.cond, rows = rows, cols = cols, 
+                scr2 = scr2, coords = coords, type = type, method = method)            
         } else {
             if (identical(type, "pcp")){
                 factorindex <- vapply(Xc, is.factor, logical(1))
                 Xc.num <- vapply(Xc, as.numeric, numeric(nrow(Xc)))
-                Xc.cond <- Xc[1L, , drop = FALSE]
+                #Xc.cond <- Xc[1L, , drop = FALSE]
                 Xc.cond.num <- vapply(Xc.cond, as.numeric, numeric(1L))
                 xcoord <- 1:ncol(Xc)
                 ycoord <- (Xc.cond.num - apply(Xc.num, 2L, min))/(apply(Xc.num, 
@@ -62,7 +66,7 @@ function (Xc, type = "minimal", method = "default", ...)
                 points(xcoord, ycoord, col = "blue", type = "l", lwd = 2)
                 points(xcoord, ycoord, col = "blue", pch = 16)
                 output <- list(Xc = Xc, Xc.cond = Xc.cond, xcoord = xcoord, 
-                    ycoord = ycoord)
+                    ycoord = ycoord, type = type, method = method)
             }
         }
     }

@@ -103,18 +103,20 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     onMouseDown = if (exists(".mouseclick.separate.full")) .mouseclick.separate.full,
                     onMouseUp = if (exists(".mouserelease.separate.full")) .mouserelease.separate.full,
                     onMouseMove = if (exists(".mousemove.separate.full")) .mousemove.separate.full,
-                    onKeybd = if (exists(".keystroke.separate.full")) .keystroke.separate)
+                    onKeybd = if (exists(".keystroke.separate")) .keystroke.separate)
             }
         }
     }
     eventEnv <- getGraphicsEventEnv()
 	assign(x = "plotxcobject", value = conditionselectors(Xc, type = 
-        selectortype, select.colour = "blue"), envir = eventEnv)
+        selectortype, method = Corder), envir = eventEnv)
     assign(x = "plotxsobject", value = plotxsobject, envir = eventEnv)
     assign(x = "expectationwindow", value = expectationwindow, envir = eventEnv)
     assign(x = "selectorwindow", value = selectorwindow, envir = eventEnv)
     assign(x = "Xc", value = Xc, envir = eventEnv)
     assign(x = "vwargs", value = list(sigma = sigma, distance = distance), envir = eventEnv)
+    assign(x = "Corder", value = Corder, envir = eventEnv)
+    assign(x = "selectortype", value = selectortype, envir = eventEnv)
     getGraphicsEvent()
     #on.exit(cat("\nInteractive session ended")) 
     on.exit(dev.off())  

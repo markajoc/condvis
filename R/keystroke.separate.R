@@ -25,6 +25,30 @@ function (key)
             assign(x = "plotxsobject", value = plotxsobject, envir = parent.frame())
         }    
     }
+    if (identical(key, "s")){
+        expectationwindow <- get("expectationwindow", envir = parent.frame())
+        selectorwindow <- get("selectorwindow", envir = parent.frame())
+        plotxsobject <- get("plotxsobject", envir = parent.frame())
+        Xc <- get("Xc", envir = parent.frame())
+        Xc.cond <- plotxsobject$xc.cond
+        timenow <- Sys.time()
+        dev.set(expectationwindow)
+        devsizeexp <- dev.size()
+        dev.set(selectorwindow)
+        devsizesel <- dev.size()
+        filename1 <- paste("snapshot_", gsub(":", ".", gsub(" ", "_", timenow)), c("-expectation.pdf", "-condition.pdf"), sep = "") 
+        pdf(filename1[1], width = devsizeexp[1], height = devsizeexp[2])
+        close.screen(all.screens = TRUE)
+        do.call(plotxs, plotxsobject)
+        dev.off()
+        pdf(filename1[2], width = devsizesel[1], height = devsizesel[2])
+        close.screen(all.screens = TRUE)
+        conditionselectors(Xc = Xc, type = get("selectortype", envir = parent.frame()), method = get("Corder", envir = parent.frame()), Xc.cond = Xc.cond)
+        dev.off()
+        cat(paste("\nSnapshot saved: '", filename1,"'", sep = ""))
+        cat("\n")
+        #cat(paste("\ndistance: ", plotobject$type, ", sigma: ", sigma, sep = ""))
+    }
     dev.set(selectorwindow)
     points(NULL)
 }
