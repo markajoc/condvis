@@ -11,7 +11,8 @@
 \usage{
 ceplot.static(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, 
     distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, 
-    view3d = FALSE, Corder = "default")
+    view3d = FALSE, theta3d = NULL, phi3d = NULL, Corder = "default", 
+    Xc.cond = NULL)
 }
 \arguments{
   \item{data}{ a dataframe containing the training data for the model(s) 
@@ -20,9 +21,9 @@ ceplot.static(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     objects.}
   \item{response}{ integer index of the response variable in \code{data}
     (\code{character} variable name is also acceptable)}
-  \item{S}{ integer index of the 'free' variable(s) to be used in the expectation 
-    plot (\code{character} variable name(s) also acceptable). Defaults to the
-    first variable in \code{data} that is not the response.}
+  \item{S}{ integer index of the 'free' variable(s) to be used in the 
+    expectation plot (\code{character} variable name(s) also acceptable). 
+    Defaults to the first variable in \code{data} that is not the response.}
   \item{C}{ a list, each element of which is either an integer index of 
     \code{data} or a vector of integer indices of length 2 (\code{character} 
     variable names are also acceptable). Defaults to the list produced by
@@ -36,8 +37,11 @@ ceplot.static(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   \item{tck}{ parameter for axis ticks. Default is -0.05.}
   \item{view3d}{ logical; if \code{TRUE}, a 3-d perspective plot is produced 
     if possible}
+  \item{theta3d}{horizontal rotation of perspective plot}
+  \item{phi3d}{vertical rotation of perspective plot}    
   \item{Corder}{ method of arranging variables in \code{C} if \code{C} is not 
     supplied. See \code{\link{arrangeC}}}
+  \item{Xc.cond}{ condition to produce section, defaults to first observation}  
 }    
 \value{
 A list containing:
