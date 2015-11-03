@@ -52,7 +52,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         stop("cannot have variables common to both 'S' and 'C'")    
     Xc.cond <- if (is.null(Xc.cond))
         data[1, uniqC, drop = FALSE]
-    else Xc.cond    
+    else Xc.cond  
     xcplots <- list()
     close.screen(all.screens = T)
     n.selector.cols <- ceiling(length(C) / 4L)
@@ -67,7 +67,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         for(C.index in seq_along(C)){
             screen(selectors[C.index])
             xcplots[[C.index]] <- plotxc(xc = data[, C[[C.index]]], xc.cond = 
-                Xc.cond[1L, C[[C.index]]], name = colnames(data)[C[[C.index]]],
+                Xc.cond[1L, colnames(data)[C[[C.index]]]], name = colnames(data)[C[[C.index]]],
                 select.colour = "blue", select.lwd = 2, cex.axis = cex.axis, 
                 cex.lab = cex.lab, tck = tck)
         }
