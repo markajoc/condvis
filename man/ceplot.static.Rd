@@ -11,7 +11,7 @@
 \usage{
 ceplot.static(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, 
     distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, 
-    view3d = FALSE, theta3d = NULL, phi3d = NULL, Corder = "default", 
+    view3d = FALSE, theta3d = 45, phi3d = 20, Corder = "default", 
     Xc.cond = NULL)
 }
 \arguments{
