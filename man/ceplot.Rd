@@ -3,10 +3,10 @@
 \title{Interactive conditional expectation plot}
 \description{
   Creates an interactive conditional expectation plot, which consists of two
-  main parts.  The left-hand side is a single plot depicting a section through a
-  fitted model surface, or conditional expectation.  The right-hand side of the
-  plot shows small data summaries which give the current condition, which can
-  be altered by clicking with the mouse.
+  main parts.  One part is a single plot depicting a section through a
+  fitted model surface, or conditional expectation.  The other part shows small 
+  data summaries which give the current condition, which can be altered by 
+  clicking with the mouse.
 }
 \usage{
 ceplot(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, 
