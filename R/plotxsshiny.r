@@ -18,7 +18,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
         vapply(model, function(x) tail(class(x), n = 1L), character(1))
     else model.name
     yhat <- if (is.null(yhat))
-        lapply(model, predict)
+        lapply(model, predict, type = "response")
     else yhat
     data.colour <- if(is.null(data.colour))
         rep("gray", nrow(xs))
@@ -55,9 +55,16 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
             ylab = colnames(y)[1L], ylim = range(y[, 1L]))
             if (nrow(xs.new) > 0)
                 points(xs.new[, 1L], y.new[, 1L], col = data.colour)
+            prednew2 <- lapply(model, confpred, newdata = newdata)     
             for (i in seq_along(model)){
                 points.default(xs.grid[, 1L], prednew[[i]], type = 'l',
-                col = model.colour[i], lwd = model.lwd[i], lty = model.lty[i])
+                    col = model.colour[i], lwd = model.lwd[i], lty = model.lty[i])
+                if (all(c("lwr", "upr") %in% colnames(prednew2[[i]]))){
+                    points.default(xs.grid[, 1L], prednew2[[i]][, "lwr"], type = 'l', lty = 3,
+                        col = model.colour[i], lwd = model.lwd[i])
+                    points.default(xs.grid[, 1L], prednew2[[i]][, "upr"], type = 'l', lty = 3,
+                        col = model.colour[i], lwd = model.lwd[i])    
+                }
             }
             if (is.numeric(xs[, 1L])){
                 pos <- if (cor(xs, y) < 0L)
