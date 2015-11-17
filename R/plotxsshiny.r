@@ -91,7 +91,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                             points.default(xs.grid[, 1L], prednew[[i]], 
                                 type = 'l', col = model.colour[i], 
                                 lwd = model.lwd[i], lty = model.lty[i])
-                        } else{
+                        } else {
                             points.default(xs.grid[, 1L], 
                                 as.numeric(prednew[[i]]) - 1, type = 'l',
                                 col = model.colour[i], lwd = model.lwd[i], 
@@ -101,14 +101,16 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                     legend("topright", legend = model.name, col = model.colour, 
                         lwd = model.lwd, lty = model.lty)
                 } else {
-                    plot(range(xs[, 1L]), range(as.integer(y[, 1L])), col = NULL, 
-                         xlab = colnames(xs)[1L], ylab = colnames(y)[1L],
-                         main = "Conditional expectation")
+                    plot(range(as.numeric(xs[, 1L])) + c(0, 0.1 * abs(diff(range(as.numeric(xs[, 1L])))) ), range(as.integer(y[, 1L])), col = NULL, 
+                        xlab = colnames(xs)[1L], ylab = colnames(y)[1L], yaxt = "n",
+                        main = "Conditional expectation", xaxt = if (is.factor(xs[, 1L])) "n" else NULL)
+                    axis(2, at = 1:nlevels(y[, 1L]), labels = levels(y[, 1L]))
+                    if (is.factor(xs[, 1L])) axis(1, at = 1:nlevels(xs[, 1L]), labels = levels(xs[, 1L]))              
                     if (nrow(xs.new) > 0) 
-                        points(xs.new[, 1L], as.integer(y.new[, 1L]), 
+                        points(as.numeric(xs.new[, 1L]), as.integer(y.new[, 1L]), 
                             col = data.colour)  
                     for (i in seq_along(model)){
-                        points.default(xs.grid[, 1L], as.integer(prednew[[i]]),
+                        points.default(as.numeric(xs.grid[, 1L]), as.integer(prednew[[i]]),
                             type = 'l', col = model.colour[i], 
                             lwd = model.lwd[i], lty = model.lty[i])
                     }
