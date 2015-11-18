@@ -83,7 +83,7 @@ function (xc, xc.cond, name = NULL, select.colour = NULL,
                     xc <- xc[, order(!are.factors)]
                     name <- name[order(!are.factors)]
                 } else {
-                    if (shiny && requireNamespace("gplots", quietly = TRUE)){
+                    if (nrow(xc) > 2000 && requireNamespace("gplots", quietly = TRUE)){
                         b <- seq(0.35, 1, length.out = 16)
                         gplots::hist2d(xc[, 1], xc[, 2], nbins = 50, col = c("white", 
                             rgb(1 - b, 1 - b, 1 - b)), xlab = colnames(xc)[1],
