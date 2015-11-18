@@ -33,16 +33,19 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     
     if (identical(ncol(xs), 2L)){
         xs.grid1 <- if (!is.factor(xs[, 1L]))
-            seq(min(xs[, 1L], na.rm = TRUE), max(xs[, 1L], na.rm = TRUE), length.out = if (view3d) {20L} else 50L)
+            seq(min(xs[, 1L], na.rm = TRUE), max(xs[, 1L], na.rm = TRUE), 
+            length.out = if (view3d) {20L} else 50L)
         else as.factor(levels(xs[, 1L]))
         xs.grid2 <- if (!is.factor(xs[, 2L]))
-            seq(min(xs[, 2L], na.rm = TRUE), max(xs[, 2L], na.rm = TRUE), length.out = if (view3d) {20L} else 50L)
+            seq(min(xs[, 2L], na.rm = TRUE), max(xs[, 2L], na.rm = TRUE), 
+            length.out = if (view3d) {20L} else 50L)
         else as.factor(levels(xs[, 2L]))
         xs.grid <- data.frame(rep(xs.grid1, by = length(xs.grid2)), 
 		                      rep(xs.grid2, each = length(xs.grid1)))
     } else {
         xs.grid <- if (!is.factor(xs[, 1L]))
-            data.frame(seq(min(xs[, 1L], na.rm = TRUE), max(xs[, 1L], na.rm = TRUE), length.out = if (view3d) {20L} else 50L))
+            data.frame(seq(min(xs[, 1L], na.rm = TRUE), max(xs[, 1L], na.rm = 
+            TRUE), length.out = if (view3d) {20L} else 50L))
         else data.frame(as.factor(levels(xs[, 1L])))
     }
     colnames(xs.grid) <- colnames(xs)
@@ -60,10 +63,12 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                 points.default(xs.grid[, 1L], prednew[[i]], type = 'l',
                     col = model.colour[i], lwd = model.lwd[i], lty = model.lty[i])
                 if (all(c("lwr", "upr") %in% colnames(prednew2[[i]]))){
-                    points.default(xs.grid[, 1L], prednew2[[i]][, "lwr"], type = 'l', lty = 3,
-                        col = model.colour[i], lwd = model.lwd[i])
-                    points.default(xs.grid[, 1L], prednew2[[i]][, "upr"], type = 'l', lty = 3,
-                        col = model.colour[i], lwd = model.lwd[i])    
+                    points.default(xs.grid[, 1L], prednew2[[i]][, "lwr"], 
+                        type = 'l', lty = 3, col = model.colour[i], lwd = 
+                        model.lwd[i])
+                    points.default(xs.grid[, 1L], prednew2[[i]][, "upr"], 
+                        type = 'l', lty = 3, col = model.colour[i], lwd = 
+                        model.lwd[i])    
                 }
             }
             if (is.numeric(xs[, 1L])){
@@ -101,9 +106,11 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                     legend("topright", legend = model.name, col = model.colour, 
                         lwd = model.lwd, lty = model.lty)
                 } else {
-                    plot(range(as.numeric(xs[, 1L])) + c(0, 0.1 * abs(diff(range(as.numeric(xs[, 1L])))) ), range(as.integer(y[, 1L])), col = NULL, 
-                        xlab = colnames(xs)[1L], ylab = colnames(y)[1L], yaxt = "n",
-                        main = "Conditional expectation", xaxt = if (is.factor(xs[, 1L])) "n" else NULL)
+                    plot(range(as.numeric(xs[, 1L])) + c(0, 0.1 * abs(diff(
+                        range(as.numeric(xs[, 1L])))) ), range(as.integer(
+                        y[, 1L])), col = NULL, xlab = colnames(xs)[1L], ylab = 
+                        colnames(y)[1L], yaxt = "n", main = "Conditional 
+                        expectation", xaxt = if (is.factor(xs[, 1L])) "n" else NULL)
                     axis(2, at = 1:nlevels(y[, 1L]), labels = levels(y[, 1L]))
                     if (is.factor(xs[, 1L])) axis(1, at = 1:nlevels(xs[, 1L]), labels = levels(xs[, 1L]))              
                     if (nrow(xs.new) > 0) 

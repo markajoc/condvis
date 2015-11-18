@@ -1,6 +1,7 @@
 plotxc <-
 function (xc, xc.cond, name = NULL, select.colour = NULL,
-    select.lwd = NULL, cex.axis = NULL, cex.lab = NULL, tck = NULL,  ...)
+    select.lwd = NULL, cex.axis = NULL, cex.lab = NULL, tck = NULL, 
+    shiny = FALSE, ...)
 {
     select.colour <- if (is.null(select.colour))
         "black"
@@ -82,9 +83,18 @@ function (xc, xc.cond, name = NULL, select.colour = NULL,
                     xc <- xc[, order(!are.factors)]
                     name <- name[order(!are.factors)]
                 } else {
-                    plot.default(xc[, 1], xc[, 2], xlab = colnames(xc)[1],
-                        ylab = colnames(xc)[2], cex.axis = cex.axis,
-                        cex.lab = cex.lab, tcl = tck)
+                    if (nrow(xc) > 2000 && requireNamespace("gplots", quietly = TRUE)){
+                        b <- seq(0.35, 1, length.out = 16)
+                        gplots::hist2d(xc[, 1], xc[, 2], nbins = 50, col = c("white", 
+                            rgb(1 - b, 1 - b, 1 - b)), xlab = colnames(xc)[1],
+                            ylab = colnames(xc)[2], cex.axis = cex.axis,
+                            cex.lab = cex.lab, tcl = tck)
+                        box()
+                    } else {
+                        plot.default(xc[, 1], xc[, 2], xlab = colnames(xc)[1],
+                            ylab = colnames(xc)[2], cex.axis = cex.axis,
+                            cex.lab = cex.lab, tcl = tck)
+                    }        
                     abline(v = xc.cond[1], h = xc.cond[2], lwd = select.lwd,
                         col = select.colour)
                     plot.type <- "scatterplot"

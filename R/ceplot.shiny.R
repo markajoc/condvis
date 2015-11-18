@@ -218,7 +218,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
                     xc.cond = get('Xc.cond', envir = tmp)[, names(data)[C[[", 1:length(C), "]]]],
                     name = colnames(data)[C[[", 1:length(C), "]]],
                     select.colour = 'blue', select.lwd = 2, cex.axis = cex.axis,
-                    cex.lab = cex.lab, tck = tck)            
+                    cex.lab = cex.lab, tck = tck, shiny = TRUE)            
                 Xc.cond <- get('Xc.cond', envir = tmp)
             if (!is.null(input$plotC", 1:length(C), "click$x)){
                 arefactors <- unlist(lapply(data[, C[[", 1:length(C), "]], drop = FALSE], is.factor))
@@ -259,7 +259,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
                     xc.cond = get('Xc.cond', envir = tmp)[, names(data)[C[[", 1:length(C), "]]]],
                     name = colnames(data)[C[[", 1:length(C), "]]],
                     select.colour = 'blue', select.lwd = 2, cex.axis = cex.axis,
-                    cex.lab = cex.lab, tck = tck)
+                    cex.lab = cex.lab, tck = tck, shiny = TRUE)
             })
             ", sep = "", collapse = "\n"),"
             observeEvent(input$saveButton, {

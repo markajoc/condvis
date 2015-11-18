@@ -5,7 +5,7 @@ Version: 0.2.4
 Date: 2015-10-14
 Author: Mark O'Connell
 Maintainer: Mark O'Connell <mark.oconnell@maths.nuim.ie>
-Suggests: shiny, scagnostics, hdrcde, RColorBrewer, e1071, gam
+Suggests: shiny, scagnostics, hdrcde, RColorBrewer, gplots , e1071
 Description: Exploring fitted model structures interactively.
 License: GPL (>= 2)
 LazyData: false
