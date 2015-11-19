@@ -1,13 +1,15 @@
 makepath <-
 function (Xc, ncentroids, ninterp = 4)
 {
+    if(!requireNamespace("TSP", quietly = TRUE))
+        stop("requires package 'TSP'")
     means <- colMeans(Xc)
     sds <- apply(Xc, 2L, sd)
     Xc <- scale(Xc)[, ]
     clustering <- kmeans(Xc, centers = ncentroids)
     centers <- clustering$centers
-    o <- TSP(dist(centers))
-    orderindex <- solve_TSP(o)
+    o <- TSP::TSP(dist(centers))
+    orderindex <- TSP::solve_TSP(o)
     centers <- centers[orderindex, , drop = FALSE]
     interp <- function(x, n = ninterp)
     {

@@ -4,8 +4,6 @@ function(data, model, response, S, C = NULL, path = NULL, ...)
     if(!requireNamespace("shiny", quietly = TRUE))
         stop("requires package 'shiny'")
     else if (!exists("shinyApp")) attachNamespace("shiny") 
-    if(!requireNamespace("TSP", quietly = TRUE))
-        stop("requires package 'TSP'")
     Xc <- data[, unlist(C), drop = FALSE]
     path <- if (is.null(path))
         makepath(Xc, 35)$path
