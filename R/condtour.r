@@ -70,11 +70,10 @@ function(data, model, response, S, C = NULL, path = NULL, ...)
             if(!is.null(input$pathindex)){
             vw <- visualweight(xc = Xc, xc.cond = path[input$pathindex, ], 
                 sigma = input$sigma, distance = input$type)  
-            k <- vw$k                
-            do.call(plotxs.shiny, list(xs = data[, S, drop = FALSE], y = 
-                data[, response, drop = FALSE], xc.cond = path[input$pathindex, ],
-                model = model, data.order = vw$order, data.colour = 
-                rgb(1 - k, 1 - k, 1 - k)))
+            do.call(plotxs.shiny, list(xs = data[, S, drop = FALSE], 
+                y = data[, response, drop = FALSE], xc.cond = 
+                path[input$pathindex, ], model = model, data.order = vw$order, 
+                data.colour = rgb(1 - vw$k, 1 - vw$k, 1 - vw$k)))
             }
         })
         output$diagnostic1 <- renderPlot({

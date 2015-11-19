@@ -17,19 +17,20 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     model.name <- if (is.null(model.name)) 
         vapply(model, function(x) tail(class(x), n = 1L), character(1))
     else model.name
-    yhat <- if (is.null(yhat))
-        lapply(model, predict, type = "response")
-    else yhat
-    data.colour <- if(is.null(data.colour))
-        rep("gray", nrow(xs))
-    else data.colour
+    if (view3d){
+        yhat <- if (is.null(yhat))
+            lapply(model[1], predict, type = "response")
+        else yhat
+        yhat.new <- yhat[[1L]][data.order]    
+    }
     data.order <- if(is.null(data.order))
         1:nrow(xs)
     else data.order 
-    xs.new <- xs[data.order,, drop = FALSE]
-    y.new <- y[data.order,, drop = FALSE]
-    yhat.new <- yhat[[1L]][data.order]
-    data.colour <- data.colour[data.order]
+    data.colour <- if(is.null(data.colour))
+        rep("gray", nrow(data.order))
+    else data.colour[data.order]
+    xs.new <- xs[data.order, , drop = FALSE]
+    y.new <- y[data.order, , drop = FALSE]
     
     if (identical(ncol(xs), 2L)){
         xs.grid1 <- if (!is.factor(xs[, 1L]))
@@ -211,8 +212,8 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     }
     
     list(xs = xs, y = y, xc.cond = xc.cond, model = model, model.colour = 
-        model.colour, model.lwd = model.lwd, model.lty = model.lty, 
-        model.name = model.name, yhat = yhat, mar = mar, 
-        data.colour = data.colour, data.order = data.order, view3d = view3d, 
-        theta3d = theta3d, phi3d = phi3d)
+        model.colour, model.lwd = model.lwd, model.lty = model.lty, model.name =
+        model.name, yhat = yhat, mar = mar, data.colour = data.colour, 
+        data.order = data.order, view3d = view3d, theta3d = theta3d, 
+        phi3d = phi3d)
 }
