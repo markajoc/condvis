@@ -90,7 +90,8 @@ function (buttons, x, y)
         screen(screen.num, new = T)
 	    colnames(xc.cond.new) <- varnames
         Xc.cond[1L, varnames] <- xc.cond.new
-        Xc.cond.hist <- if(exists(Xc.cond.hist))
+        rownames(Xc.cond) <- NULL
+        Xc.cond.hist <<- if(exists("Xc.cond.hist"))
             rbind(Xc.cond.hist, Xc.cond)
         else Xc.cond    
         plotxc(xc = xc, xc.cond = Xc.cond[1L, varnames], name = varnames, 
