@@ -14,6 +14,8 @@ function (height = 7, width = 10, ...)
         tmp <- list(...)
         tmp <- tmp[!vapply(names(tmp), identical, logical(1), "selectortype")]
         assign(x = "plotobject", value = do.call(ceplot.static, args = tmp), envir = eventEnv)
+        if(exists("Xc.cond.hist"))
+            rm(Xc.cond.hist, envir = .GlobalEnv)
         getGraphicsEvent()
         on.exit(cat("\nInteractive session ended.\n")) 
 }
