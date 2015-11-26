@@ -30,7 +30,7 @@ function (xc, xc.cond, name = NULL, select.colour = NULL,
     if (is.vector(xc) | is.factor(xc)){
         if (!is.factor(xc)){
             histmp <- hist(xc, xlab = name, ylab = "", main = "", cex.axis = cex.axis,
-                cex.lab = cex.lab, tcl = tck)
+                cex.lab = cex.lab, tcl = tck, mgp = c(1.5, 0.5, 0.1))
             #abline(v = xc.cond, col = select.colour, lwd = select.lwd)
             lines(x = rep(xc.cond, 2L), y = c(0, max(histmp$counts)), col = select.colour, lwd = select.lwd)
             plot.type <- "histogram"
@@ -42,6 +42,7 @@ function (xc, xc.cond, name = NULL, select.colour = NULL,
             abline(v = factorcoords$x[factorcoords$level == as.character(xc.cond)],#subset(factorcoords, level == as.character(xc.cond))$x,
                 col = select.colour, lwd = select.lwd)
             plot.type <- "barplot"
+            xc.cond <- factor(xc.cond, levels(xc))
         }
     } else {
         if (is.data.frame(xc) & identical(ncol(xc), 2L)){
@@ -105,7 +106,7 @@ function (xc, xc.cond, name = NULL, select.colour = NULL,
     output <- list(xc = xc, xc.cond.old = xc.cond, name = name,
         select.colour = select.colour, mar = mar, select.lwd = select.lwd,
         cex.axis = cex.axis, cex.lab = cex.lab, tck = tck,
-        device = dev.cur(), usr = par("usr"), screen = screen(),
+        device = dev.cur(), usr = par("usr"), screen = screen(), screen.coords = par("fig"),
         plot.type = plot.type, sptmp = if(exists("sptmp")) sptmp else NULL,
         factorcoords = if(exists("factorcoords")) factorcoords else NULL,
         histmp = if(exists("histmp")) histmp else NULL, ...)
