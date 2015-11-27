@@ -74,7 +74,7 @@ function (xc, xc.cond, name = NULL, select.colour = NULL,
                 if (any(are.factors)){
                     boxx <- xc[, are.factors]
                     boxy <- xc[, !are.factors]
-                    boxplot(boxy ~ boxx, xlab = name[are.factors],
+                    boxtmp <- boxplot(boxy ~ boxx, xlab = name[are.factors],
                         ylab = name[!are.factors], cex.axis = cex.axis,
                         cex.lab = cex.lab)
                     factorcoords <- data.frame(
@@ -85,7 +85,9 @@ function (xc, xc.cond, name = NULL, select.colour = NULL,
                         col = select.colour)
                     plot.type <- "boxplot"
                     xc <- xc[, order(!are.factors)]
+                    xc.cond <- data.frame(factor(xc.cond[, are.factors], levels(boxx)), xc.cond[, !are.factors])
                     name <- name[order(!are.factors)]
+                    names(xc.cond) <- name
                 } else {
                     if (nrow(xc) > 2000 && requireNamespace("gplots", quietly = TRUE)){
                         b <- seq(0.35, 1, length.out = 16)
@@ -112,7 +114,8 @@ function (xc, xc.cond, name = NULL, select.colour = NULL,
         device = dev.cur(), usr = par("usr"), screen = screen(), screen.coords = par("fig"),
         plot.type = plot.type, sptmp = if(exists("sptmp")) sptmp else NULL,
         factorcoords = if(exists("factorcoords")) factorcoords else NULL,
-        histmp = if(exists("histmp")) histmp else NULL, bartmp = if(exists("bartmp")) bartmp else NULL, ...)
+        histmp = if(exists("histmp")) histmp else NULL, bartmp = if(exists("bartmp")) bartmp else NULL, 
+        boxtmp = if(exists("boxtmp")) boxtmp else NULL, ...)
     class(output) <- "xcplot"
     output
 }
