@@ -35,12 +35,15 @@ function (xc, xc.cond, name = NULL, select.colour = NULL,
             lines(x = rep(xc.cond, 2L), y = c(0, max(histmp$counts)), col = select.colour, lwd = select.lwd)
             plot.type <- "histogram"
         } else {
-            graphics::barplot.default(table(xc), main = "", xlab = name,
+            bartmp <- barplot2(table(xc), main = "", xlab = name,
                 cex.axis = cex.axis, cex.lab = cex.lab, tcl = tck)
             factorcoords <- data.frame(level = levels(xc),
 			    x = - 0.5 + 1.2 * (1:length(levels(xc))))
-            abline(v = factorcoords$x[factorcoords$level == as.character(xc.cond)],#subset(factorcoords, level == as.character(xc.cond))$x,
-                col = select.colour, lwd = select.lwd)
+            #abline(v = factorcoords$x[factorcoords$level == as.character(xc.cond)],#subset(factorcoords, level == as.character(xc.cond))$x,
+            #    col = select.colour, lwd = select.lwd)
+            barindex <- factorcoords$level == as.character(xc.cond)
+            rect(xleft = bartmp$w.l[barindex], xright = bartmp$w.r[barindex],
+                ybottom = 0, ytop = bartmp$height[barindex], col = select.colour, density = 25)
             plot.type <- "barplot"
             xc.cond <- factor(xc.cond, levels(xc))
         }
@@ -109,7 +112,7 @@ function (xc, xc.cond, name = NULL, select.colour = NULL,
         device = dev.cur(), usr = par("usr"), screen = screen(), screen.coords = par("fig"),
         plot.type = plot.type, sptmp = if(exists("sptmp")) sptmp else NULL,
         factorcoords = if(exists("factorcoords")) factorcoords else NULL,
-        histmp = if(exists("histmp")) histmp else NULL, ...)
+        histmp = if(exists("histmp")) histmp else NULL, bartmp = if(exists("bartmp")) bartmp else NULL, ...)
     class(output) <- "xcplot"
     output
 }

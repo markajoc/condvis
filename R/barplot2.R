@@ -167,7 +167,7 @@ barplot2 <- function (height, width = 1, space = NULL, names.arg = NULL,
             axis(if (horiz) 
                 1
             else 2, cex.axis = cex.axis, ...)
-        invisible(w.m)
+        invisible(list(w.m = w.m, w.l = w.l, w.r = w.r, height = height))
     }
-    else w.m
+    else list(w.m = w.m, w.l = w.l, w.r = w.r, height = height)
 }
