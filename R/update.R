@@ -45,10 +45,15 @@ function (object, xclick, yclick)
         }
     } else if (identical(object$plot.type, "boxplot")){
         xc.cond.new.x <- as.factor(object$factorcoords$level)[which.min(abs(xclickconv - object$factorcoords$x))]
-        xc.cond.new.y <- max(min(yclickconv, max(object$xc[, 2], na.rm = TRUE)), min(object$xc[, 2], na.rm = TRUE), na.rm = TRUE)
+        xc.cond.new.y <- if (abs(yclickconv - object$xc.cond.old[, 2]) > 0.025 * abs(diff(range(object$xc[, 2]))))
+            max(min(yclickconv, max(object$xc[, 2], na.rm = TRUE)), min(object$xc[, 2], na.rm = TRUE), na.rm = TRUE)
+        else object$xc.cond.old[, 2]    
         xc.cond.new <- c(xc.cond.new.x, xc.cond.new.y)
         if (any(xc.cond.new != object$xc.cond.old)){
-            abline(v = as.integer(object$xc.cond.old[, 1]), h = object$xc.cond.old[, 2], lwd = 2 * object$select.lwd, col = "white")
+            if (xc.cond.new.x != object$xc.cond.old[, 1])
+                abline(v = as.integer(object$xc.cond.old[, 1]), lwd = 2 * object$select.lwd, col = "white")
+            if (xc.cond.new.y != object$xc.cond.old[, 2])    
+                abline(h = object$xc.cond.old[, 2], lwd = 2 * object$select.lwd, col = "white")     
             par(new = T)
             bxp(object$boxtmp, xaxt = "n", yaxt = "n")
             abline(v = as.integer(xc.cond.new.x), h = xc.cond.new.y, lwd = object$select.lwd, col = object$select.colour)
@@ -63,9 +68,11 @@ function (object, xclick, yclick)
             comb.index <- apply(rectcoords, 1L, `%inrectangle%`, point = c(xclickconv, yclickconv))
             if (any(comb.index)){
                 xc.cond.new <- data.frame(as.factor(sptmp$xnames)[comb.index], as.factor(sptmp$ynames)[comb.index])
+                names(xc.cond.new) <- names(object$xc.cond.old)
                 if (any(xc.cond.new != object$xc.cond.old)){
                     object$xc.cond.old <- xc.cond.new
-                    object <- plotxc(object)
+                    object <- plotxc(xc = object$xc, xc.cond = xc.cond.new, name = object$name, select.colour = object$select.colour, select.lwd = object$select.lwd, 
+                        cex.axis = object$cex.axis, cex.lab = object$cex.lab, tck = object$tck)
                 }
             }   
         }        
