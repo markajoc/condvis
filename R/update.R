@@ -71,6 +71,8 @@ function (object, xclick, yclick)
                 names(xc.cond.new) <- names(object$xc.cond.old)
                 if (any(xc.cond.new != object$xc.cond.old)){
                     object$xc.cond.old <- xc.cond.new
+                    par(bg = "white")
+                    screen(new = TRUE)
                     object <- plotxc(xc = object$xc, xc.cond = xc.cond.new, name = object$name, select.colour = object$select.colour, select.lwd = object$select.lwd, 
                         cex.axis = object$cex.axis, cex.lab = object$cex.lab, tck = object$tck)
                 }
