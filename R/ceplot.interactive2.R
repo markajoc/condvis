@@ -100,7 +100,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 xc.cond[, xcplots[[plotindex]]$name] <<- xcplots[[plotindex]]$xc.cond.old
                 par(bg = "white")
                 screen(xsscreens[1], new = TRUE)
-                vw <- visualweight(xc = data[, uniqC, drop = FALSE], xc.cond = xc.cond)
+                vw <<- visualweight(xc = data[, uniqC, drop = FALSE], xc.cond = xc.cond)
                 xsplot <<- plotxs.shiny(xs = xsplot$xs, y = xsplot$y, xc.cond = xc.cond, model = model, model.colour =
                     xsplot$model.colour, model.lwd = xsplot$model.lwd, model.lty = xsplot$model.lty, model.name = xsplot$model.name, 
                     yhat = xsplot$yhat, mar = xsplot$mar, data.colour = rgb(1 - vw$k, 1 - vw$k, 
@@ -109,18 +109,18 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 dev.flush()
             }
             if (findInterval(x, xscoords[1:2]) == 1){
-                if(!(0 %in% buttons)){
-                xstart <<- x
-                ystart <<- y
-                }
                 if(0 %in% buttons){
                     par(bg = "white")
                     screen(xsscreens[1], new = TRUE)
+                    if(exists("xold")){
                     xsplot <<- plotxs.shiny(xs = xsplot$xs, y = xsplot$y, xc.cond = xc.cond, model = model, model.colour =
                         xsplot$model.colour, model.lwd = xsplot$model.lwd, model.lty = xsplot$model.lty, model.name = xsplot$model.name, 
                         yhat = xsplot$yhat, mar = xsplot$mar, data.colour = rgb(1 - vw$k, 1 - vw$k, 
                         1 - vw$k)[vw$order], data.order = vw$order, view3d = xsplot$view3d, 
-                        theta3d = xsplot$theta3d + 8 * (xstart - x), phi3d = xsplot$phi3d + 8 * (ystart - y))                
+                        theta3d = xsplot$theta3d + 1 * (xold > x) - 1 * (xold < x), phi3d = xsplot$phi3d + 1 * (yold > y) - 1 * (yold < y)) 
+                    }    
+                    xold <<- x
+                    yold <<- y                    
                 }
             }
         points(NULL)

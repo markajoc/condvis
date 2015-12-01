@@ -2,7 +2,9 @@ update.xcplot <-
 function (object, xclick, yclick)
 {
     screen(n = object$screen, new = FALSE)
-    screen(n = object$screen, new = FALSE)   
+    screen(n = object$screen, new = FALSE) 
+    par(usr = object$usr)
+    par(mar = object$mar)    
     xclickconv <- grconvertX(xclick, "ndc", "user")
     yclickconv <- grconvertY(yclick, "ndc", "user")
     if (identical(object$plot.type, "histogram")){
@@ -50,11 +52,18 @@ function (object, xclick, yclick)
         else object$xc.cond.old[, 2]    
         xc.cond.new <- c(xc.cond.new.x, xc.cond.new.y)
         if (any(xc.cond.new != object$xc.cond.old)){
-            if (xc.cond.new.x != object$xc.cond.old[, 1])
+            if (xc.cond.new.x != object$xc.cond.old[, 1]){
                 abline(v = as.integer(object$xc.cond.old[, 1]), lwd = 2 * object$select.lwd, col = "white")
-            if (xc.cond.new.y != object$xc.cond.old[, 2])    
-                abline(h = object$xc.cond.old[, 2], lwd = 2 * object$select.lwd, col = "white")     
-            par(new = T)
+                print(par("usr"))
+                cat(paste("Drew vertical white line at ", as.integer(object$xc.cond.old[, 1]), "\n"))
+            }
+                
+            if (xc.cond.new.y != object$xc.cond.old[, 2]) {
+                abline(h = object$xc.cond.old[, 2], lwd = 2 * object$select.lwd, col = "white")  
+                cat(paste("Drew horizontal white line at ", object$xc.cond.old[, 2], "\n"))
+            }   
+                   
+            par(new = TRUE)
             bxp(object$boxtmp, xaxt = "n", yaxt = "n")
             abline(v = as.integer(xc.cond.new.x), h = xc.cond.new.y, lwd = object$select.lwd, col = object$select.colour)
             xc.cond.new <- data.frame(xc.cond.new.x, xc.cond.new.y)

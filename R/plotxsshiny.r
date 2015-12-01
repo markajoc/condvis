@@ -182,7 +182,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                     zfacet <- (z[-1, -1] + z[-1, -ncol(z)] + z[-nrow(z), -1] + 
                         z[-nrow(z), -ncol(z)]) / 4
                     colorfacet <- cont2color(zfacet, range(y[, 1L]))
-                    par(mar = c(2,2,2,2))
+                    par(mar = c(3, 3, 3, 3))
                     suppressWarnings(persp(x = unique(xs.grid[, 1L]), y = unique(xs.grid[, 2L]), border = rgb(0.3, 0.3, 0.3), lwd = 0.1,
                         z = z, col = colorfacet, zlim = range(y), xlab = colnames(xs)[1L], 
                         ylab = colnames(xs)[2L], zlab = colnames(y)[1L], d = 10, ticktype = "detailed",
