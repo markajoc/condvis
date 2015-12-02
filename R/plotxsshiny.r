@@ -195,7 +195,8 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                         lineends <- trans3d(xs.new[, 1], xs.new[, 2], yhat.new, 
                             pmat = persp.object) 
                         segments(x0 = linestarts$x, y0 = linestarts$y, x1 = lineends$x, y1 = lineends$y, col = data.colour)                            
-                    }                            
+                    }
+                    plot.type <- "persp"                    
                 } else {
                     xoffset <- abs(diff(unique(xs.grid[, 1L])[1:2])) / 2
                     yoffset <- abs(diff(unique(xs.grid[, 2L])[1:2])) / 2
@@ -216,5 +217,5 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
         model.colour, model.lwd = model.lwd, model.lty = model.lty, model.name =
         model.name, yhat = yhat, mar = mar, data.colour = data.colour, 
         data.order = data.order, view3d = view3d, theta3d = theta3d, 
-        phi3d = phi3d)
+        phi3d = phi3d, plot.type = if (exists("plot.type")) plot.type else NULL)
 }

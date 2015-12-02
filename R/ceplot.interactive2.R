@@ -109,6 +109,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 dev.flush()
             }
             if (findInterval(x, xscoords[1:2]) == 1){
+                if (identical(xsplot$plot.type, "persp")){
                 if(0 %in% buttons){
                     par(bg = "white")
                     screen(xsscreens[1], new = TRUE)
@@ -122,6 +123,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     xold <<- x
                     yold <<- y                    
                 }
+                }
             }
         points(NULL)
         }
@@ -130,7 +132,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     {
         function (key)
         {
-            if (view3d && any(key %in% c("Up", "Down", "Left", "Right"))){
+            if (identical(xsplot$plot.type, "persp")){
                 par(bg = "white")
                 screen(xsscreens[1], new = TRUE)
                 xsplot <<- plotxs.shiny(xs = xsplot$xs, y = xsplot$y, xc.cond = xc.cond, model = model, model.colour =
