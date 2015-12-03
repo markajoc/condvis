@@ -106,17 +106,14 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     rgb(1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order)
                 dev.flush()
             }
-            if (findInterval(x, xscoords[1:2]) == 1){
-                if (identical(xsplot$plot.type, "persp")){
-                    if(0 %in% buttons){
-                        if(!is.null(xold))
-                            xsplot <<- update(xsplot, theta3d = xsplot$theta3d + 
-                                1 * (xold > x) - 1 * (xold < x), phi3d = 
-                                xsplot$phi3d + 1 * (yold > y) - 1 * (yold < y))
-                        xold <<- x
-                        yold <<- y                    
-                    }
-                }
+            if (all(findInterval(x, xscoords[1:2]) == 1, identical(
+                xsplot$plot.type, "persp"), 0 %in% buttons)){
+                if (!is.null(xold))
+                    xsplot <<- update(xsplot, theta3d = xsplot$theta3d + 1 * 
+                        (xold > x) - 1 * (xold < x), phi3d = xsplot$phi3d + 1 * 
+                        (yold > y) - 1 * (yold < y))
+                xold <<- x
+                yold <<- y                    
             }
         points(NULL)
         }
