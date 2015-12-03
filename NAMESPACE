@@ -1,6 +1,6 @@
 #exportPattern("^[[:alpha:]]+")
 export(arrangeC, ceplot, ceplot.static, ceplot.interactive, ceplot.separate, 
     ceplot.shiny, cont2color, factor2color, mydist, plotxc, plotxs, savingby2d, 
-    visualweight, update.xcplot)
+    visualweight, update.xcplot, update.xsplot)
 import(graphics)
 importFrom(MASS, parcoord)
