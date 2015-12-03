@@ -20,7 +20,6 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         else response
     S <- if(is.null(S)){
          (1:ncol(data))[-response][1L]
-        #cat(paste("\n'S' was not specified, picked", colnames(data)[S]))
         } else if (is.character(S))
             vapply(S, function(x) which(colnames(data) == x), numeric(1))
             else S
@@ -45,9 +44,6 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         stop("cannot have 'response' variable in 'C'")
     if (any(response %in% S))
         stop("cannot have 'response' variable in 'S'")
-    #if (!identical(length(unique(vapply(lapply(model, getvarnames), 
-    #    `[[`, character(1), 1))), 1L))
-    #    stop("cannot compare models with different response variables") 
     if (!identical(length(intersect(S, uniqC)), 0L))
         stop("cannot have variables common to both 'S' and 'C'")    
     xc.cond <- data[1, uniqC, drop = FALSE]
@@ -83,46 +79,43 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         xslegend(data[, response], colnames(data)[response])
     }
     screen(xsscreens[1])
-    vw <- visualweight(xc = data[, uniqC, drop = FALSE], xc.cond = xc.cond)
-    xsplot <- plotxs.shiny(xs = data[, S, drop = FALSE], data[, response, drop = FALSE], 
-        xc.cond = xc.cond, model = model, data.colour = rgb(1 - vw$k, 1 - vw$k, 1 - vw$k)[vw$order], data.order = 
-        vw$order, view3d = view3d, theta3d = 45, phi3d = 20)
-    xscoords <- par("fig")
-    
+    vw <- visualweight(xc = data[, uniqC, drop = FALSE], xc.cond = xc.cond, 
+        sigma = sigma, distance = distance)
+    par(mar = c(3,3,3,3))
+    xsplot <- plotxs.shiny(xs = data[, S, drop = FALSE], data[, response, 
+        drop = FALSE], xc.cond = xc.cond, model = model, data.colour = rgb(1 - 
+        vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, view3d = view3d, 
+        theta3d = 45, phi3d = 20)
+    xscoords <- par("fig")  
+    xold <- NULL
+    yold <- NULL 
     mouseclick <- function ()
     {
         function (buttons, x, y)
         {
-            plotindex <- which(apply(coords, 1, `%inrectangle%`, point = c(x, y)))
+            plotindex <- which(apply(coords, 1, `%inrectangle%`, point = 
+                c(x, y)))
             if (length(plotindex) > 0 && if(exists("buttons")) 0 %in% buttons){
                 dev.hold()
                 xcplots[[plotindex]] <<- update(xcplots[[plotindex]], x, y)
-                xc.cond[, xcplots[[plotindex]]$name] <<- xcplots[[plotindex]]$xc.cond.old
-                par(bg = "white")
-                screen(xsscreens[1], new = TRUE)
-                vw <<- visualweight(xc = data[, uniqC, drop = FALSE], xc.cond = xc.cond)
-                xsplot <<- plotxs.shiny(xs = xsplot$xs, y = xsplot$y, xc.cond = xc.cond, model = model, model.colour =
-                    xsplot$model.colour, model.lwd = xsplot$model.lwd, model.lty = xsplot$model.lty, model.name = xsplot$model.name, 
-                    yhat = xsplot$yhat, mar = xsplot$mar, data.colour = rgb(1 - vw$k, 1 - vw$k, 
-                    1 - vw$k)[vw$order], data.order = vw$order, view3d = xsplot$view3d, 
-                    theta3d = xsplot$theta3d, phi3d = xsplot$phi3d)
+                xc.cond[, xcplots[[plotindex]]$name] <<- 
+                    xcplots[[plotindex]]$xc.cond.old
+                vw <<- visualweight(xc = data[, uniqC, drop = FALSE], xc.cond = 
+                    xc.cond, sigma = sigma, distance = distance)
+                xsplot <<- update(xsplot, xc.cond = xc.cond, data.colour = 
+                    rgb(1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order)
                 dev.flush()
             }
             if (findInterval(x, xscoords[1:2]) == 1){
                 if (identical(xsplot$plot.type, "persp")){
-                if(0 %in% buttons){
-                    par(bg = "white")
-                    screen(xsscreens[1], new = TRUE)
-                    if(exists("xold")){
-                    xsplot <<- plotxs.shiny(xs = xsplot$xs, y = xsplot$y, xc.cond = xc.cond, model = model, model.colour =
-                        xsplot$model.colour, model.lwd = xsplot$model.lwd, model.lty = xsplot$model.lty, model.name = xsplot$model.name, 
-                        yhat = xsplot$yhat, mar = xsplot$mar, data.colour = rgb(1 - vw$k, 1 - vw$k, 
-                        1 - vw$k)[vw$order], data.order = vw$order, view3d = xsplot$view3d, 
-                        theta3d = xsplot$theta3d + 1 * (xold > x) - 1 * (xold < x), phi3d = xsplot$phi3d + 1 * (yold > y) - 1 * (yold < y)) 
-                    }    
-                    xold <<- x
-                    yold <<- y                    
-                }
+                    if(0 %in% buttons){
+                        if(!is.null(xold))
+                            xsplot <<- update(xsplot, theta3d = xsplot$theta3d + 
+                                1 * (xold > x) - 1 * (xold < x), phi3d = 
+                                xsplot$phi3d + 1 * (yold > y) - 1 * (yold < y))
+                        xold <<- x
+                        yold <<- y                    
+                    }
                 }
             }
         points(NULL)
@@ -132,21 +125,19 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     {
         function (key)
         {
-            if (identical(xsplot$plot.type, "persp")){
-                par(bg = "white")
-                screen(xsscreens[1], new = TRUE)
-                xsplot <<- plotxs.shiny(xs = xsplot$xs, y = xsplot$y, xc.cond = xc.cond, model = model, model.colour =
-                    xsplot$model.colour, model.lwd = xsplot$model.lwd, model.lty = xsplot$model.lty, model.name = xsplot$model.name, 
-                    yhat = xsplot$yhat, mar = xsplot$mar, data.colour = rgb(1 - vw$k, 1 - vw$k, 
-                    1 - vw$k)[vw$order], data.order = vw$order, view3d = xsplot$view3d, 
-                    theta3d = xsplot$theta3d - 2 * (key == "Right") + 2 * (key == "Left"), phi3d = xsplot$phi3d - 2 * (key == "Up") + 2 * (key == "Down"))
-                dev.flush()
-            }
-        points(NULL)
+            if (identical(xsplot$plot.type, "persp"))
+                xsplot <<- update(xsplot, theta3d = xsplot$theta3d - 2 * 
+                    (key == "Right") + 2 * (key == "Left"), phi3d = xsplot$phi3d 
+                    - 2 * (key == "Up") + 2 * (key == "Down"))
+            if (identical(key, "3"))
+                xsplot <<- update(xsplot, view3d = !xsplot$view3d)
+            points(NULL)
         }
     }      
-    setGraphicsEventHandlers(onMouseDown = mouseclick(), onMouseMove = 
-        mouseclick(), onKeybd = keystroke())
+    setGraphicsEventHandlers(
+        onMouseDown = mouseclick(), 
+        onMouseMove = mouseclick(), 
+        onKeybd = keystroke())
     getGraphicsEventEnv()
     getGraphicsEvent()
 }

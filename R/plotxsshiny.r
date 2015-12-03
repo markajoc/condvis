@@ -3,6 +3,9 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     model.lty = NULL, model.name = NULL, yhat = NULL, mar = NULL, 
     data.colour = NULL, data.order = NULL, view3d = FALSE, theta3d = 45, phi3d = 20)
 {
+    model <- if (!is.list(model))
+        list(model)
+    else model    
     model.colour <- if (is.null(model.colour)) 
         if (requireNamespace("RColorBrewer", quietly = TRUE))
 		    RColorBrewer::brewer.pal(n = max(length(model), 3L), name = "Dark2")
@@ -26,8 +29,9 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     data.order <- if(is.null(data.order))
         1:nrow(xs)
     else data.order 
+    data.colour.old <- data.colour
     data.colour <- if(is.null(data.colour))
-        rep("gray", nrow(data.order))
+        rep("gray", length(data.order))
     else data.colour[data.order]
     xs.new <- xs[data.order, , drop = FALSE]
     y.new <- y[data.order, , drop = FALSE]
@@ -213,9 +217,9 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
         }
     }
     
-    list(xs = xs, y = y, xc.cond = xc.cond, model = model, model.colour = 
+    structure(list(xs = xs, y = y, xc.cond = xc.cond, model = model, model.colour = 
         model.colour, model.lwd = model.lwd, model.lty = model.lty, model.name =
-        model.name, yhat = yhat, mar = mar, data.colour = data.colour, 
+        model.name, yhat = yhat, mar = mar, data.colour = data.colour.old, 
         data.order = data.order, view3d = view3d, theta3d = theta3d, 
-        phi3d = phi3d, plot.type = if (exists("plot.type")) plot.type else NULL)
+        phi3d = phi3d, plot.type = if (exists("plot.type")) plot.type else NULL, screen = screen()), class = "xsplot")
 }
