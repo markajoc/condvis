@@ -129,8 +129,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             if (identical(key, "3"))
                 xsplot <<- update(xsplot, view3d = !xsplot$view3d)
             if (key %in% c(",", ".")){
-                sigma <<- sigma + 0.01 * sigma * (key == ".") - 0.01 * sigma * (key == ",")
-                print(sigma)
+                sigma <<- sigma + 0.01 * sigma * (key == ".") - 0.01 * sigma * 
+                    (key == ",")
                 vw <<- vw <<- visualweight(xc = data[, uniqC, drop = FALSE], 
                     xc.cond = xc.cond, sigma = sigma, distance = distance)
                 xsplot <<- update(xsplot, data.colour = rgb(1 - vw$k, 1 - vw$k, 
