@@ -2,9 +2,10 @@ update.xcplot <-
 function (object, xclick, yclick)
 {
     screen(n = object$screen, new = FALSE)
-    screen(n = object$screen, new = FALSE) 
+    #screen(n = object$screen, new = FALSE) 
     par(usr = object$usr)
-    par(mar = object$mar)    
+    par(mar = object$mar) 
+    screen(n = object$screen, new = FALSE)
     xclickconv <- grconvertX(xclick, "ndc", "user")
     yclickconv <- grconvertY(yclick, "ndc", "user")
     if (identical(object$plot.type, "histogram")){
@@ -54,15 +55,11 @@ function (object, xclick, yclick)
         if (any(xc.cond.new != object$xc.cond.old)){
             if (xc.cond.new.x != object$xc.cond.old[, 1]){
                 abline(v = as.integer(object$xc.cond.old[, 1]), lwd = 2 * object$select.lwd, col = "white")
-                print(par("usr"))
-                cat(paste("Drew vertical white line at ", as.integer(object$xc.cond.old[, 1]), "\n"))
             }
                 
             if (xc.cond.new.y != object$xc.cond.old[, 2]) {
                 abline(h = object$xc.cond.old[, 2], lwd = 2 * object$select.lwd, col = "white")  
-                cat(paste("Drew horizontal white line at ", object$xc.cond.old[, 2], "\n"))
             }   
-                   
             par(new = TRUE)
             bxp(object$boxtmp, xaxt = "n", yaxt = "n")
             abline(v = as.integer(xc.cond.new.x), h = xc.cond.new.y, lwd = object$select.lwd, col = object$select.colour)
@@ -89,4 +86,36 @@ function (object, xclick, yclick)
         }        
     }
     object
+}
+
+update.xsplot <- 
+function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL, view3d = NULL, theta3d = NULL, phi3d = NULL)
+{
+    xc.cond <- if (!is.null(xc.cond))
+        xc.cond
+    else object$xc.cond
+    data.colour <- if (!is.null(data.colour))
+        data.colour
+    else object$data.colour
+    data.order <- if (!is.null(data.order))
+        data.order
+    else object$data.order
+    view3d <- if (!is.null(view3d))
+        view3d
+    else object$view3d
+    theta3d <- if (!is.null(theta3d))
+        theta3d
+    else object$theta3d
+    phi3d <- if (!is.null(phi3d))
+        phi3d
+    else object$phi3d
+    par(bg = "white")
+    screen(n = object$screen, new = TRUE)
+    par(usr = object$usr)
+    par(mar = object$mar) 
+    screen(n = object$screen, new = FALSE)
+    plotxs.shiny(xs = object$xs, y = object$y, xc.cond = xc.cond, 
+        model = object$model, model.colour = object$model.colour, model.lwd = object$model.lwd, 
+        model.lty = object$model.lty, model.name = object$model.name, yhat = object$yhat, mar = object$mar, 
+        data.colour = data.colour, data.order = data.order, view3d = view3d, theta3d = theta3d, phi3d = phi3d)
 }
