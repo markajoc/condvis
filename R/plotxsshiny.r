@@ -58,9 +58,11 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
 	prednew <- lapply(model, predict, newdata = newdata, type = "response")
     if(identical(ncol(xs), 1L)){
         if (is.numeric(y[, 1L])){
-            plot((xs[, 1L]), (y[, 1L]) + 10 * diff(range(y[, 1L])), col = NULL, 
-            main = "Conditional expectation", xlab = colnames(xs)[1L], 
-            ylab = colnames(y)[1L], ylim = range(y[, 1L]))
+            plot.type <- "cc"
+            plot(0, 0, col = NULL, main = "Conditional expectation", xlab = 
+                colnames(xs)[1L], ylab = colnames(y)[1L], ylim = range(y[, 1L]), 
+                xlim = range(xs[, 1L]))
+            usr <- par("usr")    
             if (nrow(xs.new) > 0)
                 points(xs.new[, 1L], y.new[, 1L], col = data.colour)
             prednew2 <- lapply(model, confpred, newdata = newdata)     
@@ -77,10 +79,9 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                 }
             }
             if (is.numeric(xs[, 1L])){
-                pos <- if (cor(xs, y) < 0L)
+                pos <- if (cor(xs, y) < 0)
                     "topright"
-                else
-                    "bottomright"
+                else "bottomright"
                 legend(pos, legend = model.name, col = model.colour, 
                     lwd = model.lwd, lty = model.lty)
             } else {
@@ -220,6 +221,6 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     structure(list(xs = xs, y = y, xc.cond = xc.cond, model = model, model.colour = 
         model.colour, model.lwd = model.lwd, model.lty = model.lty, model.name =
         model.name, yhat = yhat, mar = mar, data.colour = data.colour.old, 
-        data.order = data.order, view3d = view3d, theta3d = theta3d, 
+        data.order = data.order, view3d = view3d, theta3d = theta3d, usr = if (exists("usr")) usr else NULL,
         phi3d = phi3d, plot.type = if (exists("plot.type")) plot.type else NULL, screen = screen()), class = "xsplot")
 }
