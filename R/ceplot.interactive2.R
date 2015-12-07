@@ -126,7 +126,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 xsplot <<- update(xsplot, theta3d = xsplot$theta3d - 2 * 
                     (key == "Right") + 2 * (key == "Left"), phi3d = xsplot$phi3d 
                     - 2 * (key == "Up") + 2 * (key == "Down"))
-            if (identical(object$plot.type, "ccc") & identical(key, "3"))
+            if (identical(xsplot$plot.type, "ccc") & identical(key, "3"))
                 xsplot <<- update(xsplot, view3d = !xsplot$view3d)
             if (key %in% c(",", ".")){
                 sigma <<- sigma + 0.01 * sigma * (key == ".") - 0.01 * sigma * 
