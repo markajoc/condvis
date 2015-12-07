@@ -2,9 +2,9 @@
 function (key)
 {
     if (identical(key, "q")) return(invisible(1))
-    if (any(vapply(c("Up", "Down", "Left", "Right"), identical, logical(1), key))){
     expectationwindow <- get("expectationwindow", envir = parent.frame())
     selectorwindow <- get("selectorwindow", envir = parent.frame())
+    if (any(vapply(c("Up", "Down", "Left", "Right"), identical, logical(1), key))){
     plotxsobject <- get("plotxsobject", envir = parent.frame())
     Xc <- get("Xc", envir = parent.frame())
     Xc.cond <- plotxsobject$xc.cond

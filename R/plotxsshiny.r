@@ -223,7 +223,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
         model.colour, model.lwd = model.lwd, model.lty = model.lty, model.name =
         model.name, yhat = yhat, mar = mar, data.colour = data.colour.old, 
         data.order = data.order, view3d = view3d, theta3d = theta3d, usr = if (exists("usr")) usr else NULL,
-        phi3d = phi3d, plot.type = if (exists("plot.type")) plot.type else NULL, 
+        phi3d = phi3d, plot.type = if (exists("plot.type")) plot.type else NULL, device = dev.cur(),
         screen = screen(), xs.grid = xs.grid, newdata = newdata, prednew = 
         prednew), class = "xsplot")
 }
