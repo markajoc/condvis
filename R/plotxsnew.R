@@ -104,10 +104,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                             model.lwd[i])    
                     }
                 }
-                pos <- if (cor(xs, y) < 0)
-                    "topright"
-                else "bottomright"
-                legend(pos, legend = model.name, col = model.colour, 
+                legend("topright", legend = model.name, col = model.colour, 
                     lwd = model.lwd, lty = model.lty)
             }
         } else {
