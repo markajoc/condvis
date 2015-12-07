@@ -53,23 +53,24 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     plotlegend <- length(S) == 2
     n.selector.cols <- ceiling(length(C) / 4L)
     height <- 7
-    width <- height + 0.5 * plotlegend + 2.2 * n.selector.cols
+    width <- height + 0.5 * plotlegend + 1.75 * n.selector.cols
     
     if (identical(version$os, "linux-gnu"))
         x11(type = "Xlib", height = height, width = width)
     else
         x11(height = height, width = width)
     close.screen(all.screens = TRUE)
-    mainscreens <- split.screen(figs = matrix(c(0, 1 - 0.2, 1 - 0.2, 1, 
+    xcwidth <- 1.75 * n.selector.cols / width
+    mainscreens <- split.screen(figs = matrix(c(0, 1 - xcwidth, 1 - xcwidth, 1, 
         0, 0, 1, 1), ncol = 4))
-    xcscreens <- split.screen(c(4, 1), screen = mainscreens[2])
+    xcscreens <- split.screen(c(4, n.selector.cols), screen = mainscreens[2])
     for (i in seq_along(C)){
         screen(xcscreens[i])
         xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = data[1, C[[i]]], 
             name = colnames(data[, C[[i]], drop = FALSE]), select.col = "blue")
         coords[i, ] <- par("fig")
     }    
-    legendwidth <- 0.15
+    legendwidth <- 1 / height
     xsscreens <- if (plotlegend){
         split.screen(figs = matrix(c(0, 1 - legendwidth, 1 - legendwidth, 1, 
             0, 0, 1, 1), ncol = 4), screen = mainscreens[1])
