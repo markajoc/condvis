@@ -184,7 +184,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         return(object)
     }
     screen(n = object$screen, new = TRUE)
-    plotxs.shiny(xs = object$xs, y = object$y, xc.cond = xc.cond, 
+    plotxs1(xs = object$xs, y = object$y, xc.cond = xc.cond, 
         model = object$model, model.colour = object$model.colour, model.lwd = object$model.lwd, 
         model.lty = object$model.lty, model.name = object$model.name, yhat = object$yhat, mar = object$mar, 
         data.colour = data.colour, data.order = data.order, view3d = view3d, theta3d = theta3d, phi3d = phi3d)

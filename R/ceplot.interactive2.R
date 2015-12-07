@@ -82,7 +82,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     vw <- visualweight(xc = data[, uniqC, drop = FALSE], xc.cond = xc.cond, 
         sigma = sigma, distance = distance)
     par(mar = c(3,3,3,3))
-    xsplot <- plotxs.shiny(xs = data[, S, drop = FALSE], data[, response, 
+    xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response, 
         drop = FALSE], xc.cond = xc.cond, model = model, data.colour = rgb(1 - 
         vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, view3d = view3d, 
         theta3d = 45, phi3d = 20)
@@ -107,7 +107,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 dev.flush()
             }
             if (all(findInterval(x, xscoords[1:2]) == 1, identical(
-                xsplot$plot.type, "persp"), 0 %in% buttons)){
+                xsplot$plot.type, "ccc"), view3d, 0 %in% buttons)){
                 if (!is.null(xold))
                     xsplot <<- update(xsplot, theta3d = xsplot$theta3d + 1 * 
                         (xold > x) - 1 * (xold < x), phi3d = xsplot$phi3d + 1 * 
@@ -122,11 +122,11 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     {
         function (key)
         {
-            if (identical(xsplot$plot.type, "persp"))
+            if (identical(xsplot$plot.type, "ccc") & view3d)
                 xsplot <<- update(xsplot, theta3d = xsplot$theta3d - 2 * 
                     (key == "Right") + 2 * (key == "Left"), phi3d = xsplot$phi3d 
                     - 2 * (key == "Up") + 2 * (key == "Down"))
-            if (any(xsplot$plot.type %in% c("persp", "contour")) & identical(key, "3"))
+            if (identical(object$plot.type, "ccc") & identical(key, "3"))
                 xsplot <<- update(xsplot, view3d = !xsplot$view3d)
             if (key %in% c(",", ".")){
                 sigma <<- sigma + 0.01 * sigma * (key == ".") - 0.01 * sigma * 
