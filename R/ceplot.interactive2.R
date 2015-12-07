@@ -107,11 +107,12 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 dev.flush()
             }
             if (all(findInterval(x, xscoords[1:2]) == 1, identical(
-                xsplot$plot.type, "ccc"), view3d, 0 %in% buttons)){
+                xsplot$plot.type, "ccc"), xsplot$view3d, 0 %in% buttons)){
                 if (!is.null(xold))
                     xsplot <<- update(xsplot, theta3d = xsplot$theta3d + 1 * 
                         (xold > x) - 1 * (xold < x), phi3d = xsplot$phi3d + 1 * 
-                        (yold > y) - 1 * (yold < y))
+                        (yold > y) - 1 * (yold < y), xs.grid = xsplot$xs.grid, 
+                        prednew = xsplot$prednew)
                 xold <<- x
                 yold <<- y                    
             }
@@ -122,10 +123,11 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     {
         function (key)
         {
-            if (identical(xsplot$plot.type, "ccc") & view3d)
+            if (identical(xsplot$plot.type, "ccc") & xsplot$view3d)
                 xsplot <<- update(xsplot, theta3d = xsplot$theta3d - 2 * 
                     (key == "Right") + 2 * (key == "Left"), phi3d = xsplot$phi3d 
-                    - 2 * (key == "Up") + 2 * (key == "Down"))
+                    - 2 * (key == "Up") + 2 * (key == "Down"), xs.grid = 
+                    xsplot$xs.grid, prednew = xsplot$prednew)
             if (identical(xsplot$plot.type, "ccc") & identical(key, "3"))
                 xsplot <<- update(xsplot, view3d = !xsplot$view3d)
             if (key %in% c(",", ".")){
@@ -134,7 +136,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 vw <<- visualweight(xc = data[, uniqC, drop = FALSE], 
                     xc.cond = xc.cond, sigma = sigma, distance = distance)
                 xsplot <<- update(xsplot, data.colour = rgb(1 - vw$k, 1 - vw$k, 
-                    1 - vw$k), data.order = vw$order)    
+                    1 - vw$k), data.order = vw$order, xs.grid = xsplot$xs.grid, 
+                    prednew = xsplot$prednew)    
             }            
             points(NULL)
         }

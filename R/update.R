@@ -1,8 +1,8 @@
 update.xcplot <- 
 function (object, xclick, yclick)
 {
+    #set.dev(object$device)
     screen(n = object$screen, new = FALSE)
-    #screen(n = object$screen, new = FALSE) 
     par(usr = object$usr)
     par(mar = object$mar) 
     screen(n = object$screen, new = FALSE)
@@ -116,9 +116,13 @@ function (object, xclick, yclick)
 
 update.xsplot <- 
 function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL, 
-    view3d = NULL, theta3d = NULL, phi3d = NULL)
+    view3d = NULL, theta3d = NULL, phi3d = NULL, xs.grid = NULL, prednew = NULL)
 {
-    
+    #set.dev(object$device)
+    par(bg = "white")
+    screen(n = object$screen, new = FALSE)
+    par(usr = object$usr)
+    par(mar = object$mar) 
     xc.cond <- if (!is.null(xc.cond))
         xc.cond
     else object$xc.cond
@@ -137,19 +141,15 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
     phi3d <- if (!is.null(phi3d))
         phi3d
     else object$phi3d
-    if (any(xc.cond != object$xc.cond)){
+    
+    if (identical(object$plot.type, "cc")){
+        if (any(xc.cond != object$xc.cond)){
         newdata <- makenewdata(xs = object$xs.grid, xc.cond = xc.cond)
         prednew <- lapply(object$model, predict, newdata = newdata, type = "response")
     } else {
         newdata <- object$newdata
         prednew <- object$prednew
     }
-    par(bg = "white")
-    screen(n = object$screen, new = FALSE)
-    par(usr = object$usr)
-    par(mar = object$mar) 
-    
-    if (identical(object$plot.type, "cc")){
         screen(n = object$screen, new = FALSE)
         dev.hold()
         rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col = "white")
@@ -182,6 +182,13 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         print(data.order) 
         print(data.colour)        
         return(object)
+    }
+    if (!is.null(prednew)){
+    screen(n = object$screen, new = TRUE)
+    return(plotxs1(xs = object$xs, y = object$y, xc.cond = xc.cond, 
+        model = object$model, model.colour = object$model.colour, model.lwd = object$model.lwd, 
+        model.lty = object$model.lty, model.name = object$model.name, yhat = object$yhat, mar = object$mar, 
+        data.colour = data.colour, data.order = data.order, view3d = view3d, theta3d = theta3d, phi3d = phi3d, xs.grid = object$xs.grid, prednew = prednew))
     }
     screen(n = object$screen, new = TRUE)
     plotxs1(xs = object$xs, y = object$y, xc.cond = xc.cond, 

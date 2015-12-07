@@ -1,7 +1,8 @@
 plotxs1 <- 
 function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL, 
     model.lty = NULL, model.name = NULL, yhat = NULL, mar = NULL, data.colour = 
-    NULL, data.order = NULL, view3d = FALSE, theta3d = 45, phi3d = 20)
+    NULL, data.order = NULL, view3d = FALSE, theta3d = 45, phi3d = 20, xs.grid = 
+    NULL, prednew = NULL)
 {
     if (!(ncol(xs) %in% 1:2))
         stop("xs must be a dataframe with 1 or 2 columns")
@@ -33,13 +34,16 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     par(mar = c(5, 4, 3, 2))    
     if (identical(ncol(xs), 1L)){
         # xs has one column
-        xs.grid <- if (!is.factor(xs[, 1L]))
-            data.frame(seq(min(xs[, 1L], na.rm = TRUE), max(xs[, 1L], na.rm = 
-                TRUE), length.out = if (view3d) {20L} else 50L))
-        else data.frame(as.factor(levels(xs[, 1L])))
-        colnames(xs.grid) <- colnames(xs)
+        if (is.null(xs.grid)){
+            xs.grid <- if (!is.factor(xs[, 1L]))
+                data.frame(seq(min(xs[, 1L], na.rm = TRUE), max(xs[, 1L], na.rm = 
+                    TRUE), length.out = if (view3d) {20L} else 50L))
+            else data.frame(as.factor(levels(xs[, 1L])))
+            colnames(xs.grid) <- colnames(xs)        
+        }
         newdata <- makenewdata(xs = xs.grid, xc.cond = xc.cond)
-	    prednew <- lapply(model, predict, newdata = newdata, type = "response")
+        if (is.null(prednew))
+	        prednew <- lapply(model, predict, newdata = newdata, type = "response")
         if (is.factor(xs[, 1L])){
             # xs is a factor
             if (is.factor(y[, 1L])){
@@ -181,20 +185,23 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     } else {
         # xs has two columns
         arefactorsxs <- vapply(xs, is.factor, logical(1L))
-        xs.grid1 <- if (!is.factor(xs[, 1L]))
-            seq(min(xs[, 1L], na.rm = TRUE), max(xs[, 1L], na.rm = TRUE), 
-                length.out = if (view3d) {20L} else 50L)
-        else as.factor(levels(xs[, 1L]))
-        xs.grid2 <- if (!is.factor(xs[, 2L]))
-            seq(min(xs[, 2L], na.rm = TRUE), max(xs[, 2L], na.rm = TRUE), 
-                length.out = if (view3d) {20L} else 50L)
-        else as.factor(levels(xs[, 2L]))
-        xs.grid <- data.frame(
-            rep(xs.grid1, by = length(xs.grid2)), 
-		    rep(xs.grid2, each = length(xs.grid1)))
-        colnames(xs.grid) <- colnames(xs) 
+        if (is.null(xs.grid)){
+            xs.grid1 <- if (!is.factor(xs[, 1L]))
+                seq(min(xs[, 1L], na.rm = TRUE), max(xs[, 1L], na.rm = TRUE), 
+                    length.out = if (view3d) {20L} else 50L)
+            else as.factor(levels(xs[, 1L]))
+            xs.grid2 <- if (!is.factor(xs[, 2L]))
+                seq(min(xs[, 2L], na.rm = TRUE), max(xs[, 2L], na.rm = TRUE), 
+                    length.out = if (view3d) {20L} else 50L)
+            else as.factor(levels(xs[, 2L]))
+            xs.grid <- data.frame(
+                rep(xs.grid1, by = length(xs.grid2)), 
+		        rep(xs.grid2, each = length(xs.grid1)))
+            colnames(xs.grid) <- colnames(xs)         
+        }
         newdata <- makenewdata(xs = xs.grid, xc.cond = xc.cond)
-	    prednew <- lapply(model, predict, newdata = newdata, type = "response")
+        if (is.null(prednew))
+            prednew <- lapply(model, predict, newdata = newdata, type = "response")
 		color <- if (is.factor(y[, 1L]))
 		    factor2color(prednew[[1L]])
 		else cont2color(prednew[[1L]], range(y[, 1L]))
@@ -349,5 +356,5 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
         data.order = data.order, view3d = view3d, theta3d = theta3d, usr = par("usr"),
         phi3d = phi3d, plot.type = if (exists("plot.type")) plot.type else NULL, 
         screen = screen(), xs.grid = xs.grid, newdata = newdata, prednew = 
-        prednew), class = "xsplot")    
+        prednew, xs.grid = xs.grid, prednew = prednew), class = "xsplot")    
 }

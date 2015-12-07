@@ -39,8 +39,6 @@ function (xc, xc.cond, name = NULL, select.colour = NULL,
                 cex.axis = cex.axis, cex.lab = cex.lab, tcl = tck)
             factorcoords <- data.frame(level = levels(xc),
 			    x = - 0.5 + 1.2 * (1:length(levels(xc))))
-            #abline(v = factorcoords$x[factorcoords$level == as.character(xc.cond)],#subset(factorcoords, level == as.character(xc.cond))$x,
-            #    col = select.colour, lwd = select.lwd)
             barindex <- factorcoords$level == as.character(xc.cond)
             rect(xleft = bartmp$w.l[barindex], xright = bartmp$w.r[barindex],
                 ybottom = 0, ytop = bartmp$height[barindex], col = select.colour, density = 25)
