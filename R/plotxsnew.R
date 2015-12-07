@@ -323,7 +323,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                                 data.order, 2L], yhat[[1]][data.order], pmat = 
                                 persp.object) 
                             segments(x0 = linestarts$x, y0 = linestarts$y, x1 = 
-                                lineends$x, y1 = lineends$y, col = data.colour)                            
+                                lineends$x, y1 = lineends$y, col = data.colour[data.order])                            
                         }
                     } else {
                         xoffset <- abs(diff(unique(xs.grid[, 1L])[1:2])) / 2
