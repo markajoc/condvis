@@ -194,9 +194,36 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
 		    rep(xs.grid2, each = length(xs.grid1)))
         colnames(xs.grid) <- colnames(xs) 
         newdata <- makenewdata(xs = xs.grid, xc.cond = xc.cond)
-	    prednew <- lapply(model, predict, newdata = newdata, type = "response")        
+	    prednew <- lapply(model, predict, newdata = newdata, type = "response")
+		color <- if (is.factor(y[, 1L]))
+		    factor2color(prednew[[1L]])
+		else cont2color(prednew[[1L]], range(y[, 1L]))
+        ybg <- if (length(data.order) > 0){
+            if (is.factor(y[, 1L]))
+		        factor2color(y[data.order, 1L])
+		    else cont2color(y[data.order, 1L], range(y[, 1L]))         
+        } else NULL
         if (all(arefactorsxs)){
             # xs are both factors
+			xrect <- as.integer(xs.grid[, 1L])
+			yrect <- as.integer(xs.grid[, 2L])
+			xoffset <- abs(diff(unique(xrect)[1:2])) / 2.1
+			yoffset <- abs(diff(unique(yrect)[1:2])) / 2.1
+			plot(xrect, yrect, col = NULL, xlab = colnames(xs)[1L], 
+                ylab = colnames(xs)[2L], xlim = c(min(xrect) - xoffset, 
+                max(xrect) + xoffset), xaxt = "n", bty = "n", ylim = 
+                c(min(yrect) - yoffset, max(yrect) + yoffset), yaxt = "n", 
+                main = "Conditional expectation")
+			rect(xleft = xrect - xoffset, xright = xrect + xoffset,
+			     ybottom = yrect - yoffset, ytop = yrect + yoffset,
+				 col = color)
+            if (length(data.order) > 0)      
+          	    points(jitter(as.integer(xs[data.order, 1L]), amount = 0.6 * xoffset), jitter(as.integer(
+                    xs[data.order, 2L]), amount = 0.6 * yoffset), bg = ybg, col = data.colour[data.order], pch = 21)	
+		    axis(1L, at = unique(xrect), labels = levels(xs[, 1L]), 
+                tick = FALSE)
+			axis(2L, at = unique(yrect), labels = levels(xs[, 2L]),
+                tick = FALSE)
             if (is.factor(y[, 1L])){
                 # y is factor
                 plot.type <- "fff"
@@ -214,11 +241,40 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                     # y is continuous
                     plot.type <- "cfc"
                 }
+				xrect <- xs.grid[, !arefactorsxs]
+			    yrect <- as.integer(xs.grid[, arefactorsxs])
+			    xoffset <- abs(diff(unique(xrect)[1:2])) / 2
+			    yoffset <- abs(diff(unique(yrect)[1:2])) / 2.1
+			    plot(0, 0, col = NULL, xlab = colnames(xs)[!arefactorsxs], 
+                    ylab = colnames(xs)[arefactorsxs], xlim = c(min(xrect) - 
+                    xoffset, max(xrect) + xoffset), bty = "n", 
+                    main = "Conditional expectation", ylim = c(min(yrect) - 
+                    yoffset, max(yrect) + yoffset), yaxt = "n")
+			    rect(xleft = xrect - xoffset, xright = xrect + xoffset,
+			        ybottom = yrect - yoffset, ytop = yrect + yoffset,
+				    col = color, border = NA)
+                if (length(data.order) > 0)  
+                    points(jitter(xs[data.order, !arefactorsxs]), jitter(as.integer(
+                        xs[data.order, arefactorsxs])), bg = ybg, col = data.colour[data.order], 
+                        pch = 21)	 
+				axis(2L, at = unique(yrect), labels = levels(xs[, 
+                    arefactorsxs]), tick = FALSE)
             } else {
                 # xs are both continuous
                 if (is.factor(y[, 1L])){
                     # y is factor
                     plot.type <- "fcc"
+
+
+
+
+
+
+
+
+
+                    
+                    
                 } else {
                     # y is continuous
                     plot.type <- "ccc"
