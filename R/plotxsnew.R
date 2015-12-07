@@ -153,6 +153,46 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
             } else {
                 # y is continuous
                 plot.type <- "cc"
+
+
+
+
+
+
+
+                plot(range(xs[, 1L]), range(y[, 1L]), col = NULL, 
+                    main = "Conditional expectation", xlab = colnames(xs)[1L], 
+                    ylab = colnames(y)[1L], ylim = range(y[, 1L]))
+                if (length(data.order) > 0)
+                    points(xs[data.order, 1L], y[data.order, 1L], col = data.colour[data.order])
+                prednew2 <- lapply(model, confpred, newdata = newdata)     
+                for (i in seq_along(model)){
+                    points.default(xs.grid[, 1L], prednew[[i]], type = 'l',
+                        col = model.colour[i], lwd = model.lwd[i], lty = model.lty[i])
+                    if (all(c("lwr", "upr") %in% colnames(prednew2[[i]]))){
+                        points.default(xs.grid[, 1L], prednew2[[i]][, "lwr"], 
+                            type = 'l', lty = 3, col = model.colour[i], lwd = 
+                            model.lwd[i])
+                        points.default(xs.grid[, 1L], prednew2[[i]][, "upr"], 
+                            type = 'l', lty = 3, col = model.colour[i], lwd = 
+                            model.lwd[i])    
+                    }
+                }
+                pos <- if (cor(xs, y) < 0)
+                    "topright"
+                else "bottomright"
+                legend(pos, legend = model.name, col = model.colour, 
+                    lwd = model.lwd, lty = model.lty)
+
+
+
+
+
+
+
+
+
+                
             }
         }   
     } else {
