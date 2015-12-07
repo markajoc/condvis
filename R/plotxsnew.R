@@ -345,7 +345,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     } 
     structure(list(xs = xs, y = y, xc.cond = xc.cond, model = model, model.colour = 
         model.colour, model.lwd = model.lwd, model.lty = model.lty, model.name =
-        model.name, yhat = yhat, mar = par("mar"), data.colour = data.colour.old, 
+        model.name, yhat = yhat, mar = par("mar"), data.colour = data.colour, 
         data.order = data.order, view3d = view3d, theta3d = theta3d, usr = par("usr"),
         phi3d = phi3d, plot.type = if (exists("plot.type")) plot.type else NULL, 
         screen = screen(), xs.grid = xs.grid, newdata = newdata, prednew = 
