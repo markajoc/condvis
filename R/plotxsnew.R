@@ -50,12 +50,13 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                 # y is factor
                 plot.type <- "ff"
                 if (identical(nlevels(y[, 1L]), 2L)){
-                    plot(unique(xs[, 1L]), rep(0, length(levels(xs[, 1L]))), col = NULL, 
+                    plot(unique(xs[, 1L]), rep(-888, length(levels(xs[, 1L]))), col = NULL, 
                         main = "Conditional expectation", 
                         ylab = paste("Probability ", colnames(y)[1L], "=", 
                         levels(y[, 1L])[2L]), ylim = c(0, 1))
-				    points.default((as.numeric(xs[data.order, 1L])), 
-                        (as.integer(y[data.order, 1L]) - 1), col = data.colour[data.order])
+                    if (length(data.order) > 0)    
+				        points.default((as.numeric(xs[data.order, 1L])) + rnorm(n = length(data.order), sd = 0.1), 
+                            (as.integer(y[data.order, 1L]) - 1) + rnorm(n = length(data.order), sd = 0.01), col = data.colour[data.order])
                     for (i in seq_along(model)){
                         if ("glm" %in% class(model[[i]])){
                             points.default(xs.grid[, 1L], prednew[[i]], 
@@ -90,7 +91,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
             } else {
                 # y is continuous
                 plot.type <- "cf"
-                plot(unique(xs[, 1L]), rep(0, length(levels(xs[, 1L]))), col = NULL, 
+                plot(unique(xs[, 1L]), rep(-888, length(levels(xs[, 1L]))), col = NULL, 
                     main = "Conditional expectation", xlab = colnames(xs)[1L], 
                     ylab = colnames(y)[1L], ylim = range(y[, 1L]))
                 if (length(data.order) > 0)
