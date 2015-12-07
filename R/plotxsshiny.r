@@ -35,7 +35,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     else data.colour[data.order]
     xs.new <- xs[data.order, , drop = FALSE]
     y.new <- y[data.order, , drop = FALSE]
-    
+    par(mar = c(5, 4, 2, 2))
     if (identical(ncol(xs), 2L)){
         xs.grid1 <- if (!is.factor(xs[, 1L]))
             seq(min(xs[, 1L], na.rm = TRUE), max(xs[, 1L], na.rm = TRUE), 
@@ -203,6 +203,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                     }
                     plot.type <- "persp"                    
                 } else {
+                    plot.type <- "contour"
                     xoffset <- abs(diff(unique(xs.grid[, 1L])[1:2])) / 2
                     yoffset <- abs(diff(unique(xs.grid[, 2L])[1:2])) / 2
                     plot(range(xs.grid[, 1L]), range(xs.grid[, 2L]), col = NULL, 
@@ -222,5 +223,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
         model.colour, model.lwd = model.lwd, model.lty = model.lty, model.name =
         model.name, yhat = yhat, mar = mar, data.colour = data.colour.old, 
         data.order = data.order, view3d = view3d, theta3d = theta3d, usr = if (exists("usr")) usr else NULL,
-        phi3d = phi3d, plot.type = if (exists("plot.type")) plot.type else NULL, screen = screen()), class = "xsplot")
+        phi3d = phi3d, plot.type = if (exists("plot.type")) plot.type else NULL, 
+        screen = screen(), xs.grid = xs.grid, newdata = newdata, prednew = 
+        prednew), class = "xsplot")
 }
