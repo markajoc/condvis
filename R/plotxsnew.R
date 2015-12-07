@@ -264,17 +264,16 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                 if (is.factor(y[, 1L])){
                     # y is factor
                     plot.type <- "fcc"
-
-
-
-
-
-
-
-
-
-                    
-                    
+                    xoffset <- abs(diff(unique(xs.grid[, 1L])[1:2])) / 2
+                    yoffset <- abs(diff(unique(xs.grid[, 2L])[1:2])) / 2
+                    plot(range(xs.grid[, 1L]), range(xs.grid[, 2L]), col = NULL, 
+                        xlab = colnames(xs)[1L], ylab = colnames(xs)[2L], 
+                        main = "Conditional expectation")
+                    rect(xleft = xs.grid[, 1L] - xoffset, xright = xs.grid[, 1L] + 
+                        xoffset, ybottom = xs.grid[, 2L] - yoffset, ytop = 
+                        xs.grid[, 2L] + yoffset, col = color, border = NA)
+                    if (length(data.order) > 0)     
+                        points(xs[data.order, , drop = FALSE], bg = ybg, col = data.colour[data.order], pch = 21)
                 } else {
                     # y is continuous
                     plot.type <- "ccc"
@@ -282,9 +281,45 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                         yhat <- if (is.null(yhat))
                             lapply(model[1], predict, type = "response")
                         else yhat
-                        
+                        z <- matrix(prednew[[1L]], ncol = 20L, byrow = FALSE)
+                        zfacet <- (z[-1, -1] + z[-1, -ncol(z)] + z[-nrow(z), -1] + 
+                            z[-nrow(z), -ncol(z)]) / 4
+                        colorfacet <- cont2color(zfacet, range(y[, 1L]))
+                        par(mar = c(3, 3, 3, 3))
+                        persp.object <- suppressWarnings(persp(x = 
+                            unique(xs.grid[, 1L]), y = unique(xs.grid[, 2L]), 
+                            border = rgb(0.3, 0.3, 0.3), lwd = 0.1, z = z, col = 
+                            colorfacet, zlim = range(y), xlab = colnames(xs)[
+                            1L], ylab = colnames(xs)[2L], zlab = colnames(y)[
+                            1L], d = 10, ticktype = "detailed", main = 
+                            "Conditional expectation", theta = theta3d, 
+                            phi = phi3d)) 
+                        if (length(data.order) > 0){     
+                            points(trans3d(xs[data.order, 1L], xs[data.order, 
+                                2L], y[data.order, 1L], pmat = persp.object), 
+                                col = data.colour[data.order])  
+                            linestarts <- trans3d(xs[data.order, 1L], xs[
+                                data.order, 2L], y[data.order, 1L], pmat = 
+                                persp.object)   
+                            lineends <- trans3d(xs[data.order, 1L], xs[
+                                data.order, 2L], yhat[[1]][data.order], pmat = 
+                                persp.object) 
+                            segments(x0 = linestarts$x, y0 = linestarts$y, x1 = 
+                                lineends$x, y1 = lineends$y, col = data.colour)                            
+                        }
                     } else {
-                    
+                        xoffset <- abs(diff(unique(xs.grid[, 1L])[1:2])) / 2
+                        yoffset <- abs(diff(unique(xs.grid[, 2L])[1:2])) / 2
+                        plot(range(xs.grid[, 1L]), range(xs.grid[, 2L]), col = 
+                            NULL, xlab = colnames(xs)[1L], ylab = colnames(xs)[
+                            2L], main = "Conditional expectation")
+                        rect(xleft = xs.grid[, 1L] - xoffset, xright = xs.grid[, 
+                            1L] + xoffset, ybottom = xs.grid[, 2L] - yoffset, 
+                            ytop = xs.grid[, 2L] + yoffset, col = color, border 
+                            = NA)
+                        if (length(data.order) > 0)     
+                            points(xs[data.order, , drop = FALSE], bg = ybg, 
+                                col = data.colour[data.order], pch = 21)
                     }
                 }
             }
