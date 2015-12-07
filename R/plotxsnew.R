@@ -153,13 +153,6 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
             } else {
                 # y is continuous
                 plot.type <- "cc"
-
-
-
-
-
-
-
                 plot(range(xs[, 1L]), range(y[, 1L]), col = NULL, 
                     main = "Conditional expectation", xlab = colnames(xs)[1L], 
                     ylab = colnames(y)[1L], ylim = range(y[, 1L]))
@@ -183,16 +176,6 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                 else "bottomright"
                 legend(pos, legend = model.name, col = model.colour, 
                     lwd = model.lwd, lty = model.lty)
-
-
-
-
-
-
-
-
-
-                
             }
         }   
     } else {
