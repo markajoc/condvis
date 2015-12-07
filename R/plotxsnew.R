@@ -69,8 +69,6 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                                 lty = model.lty[i])                    
                         }
                     }
-                    legend("topright", legend = model.name, col = model.colour, 
-                        lwd = model.lwd, lty = model.lty)
                 } else {
                     plot(range(as.numeric(xs[, 1L])) + c(0, 0.1 * abs(diff(
                         range(as.numeric(xs[, 1L])))) ), range(as.integer(
@@ -88,6 +86,8 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                             lwd = model.lwd[i], lty = model.lty[i])
                     }
                 }
+                legend("topright", legend = model.name, col = model.colour, 
+                    lwd = model.lwd, lty = model.lty)
             } else {
                 # y is continuous
                 plot.type <- "cf"
@@ -118,8 +118,8 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                 # y is factor
                 plot.type <- "fc"
                 if (identical(nlevels(y[, 1L]), 2L)){
-                    plot(range(xs[, 1L]), c(0, 0), col = NULL, 
-                        main = "Conditional expectation", 
+                    plot(range(xs[, 1L]) + 0.1 * abs(diff(range(xs[, 1L]))), c(0, 0), col = NULL, 
+                        main = "Conditional expectation", xlab = colnames(xs)[1L],
                         ylab = paste("Probability ", colnames(y)[1L], "=", 
                         levels(y[, 1L])[2L]), ylim = c(0, 1))
                     if (length(data.order) > 0)    
@@ -137,8 +137,6 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                                 lty = model.lty[i])                    
                         }
                     }
-                    legend("topright", legend = model.name, col = model.colour, 
-                        lwd = model.lwd, lty = model.lty)
                 } else {
                     plot(range(xs[, 1L]), range(as.integer(y[, 1L])), col = NULL, 
                         xlab = colnames(xs)[1L], ylab = colnames(y)[1L], 
@@ -155,6 +153,8 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                             lwd = model.lwd[i], lty = model.lty[i])
                     }
                 }
+                legend("topright", legend = model.name, col = model.colour, 
+                    lwd = model.lwd, lty = model.lty)
             } else {
                 # y is continuous
                 plot.type <- "cc"
