@@ -59,9 +59,9 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     if(identical(ncol(xs), 1L)){
         if (is.numeric(y[, 1L])){
             plot.type <- "cc"
-            plot(0, 0, col = NULL, main = "Conditional expectation", xlab = 
-                colnames(xs)[1L], ylab = colnames(y)[1L], ylim = range(y[, 1L]), 
-                xlim = range(xs[, 1L]))
+            plot(unique(xs[, 1L]), rep(0, length(levels(xs[, 1L]))), col = NULL, 
+                main = "Conditional expectation", xlab = colnames(xs)[1L], 
+                ylab = colnames(y)[1L], ylim = range(y[, 1L]))
             usr <- par("usr")    
             if (nrow(xs.new) > 0)
                 points(xs.new[, 1L], y.new[, 1L], col = data.colour)
