@@ -142,7 +142,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         phi3d
     else object$phi3d
     
-    if (identical(object$plot.type, "cc")){
+    if (FALSE){#(identical(object$plot.type, "cc")){
         if (any(xc.cond != object$xc.cond)){
         newdata <- makenewdata(xs = object$xs.grid, xc.cond = xc.cond)
         prednew <- lapply(object$model, predict, newdata = newdata, type = "response")
