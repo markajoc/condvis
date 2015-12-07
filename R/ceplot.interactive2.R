@@ -126,12 +126,12 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 xsplot <<- update(xsplot, theta3d = xsplot$theta3d - 2 * 
                     (key == "Right") + 2 * (key == "Left"), phi3d = xsplot$phi3d 
                     - 2 * (key == "Up") + 2 * (key == "Down"))
-            if (identical(key, "3"))
+            if (any(xsplot$plot.type %in% c("persp", "contour")) & identical(key, "3"))
                 xsplot <<- update(xsplot, view3d = !xsplot$view3d)
             if (key %in% c(",", ".")){
                 sigma <<- sigma + 0.01 * sigma * (key == ".") - 0.01 * sigma * 
                     (key == ",")
-                vw <<- vw <<- visualweight(xc = data[, uniqC, drop = FALSE], 
+                vw <<- visualweight(xc = data[, uniqC, drop = FALSE], 
                     xc.cond = xc.cond, sigma = sigma, distance = distance)
                 xsplot <<- update(xsplot, data.colour = rgb(1 - vw$k, 1 - vw$k, 
                     1 - vw$k), data.order = vw$order)    
