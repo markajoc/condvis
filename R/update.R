@@ -137,19 +137,53 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
     phi3d <- if (!is.null(phi3d))
         phi3d
     else object$phi3d
+    if (any(xc.cond != object$xc.cond)){
+        newdata <- makenewdata(xs = object$xs.grid, xc.cond = xc.cond)
+        prednew <- lapply(object$model, predict, newdata = newdata, type = "response")
+    } else {
+        newdata <- object$newdata
+        prednew <- object$prednew
+    }
     par(bg = "white")
     screen(n = object$screen, new = FALSE)
     par(usr = object$usr)
     par(mar = object$mar) 
-    screen(n = object$screen, new = FALSE)
+    
     if (identical(object$plot.type, "cc")){
-        print("new update")
-        print(object$usr)
+        screen(n = object$screen, new = FALSE)
+        dev.hold()
         rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col = "white")
         if (length(data.order) > 0)
             points(object$xs[data.order, 1L], object$y[data.order, 1L], col = data.colour[data.order])
+        prednew2 <- lapply(object$model, confpred, newdata = newdata)     
+        for (i in seq_along(object$model)){
+            points.default(object$xs.grid[, 1L], prednew[[i]], type = 'l',
+                col = object$model.colour[i], lwd = object$model.lwd[i], lty = object$model.lty[i])
+            if (all(c("lwr", "upr") %in% colnames(prednew2[[i]]))){
+                points.default(object$xs.grid[, 1L], prednew2[[i]][, "lwr"], 
+                    type = 'l', lty = 3, col = object$model.colour[i], lwd = 
+                    object$model.lwd[i])
+                points.default(object$xs.grid[, 1L], prednew2[[i]][, "upr"], 
+                    type = 'l', lty = 3, col = object$model.colour[i], lwd = 
+                    object$model.lwd[i])    
+            }
+        }
+        if (is.numeric(object$xs[, 1L])){
+            pos <- if (cor(object$xs, object$y) < 0)
+                "topright"
+            else "bottomright"
+            legend(pos, legend = object$model.name, col = object$model.colour, 
+                lwd = object$model.lwd, lty = object$model.lty)
+            } else {
+                legend("topright", legend = object$model.name, col = object$model.colour, 
+                    lwd = object$model.lwd, lty = object$model.lty)
+            }    
+        dev.flush()
+        print(data.order) 
+        print(data.colour)        
         return(object)
     }
+    screen(n = object$screen, new = TRUE)
     plotxs.shiny(xs = object$xs, y = object$y, xc.cond = xc.cond, 
         model = object$model, model.colour = object$model.colour, model.lwd = object$model.lwd, 
         model.lty = object$model.lty, model.name = object$model.name, yhat = object$yhat, mar = object$mar, 
