@@ -112,6 +112,44 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
             if (is.factor(y[, 1L])){
                 # y is factor
                 plot.type <- "fc"
+                if (identical(nlevels(y[, 1L]), 2L)){
+                    plot(range(xs[, 1L]), c(0, 0), col = NULL, 
+                        main = "Conditional expectation", 
+                        ylab = paste("Probability ", colnames(y)[1L], "=", 
+                        levels(y[, 1L])[2L]), ylim = c(0, 1))
+                    if (length(data.order) > 0)    
+				        points.default(xs[data.order, 1L], as.integer(y[
+                            data.order, 1L]) - 1, col = data.colour[data.order])
+                    for (i in seq_along(model)){
+                        if ("glm" %in% class(model[[i]])){
+                            points.default(xs.grid[, 1L], prednew[[i]], 
+                                type = 'l', col = model.colour[i], 
+                                lwd = model.lwd[i], lty = model.lty[i])
+                        } else {
+                            points.default(xs.grid[, 1L], 
+                                as.numeric(prednew[[i]]) - 1, type = 'l',
+                                col = model.colour[i], lwd = model.lwd[i], 
+                                lty = model.lty[i])                    
+                        }
+                    }
+                    legend("topright", legend = model.name, col = model.colour, 
+                        lwd = model.lwd, lty = model.lty)
+                } else {
+                    plot(range(xs[, 1L]), range(as.integer(y[, 1L])), col = NULL, 
+                        xlab = colnames(xs)[1L], ylab = colnames(y)[1L], 
+                        yaxt = "n", main = "Conditional expectation", xaxt = 
+                        if (is.factor(xs[, 1L])) "n" else NULL)
+                    axis(2, at = 1:nlevels(y[, 1L]), labels = levels(y[, 1L]))
+                    if (is.factor(xs[, 1L])) axis(1, at = 1:nlevels(xs[, 1L]), labels = levels(xs[, 1L]))              
+                    if (length(data.order) > 0) 
+                        points(xs[data.order, 1L], as.integer(y[data.order, 1L]), 
+                            col = data.colour[data.order]) 
+                    for (i in seq_along(model)){
+                        points.default(as.numeric(xs.grid[, 1L]), as.integer(prednew[[i]]),
+                            type = 'l', col = model.colour[i], 
+                            lwd = model.lwd[i], lty = model.lty[i])
+                    }
+                }
             } else {
                 # y is continuous
                 plot.type <- "cc"
