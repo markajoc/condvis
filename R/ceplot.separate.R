@@ -55,9 +55,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     Xc <- data[, uniqC, drop = FALSE]
     close.screen(all.screens = TRUE)
     if (identical(version$os, "linux-gnu"))
-        x11(type = "Xlib")
+        x11(type = "Xlib", width = 8.5, height = 8)
     else
-        x11()
+        x11(width = 8.5, height = 8)
     vw <- visualweight(Xc, Xc.cond, sigma, distance = distance)
     k <- vw$k
     data.colour <- rgb(1 - k, 1 - k, 1 - k)
