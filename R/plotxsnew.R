@@ -103,10 +103,10 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                             col = model.colour[i], lwd = model.lwd[i], lty = model.lty[i])
                         if (all(c("lwr", "upr") %in% colnames(prednew2[[i]]))){
                             points.default(xs.grid[, 1L], prednew2[[i]][, "lwr"]
-                                , type = 'l', lty = 3, col = model.colour[i], 
+                                , type = 'l', lty = 2, col = model.colour[i], 
                                 lwd = 0.75 * model.lwd[i])
                             points.default(xs.grid[, 1L], prednew2[[i]][, "upr"] 
-                                , type = 'l', lty = 3, col = model.colour[i], 
+                                , type = 'l', lty = 2, col = model.colour[i], 
                                 lwd = 0.75 * model.lwd[i])   
                         }
                     }                 
@@ -177,10 +177,10 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                             col = model.colour[i], lwd = model.lwd[i], lty = model.lty[i])
                         if (all(c("lwr", "upr") %in% colnames(prednew2[[i]]))){
                             points.default(xs.grid[, 1L], prednew2[[i]][, "lwr"], 
-                                type = 'l', lty = 3, col = model.colour[i], lwd = 
+                                type = 'l', lty = 2, col = model.colour[i], lwd = 
                                 1)
                             points.default(xs.grid[, 1L], prednew2[[i]][, "upr"], 
-                                type = 'l', lty = 3, col = model.colour[i], lwd = 
+                                type = 'l', lty = 2, col = model.colour[i], lwd = 
                                 1)    
                         }
                     }
