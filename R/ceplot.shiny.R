@@ -265,9 +265,9 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
             observeEvent(input$saveButton, {
                 n.selector.cols <- ceiling(length(C) / 4L)
                 select.colwidth <- max(min(0.18 * n.selector.cols, 0.45), 0.2)  
-                width <- 10 + 2 * n.selector.cols 
+                width <- 8.5 + 2 * n.selector.cols 
                 filename <- paste('snapshot_', gsub(':', '.', gsub(' ', '_', Sys.time())), '.pdf', sep = '') 
-                pdf(file = filename, width = width, height = 7)
+                pdf(file = filename, width = width, height = 8)
                 ceplot.static(data = data, model = model, response = response, 
                     S = S, C = C, sigma = input$sigma, distance = input$type, 
                     cex.axis = cex.axis, cex.lab = cex.lab, tck = tck, 
