@@ -2,7 +2,7 @@ plotxs1 <-
 function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL, 
     model.lty = NULL, model.name = NULL, yhat = NULL, mar = NULL, data.colour = 
     NULL, data.order = NULL, view3d = FALSE, theta3d = 45, phi3d = 20, xs.grid = 
-    NULL, prednew = NULL)
+    NULL, prednew = NULL, conf = FALSE)
 {
     if (!(ncol(xs) %in% 1:2))
         stop("xs must be a dataframe with 1 or 2 columns")
@@ -22,9 +22,9 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     model.lty <- if (is.null(model.lty)) 
         rep(1, length(model))
     else rep(model.lty, length.out = length(model))
-    model.name <- if (is.null(model.name)) 
-        vapply(model, function(x) tail(class(x), n = 1L), character(1))
-    else model.name
+    model.name <- names(model)#if (is.null(model.name)) 
+    #   vapply(model, function(x) tail(class(x), n = 1L), character(1))
+    #else model.name
     data.order <- if (is.null(data.order))
         1:nrow(xs)
     else data.order 
@@ -96,19 +96,26 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                     ylab = colnames(y)[1L], ylim = range(y[, 1L]))
                 if (length(data.order) > 0)
                     points(xs[data.order, 1L], y[data.order, 1L], col = data.colour[data.order])
-                prednew2 <- lapply(model, confpred, newdata = newdata)     
-                for (i in seq_along(model)){
-                    points.default(xs.grid[, 1L], prednew[[i]], type = 'l',
-                        col = model.colour[i], lwd = model.lwd[i], lty = model.lty[i])
-                    if (all(c("lwr", "upr") %in% colnames(prednew2[[i]]))){
-                        points.default(xs.grid[, 1L], prednew2[[i]][, "lwr"], 
-                            type = 'l', lty = 3, col = model.colour[i], lwd = 
-                            model.lwd[i])
-                        points.default(xs.grid[, 1L], prednew2[[i]][, "upr"], 
-                            type = 'l', lty = 3, col = model.colour[i], lwd = 
-                            model.lwd[i])    
+                if (conf){
+                    prednew2 <- lapply(model, confpred, newdata = newdata)     
+                    for (i in seq_along(model)){
+                        points.default(xs.grid[, 1L], prednew[[i]], type = 'l',
+                            col = model.colour[i], lwd = model.lwd[i], lty = model.lty[i])
+                        if (all(c("lwr", "upr") %in% colnames(prednew2[[i]]))){
+                            points.default(xs.grid[, 1L], prednew2[[i]][, "lwr"]
+                                , type = 'l', lty = 3, col = model.colour[i], 
+                                lwd = 0.75 * model.lwd[i])
+                            points.default(xs.grid[, 1L], prednew2[[i]][, "upr"] 
+                                , type = 'l', lty = 3, col = model.colour[i], 
+                                lwd = 0.75 * model.lwd[i])   
+                        }
+                    }                 
+                } else {
+                    for (i in seq_along(model)){
+                        points.default(xs.grid[, 1L], prednew[[i]], type = 'l',
+                            col = model.colour[i], lwd = model.lwd[i], lty = model.lty[i])
                     }
-                }
+                }   
                 legend("topright", legend = model.name, col = model.colour, 
                     lwd = model.lwd, lty = model.lty)
             }
@@ -163,18 +170,25 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                     ylab = colnames(y)[1L], ylim = range(y[, 1L]))
                 if (length(data.order) > 0)
                     points(xs[data.order, 1L], y[data.order, 1L], col = data.colour[data.order])
-                prednew2 <- lapply(model, confpred, newdata = newdata)     
-                for (i in seq_along(model)){
-                    points.default(xs.grid[, 1L], prednew[[i]], type = 'l',
-                        col = model.colour[i], lwd = model.lwd[i], lty = model.lty[i])
-                    if (all(c("lwr", "upr") %in% colnames(prednew2[[i]]))){
-                        points.default(xs.grid[, 1L], prednew2[[i]][, "lwr"], 
-                            type = 'l', lty = 3, col = model.colour[i], lwd = 
-                            model.lwd[i])
-                        points.default(xs.grid[, 1L], prednew2[[i]][, "upr"], 
-                            type = 'l', lty = 3, col = model.colour[i], lwd = 
-                            model.lwd[i])    
+                if (conf){    
+                    prednew2 <- lapply(model, confpred, newdata = newdata)     
+                    for (i in seq_along(model)){
+                        points.default(xs.grid[, 1L], prednew[[i]], type = 'l',
+                            col = model.colour[i], lwd = model.lwd[i], lty = model.lty[i])
+                        if (all(c("lwr", "upr") %in% colnames(prednew2[[i]]))){
+                            points.default(xs.grid[, 1L], prednew2[[i]][, "lwr"], 
+                                type = 'l', lty = 3, col = model.colour[i], lwd = 
+                                1)
+                            points.default(xs.grid[, 1L], prednew2[[i]][, "upr"], 
+                                type = 'l', lty = 3, col = model.colour[i], lwd = 
+                                1)    
+                        }
                     }
+                } else {
+                    for (i in seq_along(model)){
+                        points.default(xs.grid[, 1L], prednew[[i]], type = 'l',
+                            col = model.colour[i], lwd = model.lwd[i], lty = model.lty[i])   
+                    }        
                 }
                 pos <- if (cor(xs, y) < 0)
                     "topright"
@@ -357,5 +371,5 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
         data.order = data.order, view3d = view3d, theta3d = theta3d, usr = par("usr"),
         phi3d = phi3d, plot.type = if (exists("plot.type")) plot.type else NULL, 
         screen = screen(), xs.grid = xs.grid, newdata = newdata, prednew = 
-        prednew, xs.grid = xs.grid, prednew = prednew), class = "xsplot")    
+        prednew, xs.grid = xs.grid, prednew = prednew, conf = conf), class = "xsplot")    
 }

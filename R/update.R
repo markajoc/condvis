@@ -141,7 +141,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
     phi3d <- if (!is.null(phi3d))
         phi3d
     else object$phi3d
-    
+    conf <- FALSE
     if (FALSE){#(identical(object$plot.type, "cc")){
         if (any(xc.cond != object$xc.cond)){
         newdata <- makenewdata(xs = object$xs.grid, xc.cond = xc.cond)
@@ -155,19 +155,22 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col = "white")
         if (length(data.order) > 0)
             points(object$xs[data.order, 1L], object$y[data.order, 1L], col = data.colour[data.order])
-        prednew2 <- lapply(object$model, confpred, newdata = newdata)     
-        for (i in seq_along(object$model)){
-            points.default(object$xs.grid[, 1L], prednew[[i]], type = 'l',
-                col = object$model.colour[i], lwd = object$model.lwd[i], lty = object$model.lty[i])
-            if (all(c("lwr", "upr") %in% colnames(prednew2[[i]]))){
-                points.default(object$xs.grid[, 1L], prednew2[[i]][, "lwr"], 
-                    type = 'l', lty = 3, col = object$model.colour[i], lwd = 
-                    object$model.lwd[i])
-                points.default(object$xs.grid[, 1L], prednew2[[i]][, "upr"], 
-                    type = 'l', lty = 3, col = object$model.colour[i], lwd = 
-                    object$model.lwd[i])    
-            }
-        }
+        if (conf){
+            prednew2 <- lapply(object$model, confpred, newdata = newdata)     
+            for (i in seq_along(object$model)){
+                points.default(object$xs.grid[, 1L], prednew[[i]], type = 'l',
+                    col = object$model.colour[i], lwd = object$model.lwd[i], lty = object$model.lty[i])
+                if (all(c("lwr", "upr") %in% colnames(prednew2[[i]]))){
+                    points.default(object$xs.grid[, 1L], prednew2[[i]][, "lwr"], 
+                        type = 'l', lty = 3, col = object$model.colour[i], lwd = 
+                        object$model.lwd[i])
+                    points.default(object$xs.grid[, 1L], prednew2[[i]][, "upr"], 
+                        type = 'l', lty = 3, col = object$model.colour[i], lwd = 
+                        object$model.lwd[i])    
+                }
+            }        
+        }    
+
         if (is.numeric(object$xs[, 1L])){
             pos <- if (cor(object$xs, object$y) < 0)
                 "topright"
@@ -194,5 +197,5 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
     plotxs1(xs = object$xs, y = object$y, xc.cond = xc.cond, 
         model = object$model, model.colour = object$model.colour, model.lwd = object$model.lwd, 
         model.lty = object$model.lty, model.name = object$model.name, yhat = object$yhat, mar = object$mar, 
-        data.colour = data.colour, data.order = data.order, view3d = view3d, theta3d = theta3d, phi3d = phi3d)
+        data.colour = data.colour, data.order = data.order, view3d = view3d, theta3d = theta3d, phi3d = phi3d, conf = object$conf)
 }

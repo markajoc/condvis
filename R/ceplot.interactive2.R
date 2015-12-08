@@ -1,7 +1,7 @@
 ceplot.interactive2 <- 
 function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, 
     distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, 
-    view3d = FALSE, Corder = "default")
+    view3d = FALSE, Corder = "default", conf = FALSE)
 {
     data <- na.omit(data)
     model <- if (!identical(class(model), "list"))
@@ -52,15 +52,16 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     coords <- matrix(ncol = 4, nrow = length(C))    
     plotlegend <- length(S) == 2
     n.selector.cols <- ceiling(length(C) / 4L)
-    height <- 7
-    width <- height + 0.5 * plotlegend + 1.75 * n.selector.cols
+    selector.colwidth <- 2
+    height <- 8
+    width <- height + 0.5 * plotlegend + selector.colwidth * n.selector.cols
     
     if (identical(version$os, "linux-gnu"))
         x11(type = "Xlib", height = height, width = width)
     else
         x11(height = height, width = width)
     close.screen(all.screens = TRUE)
-    xcwidth <- 1.75 * n.selector.cols / width
+    xcwidth <- selector.colwidth * n.selector.cols / width
     mainscreens <- split.screen(figs = matrix(c(0, 1 - xcwidth, 1 - xcwidth, 1, 
         0, 0, 1, 1), ncol = 4))
     xcscreens <- split.screen(c(4, n.selector.cols), screen = mainscreens[2])
@@ -86,7 +87,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response, 
         drop = FALSE], xc.cond = xc.cond, model = model, data.colour = rgb(1 - 
         vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, view3d = view3d, 
-        theta3d = 45, phi3d = 20)
+        theta3d = 45, phi3d = 20, conf = conf)
     xscoords <- par("fig")  
     xold <- NULL
     yold <- NULL 
