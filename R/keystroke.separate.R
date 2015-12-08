@@ -9,6 +9,7 @@ function (key)
     Xc <- get("Xc", envir = parent.frame())
     Xc.cond <- plotxsobject$xc.cond
     if (plotxsobject$view3d){
+        dev.hold()
             try(plotxsobject$xc.cond <- get("Xc.cond", envir = parent.frame()), silent = TRUE)
             if (identical(key, "Down"))
                 plotxsobject$phi3d <- plotxsobject$phi3d + 2
@@ -23,6 +24,7 @@ function (key)
             close.screen(all.screens = TRUE)
             do.call(plotxs, plotxsobject)
             assign(x = "plotxsobject", value = plotxsobject, envir = parent.frame())
+        dev.flush()    
         }    
     }
     if (identical(key, "s")){
@@ -32,12 +34,10 @@ function (key)
         Xc <- get("Xc", envir = parent.frame())
         Xc.cond <- plotxsobject$xc.cond
         timenow <- Sys.time()
-        dev.set(expectationwindow)
-        devsizeexp <- dev.size()
         dev.set(selectorwindow)
         devsizesel <- dev.size()
         filename1 <- paste("snapshot_", gsub(":", ".", gsub(" ", "_", timenow)), c("-expectation.pdf", "-condition.pdf"), sep = "") 
-        pdf(filename1[1], width = devsizeexp[1], height = devsizeexp[2])
+        pdf(filename1[1], width = 8.5, height = 8)
         close.screen(all.screens = TRUE)
         do.call(plotxs, plotxsobject)
         dev.off()
