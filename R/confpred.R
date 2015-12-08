@@ -15,7 +15,7 @@ function (model, newdata)
         lwr <- model$family$linkinv(lwr)
         return(cbind(lwr, upr))
     }
-    if (identical(class(model), c("gam", "glm", "lm")) && length(model) == 46){
+    if (identical(class(model), c("gam", "glm", "lm")) && "mgcv.conv" %in% names(model)){
         pred <- predict(model, newdata, type = "link", se.fit = TRUE)
         upr <- pred$fit + (2 * pred$se.fit)
         lwr <- pred$fit - (2 * pred$se.fit)
