@@ -99,6 +99,7 @@ function (buttons, x, y)
                select.colour = plotxcobject$xcplots[[screen.index]]$select.colour,
                select.lwd = plotxcobject$xcplots[[screen.index]]$select.lwd) 
         dev.set(expectationwindow)
+        dev.hold()
         par(bg = "white") 
         close.screen(all.screens = TRUE)
         xsplot <- plotxsobject
@@ -110,6 +111,7 @@ function (buttons, x, y)
         xsplot$data.colour <- rgb(1-k,1-k,1-k)
         xsplot$data.order <- vw$order
         do.call(plotxs, xsplot)
+        dev.flush()
 	    assign(x = "Xc.cond", value = Xc.cond, envir = parent.frame())
         assign(x = "plotxsobject", value = xsplot, envir = parent.frame())              
         assign(x = "Xc.cond", value = Xc.cond, envir = parent.frame())
