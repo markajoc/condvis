@@ -1,7 +1,6 @@
 plotxc <-
-function (xc, xc.cond, name = NULL, select.colour = NULL,
-    select.lwd = NULL, cex.axis = NULL, cex.lab = NULL, tck = NULL, 
-    shiny = FALSE, ...)
+function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL, 
+    cex.axis = NULL, cex.lab = NULL, tck = NULL, ...)
 {
     select.colour <- if (is.null(select.colour))
         "black"

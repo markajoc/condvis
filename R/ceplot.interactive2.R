@@ -68,7 +68,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     for (i in seq_along(C)){
         screen(xcscreens[i])
         xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = data[1, C[[i]]], 
-            name = colnames(data[, C[[i]], drop = FALSE]), select.col = "blue")
+            name = colnames(data[, C[[i]], drop = FALSE]), select.colour = "blue")
         coords[i, ] <- par("fig")
     }    
     legendwidth <- 1 / height
@@ -157,7 +157,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 for (i in seq_along(C)){
                     screen(xcscreens[i])
                     plotxc(xc = data[, C[[i]]], xc.cond = xcplots[[i]]$xc.cond, 
-                        name = colnames(data[, C[[i]], drop = FALSE]), select.col = "blue")
+                        name = colnames(data[, C[[i]], drop = FALSE]), select.colour = "blue")
                 }    
                 xsscreens <- if (plotlegend){
                     split.screen(figs = matrix(c(0, 1 - legendwidth, 1 - legendwidth, 1, 

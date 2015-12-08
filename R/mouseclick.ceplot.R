@@ -91,9 +91,9 @@ function (buttons, x, y)
 	    colnames(xc.cond.new) <- varnames
         Xc.cond[1L, varnames] <- xc.cond.new
         rownames(Xc.cond) <- NULL
-        Xc.cond.hist <<- if(exists("Xc.cond.hist"))
-            rbind(Xc.cond.hist, Xc.cond)
-        else Xc.cond    
+        #Xc.cond.hist <<- if(exists("Xc.cond.hist"))
+        #    rbind(Xc.cond.hist, Xc.cond)
+        #else Xc.cond    
         plotxc(xc = xc, xc.cond = Xc.cond[1L, varnames], name = varnames, 
                select.colour = plotobject$xcplots[[screen.index]]$select.colour,
                select.lwd = plotobject$xcplots[[screen.index]]$select.lwd) 

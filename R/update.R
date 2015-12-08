@@ -1,5 +1,5 @@
 update.xcplot <- 
-function (object, xclick, yclick)
+function (object, xclick, yclick, ...)
 {
     #set.dev(object$device)
     screen(n = object$screen, new = FALSE)
@@ -116,7 +116,7 @@ function (object, xclick, yclick)
 
 update.xsplot <- 
 function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL, 
-    view3d = NULL, theta3d = NULL, phi3d = NULL, xs.grid = NULL, prednew = NULL)
+    view3d = NULL, theta3d = NULL, phi3d = NULL, xs.grid = NULL, prednew = NULL, ...)
 {
     #set.dev(object$device)
     par(bg = "white")

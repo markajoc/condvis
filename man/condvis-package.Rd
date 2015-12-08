@@ -26,7 +26,7 @@ Mark O'Connell <mark.oconnell@maths.nuim.ie>
 mtcars$cyl <- as.factor(mtcars$cyl)
 mtcars$am <- as.factor(mtcars$am)
 
-library(gam)
+library(mgcv)
 model1 <- list(quadratic = lm(mpg ~ cyl + am + qsec + wt + I(wt^2), data = mtcars),
                additive = gam(mpg ~ cyl + am + qsec + s(wt), data = mtcars))
 
