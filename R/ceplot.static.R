@@ -56,12 +56,13 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     xcplots <- list()
     close.screen(all.screens = T)
     n.selector.cols <- ceiling(length(C) / 4L)
-    select.colwidth <- max(min(0.15 * n.selector.cols, 0.45), 0.2)
-    main <- split.screen(figs = matrix(c(0, 1 - (select.colwidth),
-                         1 - (select.colwidth), 1, 0, 0, 1, 1), ncol = 4))
-    selectors <- split.screen(
-        figs = c(max(ceiling(length(C) / n.selector.cols), 3), n.selector.cols),
-        screen = main[2])
+    selector.colwidth <- 2
+    height <- 8
+    width <- height + 0.5 + selector.colwidth * n.selector.cols
+    xcwidth <- selector.colwidth * n.selector.cols / width
+    main <- split.screen(figs = matrix(c(0, 1 - xcwidth, 1 - xcwidth, 1, 
+        0, 0, 1, 1), ncol = 4))
+    selectors <- split.screen(figs = c(4, n.selector.cols), screen = main[2])
     dev.hold()
     if (length(uniqC) > 0){
         for(C.index in seq_along(C)){
