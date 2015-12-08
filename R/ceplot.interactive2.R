@@ -125,11 +125,17 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     {
         function (key)
         {
-            if (identical(xsplot$plot.type, "ccc") & xsplot$view3d)
+            if (identical(key, "q")){
+                cat("\nInteractive session ended.\n")
+                return(invisible(1))            
+            } 
+            if (identical(xsplot$plot.type, "ccc") & xsplot$view3d & 
+                key %in% c("Up", "Down", "Left", "Right")){
                 xsplot <<- update(xsplot, theta3d = xsplot$theta3d - 2 * 
                     (key == "Right") + 2 * (key == "Left"), phi3d = xsplot$phi3d 
                     - 2 * (key == "Up") + 2 * (key == "Down"), xs.grid = 
-                    xsplot$xs.grid, prednew = xsplot$prednew)
+                    xsplot$xs.grid, prednew = xsplot$prednew)                
+            }
             if (identical(xsplot$plot.type, "ccc") & identical(key, "3"))
                 xsplot <<- update(xsplot, view3d = !xsplot$view3d)
             if (key %in% c(",", ".")){
@@ -140,7 +146,36 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 xsplot <<- update(xsplot, data.colour = rgb(1 - vw$k, 1 - vw$k, 
                     1 - vw$k), data.order = vw$order, xs.grid = xsplot$xs.grid, 
                     prednew = xsplot$prednew)    
-            }            
+            }
+            if (identical(key, "s")){
+                filename <- paste("snapshot_", gsub(":", ".", gsub(" ", "_", Sys.time())), ".pdf", sep = "") 
+                pdf(file = filename, width = width, height = height)
+                close.screen(all.screens = TRUE)
+                mainscreens <- split.screen(figs = matrix(c(0, 1 - xcwidth, 1 - xcwidth, 1, 
+                    0, 0, 1, 1), ncol = 4))
+                xcscreens <- split.screen(c(4, n.selector.cols), screen = mainscreens[2])
+                for (i in seq_along(C)){
+                    screen(xcscreens[i])
+                    plotxc(xc = data[, C[[i]]], xc.cond = xcplots[[i]]$xc.cond, 
+                        name = colnames(data[, C[[i]], drop = FALSE]), select.col = "blue")
+                }    
+                xsscreens <- if (plotlegend){
+                    split.screen(figs = matrix(c(0, 1 - legendwidth, 1 - legendwidth, 1, 
+                        0, 0, 1, 1), ncol = 4), screen = mainscreens[1])
+                } else mainscreens[1]
+                if (plotlegend){
+                    screen(xsscreens[2])
+                    xslegend(data[, response], colnames(data)[response])
+                }
+                screen(xsscreens[1])
+                plotxs1(xs = data[, S, drop = FALSE], data[, response, 
+                    drop = FALSE], xc.cond = xc.cond, model = model, data.colour = rgb(1 - 
+                    vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, view3d = view3d, 
+                    theta3d = 45, phi3d = 20, conf = conf)
+               dev.off()    
+                cat(paste("\nSnapshot saved: '", filename,"'", sep = ""))
+                cat("\n")            
+            }        
             points(NULL)
         }
     }      
