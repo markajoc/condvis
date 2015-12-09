@@ -61,18 +61,22 @@ ceplot(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   \code{\link{getGraphicsEvent}}
 }
 \examples{
+detach("package:condvis", unload=TRUE)
+library(condvis)
+
 ## Example 1: Multivariate regression, xs one continuous predictor
 
 mtcars$cyl <- as.factor(mtcars$cyl)
 
 library(mgcv)
-model1 <- list(quadratic = lm(mpg ~ cyl + hp + wt + I(wt^2), data = mtcars),
-               additive = gam(mpg ~ cyl + hp + s(wt), data = mtcars))
+model1 <- list(
+    quadratic = lm(mpg ~ cyl + hp + wt + I(wt^2), data = mtcars),
+    additive = mgcv::gam(mpg ~ cyl + hp + s(wt), data = mtcars))
 
 conditionvars1 <- list(c("cyl", "hp"))
 
 ceplot(data = mtcars, model = model1, response = "mpg", S = "wt", 
-    C = conditionvars1, sigma = 0.1)
+    C = conditionvars1, sigma = 0.3, conf = F, type = "shiny")
 
 ## Example 2: Binary classification, xs one categorical predictor
 
@@ -84,9 +88,9 @@ library(e1071)
 model2 <- list(
     svm = svm(am ~ mpg + wt + cyl, data = mtcars, family = "binomial"),
     glm = glm(am ~ mpg + wt + cyl, data = mtcars, family = "binomial"),
-    gam = gam(am ~ mpg + s(wt) + cyl, data = mtcars, family = "binomial"))
+    gam = mgcv::gam(am ~ mpg + s(wt) + cyl, data = mtcars, family = "binomial"))
 
-ceplot(data = mtcars, model = model2, S = "cyl", sigma = 0.1)
+ceplot(data = mtcars, model = model2, S = "wt", sigma = 1, type = "shiny")
 
 ## Example 3: Multivariate regression, xs both continuous
 
@@ -102,6 +106,9 @@ conditionvars3 <- list(c("cyl","gear"), "hp")
 ceplot(data = mtcars, model = model3, S = c("wt", "qsec"), 
     sigma = 1, C = conditionvars3)
 
+ceplot(data = mtcars, model = model3, S = c("wt", "qsec"), 
+    sigma = 1, type = "separate", view3d = T)
+
 ## Example 4: Multi-class classification, xs both categorical
 
 mtcars$cyl <- as.factor(mtcars$cyl)
@@ -113,8 +120,7 @@ mtcars$carb <- as.factor(mtcars$carb)
 library(e1071)
 model4 <- list(svm(carb ~ ., data = mtcars, family = "binomial"))
 
-ceplot(data = mtcars, model = model4, S = c("cyl", "am"), 
-    sigma = 3, type = "separate", selectortype = "pcp")
+ceplot(data = mtcars, model = model4, S = c("cyl", "gear"), sigma = 3)
 
 ## Example 5: Multi-class classification, xs both continuous
 
@@ -124,7 +130,13 @@ library(e1071)
 
 model5 <- list(svm(Class ~ ., data = wine))
 
-ceplot(data = wine, model = model5, S = c("Alcohol", "Hue"), sigma = 4)
+ceplot(data = wine, model = model5, S = c("Hue", "Flavanoids"), sigma = 3)
+
+ceplot(data = wine, model = model5, S = c("Hue", "Flavanoids"), sigma = 3, 
+    type = "separate")
+
+ceplot(data = wine, model = model5, S = c("Hue", "Flavanoids"), sigma = 3, 
+    type = "separate", selectortype = "pcp")
 
 ## Example 6: Multi-class classification, xs with one categorical predictor,
 ##            and one continuous predictor.

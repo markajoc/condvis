@@ -30,6 +30,11 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
     C <- if (is.null(C))
         arrangeC(data[, -c(response, S)])
     else C
+    if (class(varnamestry) != "try-error"){
+        possibleC <- unique(unlist(lapply(lapply(model, getvarnames), `[[`, 2)))
+        C <- arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])], 
+                drop = FALSE], method = Corder)
+    }  
     C <- if (all(vapply(C, is.numeric, logical(1))))
         as.list(C)
     else if (all(vapply(C, is.character, logical(1))))
@@ -167,7 +172,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
                     k <- vw$k
                     data.colour <- rgb(1 - k, 1 - k, 1 - k)
                     data.order <- vw$order
-                    plotxsobject <- plotxs.shiny(xs = data[, S, drop = FALSE],
+                    plotxsobject <- plotxs1(xs = data[, S, drop = FALSE],
                         y = data[, response, drop = FALSE], xc.cond = get('Xc.cond', envir = tmp), model = model,
                         model.colour = NULL, model.lwd = NULL, model.lty = NULL,
                         model.name = model.name, yhat = NULL, mar = NULL,

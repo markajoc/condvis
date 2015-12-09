@@ -26,6 +26,11 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     C <- if (is.null(C))
         arrangeC(data[, -c(response, S)])
     else C
+    if (class(varnamestry) != "try-error"){
+        possibleC <- unique(unlist(lapply(lapply(model, getvarnames), `[[`, 2)))
+        C <- arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])], 
+                drop = FALSE], method = Corder)
+    }  
     C <- if (all(vapply(C, is.numeric, logical(1))))
         as.list(C)
     else if (all(vapply(C, is.character, logical(1))))
