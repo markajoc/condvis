@@ -25,12 +25,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             vapply(S, function(x) which(colnames(data) == x), numeric(1))
             else S
     C <- if (is.null(C))
-        if (class(varnamestry) != "try-error"){
-            possibleC <- unique(unlist(lapply(
-                lapply(model, getvarnames), `[[`, 2)))
-            arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])], 
-                drop = FALSE], method = Corder)
-        } else arrangeC(data[, -c(response, S)])
+        arrangeC(data[, -c(response, S)])
     else C
     C <- if (all(vapply(C, is.numeric, logical(1))))
         as.list(C)
