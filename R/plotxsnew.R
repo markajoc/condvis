@@ -25,9 +25,6 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     model.name <- if(!is.null(names(model)))
         names(model)
     else seq_along(model)    
-    #if (is.null(model.name)) 
-    #   vapply(model, function(x) tail(class(x), n = 1L), character(1))
-    #else model.name
     data.order <- if (is.null(data.order))
         1:nrow(xs)
     else data.order 
@@ -39,27 +36,31 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
         # xs has one column
         if (is.null(xs.grid)){
             xs.grid <- if (!is.factor(xs[, 1L]))
-                data.frame(seq(min(xs[, 1L], na.rm = TRUE), max(xs[, 1L], na.rm = 
-                    TRUE), length.out = if (view3d) {20L} else 50L))
+                data.frame(seq(min(xs[, 1L], na.rm = TRUE), max(xs[, 1L], na.rm 
+                    = TRUE), length.out = if (view3d) {20L} else 50L))
             else data.frame(as.factor(levels(xs[, 1L])))
             colnames(xs.grid) <- colnames(xs)        
         }
         newdata <- makenewdata(xs = xs.grid, xc.cond = xc.cond)
         if (is.null(prednew))
-	        prednew <- lapply(model, predict, newdata = newdata, type = "response")
+	        prednew <- lapply(model, predict, newdata = newdata, type = 
+                "response")
         if (is.factor(xs[, 1L])){
             # xs is a factor
             if (is.factor(y[, 1L])){
                 # y is factor
                 plot.type <- "ff"
                 if (identical(nlevels(y[, 1L]), 2L)){
-                    plot(unique(xs[, 1L]), rep(-888, length(levels(xs[, 1L]))), col = NULL, 
-                        main = "Conditional expectation", 
-                        ylab = paste("Probability ", colnames(y)[1L], "=", 
-                        levels(y[, 1L])[2L]), ylim = c(0, 1))
+                    plot(unique(xs[, 1L]), rep(-888, length(levels(xs[, 1L]))), 
+                        col = NULL, main = "Conditional expectation", ylab = 
+                        paste("Probability ", colnames(y)[1L], "=", levels(y[, 
+                        1L])[2L]), ylim = c(0, 1))
                     if (length(data.order) > 0)    
-				        points.default((as.numeric(xs[data.order, 1L])) + rnorm(n = length(data.order), sd = 0.1), 
-                            (as.integer(y[data.order, 1L]) - 1) + rnorm(n = length(data.order), sd = 0.01), col = data.colour[data.order])
+				        points.default((as.numeric(xs[data.order, 1L])) + 
+                            rnorm(n = length(data.order), sd = 0.1), 
+                            (as.integer(y[data.order, 1L]) - 1) + rnorm(n = 
+                            length(data.order), sd = 0.01), col = data.colour[
+                            data.order])
                     for (i in seq_along(model)){
                         if ("glm" %in% class(model[[i]])){
                             points.default(xs.grid[, 1L], prednew[[i]], 
@@ -77,15 +78,18 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                         range(as.numeric(xs[, 1L])))) ), range(as.integer(
                         y[, 1L])), col = NULL, xlab = colnames(xs)[1L], ylab = 
                         colnames(y)[1L], yaxt = "n", main = "Conditional 
-                        expectation", xaxt = if (is.factor(xs[, 1L])) "n" else NULL)
+                        expectation", xaxt = if (is.factor(xs[, 1L])) "n" else 
+                        NULL)
                     axis(2, at = 1:nlevels(y[, 1L]), labels = levels(y[, 1L]))
-                    if (is.factor(xs[, 1L])) axis(1, at = 1:nlevels(xs[, 1L]), labels = levels(xs[, 1L]))              
+                    if (is.factor(xs[, 1L])) 
+                        axis(1, at = 1:nlevels(xs[, 1L]), labels = levels(xs[, 
+                            1L]))              
                     if (length(data.order) > 0) 
-                        points(as.numeric(xs[data.order, 1L]), as.integer(y[data.order, 1L]), 
-                            col = data.colour[data.order]) 
+                        points(as.numeric(xs[data.order, 1L]), as.integer(y[
+                            data.order, 1L]), col = data.colour[data.order]) 
                     for (i in seq_along(model)){
-                        points.default(as.numeric(xs.grid[, 1L]), as.integer(prednew[[i]]),
-                            type = 'l', col = model.colour[i], 
+                        points.default(as.numeric(xs.grid[, 1L]), as.integer(
+                            prednew[[i]]), type = 'l', col = model.colour[i], 
                             lwd = model.lwd[i], lty = model.lty[i])
                     }
                 }
@@ -94,16 +98,18 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
             } else {
                 # y is continuous
                 plot.type <- "cf"
-                plot(unique(xs[, 1L]), rep(-888, length(levels(xs[, 1L]))), col = NULL, 
-                    main = "Conditional expectation", xlab = colnames(xs)[1L], 
-                    ylab = colnames(y)[1L], ylim = range(y[, 1L]))
+                plot(unique(xs[, 1L]), rep(-888, length(levels(xs[, 1L]))), col 
+                    = NULL, main = "Conditional expectation", xlab = colnames(
+                    xs)[1L], ylab = colnames(y)[1L], ylim = range(y[, 1L]))
                 if (length(data.order) > 0)
-                    points(xs[data.order, 1L], y[data.order, 1L], col = data.colour[data.order])
+                    points(xs[data.order, 1L], y[data.order, 1L], col = 
+                        data.colour[data.order])
                 if (conf){
                     prednew2 <- lapply(model, confpred, newdata = newdata)     
                     for (i in seq_along(model)){
                         points.default(xs.grid[, 1L], prednew[[i]], type = 'l',
-                            col = model.colour[i], lwd = model.lwd[i], lty = model.lty[i])
+                            col = model.colour[i], lwd = model.lwd[i], lty = 
+                            model.lty[i])
                         if (all(c("lwr", "upr") %in% colnames(prednew2[[i]]))){
                             points.default(xs.grid[, 1L], prednew2[[i]][, "lwr"]
                                 , type = 'l', lty = 2, col = model.colour[i], 
@@ -116,7 +122,8 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                 } else {
                     for (i in seq_along(model)){
                         points.default(xs.grid[, 1L], prednew[[i]], type = 'l',
-                            col = model.colour[i], lwd = model.lwd[i], lty = model.lty[i])
+                            col = model.colour[i], lwd = model.lwd[i], lty = 
+                            model.lty[i])
                     }
                 }   
                 legend("topright", legend = model.name, col = model.colour, 
@@ -128,10 +135,11 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                 # y is factor
                 plot.type <- "fc"
                 if (identical(nlevels(y[, 1L]), 2L)){
-                    plot(range(xs[, 1L]) + 0.1 * abs(diff(range(xs[, 1L]))), c(0, 0), col = NULL, 
-                        main = "Conditional expectation", xlab = colnames(xs)[1L],
-                        ylab = paste("Probability ", colnames(y)[1L], "=", 
-                        levels(y[, 1L])[2L]), ylim = c(0, 1))
+                    plot(range(xs[, 1L]) + 0.1 * abs(diff(range(xs[, 1L]))), 
+                        c(0, 0), col = NULL, main = "Conditional expectation", 
+                        xlab = colnames(xs)[1L], ylab = paste("Probability ", 
+                        colnames(y)[1L], "=", levels(y[, 1L])[2L]), ylim = 
+                        c(0, 1))
                     if (length(data.order) > 0)    
 				        points.default(xs[data.order, 1L], as.integer(y[
                             data.order, 1L]) - 1, col = data.colour[data.order])
@@ -148,18 +156,20 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                         }
                     }
                 } else {
-                    plot(range(xs[, 1L]), range(as.integer(y[, 1L])), col = NULL, 
-                        xlab = colnames(xs)[1L], ylab = colnames(y)[1L], 
-                        yaxt = "n", main = "Conditional expectation", xaxt = 
-                        if (is.factor(xs[, 1L])) "n" else NULL)
+                    plot(range(xs[, 1L]), range(as.integer(y[, 1L])), col = NULL
+                        , xlab = colnames(xs)[1L], ylab = colnames(y)[1L], yaxt 
+                        = "n", main = "Conditional expectation", xaxt = if 
+                        (is.factor(xs[, 1L])) "n" else NULL)
                     axis(2, at = 1:nlevels(y[, 1L]), labels = levels(y[, 1L]))
-                    if (is.factor(xs[, 1L])) axis(1, at = 1:nlevels(xs[, 1L]), labels = levels(xs[, 1L]))              
+                    if (is.factor(xs[, 1L])) 
+                        axis(1, at = 1:nlevels(xs[, 1L]), labels = levels(xs[, 
+                            1L]))              
                     if (length(data.order) > 0) 
-                        points(xs[data.order, 1L], as.integer(y[data.order, 1L]), 
-                            col = data.colour[data.order]) 
+                        points(xs[data.order, 1L], as.integer(y[data.order, 1L])
+                            , col = data.colour[data.order]) 
                     for (i in seq_along(model)){
-                        points.default(as.numeric(xs.grid[, 1L]), as.integer(prednew[[i]]),
-                            type = 'l', col = model.colour[i], 
+                        points.default(as.numeric(xs.grid[, 1L]), as.integer(
+                            prednew[[i]]), type = 'l', col = model.colour[i], 
                             lwd = model.lwd[i], lty = model.lty[i])
                     }
                 }
@@ -172,25 +182,28 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                     main = "Conditional expectation", xlab = colnames(xs)[1L], 
                     ylab = colnames(y)[1L], ylim = range(y[, 1L]))
                 if (length(data.order) > 0)
-                    points(xs[data.order, 1L], y[data.order, 1L], col = data.colour[data.order])
+                    points(xs[data.order, 1L], y[data.order, 1L], col = 
+                        data.colour[data.order])
                 if (conf){    
                     prednew2 <- lapply(model, confpred, newdata = newdata)     
                     for (i in seq_along(model)){
                         points.default(xs.grid[, 1L], prednew[[i]], type = 'l',
-                            col = model.colour[i], lwd = model.lwd[i], lty = model.lty[i])
+                            col = model.colour[i], lwd = model.lwd[i], lty = 
+                            model.lty[i])
                         if (all(c("lwr", "upr") %in% colnames(prednew2[[i]]))){
-                            points.default(xs.grid[, 1L], prednew2[[i]][, "lwr"], 
-                                type = 'l', lty = 2, col = model.colour[i], lwd = 
-                                1)
-                            points.default(xs.grid[, 1L], prednew2[[i]][, "upr"], 
-                                type = 'l', lty = 2, col = model.colour[i], lwd = 
-                                1)    
+                            points.default(xs.grid[, 1L], prednew2[[i]][, "lwr"]
+                                , type = 'l', lty = 2, col = model.colour[i], 
+                                lwd = 1)
+                            points.default(xs.grid[, 1L], prednew2[[i]][, "upr"]
+                                , type = 'l', lty = 2, col = model.colour[i], 
+                                lwd = 1)    
                         }
                     }
                 } else {
                     for (i in seq_along(model)){
                         points.default(xs.grid[, 1L], prednew[[i]], type = 'l',
-                            col = model.colour[i], lwd = model.lwd[i], lty = model.lty[i])   
+                            col = model.colour[i], lwd = model.lwd[i], lty = 
+                            model.lty[i])   
                     }        
                 }
                 pos <- if (cor(xs, y) < 0)
@@ -219,7 +232,8 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
         }
         newdata <- makenewdata(xs = xs.grid, xc.cond = xc.cond)
         if (is.null(prednew))
-            prednew <- lapply(model, predict, newdata = newdata, type = "response")
+            prednew <- lapply(model, predict, newdata = newdata, type = 
+                "response")
 		color <- if (is.factor(y[, 1L]))
 		    factor2color(prednew[[1L]])
 		else cont2color(prednew[[1L]], range(y[, 1L]))
@@ -243,8 +257,10 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
 			     ybottom = yrect - yoffset, ytop = yrect + yoffset,
 				 col = color)
             if (length(data.order) > 0)      
-          	    points(jitter(as.integer(xs[data.order, 1L]), amount = 0.6 * xoffset), jitter(as.integer(
-                    xs[data.order, 2L]), amount = 0.6 * yoffset), bg = ybg, col = data.colour[data.order], pch = 21)	
+          	    points(jitter(as.integer(xs[data.order, 1L]), amount = 0.6 * 
+                    xoffset), jitter(as.integer(xs[data.order, 2L]), amount = 
+                    0.6 * yoffset), bg = ybg, col = data.colour[data.order], 
+                    pch = 21)	
 		    axis(1L, at = unique(xrect), labels = levels(xs[, 1L]), 
                 tick = FALSE)
 			axis(2L, at = unique(yrect), labels = levels(xs[, 2L]),
@@ -275,9 +291,9 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
 			            ybottom = yrect - yoffset, ytop = yrect + yoffset,
 				        col = color, border = NA)
                     if (length(data.order) > 0)  
-                        points(jitter(xs[data.order, !arefactorsxs]), jitter(as.integer(
-                            xs[data.order, arefactorsxs])), bg = ybg, col = data.colour[data.order], 
-                            pch = 21)	 
+                        points(jitter(xs[data.order, !arefactorsxs]), jitter(
+                            as.integer(xs[data.order, arefactorsxs])), bg = ybg, 
+                            col = data.colour[data.order], pch = 21)	 
 				    axis(2L, at = unique(yrect), labels = levels(xs[, 
                         arefactorsxs]), tick = FALSE)
                 } else {
@@ -296,9 +312,9 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
 			            ybottom = yrect - yoffset, ytop = yrect + yoffset,
 				        col = color, border = NA)
                     if (length(data.order) > 0)  
-                        points(jitter(xs[data.order, !arefactorsxs]), jitter(as.integer(
-                            xs[data.order, arefactorsxs])), bg = ybg, col = data.colour[data.order], 
-                            pch = 21)	 
+                        points(jitter(xs[data.order, !arefactorsxs]), jitter(
+                            as.integer(xs[data.order, arefactorsxs])), bg = ybg, 
+                            col = data.colour[data.order], pch = 21)	 
 				    axis(2L, at = unique(yrect), labels = levels(xs[, 
                         arefactorsxs]), tick = FALSE)
                 }
@@ -312,11 +328,12 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                     plot(range(xs.grid[, 1L]), range(xs.grid[, 2L]), col = NULL, 
                         xlab = colnames(xs)[1L], ylab = colnames(xs)[2L], 
                         main = "Conditional expectation")
-                    rect(xleft = xs.grid[, 1L] - xoffset, xright = xs.grid[, 1L] + 
-                        xoffset, ybottom = xs.grid[, 2L] - yoffset, ytop = 
+                    rect(xleft = xs.grid[, 1L] - xoffset, xright = xs.grid[, 1L] 
+                        + xoffset, ybottom = xs.grid[, 2L] - yoffset, ytop = 
                         xs.grid[, 2L] + yoffset, col = color, border = NA)
                     if (length(data.order) > 0)     
-                        points(xs[data.order, , drop = FALSE], bg = ybg, col = data.colour[data.order], pch = 21)
+                        points(xs[data.order, , drop = FALSE], bg = ybg, col = 
+                            data.colour[data.order], pch = 21)
                 } else {
                     # y is continuous
                     plot.type <- "ccc"
@@ -325,8 +342,8 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                             lapply(model[1], predict, type = "response")
                         else yhat
                         z <- matrix(prednew[[1L]], ncol = 20L, byrow = FALSE)
-                        zfacet <- (z[-1, -1] + z[-1, -ncol(z)] + z[-nrow(z), -1] + 
-                            z[-nrow(z), -ncol(z)]) / 4
+                        zfacet <- (z[-1, -1] + z[-1, -ncol(z)] + z[-nrow(z), -1] 
+                            + z[-nrow(z), -ncol(z)]) / 4
                         colorfacet <- cont2color(zfacet, range(y[, 1L]))
                         par(mar = c(3, 3, 3, 3))
                         persp.object <- suppressWarnings(persp(x = 
@@ -348,7 +365,8 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                                 data.order, 2L], yhat[[1]][data.order], pmat = 
                                 persp.object) 
                             segments(x0 = linestarts$x, y0 = linestarts$y, x1 = 
-                                lineends$x, y1 = lineends$y, col = data.colour[data.order])                            
+                                lineends$x, y1 = lineends$y, col = data.colour[
+                                data.order])                            
                         }
                     } else {
                         xoffset <- abs(diff(unique(xs.grid[, 1L])[1:2])) / 2
@@ -368,11 +386,12 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
             }
         }
     } 
-    structure(list(xs = xs, y = y, xc.cond = xc.cond, model = model, model.colour = 
-        model.colour, model.lwd = model.lwd, model.lty = model.lty, model.name =
-        model.name, yhat = yhat, mar = par("mar"), data.colour = data.colour, 
-        data.order = data.order, view3d = view3d, theta3d = theta3d, usr = par("usr"),
-        phi3d = phi3d, plot.type = if (exists("plot.type")) plot.type else NULL, 
-        screen = screen(), xs.grid = xs.grid, newdata = newdata, prednew = 
-        prednew, xs.grid = xs.grid, prednew = prednew, conf = conf), class = "xsplot")    
+    structure(list(xs = xs, y = y, xc.cond = xc.cond, model = model, 
+        model.colour = model.colour, model.lwd = model.lwd, model.lty = 
+        model.lty, model.name = model.name, yhat = yhat, mar = par("mar"), 
+        data.colour = data.colour, data.order = data.order, view3d = view3d, 
+        theta3d = theta3d, usr = par("usr"), phi3d = phi3d, plot.type = if 
+        (exists("plot.type")) plot.type else NULL, screen = screen(), xs.grid = 
+        xs.grid, newdata = newdata, prednew = prednew, xs.grid = xs.grid, 
+        prednew = prednew, conf = conf), class = "xsplot")    
 }
