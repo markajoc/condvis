@@ -1,7 +1,7 @@
 update.xcplot <- 
 function (object, xclick, yclick, ...)
 {
-    #set.dev(object$device)
+    #dev.set(object$device)
     screen(n = object$screen, new = FALSE)
     par(usr = object$usr)
     par(mar = object$mar) 
@@ -116,9 +116,10 @@ function (object, xclick, yclick, ...)
 
 update.xsplot <- 
 function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL, 
-    view3d = NULL, theta3d = NULL, phi3d = NULL, xs.grid = NULL, prednew = NULL, ...)
+    view3d = NULL, theta3d = NULL, phi3d = NULL, xs.grid = NULL, prednew = NULL,
+    ...)
 {
-    #set.dev(object$device)
+    #dev.set(object$device)
     par(bg = "white")
     screen(n = object$screen, new = FALSE)
     par(usr = object$usr)
@@ -145,21 +146,25 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
     if (FALSE){#(identical(object$plot.type, "cc")){
         if (any(xc.cond != object$xc.cond)){
         newdata <- makenewdata(xs = object$xs.grid, xc.cond = xc.cond)
-        prednew <- lapply(object$model, predict, newdata = newdata, type = "response")
+        prednew <- lapply(object$model, predict, newdata = newdata, type = 
+            "response")
     } else {
         newdata <- object$newdata
         prednew <- object$prednew
     }
         screen(n = object$screen, new = FALSE)
         dev.hold()
-        rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col = "white")
+        rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col = 
+            "white")
         if (length(data.order) > 0)
-            points(object$xs[data.order, 1L], object$y[data.order, 1L], col = data.colour[data.order])
+            points(object$xs[data.order, 1L], object$y[data.order, 1L], col = 
+                data.colour[data.order])
         if (conf){
             prednew2 <- lapply(object$model, confpred, newdata = newdata)     
             for (i in seq_along(object$model)){
                 points.default(object$xs.grid[, 1L], prednew[[i]], type = 'l',
-                    col = object$model.colour[i], lwd = object$model.lwd[i], lty = object$model.lty[i])
+                    col = object$model.colour[i], lwd = object$model.lwd[i], lty 
+                    = object$model.lty[i])
                 if (all(c("lwr", "upr") %in% colnames(prednew2[[i]]))){
                     points.default(object$xs.grid[, 1L], prednew2[[i]][, "lwr"], 
                         type = 'l', lty = 3, col = object$model.colour[i], lwd = 
@@ -178,8 +183,9 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
             legend(pos, legend = object$model.name, col = object$model.colour, 
                 lwd = object$model.lwd, lty = object$model.lty)
             } else {
-                legend("topright", legend = object$model.name, col = object$model.colour, 
-                    lwd = object$model.lwd, lty = object$model.lty)
+                legend("topright", legend = object$model.name, col = 
+                    object$model.colour, lwd = object$model.lwd, lty = 
+                    object$model.lty)
             }    
         dev.flush()
         print(data.order) 
@@ -189,13 +195,17 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
     if (!is.null(prednew)){
     screen(n = object$screen, new = TRUE)
     return(plotxs1(xs = object$xs, y = object$y, xc.cond = xc.cond, 
-        model = object$model, model.colour = object$model.colour, model.lwd = object$model.lwd, 
-        model.lty = object$model.lty, model.name = object$model.name, yhat = object$yhat, mar = object$mar, 
-        data.colour = data.colour, data.order = data.order, view3d = view3d, theta3d = theta3d, phi3d = phi3d, xs.grid = object$xs.grid, prednew = prednew))
+        model = object$model, model.colour = object$model.colour, model.lwd = 
+        object$model.lwd, model.lty = object$model.lty, model.name = 
+        object$model.name, yhat = object$yhat, mar = object$mar, data.colour = 
+        data.colour, data.order = data.order, view3d = view3d, theta3d = 
+        theta3d, phi3d = phi3d, xs.grid = object$xs.grid, prednew = prednew))
     }
     screen(n = object$screen, new = TRUE)
     plotxs1(xs = object$xs, y = object$y, xc.cond = xc.cond, 
-        model = object$model, model.colour = object$model.colour, model.lwd = object$model.lwd, 
-        model.lty = object$model.lty, model.name = object$model.name, yhat = object$yhat, mar = object$mar, 
-        data.colour = data.colour, data.order = data.order, view3d = view3d, theta3d = theta3d, phi3d = phi3d, conf = object$conf)
+        model = object$model, model.colour = object$model.colour, model.lwd = 
+        object$model.lwd, model.lty = object$model.lty, model.name = 
+        object$model.name, yhat = object$yhat, mar = object$mar, data.colour = 
+        data.colour, data.order = data.order, view3d = view3d, theta3d = 
+        theta3d, phi3d = phi3d, conf = object$conf)
 }

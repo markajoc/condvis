@@ -63,14 +63,15 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         for(C.index in seq_along(C)){
             screen(selectors[C.index])
             xcplots[[C.index]] <- plotxc(xc = data[, C[[C.index]]], xc.cond = 
-                Xc.cond[1L, colnames(data)[C[[C.index]]]], name = colnames(data)[C[[C.index]]],
-                select.colour = "blue", select.lwd = 2, cex.axis = cex.axis, 
-                cex.lab = cex.lab, tck = tck)
+                Xc.cond[1L, colnames(data)[C[[C.index]]]], name = colnames(data)
+                [C[[C.index]]], select.colour = "blue", select.lwd = 2, cex.axis 
+                = cex.axis, cex.lab = cex.lab, tck = tck)
         }
     }
     screen(main[1])
     Xc <- data[, uniqC, drop = FALSE]
-    vw <- visualweight(xc = Xc, xc.cond = Xc.cond, sigma = sigma, distance = distance)
+    vw <- visualweight(xc = Xc, xc.cond = Xc.cond, sigma = sigma, distance = 
+        distance)
     k <- vw$k
     data.colour <- rgb(1 - k, 1 - k, 1 - k)
     data.order <- vw$order
@@ -81,9 +82,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         data.colour = data.colour, data.order = data.order, view3d = view3d, 
         theta3d = theta3d, phi3d = phi3d)
     dev.flush()
-    output <- list(Xc = Xc, sigma = sigma, distance = distance, 
-        xcplots = xcplots, xsplot = xsplot,
-	    screens = list(main = main, selectors = selectors))
-	class(output) <- "ceplot"
-	output
+    structure(list(Xc = Xc, sigma = sigma, distance = distance, xcplots = 
+        xcplots, xsplot = xsplot, screens = list(main = main, selectors = 
+        selectors)), class = "ceplot")
 }
