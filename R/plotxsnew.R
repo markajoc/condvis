@@ -234,7 +234,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
         if (is.null(prednew))
             prednew <- lapply(model, predict1, newdata = newdata)
 		color <- if (is.factor(y[, 1L]))
-		    factor2color(prednew[[1L]])
+		    factor2color(as.factor(prednew[[1L]]))
 		else cont2color(prednew[[1L]], range(y[, 1L]))
         ybg <- if (length(data.order) > 0){
             if (is.factor(y[, 1L]))
