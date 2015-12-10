@@ -72,7 +72,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     for (i in seq_along(C)){
         screen(xcscreens[i])
         xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = data[1, C[[i]]], 
-            name = colnames(data[, C[[i]], drop = FALSE]), select.colour = "blue")
+            name = colnames(data[, C[[i]], drop = FALSE]), select.colour = 
+            "blue")
         coords[i, ] <- par("fig")
     }    
     legendwidth <- 1 / height
@@ -152,20 +153,24 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     prednew = xsplot$prednew)    
             }
             if (identical(key, "s")){
-                filename <- paste("snapshot_", gsub(":", ".", gsub(" ", "_", Sys.time())), ".pdf", sep = "") 
+                filename <- paste("snapshot_", gsub(":", ".", gsub(" ", "_", 
+                    Sys.time())), ".pdf", sep = "") 
                 pdf(file = filename, width = width, height = height)
                 close.screen(all.screens = TRUE)
-                mainscreens <- split.screen(figs = matrix(c(0, 1 - xcwidth, 1 - xcwidth, 1, 
-                    0, 0, 1, 1), ncol = 4))
-                xcscreens <- split.screen(c(4, n.selector.cols), screen = mainscreens[2])
+                mainscreens <- split.screen(figs = matrix(c(0, 1 - xcwidth, 1 - 
+                    xcwidth, 1, 0, 0, 1, 1), ncol = 4))
+                xcscreens <- split.screen(c(4, n.selector.cols), screen = 
+                    mainscreens[2])
                 for (i in seq_along(C)){
                     screen(xcscreens[i])
                     plotxc(xc = data[, C[[i]]], xc.cond = xcplots[[i]]$xc.cond, 
-                        name = colnames(data[, C[[i]], drop = FALSE]), select.colour = "blue")
+                        name = colnames(data[, C[[i]], drop = FALSE]), 
+                        select.colour = "blue")
                 }    
                 xsscreens <- if (plotlegend){
-                    split.screen(figs = matrix(c(0, 1 - legendwidth, 1 - legendwidth, 1, 
-                        0, 0, 1, 1), ncol = 4), screen = mainscreens[1])
+                    split.screen(figs = matrix(c(0, 1 - legendwidth, 1 - 
+                        legendwidth, 1, 0, 0, 1, 1), ncol = 4), screen = 
+                        mainscreens[1])
                 } else mainscreens[1]
                 if (plotlegend){
                     screen(xsscreens[2])
@@ -173,10 +178,10 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 }
                 screen(xsscreens[1])
                 plotxs1(xs = data[, S, drop = FALSE], data[, response, 
-                    drop = FALSE], xc.cond = xc.cond, model = model, data.colour = rgb(1 - 
-                    vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, view3d = view3d, 
-                    theta3d = 45, phi3d = 20, conf = conf)
-               dev.off()    
+                    drop = FALSE], xc.cond = xc.cond, model = model, data.colour 
+                    = rgb(1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, 
+                    view3d = view3d, theta3d = 45, phi3d = 20, conf = conf)
+                dev.off()    
                 cat(paste("\nSnapshot saved: '", filename,"'", sep = ""))
                 cat("\n")            
             }        
