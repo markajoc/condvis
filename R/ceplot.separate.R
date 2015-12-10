@@ -31,7 +31,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         if (class(varnamestry) != "try-error"){
             possibleC <- unique(unlist(lapply(lapply(model, getvarnames), `[[`, 
                 2)))
-            possibleC <- possibleC[possibleC %in% colnames(powerplant)]
+            possibleC <- possibleC[possibleC %in% colnames(data)]
             C <- arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])], 
                 drop = FALSE], method = Corder)
         }     

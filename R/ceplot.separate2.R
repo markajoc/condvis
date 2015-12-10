@@ -1,4 +1,4 @@
-ceplot.interactive2 <- 
+ceplot.separate2 <- 
 function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, 
     distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, 
     view3d = FALSE, Corder = "default", conf = FALSE)
@@ -51,7 +51,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     if (!identical(length(intersect(S, uniqC)), 0L))
         stop("cannot have variables common to both 'S' and 'C'")    
     xc.cond <- data[1, uniqC, drop = FALSE]
- 
+
     xcplots <- list()
     coords <- matrix(ncol = 4, nrow = length(C))    
     plotlegend <- length(S) == 2
@@ -59,28 +59,21 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     selector.colwidth <- 2
     height <- 8
     width <- height + 0.5 * plotlegend + selector.colwidth * n.selector.cols
-    
+
+
+
     if (identical(version$os, "linux-gnu"))
-        x11(type = "Xlib", height = height, width = width)
+        x11(type = "Xlib", height = height, width = height + 0.5*plotlegend)
     else
-        x11(height = height, width = width)
-    close.screen(all.screens = TRUE)
-    xcwidth <- selector.colwidth * n.selector.cols / width
-    mainscreens <- split.screen(figs = matrix(c(0, 1 - xcwidth, 1 - xcwidth, 1, 
-        0, 0, 1, 1), ncol = 4))
-    xcscreens <- split.screen(c(4, n.selector.cols), screen = mainscreens[2])
-    for (i in seq_along(C)){
-        screen(xcscreens[i])
-        xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = data[1, C[[i]]], 
-            name = colnames(data[, C[[i]], drop = FALSE]), select.colour = 
-            "blue")
-        coords[i, ] <- par("fig")
-    }    
+        x11(height = height, width = height + 0.5*plotlegend)
+    devexp <- dev.cur()    
+    close.screen(all.screens = TRUE)    
+    
     legendwidth <- 1 / height
     xsscreens <- if (plotlegend){
         split.screen(figs = matrix(c(0, 1 - legendwidth, 1 - legendwidth, 1, 
             0, 0, 1, 1), ncol = 4), screen = mainscreens[1])
-    } else mainscreens[1]
+    } else split.screen()
     if (plotlegend){
         screen(xsscreens[2])
         xslegend(data[, response], colnames(data)[response])
@@ -93,7 +86,24 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         drop = FALSE], xc.cond = xc.cond, model = model, data.colour = rgb(1 - 
         vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, view3d = view3d, 
         theta3d = 45, phi3d = 20, conf = conf)
-    xscoords <- par("fig")  
+    xscoords <- par("fig") 
+
+    xcwidth <- selector.colwidth * n.selector.cols    
+    if (identical(version$os, "linux-gnu"))
+        x11(type = "Xlib", height = selector.colwidth * 4, width = xcwidth)
+    else
+        x11(height = selector.colwidth * 4, width = xcwidth)
+    devcond <- dev.cur()    
+    close.screen(all.screens = TRUE)
+    xcscreens <- split.screen(c(4, n.selector.cols), screen = mainscreens[2])
+    for (i in seq_along(C)){
+        screen(xcscreens[i])
+        xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = data[1, C[[i]]], 
+            name = colnames(data[, C[[i]], drop = FALSE]), select.colour = 
+            "blue")
+        coords[i, ] <- par("fig")
+    }    
+ 
     xold <- NULL
     yold <- NULL 
     mouseclick <- function ()
