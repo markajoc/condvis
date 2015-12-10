@@ -1,5 +1,8 @@
 predict1 <- 
 function (object, ...)
 {
-    predict(object, ..., n.trees = object$n.trees, type = "class")
+    type <- if ("nnet" %in% class(object))
+        "class"
+    else "response"    
+    predict(object, ..., n.trees = object$n.trees, type = type)
 }

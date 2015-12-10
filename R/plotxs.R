@@ -18,7 +18,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
         vapply(model, function(x) tail(class(x), n = 1L), character(1))
     else model.name
     yhat <- if (is.null(yhat))
-        lapply(model, predict, type = "response")
+        lapply(model, predict1)
     else yhat
     data.colour <- if(is.null(data.colour))
         rep("gray", nrow(xs))
@@ -47,7 +47,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     }
     colnames(xs.grid) <- colnames(xs)
     newdata <- makenewdata(xs = xs.grid, xc.cond = xc.cond)
-	prednew <- lapply(model, predict, newdata = newdata, type = "response")
+	prednew <- lapply(model, predict1, newdata = newdata)
     if(identical(ncol(xs), 1L)){
         if (is.numeric(y[, 1L])){
             plot((xs[, 1L]), (y[, 1L]) + 10 * diff(range(y[, 1L])), col = NULL, 

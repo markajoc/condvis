@@ -22,7 +22,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     #else model.name
     if (view3d){
         yhat <- if (is.null(yhat))
-            lapply(model[1], predict, type = "response")
+            lapply(model[1], predict1)
         else yhat
         yhat.new <- yhat[[1L]][data.order]    
     }
@@ -55,7 +55,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     }
     colnames(xs.grid) <- colnames(xs)
     newdata <- makenewdata(xs = xs.grid, xc.cond = xc.cond)
-	prednew <- lapply(model, predict, newdata = newdata, type = "response")
+	prednew <- lapply(model, predict1, newdata = newdata)
     if(identical(ncol(xs), 1L)){
         if (is.numeric(y[, 1L])){
             plot.type <- "cc"
