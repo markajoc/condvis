@@ -28,9 +28,10 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
     par(mgp = c(1.5, 0.5, 0))
     if (is.vector(xc) | is.factor(xc)){
         if (!is.factor(xc)){
-            histmp <- hist(xc, xlab = name, ylab = "", main = "", cex.axis = cex.axis,
-                cex.lab = cex.lab, tcl = tck, mgp = c(1.5, 0.5, 0.1))
-            lines(x = rep(xc.cond, 2L), y = c(0, max(histmp$counts)), col = select.colour, lwd = select.lwd)
+            histmp <- hist(xc, xlab = name, ylab = "", main = "", cex.axis = 
+                cex.axis, cex.lab = cex.lab, tcl = tck, mgp = c(1.5, 0.5, 0.1))
+            lines(x = rep(xc.cond, 2L), y = c(0, max(histmp$counts)), col = 
+                select.colour, lwd = select.lwd)
             plot.type <- "histogram"
         } else {
             bartmp <- barplot2(table(xc), main = "", xlab = name,
@@ -39,7 +40,8 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
 			    x = - 0.5 + 1.2 * (1:length(levels(xc))))
             barindex <- factorcoords$level == as.character(xc.cond)
             rect(xleft = bartmp$w.l[barindex], xright = bartmp$w.r[barindex],
-                ybottom = 0, ytop = bartmp$height[barindex], col = select.colour, density = 25)
+                ybottom = 0, ytop = bartmp$height[barindex], col = select.colour
+                , density = 25)
             plot.type <- "barplot"
             xc.cond <- factor(xc.cond, levels(xc))
         }
@@ -76,21 +78,23 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
                     factorcoords <- data.frame(
                         level = levels(xc[, are.factors]),
                         x = 1:length(levels(xc[, are.factors])))
-                    abline(v = factorcoords$x[as.character(factorcoords$level) == as.character(xc.cond[,are.factors])],
-                        h = xc.cond[!are.factors], lwd = select.lwd,
-                        col = select.colour)
+                    abline(v = factorcoords$x[as.character(factorcoords$level) 
+                        == as.character(xc.cond[,are.factors])], h = xc.cond[
+                        !are.factors], lwd = select.lwd, col = select.colour)
                     plot.type <- "boxplot"
                     xc <- xc[, order(!are.factors)]
-                    xc.cond <- data.frame(factor(xc.cond[, are.factors], levels(boxx)), xc.cond[, !are.factors])
+                    xc.cond <- data.frame(factor(xc.cond[, are.factors], 
+                        levels(boxx)), xc.cond[, !are.factors])
                     name <- name[order(!are.factors)]
                     names(xc.cond) <- name
                 } else {
-                    if (nrow(xc) > 2000 && requireNamespace("gplots", quietly = TRUE)){
+                    if (nrow(xc) > 2000 && requireNamespace("gplots", quietly = 
+                        TRUE)){
                         b <- seq(0.35, 1, length.out = 16)
-                        gplots::hist2d(xc[, 1], xc[, 2], nbins = 50, col = c("white", 
-                            rgb(1 - b, 1 - b, 1 - b)), xlab = colnames(xc)[1],
-                            ylab = colnames(xc)[2], cex.axis = cex.axis,
-                            cex.lab = cex.lab, tcl = tck)
+                        gplots::hist2d(xc[, 1], xc[, 2], nbins = 50, col = 
+                            c("white", rgb(1 - b, 1 - b, 1 - b)), xlab = 
+                            colnames(xc)[1], ylab = colnames(xc)[2], cex.axis = 
+                            cex.axis, cex.lab = cex.lab, tcl = tck)
                         box()
                     } else {
                         plot.default(xc[, 1], xc[, 2], xlab = colnames(xc)[1],
@@ -104,14 +108,12 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
             }
         } else stop("Unexpected value for 'xc'")
     }
-    output <- list(xc = xc, xc.cond.old = xc.cond, name = name,
-        select.colour = select.colour, mar = mar, select.lwd = select.lwd,
-        cex.axis = cex.axis, cex.lab = cex.lab, tck = tck,
-        device = dev.cur(), usr = par("usr"), screen = screen(), screen.coords = par("fig"),
-        plot.type = plot.type, sptmp = if(exists("sptmp")) sptmp else NULL,
-        factorcoords = if(exists("factorcoords")) factorcoords else NULL,
-        histmp = if(exists("histmp")) histmp else NULL, bartmp = if(exists("bartmp")) bartmp else NULL, 
-        boxtmp = if(exists("boxtmp")) boxtmp else NULL, ...)
-    class(output) <- "xcplot"
-    output
+    structure(list(xc = xc, xc.cond.old = xc.cond, name = name, select.colour = 
+        select.colour, mar = mar, select.lwd = select.lwd, cex.axis = cex.axis, 
+        cex.lab = cex.lab, tck = tck, device = dev.cur(), usr = par("usr"), 
+        screen = screen(), screen.coords = par("fig"), plot.type = plot.type, 
+        sptmp = if(exists("sptmp")) sptmp else NULL, factorcoords = if(exists(
+        "factorcoords")) factorcoords else NULL, histmp = if(exists("histmp")) 
+        histmp else NULL, bartmp = if(exists("bartmp")) bartmp else NULL, boxtmp 
+        = if(exists("boxtmp")) boxtmp else NULL, ...), class = "xcplot")
 }
