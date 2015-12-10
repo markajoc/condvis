@@ -31,7 +31,7 @@ function(xc, xc.cond, sigma = NULL, distance = "euclidean")
         x.sd <- apply(xc.num, 2L, sd)
         x.scaled <- scale(xc.num)[factormatches, ]
         xcond.scaled <- (xc.cond.num - x.mean) / x.sd
-        d <- mydist(xcond.scaled, x.scaled, p = 2, inf = FALSE)
+        d <- dist1(xcond.scaled, x.scaled, p = 2, inf = FALSE)
         k[factormatches][d < (sigma ^ 2)] <- 0.4  
         k[factormatches][d < ((0.6 * sigma) ^ 2)] <- 0.7        
         k[factormatches][d < ((0.3 * sigma) ^ 2)] <- 1
@@ -40,7 +40,7 @@ function(xc, xc.cond, sigma = NULL, distance = "euclidean")
         x.sd <- apply(xc.num, 2L, sd)
         x.scaled <- scale(xc.num)[factormatches, ]
         xcond.scaled <- (xc.cond.num - x.mean) / x.sd
-        d <- mydist(xcond.scaled, x.scaled, inf = TRUE)
+        d <- dist1(xcond.scaled, x.scaled, inf = TRUE)
         k[factormatches][d < sigma] <- 0.4  
         k[factormatches][d < (0.6 * sigma)] <- 0.7        
         k[factormatches][d < (0.3 * sigma)] <- 1

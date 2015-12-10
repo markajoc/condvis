@@ -61,9 +61,7 @@ ceplot(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   \code{\link{getGraphicsEvent}}
 }
 \examples{
-detach("package:condvis", unload=TRUE)
-library(condvis)
-
+\dontrun{
 ## Example 1: Multivariate regression, xs one continuous predictor
 
 mtcars$cyl <- as.factor(mtcars$cyl)
@@ -148,5 +146,6 @@ library(e1071)
 model6 <- list(svm(cyl ~ carb + wt + hp, data = mtcars, family = "binomial"))
 
 ceplot(data = mtcars, model = model6, sigma = 1, S = c("carb", "wt"), C = "hp")
+}
 }
 \keyword{ceplot}

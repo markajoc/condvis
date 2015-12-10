@@ -3,8 +3,8 @@
 \alias{plotxs}
 \title{Expectation plot}
 \description{
-  Plot depicting a section through a fitted model surface, or conditional 
-  expectation.
+  Plot depicting a section through a fitted model surface (or a conditional 
+  expectation).
 }
 \usage{
 plotxs(xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,

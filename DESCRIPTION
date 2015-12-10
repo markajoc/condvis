@@ -1,8 +1,8 @@
 Package: condvis
 Type: Package
 Title: Conditional visualization for statistical models
-Version: 0.2.4
-Date: 2015-10-14
+Version: 0.1
+Date: 2015-12-14
 Author: Mark O'Connell
 Maintainer: Mark O'Connell <mark.oconnell@maths.nuim.ie>
 Depends:  R (>= 2.1.0)

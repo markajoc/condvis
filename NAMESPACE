@@ -1,5 +1,5 @@
 #exportPattern("^[[:alpha:]]+")
-export(arrangeC, ceplot, cont2color, factor2color, mydist, plotxc, plotxs, 
+export(arrangeC, ceplot, cont2color, factor2color, dist1, plotxc, plotxs, 
     savingby2d, visualweight, update.xcplot, update.xsplot)
 import(graphics)
 importFrom(MASS, parcoord)

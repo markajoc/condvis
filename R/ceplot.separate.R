@@ -88,29 +88,21 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     else
         x11(height = height, width = width)
     selectorwindow <- dev.cur() 
-    if (identical(selectortype, "minimal")){   
-	    setGraphicsEventHandlers(
-            onMouseDown = if (exists(".mouseclick.separate")) .mouseclick.separate,
-            onMouseUp = if (exists(".mouserelease.separate")) .mouserelease.separate,
-            onMouseMove = if (exists(".mousemove.separate")) .mousemove.separate,
+    if (identical(selectortype, "pcp")){   
+        setGraphicsEventHandlers(
+            onMouseDown = if (exists(".mouseclick.separate.pcp")) .mouseclick.separate.pcp,
+            onMouseUp = if (exists(".mouserelease.separate.pcp")) .mouserelease.separate.pcp,
+            onMouseMove = if (exists(".mousemove.separate.pcp")) .mousemove.separate.pcp,
             onKeybd = if (exists(".keystroke.separate")) .keystroke.separate)
-    } else { 
-        if (identical(selectortype, "pcp")){   
-	        setGraphicsEventHandlers(
-                onMouseDown = if (exists(".mouseclick.separate.pcp")) .mouseclick.separate.pcp,
-                onMouseUp = if (exists(".mouserelease.separate.pcp")) .mouserelease.separate.pcp,
-                onMouseMove = if (exists(".mousemove.separate.pcp")) .mousemove.separate.pcp,
+    } else {
+        if (identical(selectortype, "full")){
+            setGraphicsEventHandlers(
+                onMouseDown = if (exists(".mouseclick.separate.full")) .mouseclick.separate.full,
+                onMouseUp = if (exists(".mouserelease.separate.full")) .mouserelease.separate.full,
+                onMouseMove = if (exists(".mousemove.separate.full")) .mousemove.separate.full,
                 onKeybd = if (exists(".keystroke.separate")) .keystroke.separate)
-        } else {
-            if (identical(selectortype, "full")){
-	            setGraphicsEventHandlers(
-                    onMouseDown = if (exists(".mouseclick.separate.full")) .mouseclick.separate.full,
-                    onMouseUp = if (exists(".mouserelease.separate.full")) .mouserelease.separate.full,
-                    onMouseMove = if (exists(".mousemove.separate.full")) .mousemove.separate.full,
-                    onKeybd = if (exists(".keystroke.separate")) .keystroke.separate)
             }
         }
-    }
     eventEnv <- getGraphicsEventEnv()
 	assign(x = "plotxcobject", value = conditionselectors(Xc, type = 
         selectortype, method = Corder), envir = eventEnv)

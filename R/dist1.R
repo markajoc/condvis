@@ -1,4 +1,4 @@
-mydist <- 
+dist1 <- 
 function (x, X, p = 2, inf = FALSE)
 {
     X <- if (is.null(dim(X)))

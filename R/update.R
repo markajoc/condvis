@@ -2,7 +2,7 @@ update.xcplot <-
 function (object, xclick, yclick, ...)
 {
     if (dev.cur() != object$device)
-        dev.set(object$device)
+        dev.set(object$device)   
     screen(n = object$screen, new = FALSE)
     par(usr = object$usr)
     par(mar = object$mar) 
@@ -46,6 +46,18 @@ function (object, xclick, yclick, ...)
             min(object$xc[, 2], na.rm = TRUE), na.rm = TRUE)
         xc.cond.new <- c(xc.cond.new.x, xc.cond.new.y)
         if (any(xc.cond.new != object$xc.cond.old)){
+            if (nrow(object$xc) > 2000 && requireNamespace("gplots", quietly = 
+                TRUE)){
+                par(bg = "white")
+                dev.hold()
+                screen(new = TRUE)
+                object <- plotxc(xc = object$xc, xc.cond = xc.cond.new, 
+                    name = object$name, select.colour = 
+                    object$select.colour, select.lwd = object$select.lwd, 
+                    cex.axis = object$cex.axis, cex.lab = object$cex.lab, 
+                    tck = object$tck)
+                dev.flush()    
+            } else {
             abline(v = object$xc.cond.old[1], h = object$xc.cond.old[2], lwd = 
                 2 * object$select.lwd, col = "white")
             xrange <- abs(diff(range(object$xc[, 1])))
@@ -57,8 +69,9 @@ function (object, xclick, yclick, ...)
             points(object$xc[redrawindex.x | redrawindex.y, ])
             box()
             abline(v = xc.cond.new.x, h = xc.cond.new.y, lwd = 
-                object$select.lwd, col = object$select.colour)
+                object$select.lwd, col = object$select.colour)   
             object$xc.cond.old <- xc.cond.new
+            }
         }
     } else if (identical(object$plot.type, "boxplot")){
         xc.cond.new.x <- as.factor(object$factorcoords$level)[
@@ -122,6 +135,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
 {
     if (dev.cur() != object$device)
         dev.set(object$device)
+    dev.hold()    
     par(bg = "white")
     screen(n = object$screen, new = FALSE)
     par(usr = object$usr)
@@ -196,18 +210,22 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
     }
     if (!is.null(prednew)){
     screen(n = object$screen, new = TRUE)
-    return(plotxs1(xs = object$xs, y = object$y, xc.cond = xc.cond, 
+    o <- (plotxs1(xs = object$xs, y = object$y, xc.cond = xc.cond, 
         model = object$model, model.colour = object$model.colour, model.lwd = 
         object$model.lwd, model.lty = object$model.lty, model.name = 
         object$model.name, yhat = object$yhat, mar = object$mar, data.colour = 
         data.colour, data.order = data.order, view3d = view3d, theta3d = 
         theta3d, phi3d = phi3d, xs.grid = object$xs.grid, prednew = prednew))
+    dev.flush()
+    return(o)    
     }
     screen(n = object$screen, new = TRUE)
-    plotxs1(xs = object$xs, y = object$y, xc.cond = xc.cond, 
+    o <- plotxs1(xs = object$xs, y = object$y, xc.cond = xc.cond, 
         model = object$model, model.colour = object$model.colour, model.lwd = 
         object$model.lwd, model.lty = object$model.lty, model.name = 
         object$model.name, yhat = object$yhat, mar = object$mar, data.colour = 
         data.colour, data.order = data.order, view3d = view3d, theta3d = 
         theta3d, phi3d = phi3d, conf = object$conf)
+    dev.flush()
+    o    
 }

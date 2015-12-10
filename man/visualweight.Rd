@@ -42,7 +42,7 @@ print(vw)
 
 ## Its use in an interactive ceplot
 \dontrun{
-library(gam)
+library(mgcv)
 library(e1071)
 
 data(powerplant)
