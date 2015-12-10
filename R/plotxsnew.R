@@ -4,6 +4,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     NULL, data.order = NULL, view3d = FALSE, theta3d = 45, phi3d = 20, xs.grid = 
     NULL, prednew = NULL, conf = FALSE)
 {
+    dev.hold()
     if (!(ncol(xs) %in% 1:2))
         stop("xs must be a dataframe with 1 or 2 columns")
     if (ncol(y) != 1)
@@ -386,12 +387,13 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
             }
         }
     } 
+    dev.flush()
     structure(list(xs = xs, y = y, xc.cond = xc.cond, model = model, 
         model.colour = model.colour, model.lwd = model.lwd, model.lty = 
         model.lty, model.name = model.name, yhat = yhat, mar = par("mar"), 
         data.colour = data.colour, data.order = data.order, view3d = view3d, 
         theta3d = theta3d, usr = par("usr"), phi3d = phi3d, plot.type = if 
-        (exists("plot.type")) plot.type else NULL, screen = screen(), xs.grid = 
-        xs.grid, newdata = newdata, prednew = prednew, xs.grid = xs.grid, 
-        prednew = prednew, conf = conf), class = "xsplot")    
+        (exists("plot.type")) plot.type else NULL, screen = screen(), device = 
+        dev.cur(), xs.grid = xs.grid, newdata = newdata, prednew = prednew, 
+        xs.grid = xs.grid, prednew = prednew, conf = conf), class = "xsplot")    
 }

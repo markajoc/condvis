@@ -63,9 +63,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
 
 
     if (identical(version$os, "linux-gnu"))
-        x11(type = "Xlib", height = height, width = height + 0.5*plotlegend)
+        x11(type = "Xlib", height = height, width = height + 0.5 * plotlegend)
     else
-        x11(height = height, width = height + 0.5*plotlegend)
+        x11(height = height, width = height + 0.5 * plotlegend)
     devexp <- dev.cur()    
     close.screen(all.screens = TRUE)    
     
@@ -95,7 +95,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         x11(height = selector.colwidth * 4, width = xcwidth)
     devcond <- dev.cur()    
     close.screen(all.screens = TRUE)
-    xcscreens <- split.screen(c(4, n.selector.cols), screen = mainscreens[2])
+    xcscreens <- split.screen(c(4, n.selector.cols))
     for (i in seq_along(C)){
         screen(xcscreens[i])
         xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = data[1, C[[i]]], 
@@ -104,8 +104,6 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         coords[i, ] <- par("fig")
     }    
  
-    xold <- NULL
-    yold <- NULL 
     mouseclick <- function ()
     {
         function (buttons, x, y)
@@ -113,25 +111,17 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             plotindex <- which(apply(coords, 1, `%inrectangle%`, point = 
                 c(x, y)))
             if (length(plotindex) > 0 && if(exists("buttons")) 0 %in% buttons){
-                dev.hold()
                 xcplots[[plotindex]] <<- update(xcplots[[plotindex]], x, y)
-                xc.cond[, xcplots[[plotindex]]$name] <<- 
-                    xcplots[[plotindex]]$xc.cond.old
-                vw <<- visualweight(xc = data[, uniqC, drop = FALSE], xc.cond = 
-                    xc.cond, sigma = sigma, distance = distance)
-                xsplot <<- update(xsplot, xc.cond = xc.cond, data.colour = 
-                    rgb(1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order)
-                dev.flush()
-            }
-            if (all(findInterval(x, xscoords[1:2]) == 1, identical(
-                xsplot$plot.type, "ccc"), xsplot$view3d, 0 %in% buttons)){
-                if (!is.null(xold))
-                    xsplot <<- update(xsplot, theta3d = xsplot$theta3d + 1 * 
-                        (xold > x) - 1 * (xold < x), phi3d = xsplot$phi3d + 1 * 
-                        (yold > y) - 1 * (yold < y), xs.grid = xsplot$xs.grid, 
-                        prednew = xsplot$prednew)
-                xold <<- x
-                yold <<- y                    
+                if (any(xc.cond[, xcplots[[plotindex]]$name] != 
+                    xcplots[[plotindex]]$xc.cond.old)){
+                    xc.cond[, xcplots[[plotindex]]$name] <<- 
+                        xcplots[[plotindex]]$xc.cond.old
+                    vw <<- visualweight(xc = data[, uniqC, drop = FALSE], 
+                        xc.cond = xc.cond, sigma = sigma, distance = distance)
+                    xsplot <<- update(xsplot, xc.cond = xc.cond, data.colour = 
+                        rgb(1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = 
+                        vw$order)
+                }    
             }
         points(NULL)
         }
