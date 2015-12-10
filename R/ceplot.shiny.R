@@ -81,10 +81,8 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
                         column(3, if (identical(length(S), 2L)) plotOutput('legend', height = 400, width = '20%'))
                     )
                     , actionButton('saveButton', 'Take snapshot (pdf)')
-                    , conditionalPanel(condition = 'input.tab == 2', helpText(strong('Perspective plot rotation'))) 
-                    , conditionalPanel(condition = 'input.tab == 2', numericInput('phi', 'phi (vertical rotation): ', 20, -180, 180))
-                    , conditionalPanel(condition = 'input.tab == 2', numericInput('theta', 'theta (horizontal rotation): ', 45, -180, 180))
-                    , helpText(strong('Weighting function settings'))
+                    , conditionalPanel(condition = 'input.tab == 2', numericInput('phi', 'Vertical rotation: ', 20, -180, 180))
+                    , conditionalPanel(condition = 'input.tab == 2', numericInput('theta', 'Horizontal rotation: ', 45, -180, 180))
                     , sliderInput('sigma', 'Weighting function parameter: ', 0.01, 5, step = 0.01, value = 1)
                     , radioButtons('type', 'Weighting function type:', c('euclidean', 'chebyshev'))
                 ),
