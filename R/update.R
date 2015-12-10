@@ -1,7 +1,8 @@
 update.xcplot <- 
 function (object, xclick, yclick, ...)
 {
-    #dev.set(object$device)
+    if (dev.cur() != object$device)
+        dev.set(object$device)
     screen(n = object$screen, new = FALSE)
     par(usr = object$usr)
     par(mar = object$mar) 
@@ -119,7 +120,8 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
     view3d = NULL, theta3d = NULL, phi3d = NULL, xs.grid = NULL, prednew = NULL,
     ...)
 {
-    #dev.set(object$device)
+    if (dev.cur() != object$device)
+        dev.set(object$device)
     par(bg = "white")
     screen(n = object$screen, new = FALSE)
     par(usr = object$usr)
