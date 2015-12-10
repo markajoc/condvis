@@ -77,7 +77,7 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
                     factorcoords <- data.frame(
                         level = levels(xc[, are.factors]),
                         x = 1:length(levels(xc[, are.factors])))
-                    abline(v = factorcoords$x[as.character(factorcoords$level) == as.character(xc.cond[,are.factors])],#subset(factorcoords, as.character(level) == as.character(xc.cond[,are.factors]))$x,
+                    abline(v = factorcoords$x[as.character(factorcoords$level) == as.character(xc.cond[,are.factors])],
                         h = xc.cond[!are.factors], lwd = select.lwd,
                         col = select.colour)
                     plot.type <- "boxplot"
