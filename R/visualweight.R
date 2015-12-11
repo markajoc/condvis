@@ -1,5 +1,5 @@
 visualweight <- 
-function(xc, xc.cond, sigma = NULL, distance = "euclidean")
+function (xc, xc.cond, sigma = NULL, distance = "euclidean")
 {
     if(!is.data.frame(xc)) 
         stop("'xc' should be a data.frame.")

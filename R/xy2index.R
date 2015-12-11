@@ -1,4 +1,6 @@
 xy2index <-
+# helper function to get from mouseclick to xcplot object via screen number,
+# soon to be deprecated
 function (x, y, screen.info)
 {
     c1 <- x >= screen.info$xleft
