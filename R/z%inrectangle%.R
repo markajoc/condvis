@@ -1,4 +1,5 @@
 `%inrectangle%` <-
+# helper function for checking what screen was clicked on
 function (point, rectangle)
 {
     # assuming (x, y) and (xleft, xright, ybottom, ytop)
