@@ -13,12 +13,12 @@ arrangeC <- function (data, method = "default")
     }
     diag(saving) <- 1
     C <- list()
-    i <- 1
+    i <- 1L
     while(ncol(saving) > 2){
-        pair <- which(saving == min(saving), arr.ind = TRUE)[1, ]
+        pair <- which(saving == min(saving), arr.ind = TRUE)[1L, ]
         C[[i]] <- colnames(saving)[pair]
         saving <- saving[-pair, -pair, drop = FALSE]
-        i <- i + 1
+        i <- i + 1L
         }
     C[[i]] <- colnames(saving)
     C
