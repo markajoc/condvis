@@ -23,7 +23,7 @@ visualweight(xc, xc.cond, sigma = NULL, distance = "euclidean")
 \details{
   Observations where the categorical predictor levels do not match are assigned
   weights 0 first. Then observations are assigned weights between 0 and 1 
-  according to a function of Euclidean distance. 
+  according to a distance measure (\code{\link{dist1}}). 
 }
 \value{
 A list:

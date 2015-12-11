@@ -5,7 +5,6 @@
   Takes an existing object of class \code{'xsplot'}
 }
 \usage{
-## S3 method for class 'xsplot'
 \method{update}{xsplot}(object, xc.cond = NULL, data.colour = NULL, 
     data.order = NULL, view3d = NULL, theta3d = NULL, phi3d = NULL, 
     xs.grid = NULL, prednew = NULL, ...)

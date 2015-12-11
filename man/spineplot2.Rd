@@ -71,7 +71,7 @@ Originally Achim Zeileis, edited by Mark O'Connell
 
 \examples{
 \dontrun{
-obj <- condvis:::spineplot2(mtcars$cyl, as.factor(mtcars$am))
+obj <- condvis:::spineplot2(as.factor(mtcars$cyl), as.factor(mtcars$am))
 print(obj)
 }
 }

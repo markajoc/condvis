@@ -6,7 +6,6 @@
   the coordinates of a mouseclick.
 }
 \usage{
-## S3 method for class 'xcplot'
 \method{update}{xcplot}(object, xclick, yclick, ...)
 }
 \arguments{
