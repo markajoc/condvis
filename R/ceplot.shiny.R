@@ -1,4 +1,5 @@
 ceplot.shiny <-
+## this code really needs a rewrite!
 function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL, 
     cex.lab = NULL, tck = NULL, Corder = "default")
 {
