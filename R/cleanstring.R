@@ -1,4 +1,5 @@
-cleanstring <- 
+cleanstring <-
+# helper function for extracting variable names from model objects 
 function(string)
 {
     if(!is.character(string)) stop("'string' should be of type character.")
