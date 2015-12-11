@@ -1,4 +1,6 @@
 makepath <-
+# first attempt at making a path for conditional tour, for continuous
+# variables only
 function (Xc, ncentroids, ninterp = 4)
 {
     if(!requireNamespace("TSP", quietly = TRUE))
