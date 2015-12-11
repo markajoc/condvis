@@ -22,7 +22,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
          (1:ncol(data))[-response][1L]
         #cat(paste("\n'S' was not specified, picked", colnames(data)[S]))
         } else if (is.character(S))
-            vapply(S, function(x) which(colnames(data) == x), numeric(1))
+            vapply(S, function(x) which(colnames(data) == x), numeric(1L))
             else S
     C <- if (is.null(C))
         arrangeC(data[, -c(response, S)])
