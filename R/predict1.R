@@ -1,4 +1,5 @@
 predict1 <- 
+# predict wrapper to deal with awkward predict methods
 function (object, ...)
 {
     type <- if ("nnet" %in% class(object))
