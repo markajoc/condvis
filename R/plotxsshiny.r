@@ -1,7 +1,8 @@
 plotxs.shiny <-
 function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL, 
     model.lty = NULL, model.name = NULL, yhat = NULL, mar = NULL, 
-    data.colour = NULL, data.order = NULL, view3d = FALSE, theta3d = 45, phi3d = 20)
+    data.colour = NULL, data.order = NULL, view3d = FALSE, theta3d = 45, 
+    phi3d = 20)
 {
     model <- if (!is.list(model))
         list(model)
@@ -68,7 +69,8 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
             prednew2 <- lapply(model, confpred, newdata = newdata)     
             for (i in seq_along(model)){
                 points.default(xs.grid[, 1L], prednew[[i]], type = 'l',
-                    col = model.colour[i], lwd = model.lwd[i], lty = model.lty[i])
+                    col = model.colour[i], lwd = model.lwd[i], lty = 
+                    model.lty[i])
                 if (all(c("lwr", "upr") %in% colnames(prednew2[[i]]))){
                     points.default(xs.grid[, 1L], prednew2[[i]][, "lwr"], 
                         type = 'l', lty = 3, col = model.colour[i], lwd = 
@@ -116,15 +118,18 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                         range(as.numeric(xs[, 1L])))) ), range(as.integer(
                         y[, 1L])), col = NULL, xlab = colnames(xs)[1L], ylab = 
                         colnames(y)[1L], yaxt = "n", main = "Conditional 
-                        expectation", xaxt = if (is.factor(xs[, 1L])) "n" else NULL)
+                        expectation", xaxt = if (is.factor(xs[, 1L])) "n" else 
+                        NULL)
                     axis(2, at = 1:nlevels(y[, 1L]), labels = levels(y[, 1L]))
-                    if (is.factor(xs[, 1L])) axis(1, at = 1:nlevels(xs[, 1L]), labels = levels(xs[, 1L]))              
+                    if (is.factor(xs[, 1L])) 
+                        axis(1, at = 1:nlevels(xs[, 1L]), labels = levels(xs[, 
+                            1L]))              
                     if (nrow(xs.new) > 0) 
-                        points(as.numeric(xs.new[, 1L]), as.integer(y.new[, 1L]), 
-                            col = data.colour)  
+                        points(as.numeric(xs.new[, 1L]), as.integer(y.new[, 1L])
+                            , col = data.colour)  
                     for (i in seq_along(model)){
-                        points.default(as.numeric(xs.grid[, 1L]), as.integer(prednew[[i]]),
-                            type = 'l', col = model.colour[i], 
+                        points.default(as.numeric(xs.grid[, 1L]), as.integer(
+                            prednew[[i]]), type = 'l', col = model.colour[i], 
                             lwd = model.lwd[i], lty = model.lty[i])
                     }
                 }    
@@ -155,12 +160,13 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
 			     ybottom = yrect - yoffset, ytop = yrect + yoffset,
 				 col = color)
             if (nrow(xs.new) > 0)      
-          	    points(jitter(as.integer(xs.new[, 1L]), amount = 0.6 * xoffset), jitter(as.integer(
-                    xs.new[, 2L]), amount = 0.6 * yoffset), bg = ybg, col = data.colour, pch = 21)	
-		    axis(1L, at = unique(xrect), labels = levels(xs[, 1L]), 
-                tick = FALSE)
-			axis(2L, at = unique(yrect), labels = levels(xs[, 2L]),
-                tick = FALSE)
+          	    points(jitter(as.integer(xs.new[, 1L]), amount = 0.6 * xoffset), 
+                    jitter(as.integer(xs.new[, 2L]), amount = 0.6 * yoffset), 
+                    bg = ybg, col = data.colour, pch = 21)	
+		    axis(1L, at = unique(xrect), labels = levels(xs[, 1L]), tick = 
+                FALSE)
+			axis(2L, at = unique(yrect), labels = levels(xs[, 2L]), tick = 
+                FALSE)
 		} else { 
             if (any(arefactorsxs)){ 
 				xrect <- xs.grid[, !arefactorsxs]
@@ -183,23 +189,28 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                     arefactorsxs]), tick = FALSE)
 			} else {
                 if (view3d){
-                    z <- matrix(fhat, ncol = if (view3d) {20L} else 50L, byrow = FALSE)
+                    z <- matrix(fhat, ncol = if (view3d) {20L} else 50L, byrow = 
+                        FALSE)
                     zfacet <- (z[-1, -1] + z[-1, -ncol(z)] + z[-nrow(z), -1] + 
                         z[-nrow(z), -ncol(z)]) / 4
                     colorfacet <- cont2color(zfacet, range(y[, 1L]))
                     par(mar = c(3, 3, 3, 3))
-                    suppressWarnings(persp(x = unique(xs.grid[, 1L]), y = unique(xs.grid[, 2L]), border = rgb(0.3, 0.3, 0.3), lwd = 0.1,
-                        z = z, col = colorfacet, zlim = range(y), xlab = colnames(xs)[1L], 
-                        ylab = colnames(xs)[2L], zlab = colnames(y)[1L], d = 10, ticktype = "detailed",
-                        main = "Conditional expectation", theta = theta3d, phi = phi3d)) -> persp.object
+                    suppressWarnings(persp(x = unique(xs.grid[, 1L]), y = 
+                        unique(xs.grid[, 2L]), border = rgb(0.3, 0.3, 0.3), lwd 
+                        = 0.1, z = z, col = colorfacet, zlim = range(y), xlab = 
+                        colnames(xs)[1L], ylab = colnames(xs)[2L], zlab = 
+                        colnames(y)[1L], d = 10, ticktype = "detailed", main = 
+                        "Conditional expectation", theta = theta3d, phi = phi3d
+                        )) -> persp.object
                     if (nrow(xs.new) > 0){     
                         points(trans3d(xs.new[, 1], xs.new[, 2], y.new[, 1], 
                             pmat = persp.object), col = data.colour)  
-                        linestarts <- trans3d(xs.new[, 1], xs.new[, 2], y.new[, 1], 
-                            pmat = persp.object)   
+                        linestarts <- trans3d(xs.new[, 1], xs.new[, 2], y.new[, 
+                            1], pmat = persp.object)   
                         lineends <- trans3d(xs.new[, 1], xs.new[, 2], yhat.new, 
                             pmat = persp.object) 
-                        segments(x0 = linestarts$x, y0 = linestarts$y, x1 = lineends$x, y1 = lineends$y, col = data.colour)                            
+                        segments(x0 = linestarts$x, y0 = linestarts$y, x1 = 
+                            lineends$x, y1 = lineends$y, col = data.colour)                            
                     }
                     plot.type <- "persp"                    
                 } else {
@@ -209,8 +220,8 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                     plot(range(xs.grid[, 1L]), range(xs.grid[, 2L]), col = NULL, 
                         xlab = colnames(xs)[1L], ylab = colnames(xs)[2L], 
                         main = "Conditional expectation")
-                    rect(xleft = xs.grid[, 1L] - xoffset, xright = xs.grid[, 1L] + 
-                        xoffset, ybottom = xs.grid[, 2L] - yoffset, ytop = 
+                    rect(xleft = xs.grid[, 1L] - xoffset, xright = xs.grid[, 1L] 
+                        + xoffset, ybottom = xs.grid[, 2L] - yoffset, ytop = 
                         xs.grid[, 2L] + yoffset, col = color, border = NA)
                     if (nrow(xs.new) > 0)     
                         points(xs.new, bg = ybg, col = data.colour, pch = 21)
@@ -219,11 +230,12 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
         }
     }
     
-    structure(list(xs = xs, y = y, xc.cond = xc.cond, model = model, model.colour = 
-        model.colour, model.lwd = model.lwd, model.lty = model.lty, model.name =
-        model.name, yhat = yhat, mar = mar, data.colour = data.colour.old, 
-        data.order = data.order, view3d = view3d, theta3d = theta3d, usr = if (exists("usr")) usr else NULL,
-        phi3d = phi3d, plot.type = if (exists("plot.type")) plot.type else NULL, device = dev.cur(),
-        screen = screen(), xs.grid = xs.grid, newdata = newdata, prednew = 
-        prednew), class = "xsplot")
+    structure(list(xs = xs, y = y, xc.cond = xc.cond, model = model, 
+        model.colour = model.colour, model.lwd = model.lwd, model.lty = 
+        model.lty, model.name = model.name, yhat = yhat, mar = mar, data.colour 
+        = data.colour.old, data.order = data.order, view3d = view3d, theta3d = 
+        theta3d, usr = if (exists("usr")) usr else NULL, phi3d = phi3d, 
+        plot.type = if (exists("plot.type")) plot.type else NULL, device = 
+        dev.cur(), screen = screen(), xs.grid = xs.grid, newdata = newdata, 
+        prednew = prednew), class = "xsplot")
 }
