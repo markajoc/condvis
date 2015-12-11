@@ -209,22 +209,22 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
     }
     if (!is.null(prednew)){
     screen(n = object$screen, new = TRUE)
-    o <- (plotxs1(xs = object$xs, y = object$y, xc.cond = xc.cond, 
+    obj <- (plotxs1(xs = object$xs, y = object$y, xc.cond = xc.cond, 
         model = object$model, model.colour = object$model.colour, model.lwd = 
         object$model.lwd, model.lty = object$model.lty, model.name = 
         object$model.name, yhat = object$yhat, mar = object$mar, data.colour = 
         data.colour, data.order = data.order, view3d = view3d, theta3d = 
         theta3d, phi3d = phi3d, xs.grid = object$xs.grid, prednew = prednew))
     dev.flush()
-    return(o)    
+    return(obj)    
     }
     screen(n = object$screen, new = TRUE)
-    o <- plotxs1(xs = object$xs, y = object$y, xc.cond = xc.cond, 
+    obj <- plotxs1(xs = object$xs, y = object$y, xc.cond = xc.cond, 
         model = object$model, model.colour = object$model.colour, model.lwd = 
         object$model.lwd, model.lty = object$model.lty, model.name = 
         object$model.name, yhat = object$yhat, mar = object$mar, data.colour = 
         data.colour, data.order = data.order, view3d = view3d, theta3d = 
         theta3d, phi3d = phi3d, conf = object$conf)
     dev.flush()
-    o    
+    obj    
 }
