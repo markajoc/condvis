@@ -17,9 +17,9 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     model.lty <- if (is.null(model.lty)) 
         rep(1, length(model))
     else rep(model.lty, length.out = length(model))
-    model.name <- names(model)#if (is.null(model.name)) 
-    #    vapply(model, function(x) tail(class(x), n = 1L), character(1))
-    #else model.name
+    model.name <- if(!is.null(names(model)))
+        names(model)
+    else seq_along(model)
     if (view3d){
         yhat <- if (is.null(yhat))
             lapply(model[1], predict1)
