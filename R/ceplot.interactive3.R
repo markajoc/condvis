@@ -4,9 +4,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     view3d = FALSE, Corder = "default", conf = FALSE, separate = TRUE)
 {
     uniqC <- unique(unlist(C))
-    xc.cond <- data[1, uniqC, drop = FALSE]
+    xc.cond <- data[1L, uniqC, drop = FALSE]
     xcplots <- list()
-    coords <- matrix(ncol = 4, nrow = length(C))    
+    coords <- matrix(ncol = 4L, nrow = length(C))    
     plotlegend <- length(S) == 2
     n.selector.cols <- ceiling(length(C) / 4L)
     selector.colwidth <- 2
@@ -26,19 +26,18 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 0, 0, 1, 1), ncol = 4))
         } else split.screen()
         if (plotlegend){
-            screen(xsscreens[2])
+            screen(xsscreens[2L])
             xslegend(data[, response], colnames(data)[response])
         }
-        screen(xsscreens[1])
+        screen(xsscreens[1L])
         vw <- visualweight(xc = data[, uniqC, drop = FALSE], xc.cond = xc.cond, 
             sigma = sigma, distance = distance)
-        par(mar = c(3,3,3,3))
+        par(mar = c(3, 3, 3, 3))
         xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response, 
             drop = FALSE], xc.cond = xc.cond, model = model, data.colour = rgb(1 - 
             vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, view3d = view3d, 
             conf = conf)
         xscoords <- par("fig") 
-
         xcwidth <- selector.colwidth * n.selector.cols
         n.selector.rows <- ceiling(length(C) / n.selector.cols)
         xcheight <- selector.colwidth * n.selector.rows    
@@ -51,7 +50,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         xcscreens <- split.screen(c(n.selector.rows, n.selector.cols))
         for (i in seq_along(C)){
             screen(xcscreens[i])
-            xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = data[1, C[[i]]], 
+            xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = data[1L, C[[i]]], 
                 name = colnames(data[, C[[i]], drop = FALSE]), select.colour = 
                 "blue")
             coords[i, ] <- par("fig")
@@ -65,11 +64,11 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         close.screen(all.screens = TRUE)
         xcwidth <- selector.colwidth * n.selector.cols / width
         mainscreens <- split.screen(figs = matrix(c(0, 1 - xcwidth, 1 - xcwidth, 1, 
-            0, 0, 1, 1), ncol = 4))
-        xcscreens <- split.screen(c(4, n.selector.cols), screen = mainscreens[2])
+            0, 0, 1, 1), ncol = 4L))
+        xcscreens <- split.screen(c(4L, n.selector.cols), screen = mainscreens[2L])
         for (i in seq_along(C)){
             screen(xcscreens[i])
-            xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = data[1, C[[i]]], 
+            xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = data[1L, C[[i]]], 
                 name = colnames(data[, C[[i]], drop = FALSE]), select.colour = 
                 "blue")
             coords[i, ] <- par("fig")
@@ -77,16 +76,16 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         legendwidth <- 1.15 / height
         xsscreens <- if (plotlegend){
             split.screen(figs = matrix(c(0, 1 - legendwidth, 1 - legendwidth, 1, 
-                0, 0, 1, 1), ncol = 4), screen = mainscreens[1])
-        } else mainscreens[1]
+                0, 0, 1, 1), ncol = 4), screen = mainscreens[1L])
+        } else mainscreens[1L]
         if (plotlegend){
-            screen(xsscreens[2])
+            screen(xsscreens[2L])
             xslegend(data[, response], colnames(data)[response])
         }
-        screen(xsscreens[1])
+        screen(xsscreens[1L])
         vw <- visualweight(xc = data[, uniqC, drop = FALSE], xc.cond = xc.cond, 
             sigma = sigma, distance = distance)
-        par(mar = c(3,3,3,3))
+        par(mar = c(3, 3, 3, 3))
         xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response, 
             drop = FALSE], xc.cond = xc.cond, model = model, data.colour = rgb(1 - 
             vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, view3d = view3d, 
@@ -95,7 +94,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         xold <- NULL
         yold <- NULL 
     }
-    mouseclick <- function (separate)
+    mouseclick <- function (separate = FALSE)
     {
         function (buttons, x, y)
         {
@@ -161,7 +160,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 mainscreens <- split.screen(figs = matrix(c(0, 1 - xcwidth, 1 - 
                     xcwidth, 1, 0, 0, 1, 1), ncol = 4))
                 xcscreens <- split.screen(c(4, n.selector.cols), screen = 
-                    mainscreens[2])
+                    mainscreens[2L])
                 for (i in seq_along(C)){
                     screen(xcscreens[i])
                     plotxc(xc = data[, C[[i]]], xc.cond = xcplots[[i]]$xc.cond, 
@@ -170,14 +169,14 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 }    
                 xsscreens <- if (plotlegend){
                     split.screen(figs = matrix(c(0, 1 - legendwidth, 1 - 
-                        legendwidth, 1, 0, 0, 1, 1), ncol = 4), screen = 
-                        mainscreens[1])
-                } else mainscreens[1]
+                        legendwidth, 1, 0, 0, 1, 1), ncol = 4L), screen = 
+                        mainscreens[1L])
+                } else mainscreens[1L]
                 if (plotlegend){
-                    screen(xsscreens[2])
+                    screen(xsscreens[2L])
                     xslegend(data[, response], colnames(data)[response])
                 }
-                screen(xsscreens[1])
+                screen(xsscreens[1L])
                 plotxs1(xs = data[, S, drop = FALSE], data[, response, 
                     drop = FALSE], xc.cond = xc.cond, model = model, data.colour 
                     = rgb(1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, 
