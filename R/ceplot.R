@@ -53,12 +53,12 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         stop("cannot have variables common to both 'S' and 'C'")
         
     if (identical(type, "default")){
-        ceplot.interactive3(data = data, model = model, response = response, 
+        ceplot.interactive(data = data, model = model, response = response, 
             S = S, C = C, sigma = sigma, distance = distance, cex.axis = 
             cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = 
             Corder, conf = conf, separate = FALSE)
     } else if (identical(type, "separate") & identical(selectortype, "minimal")){
-        ceplot.interactive3(data = data, model = model, response = response, 
+        ceplot.interactive(data = data, model = model, response = response, 
             S = S, C = C, sigma = sigma, distance = distance, cex.axis = 
             cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = 
             Corder, conf = conf, separate = TRUE)
