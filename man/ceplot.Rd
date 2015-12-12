@@ -74,7 +74,7 @@ model1 <- list(
 conditionvars1 <- list(c("cyl", "hp"))
 
 ceplot(data = mtcars, model = model1, response = "mpg", S = "wt", 
-    C = conditionvars1, sigma = 0.3, conf = F, type = "shiny")
+    C = conditionvars1, sigma = 0.3, conf = T)
 
 ## Example 2: Binary classification, xs one categorical predictor
 
