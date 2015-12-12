@@ -35,7 +35,7 @@ function (xc, xc.cond, sigma = NULL, distance = "euclidean")
         k[factormatches][d < (sigma ^ 2)] <- 0.4  
         k[factormatches][d < ((0.6 * sigma) ^ 2)] <- 0.7        
         k[factormatches][d < ((0.3 * sigma) ^ 2)] <- 1
-    } else if (identical(distance, "chebyshev")){
+    } else if (identical(distance, "maxnorm")){
         x.mean <- colMeans(xc.num)
         x.sd <- apply(xc.num, 2L, sd)
         x.scaled <- scale(xc.num)[factormatches, ]

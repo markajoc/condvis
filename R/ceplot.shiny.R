@@ -85,7 +85,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
                     , conditionalPanel(condition = 'input.tab == 2', numericInput('phi', 'Vertical rotation: ', 20, -180, 180))
                     , conditionalPanel(condition = 'input.tab == 2', numericInput('theta', 'Horizontal rotation: ', 45, -180, 180))
                     , sliderInput('sigma', 'Weighting function parameter: ', 0.01, 5, step = 0.01, value = 1)
-                    , radioButtons('type', 'Weighting function type:', c('euclidean', 'chebyshev'))
+                    , radioButtons('type', 'Weighting function type:', c('euclidean', 'maxnorm'))
                 ),
                 column(7,
                     fluidRow( helpText(strong('Condition selector plots')) ),

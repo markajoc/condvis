@@ -15,7 +15,7 @@
   \item{p}{ power to use in Minkowski distance, defaults to 2 for Euclidean 
     distance.}  
   \item{inf}{ if \code{TRUE} function returns the l-infinity distance, also 
-    known as Chebyshev distance.}   
+    known as maximum norm distance.}   
 }
 \value{
   A numeric vector.

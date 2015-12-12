@@ -18,7 +18,7 @@ visualweight(xc, xc.cond, sigma = NULL, distance = "euclidean")
     the distance function for assigning weights. Larger values show more data, 
     smaller values show less data.}
   \item{distance}{ distance metric used, \code{"euclidean"} (default) or 
-    \code{"chebyshev"}.}
+    \code{"maxnorm"}.}
 }
 \details{
   Observations where the categorical predictor levels do not match are assigned

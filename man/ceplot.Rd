@@ -31,7 +31,7 @@ ceplot(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   \item{sigma}{ tuning parameter for colouring data by proximity to current 
     conditioning, passed to \code{\link{visualweight}}.}  
   \item{distance}{ distance metric to be used in \code{\link{visualweight}}, 
-    choice of: \code{"euclidean"} (default) or \code{"chebyshev"}}  
+    choice of: \code{"euclidean"} (default) or \code{"maxnorm"}}  
   \item{type}{ type of interactive plot. \code{"default"} plots everything on 
     one device. \code{"separate"} plots the condition selector plots on a 
     separate device. \code{"shiny"} creates and opens a Shiny web application.}  
