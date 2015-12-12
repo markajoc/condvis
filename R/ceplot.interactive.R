@@ -14,7 +14,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     if (separate){
         width <- height + 0.5 * plotlegend + selector.colwidth * n.selector.cols
         if (identical(version$os, "linux-gnu"))
-            x11(type = "Xlib", height = height, width = height + 0.5 * plotlegend)
+            x11(type = "Xlib", height = height, width = height + 0.5 * 
+                plotlegend)
         else
             x11(height = height, width = height + 0.5 * plotlegend)
         devexp <- dev.cur()    
@@ -34,8 +35,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             sigma = sigma, distance = distance)
         par(mar = c(3, 3, 3, 3))
         xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response, 
-            drop = FALSE], xc.cond = xc.cond, model = model, data.colour = rgb(1 - 
-            vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, view3d = view3d, 
+            drop = FALSE], xc.cond = xc.cond, model = model, data.colour = rgb(1 
+            - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, view3d = view3d, 
             conf = conf)
         xscoords <- par("fig") 
         xcwidth <- selector.colwidth * n.selector.cols
@@ -50,9 +51,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         xcscreens <- split.screen(c(n.selector.rows, n.selector.cols))
         for (i in seq_along(C)){
             screen(xcscreens[i])
-            xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = data[1L, C[[i]]], 
-                name = colnames(data[, C[[i]], drop = FALSE]), select.colour = 
-                "blue")
+            xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = data[1L, 
+                C[[i]]], name = colnames(data[, C[[i]], drop = FALSE]), 
+                select.colour = "blue")
             coords[i, ] <- par("fig")
         } 
     } else {
@@ -63,14 +64,15 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             x11(height = height, width = width)
         close.screen(all.screens = TRUE)
         xcwidth <- selector.colwidth * n.selector.cols / width
-        mainscreens <- split.screen(figs = matrix(c(0, 1 - xcwidth, 1 - xcwidth, 1, 
-            0, 0, 1, 1), ncol = 4L))
-        xcscreens <- split.screen(c(4L, n.selector.cols), screen = mainscreens[2L])
+        mainscreens <- split.screen(figs = matrix(c(0, 1 - xcwidth, 1 - xcwidth, 
+            1, 0, 0, 1, 1), ncol = 4L))
+        xcscreens <- split.screen(c(4L, n.selector.cols), screen = mainscreens[
+            2L])
         for (i in seq_along(C)){
             screen(xcscreens[i])
-            xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = data[1L, C[[i]]], 
-                name = colnames(data[, C[[i]], drop = FALSE]), select.colour = 
-                "blue")
+            xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = data[1L, 
+                C[[i]]], name = colnames(data[, C[[i]], drop = FALSE]), 
+                select.colour = "blue")
             coords[i, ] <- par("fig")
         }    
         legendwidth <- 1.15 / height
@@ -87,9 +89,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             sigma = sigma, distance = distance)
         par(mar = c(3, 3, 3, 3))
         xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response, 
-            drop = FALSE], xc.cond = xc.cond, model = model, data.colour = rgb(1 - 
-            vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, view3d = view3d, 
-            conf = conf)
+            drop = FALSE], xc.cond = xc.cond, model = model, data.colour = rgb(
+            1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, view3d = 
+            view3d, conf = conf)
         xscoords <- par("fig")  
         xold <- NULL
         yold <- NULL 
