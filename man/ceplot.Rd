@@ -81,12 +81,10 @@ ceplot(data = mtcars, model = model1, response = "mpg", S = "wt",
 mtcars$cyl <- as.factor(mtcars$cyl)
 mtcars$am <- as.factor(mtcars$am)
 
-library(mgcv)
 library(e1071)
 model2 <- list(
     svm = svm(am ~ mpg + wt + cyl, data = mtcars, family = "binomial"),
-    glm = glm(am ~ mpg + wt + cyl, data = mtcars, family = "binomial"),
-    gam = mgcv::gam(am ~ mpg + s(wt) + cyl, data = mtcars, family = "binomial"))
+    glm = glm(am ~ mpg + wt + cyl, data = mtcars, family = "binomial"))
 
 ceplot(data = mtcars, model = model2, S = "wt", sigma = 1, type = "shiny")
 
