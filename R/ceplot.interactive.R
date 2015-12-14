@@ -159,15 +159,16 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     Sys.time())), ".pdf", sep = "") 
                 pdf(file = filename, width = width, height = height)
                 close.screen(all.screens = TRUE)
+                xcwidth <- selector.colwidth * n.selector.cols / width
                 mainscreens <- split.screen(figs = matrix(c(0, 1 - xcwidth, 1 - 
                     xcwidth, 1, 0, 0, 1, 1), ncol = 4))
                 xcscreens <- split.screen(c(4, n.selector.cols), screen = 
                     mainscreens[2L])
                 for (i in seq_along(C)){
                     screen(xcscreens[i])
-                    plotxc(xc = data[, C[[i]]], xc.cond = xcplots[[i]]$xc.cond, 
-                        name = colnames(data[, C[[i]], drop = FALSE]), 
-                        select.colour = "blue")
+                    plotxc(xc = xcplots[[i]]$xc, xc.cond = xcplots[[i]]$xc.cond.old, 
+                        name = xcplots[[i]]$name, 
+                        select.colour = xcplots[[i]]$select.colour)
                 }    
                 xsscreens <- if (plotlegend){
                     split.screen(figs = matrix(c(0, 1 - legendwidth, 1 - 
@@ -182,7 +183,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 plotxs1(xs = data[, S, drop = FALSE], data[, response, 
                     drop = FALSE], xc.cond = xc.cond, model = model, data.colour 
                     = rgb(1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, 
-                    view3d = view3d, theta3d = 45, phi3d = 20, conf = conf)
+                    view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d = xsplot$phi3d, conf = conf)
                 dev.off()    
                 cat(paste("\nSnapshot saved: '", filename,"'", sep = ""))
                 cat("\n")            
