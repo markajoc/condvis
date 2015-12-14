@@ -42,13 +42,15 @@ function (buttons, x, y)
             levels = levels(Xc[, rows[i]]))
         Xc.cond.num[rows[i]] <- as.numeric(Xc.cond[rows[i]])  
     }  
-    for (sc in which(rows == rows[i] | cols == rows[i] | rows == cols[i] | cols == cols[i])){
+    for (sc in which(rows == rows[i] | cols == rows[i] | rows == cols[i] | cols 
+        == cols[i])){
         if (!identical(rows[sc], cols[sc])){
             screen(scr2[sc])
             plot(Xc.num[,cols[sc]], Xc.num[,rows[sc]], cex = 0.6, xlab = "", 
                 ylab = "", xaxt = "n", yaxt = "n", col = if (identical(rows[i], 
                 cols[i])) NULL else "black")
-            abline(v = Xc.cond.num[cols[sc]], h = Xc.cond.num[rows[sc]], col = "blue")
+            abline(v = Xc.cond.num[cols[sc]], h = Xc.cond.num[rows[sc]], col = 
+                "blue")
         }
     }
     dev.flush()
