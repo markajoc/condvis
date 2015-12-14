@@ -33,7 +33,7 @@ function (Xc, type = "minimal", method = "default", Xc.cond = NULL, ...)
             dev.hold()
             for (i in seq_along(scr2)){
                 screen(scr2[i])
-                par(mar = c(0.1,0.1,0.1,0.1))
+                par(mar = c(0.1, 0.1, 0.1, 0.1))
                 par(mgp = c(3, 0.25, 0.15))
                 plot(Xc.num[,cols[i]], Xc.num[,rows[i]], cex = 0.6, xlab = "", 
                     ylab = "", xaxt = "n", yaxt = "n", col = if (identical(
