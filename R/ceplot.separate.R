@@ -90,17 +90,25 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     selectorwindow <- dev.cur() 
     if (identical(selectortype, "pcp")){   
         setGraphicsEventHandlers(
-            onMouseDown = if (exists(".mouseclick.separate.pcp")) .mouseclick.separate.pcp,
-            onMouseUp = if (exists(".mouserelease.separate.pcp")) .mouserelease.separate.pcp,
-            onMouseMove = if (exists(".mousemove.separate.pcp")) .mousemove.separate.pcp,
-            onKeybd = if (exists(".keystroke.separate")) .keystroke.separate)
+            onMouseDown = if (exists(".mouseclick.separate.pcp")) 
+                .mouseclick.separate.pcp,
+            onMouseUp = if (exists(".mouserelease.separate.pcp")) 
+                .mouserelease.separate.pcp,
+            onMouseMove = if (exists(".mousemove.separate.pcp")) 
+                .mousemove.separate.pcp,
+            onKeybd = if (exists(".keystroke.separate")) 
+                .keystroke.separate)
     } else {
         if (identical(selectortype, "full")){
             setGraphicsEventHandlers(
-                onMouseDown = if (exists(".mouseclick.separate.full")) .mouseclick.separate.full,
-                onMouseUp = if (exists(".mouserelease.separate.full")) .mouserelease.separate.full,
-                onMouseMove = if (exists(".mousemove.separate.full")) .mousemove.separate.full,
-                onKeybd = if (exists(".keystroke.separate")) .keystroke.separate)
+                onMouseDown = if (exists(".mouseclick.separate.full")) 
+                    .mouseclick.separate.full,
+                onMouseUp = if (exists(".mouserelease.separate.full")) 
+                    .mouserelease.separate.full,
+                onMouseMove = if (exists(".mousemove.separate.full")) 
+                    .mousemove.separate.full,
+                onKeybd = if (exists(".keystroke.separate")) 
+                    .keystroke.separate)
             }
         }
     eventEnv <- getGraphicsEventEnv()
@@ -110,7 +118,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     assign(x = "expectationwindow", value = expectationwindow, envir = eventEnv)
     assign(x = "selectorwindow", value = selectorwindow, envir = eventEnv)
     assign(x = "Xc", value = Xc, envir = eventEnv)
-    assign(x = "vwargs", value = list(sigma = sigma, distance = distance), envir = eventEnv)
+    assign(x = "vwargs", value = list(sigma = sigma, distance = distance), 
+        envir = eventEnv)
     assign(x = "Corder", value = Corder, envir = eventEnv)
     assign(x = "selectortype", value = selectortype, envir = eventEnv)
     getGraphicsEvent()
