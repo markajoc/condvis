@@ -166,7 +166,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     mainscreens[2L])
                 for (i in seq_along(C)){
                     screen(xcscreens[i])
-                    plotxc(xc = xcplots[[i]]$xc, xc.cond = xcplots[[i]]$xc.cond.old, 
+                    plotxc(xc = xcplots[[i]]$xc, 
+                        xc.cond = xcplots[[i]]$xc.cond.old, 
                         name = xcplots[[i]]$name, 
                         select.colour = xcplots[[i]]$select.colour)
                 }    
@@ -183,7 +184,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 plotxs1(xs = data[, S, drop = FALSE], data[, response, 
                     drop = FALSE], xc.cond = xc.cond, model = model, data.colour 
                     = rgb(1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, 
-                    view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d = xsplot$phi3d, conf = conf)
+                    view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d = 
+                    xsplot$phi3d, conf = conf)
                 dev.off()    
                 cat(paste("\nSnapshot saved: '", filename,"'", sep = ""))
                 cat("\n")            
