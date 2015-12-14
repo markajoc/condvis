@@ -13,8 +13,8 @@ function (Xc, type = "minimal", method = "default", Xc.cond = NULL, ...)
             n.selector.cols))
         for (i in seq_along(C)){
             screen(selectors[i])
-            xcplots[[i]] <- plotxc(xc = Xc[, C[[i]]], xc.cond = Xc.cond[1, C[[i]]], 
-                name = C[[i]], select.colour = "blue", ...)
+            xcplots[[i]] <- plotxc(xc = Xc[, C[[i]]], xc.cond = Xc.cond[1, C[[i
+                ]]], name = C[[i]], select.colour = "blue", ...)
         }
         output <- list(Xc = Xc, Xc.cond = Xc.cond, xcplots = xcplots, 
             screens = selectors, type = type, method = method)
@@ -35,13 +35,27 @@ function (Xc, type = "minimal", method = "default", Xc.cond = NULL, ...)
                 screen(scr2[i])
                 par(mar = c(0.1,0.1,0.1,0.1))
                 par(mgp = c(3, 0.25, 0.15))
-                plot(Xc.num[,cols[i]], Xc.num[,rows[i]], cex = 0.6, xlab = "", ylab = "", xaxt = "n", yaxt = "n", col = if (identical(rows[i], cols[i])) NULL else "black")
-                if (!identical(rows[i], cols[i])) abline(v = Xc.cond.num[cols[i]], h = Xc.cond.num[rows[i]], col = "blue")
-                if (identical(rows[i], 1L) & (2 * (round(cols[i] / 2)) == cols[i])) axis(3, cex.axis = 0.7, tcl = -0.2)
-                if (identical(rows[i], ncol(Xc)) & !(2 * (round(cols[i] / 2)) == cols[i])) axis(1, cex.axis = 0.7, tcl = -0.2)
-                if (identical(cols[i], 1L) & (2 * (round(rows[i] / 2)) == rows[i])) axis(2, cex.axis = 0.7, tcl = -0.2)
-                if (identical(cols[i], ncol(Xc)) & !(2 * (round(rows[i] / 2)) == rows[i])) axis(4, cex.axis = 0.7, tcl = -0.2)
-                if (identical(rows[i], cols[i])) text(x = mean(range(Xc.num[,rows[i]])), y = mean(range(Xc.num[,cols[i]])), labels = colnames(Xc.num)[rows[i]])
+                plot(Xc.num[,cols[i]], Xc.num[,rows[i]], cex = 0.6, xlab = "", 
+                    ylab = "", xaxt = "n", yaxt = "n", col = if (identical(
+                    rows[i], cols[i])) NULL else "black")
+                if (!identical(rows[i], cols[i])) 
+                    abline(v = Xc.cond.num[cols[i]], h = Xc.cond.num[rows[i]], 
+                        col = "blue")
+                if (identical(rows[i], 1L) & (2 * (round(cols[i] / 2)) == 
+                    cols[i])) 
+                    axis(3, cex.axis = 0.7, tcl = -0.2)
+                if (identical(rows[i], ncol(Xc)) & !(2 * (round(cols[i] / 2)) == 
+                    cols[i])) 
+                    axis(1, cex.axis = 0.7, tcl = -0.2)
+                if (identical(cols[i], 1L) & (2 * (round(rows[i] / 2)) == 
+                    rows[i])) 
+                    axis(2, cex.axis = 0.7, tcl = -0.2)
+                if (identical(cols[i], ncol(Xc)) & !(2 * (round(rows[i] / 2)) == 
+                    rows[i])) 
+                    axis(4, cex.axis = 0.7, tcl = -0.2)
+                if (identical(rows[i], cols[i])) 
+                    text(x = mean(range(Xc.num[,rows[i]])), y = mean(range(
+                        Xc.num[,cols[i]])), labels = colnames(Xc.num)[rows[i]])
             }
             coords <- data.frame(t(vapply(scr2, 
                 function(i) { 
@@ -57,7 +71,6 @@ function (Xc, type = "minimal", method = "default", Xc.cond = NULL, ...)
             if (identical(type, "pcp")){
                 factorindex <- vapply(Xc, is.factor, logical(1))
                 Xc.num <- vapply(Xc, as.numeric, numeric(nrow(Xc)))
-                #Xc.cond <- Xc[1L, , drop = FALSE]
                 Xc.cond.num <- vapply(Xc.cond, as.numeric, numeric(1L))
                 xcoord <- 1:ncol(Xc)
                 ycoord <- (Xc.cond.num - apply(Xc.num, 2L, min))/(apply(Xc.num, 
