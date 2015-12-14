@@ -22,16 +22,20 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
          (1:ncol(data))[-response][1L]
         #cat(paste("\n'S' was not specified, picked", colnames(data)[S]))
         } else if (is.character(S))
-            vapply(S, function(x) which(colnames(data) == x), numeric(1))
+            vapply(S, function(x) which(colnames(data) == x), numeric(1L))
             else S
     C <- if (is.null(C))
-        if (class(varnamestry) != "try-error"){
-            possibleC <- unique(unlist(lapply(
-                lapply(model, getvarnames), `[[`, 2)))
-            arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])], 
-                drop = FALSE], method = Corder)
-        } else arrangeC(data[, -c(response, S)])
+        arrangeC(data[, -c(response, S)])
     else C
+    try(
+        if (class(varnamestry) != "try-error"){
+            possibleC <- unique(unlist(lapply(lapply(model, getvarnames), `[[`, 
+                2)))
+            possibleC <- possibleC[possibleC %in% colnames(data)]
+            C <- arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])], 
+                drop = FALSE], method = Corder)
+        }     
+    , silent = TRUE)
     C <- if (all(vapply(C, is.numeric, logical(1))))
         as.list(C)
     else if (all(vapply(C, is.character, logical(1))))
@@ -55,9 +59,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     Xc <- data[, uniqC, drop = FALSE]
     close.screen(all.screens = TRUE)
     if (identical(version$os, "linux-gnu"))
-        x11(type = "Xlib")
+        x11(type = "Xlib", width = 8.5, height = 8)
     else
-        x11()
+        x11(width = 8.5, height = 8)
     vw <- visualweight(Xc, Xc.cond, sigma, distance = distance)
     k <- vw$k
     data.colour <- rgb(1 - k, 1 - k, 1 - k)
@@ -84,29 +88,21 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     else
         x11(height = height, width = width)
     selectorwindow <- dev.cur() 
-    if (identical(selectortype, "minimal")){   
-	    setGraphicsEventHandlers(
-            onMouseDown = if (exists(".mouseclick.separate")) .mouseclick.separate,
-            onMouseUp = if (exists(".mouserelease.separate")) .mouserelease.separate,
-            onMouseMove = if (exists(".mousemove.separate")) .mousemove.separate,
+    if (identical(selectortype, "pcp")){   
+        setGraphicsEventHandlers(
+            onMouseDown = if (exists(".mouseclick.separate.pcp")) .mouseclick.separate.pcp,
+            onMouseUp = if (exists(".mouserelease.separate.pcp")) .mouserelease.separate.pcp,
+            onMouseMove = if (exists(".mousemove.separate.pcp")) .mousemove.separate.pcp,
             onKeybd = if (exists(".keystroke.separate")) .keystroke.separate)
-    } else { 
-        if (identical(selectortype, "pcp")){   
-	        setGraphicsEventHandlers(
-                onMouseDown = if (exists(".mouseclick.separate.pcp")) .mouseclick.separate.pcp,
-                onMouseUp = if (exists(".mouserelease.separate.pcp")) .mouserelease.separate.pcp,
-                onMouseMove = if (exists(".mousemove.separate.pcp")) .mousemove.separate.pcp,
+    } else {
+        if (identical(selectortype, "full")){
+            setGraphicsEventHandlers(
+                onMouseDown = if (exists(".mouseclick.separate.full")) .mouseclick.separate.full,
+                onMouseUp = if (exists(".mouserelease.separate.full")) .mouserelease.separate.full,
+                onMouseMove = if (exists(".mousemove.separate.full")) .mousemove.separate.full,
                 onKeybd = if (exists(".keystroke.separate")) .keystroke.separate)
-        } else {
-            if (identical(selectortype, "full")){
-	            setGraphicsEventHandlers(
-                    onMouseDown = if (exists(".mouseclick.separate.full")) .mouseclick.separate.full,
-                    onMouseUp = if (exists(".mouserelease.separate.full")) .mouserelease.separate.full,
-                    onMouseMove = if (exists(".mousemove.separate.full")) .mousemove.separate.full,
-                    onKeybd = if (exists(".keystroke.separate")) .keystroke.separate)
             }
         }
-    }
     eventEnv <- getGraphicsEventEnv()
 	assign(x = "plotxcobject", value = conditionselectors(Xc, type = 
         selectortype, method = Corder), envir = eventEnv)

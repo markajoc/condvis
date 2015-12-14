@@ -3,8 +3,8 @@
 \alias{plotxs}
 \title{Expectation plot}
 \description{
-  Plot depicting a section through a fitted model surface, or conditional 
-  expectation.
+  Plot depicting a section through a fitted model surface (or a conditional 
+  expectation). Not designed to be called by the user.
 }
 \usage{
 plotxs(xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
@@ -13,8 +13,8 @@ plotxs(xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
        phi3d = 20)
 }
 \arguments{
-  \item{xs}{ a vector or \code{data.frame} with two columns.}
-  \item{y}{ a vector.}
+  \item{xs}{ a \code{data.frame} with one or two columns.}
+  \item{y}{ a \code{data.frame} with one column.}
   \item{xc.cond}{ a \code{data.frame} with one row.}
   \item{model}{ a model object, or a list of model objects.}
   \item{model.colour,

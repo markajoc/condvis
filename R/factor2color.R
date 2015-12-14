@@ -8,8 +8,9 @@ function (x, colors = NULL)
     n <- nlevels(x)
     colors <- if (is.null(colors))
         if (requireNamespace("RColorBrewer", quietly = TRUE))
-		    RColorBrewer::brewer.pal(n = max(n, 3L), name = "Set3")[1:n]
+		    RColorBrewer::brewer.pal(n = max(n, 3L, na.rm = TRUE), name = 
+                "Set3")[1L:n]
 		else rainbow(n)
     else rep(colors, length.out = n)
-    vapply(x, function(y) colors[levels(x) == as.character(y)], character(1))
+    vapply(x, function(y) colors[levels(x) == as.character(y)], character(1L))
 }

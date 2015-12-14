@@ -2,7 +2,7 @@
 \alias{powerplant}
 
 \title{
-  Tuefecki's powerplant data
+  Tuefekci's powerplant data
 }
 
 \description{
@@ -30,7 +30,7 @@
 }
 
 \references{
-  Tuefecki, P. (2014), Prediction of full load electrical power output of a base 
+  Tuefekci, P. (2014), Prediction of full load electrical power output of a base 
   load operated combined cycle power plant using machine learning methods, 
   \emph{International Journal of Electrical Power & Energy Systems}, \bold{60}, 
   pp. 126-140, ISSN 0142-0615.

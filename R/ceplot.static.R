@@ -25,12 +25,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             vapply(S, function(x) which(colnames(data) == x), numeric(1))
             else S
     C <- if (is.null(C))
-        if (class(varnamestry) != "try-error"){
-            possibleC <- unique(unlist(lapply(
-                lapply(model, getvarnames), `[[`, 2)))
-            arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])], 
-                drop = FALSE], method = Corder)
-        } else arrangeC(data[, -c(response, S)])
+        arrangeC(data[, -c(response, S)])
     else C
     C <- if (all(vapply(C, is.numeric, logical(1))))
         as.list(C)
@@ -56,25 +51,27 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     xcplots <- list()
     close.screen(all.screens = T)
     n.selector.cols <- ceiling(length(C) / 4L)
-    select.colwidth <- max(min(0.15 * n.selector.cols, 0.45), 0.2)
-    main <- split.screen(figs = matrix(c(0, 1 - (select.colwidth),
-                         1 - (select.colwidth), 1, 0, 0, 1, 1), ncol = 4))
-    selectors <- split.screen(
-        figs = c(max(ceiling(length(C) / n.selector.cols), 3), n.selector.cols),
-        screen = main[2])
+    selector.colwidth <- 2
+    height <- 8
+    width <- height + 0.5 + selector.colwidth * n.selector.cols
+    xcwidth <- selector.colwidth * n.selector.cols / width
+    main <- split.screen(figs = matrix(c(0, 1 - xcwidth, 1 - xcwidth, 1, 
+        0, 0, 1, 1), ncol = 4))
+    selectors <- split.screen(figs = c(4, n.selector.cols), screen = main[2])
     dev.hold()
     if (length(uniqC) > 0){
         for(C.index in seq_along(C)){
             screen(selectors[C.index])
             xcplots[[C.index]] <- plotxc(xc = data[, C[[C.index]]], xc.cond = 
-                Xc.cond[1L, colnames(data)[C[[C.index]]]], name = colnames(data)[C[[C.index]]],
-                select.colour = "blue", select.lwd = 2, cex.axis = cex.axis, 
-                cex.lab = cex.lab, tck = tck)
+                Xc.cond[1L, colnames(data)[C[[C.index]]]], name = colnames(data)
+                [C[[C.index]]], select.colour = "blue", select.lwd = 2, cex.axis 
+                = cex.axis, cex.lab = cex.lab, tck = tck)
         }
     }
     screen(main[1])
     Xc <- data[, uniqC, drop = FALSE]
-    vw <- visualweight(xc = Xc, xc.cond = Xc.cond, sigma = sigma, distance = distance)
+    vw <- visualweight(xc = Xc, xc.cond = Xc.cond, sigma = sigma, distance = 
+        distance)
     k <- vw$k
     data.colour <- rgb(1 - k, 1 - k, 1 - k)
     data.order <- vw$order
@@ -85,9 +82,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         data.colour = data.colour, data.order = data.order, view3d = view3d, 
         theta3d = theta3d, phi3d = phi3d)
     dev.flush()
-    output <- list(Xc = Xc, sigma = sigma, distance = distance, 
-        xcplots = xcplots, xsplot = xsplot,
-	    screens = list(main = main, selectors = selectors))
-	class(output) <- "ceplot"
-	output
+    structure(list(Xc = Xc, sigma = sigma, distance = distance, xcplots = 
+        xcplots, xsplot = xsplot, screens = list(main = main, selectors = 
+        selectors)), class = "ceplot")
 }

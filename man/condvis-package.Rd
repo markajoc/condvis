@@ -13,8 +13,8 @@ Conditional visualization for statistical models
   \tabular{ll}{
     Package: \tab condvis\cr
     Type: \tab Package\cr
-    Version: \tab 0.2.4\cr
-    Date: \tab 2015-10-14\cr
+    Version: \tab 0.1\cr
+    Date: \tab 2015-12-14\cr
     License: \tab GPL-2\cr
   }
 }
@@ -26,7 +26,7 @@ Mark O'Connell <mark.oconnell@maths.nuim.ie>
 mtcars$cyl <- as.factor(mtcars$cyl)
 mtcars$am <- as.factor(mtcars$am)
 
-library(gam)
+library(mgcv)
 model1 <- list(quadratic = lm(mpg ~ cyl + am + qsec + wt + I(wt^2), data = mtcars),
                additive = gam(mpg ~ cyl + am + qsec + s(wt), data = mtcars))
 

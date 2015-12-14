@@ -8,13 +8,13 @@ function (x, range, breaks = NULL, colors = NULL)
     breaks <- if(is.null(breaks))
 	    11
     else breaks
-	br <- c(min(x, min(range)) - 1,
-	        seq(min(range), max(range), length.out = breaks - 1),
-	        max(x, max(range)) + 1)
-    colors <- if (is.null(colors))
+	br <- c(min(x, min(range)) - 1, seq(min(range), max(range), length.out = 
+        breaks - 1), max(x, max(range)) + 1)
+    colors <- if (is.null(colors)){
         if (requireNamespace("RColorBrewer", quietly = TRUE))
-		    RColorBrewer::brewer.pal(n = breaks, name = "PiYG")
+		    RColorBrewer::brewer.pal(n = max(breaks, 3L, na.rm = TRUE), 
+                name = "PiYG")
 		else cm.colors(breaks)
-    else rep(colors, length.out = breaks)
+    } else rep(colors, length.out = breaks)
     as.character(cut(x, br, labels = colors, include.lowest = TRUE))
 }

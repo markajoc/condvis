@@ -1,4 +1,5 @@
 ceplot.shiny <-
+## this code really needs a rewrite!
 function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL, 
     cex.lab = NULL, tck = NULL, Corder = "default")
 {
@@ -28,13 +29,17 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
             vapply(S, function(x) which(colnames(data) == x), numeric(1))
             else S
     C <- if (is.null(C))
-        if (class(varnamestry) != "try-error"){
-            possibleC <- unique(unlist(lapply(
-                lapply(model, getvarnames), `[[`, 2)))
-            arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])],
-                drop = FALSE], method = Corder)
-        } else arrangeC(data[, -c(response, S)])
+        arrangeC(data[, -c(response, S)])
     else C
+    try(
+        if (class(varnamestry) != "try-error"){
+            possibleC <- unique(unlist(lapply(lapply(model, getvarnames), `[[`, 
+                2)))
+            possibleC <- possibleC[possibleC %in% colnames(data)]
+            C <- arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])], 
+                drop = FALSE], method = Corder)
+        }     
+    , silent = TRUE)
     C <- if (all(vapply(C, is.numeric, logical(1))))
         as.list(C)
     else if (all(vapply(C, is.character, logical(1))))
@@ -77,12 +82,10 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
                         column(3, if (identical(length(S), 2L)) plotOutput('legend', height = 400, width = '20%'))
                     )
                     , actionButton('saveButton', 'Take snapshot (pdf)')
-                    , conditionalPanel(condition = 'input.tab == 2', helpText(strong('Perspective plot rotation'))) 
-                    , conditionalPanel(condition = 'input.tab == 2', numericInput('phi', 'phi (vertical rotation): ', 20, -180, 180))
-                    , conditionalPanel(condition = 'input.tab == 2', numericInput('theta', 'theta (horizontal rotation): ', 45, -180, 180))
-                    , helpText(strong('Weighting function settings'))
+                    , conditionalPanel(condition = 'input.tab == 2', numericInput('phi', 'Vertical rotation: ', 20, -180, 180))
+                    , conditionalPanel(condition = 'input.tab == 2', numericInput('theta', 'Horizontal rotation: ', 45, -180, 180))
                     , sliderInput('sigma', 'Weighting function parameter: ', 0.01, 5, step = 0.01, value = 1)
-                    , radioButtons('type', 'Weighting function type:', c('euclidean', 'chebyshev'))
+                    , radioButtons('type', 'Weighting function type:', c('euclidean', 'maxnorm'))
                 ),
                 column(7,
                     fluidRow( helpText(strong('Condition selector plots')) ),
@@ -172,7 +175,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
                     k <- vw$k
                     data.colour <- rgb(1 - k, 1 - k, 1 - k)
                     data.order <- vw$order
-                    plotxsobject <- plotxs.shiny(xs = data[, S, drop = FALSE],
+                    plotxsobject <- plotxs1(xs = data[, S, drop = FALSE],
                         y = data[, response, drop = FALSE], xc.cond = get('Xc.cond', envir = tmp), model = model,
                         model.colour = NULL, model.lwd = NULL, model.lty = NULL,
                         model.name = model.name, yhat = NULL, mar = NULL,
@@ -265,9 +268,9 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
             observeEvent(input$saveButton, {
                 n.selector.cols <- ceiling(length(C) / 4L)
                 select.colwidth <- max(min(0.18 * n.selector.cols, 0.45), 0.2)  
-                width <- 10 + 2 * n.selector.cols 
+                width <- 8.5 + 2 * n.selector.cols 
                 filename <- paste('snapshot_', gsub(':', '.', gsub(' ', '_', Sys.time())), '.pdf', sep = '') 
-                pdf(file = filename, width = width, height = 7)
+                pdf(file = filename, width = width, height = 8)
                 ceplot.static(data = data, model = model, response = response, 
                     S = S, C = C, sigma = input$sigma, distance = input$type, 
                     cex.axis = cex.axis, cex.lab = cex.lab, tck = tck, 

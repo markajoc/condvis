@@ -1,6 +1,7 @@
 savingby2d <- function (x, y = NULL, method = "default")
 {
-    if(is.data.frame(x) && ncol(x) > 2L) stop("'x' should have max 2 columns.")
+    if(is.data.frame(x) && ncol(x) > 2L) 
+        stop("'x' should have max 2 columns.")
     if (is.null(y) && identical(ncol(x), 2L)){
         y <- x[, 2L]
         x <- x[, 1L]
@@ -11,7 +12,7 @@ savingby2d <- function (x, y = NULL, method = "default")
     y <- if (is.data.frame(y))
         y[, 1]
     else y
-    arefactors <- vapply(list(x, y), is.factor, logical(1))
+    arefactors <- vapply(list(x, y), is.factor, logical(1L))
     if (all(arefactors)){
         tab <- table(x, y)
         return(sum(tab != 0) / (ncol(tab) * nrow(tab)))
@@ -36,22 +37,22 @@ savingby2d <- function (x, y = NULL, method = "default")
         return(hullarea / totalarea)
         } else {
             if (identical(method, "default")){
-                if (abs(cor(x, y)) > 0.995) return(0)
-                    x.scaled <- (x - mean(x)) / sd(x)
-                    y.scaled <- (y - mean(y)) / sd(y)
-                    totalarea <- abs(diff(range(x.scaled)) * 
-                        diff(range(y.scaled)))
-                    conhull <- chull(x.scaled, y.scaled)
-                    hullarea <- polygonarea(x.scaled[conhull], 
-                        y.scaled[conhull])
-                    return(hullarea / totalarea)
+                if (abs(cor(x, y)) > 0.995) 
+                    return(0)
+                x.scaled <- (x - mean(x)) / sd(x)
+                y.scaled <- (y - mean(y)) / sd(y)
+                totalarea <- abs(diff(range(x.scaled)) * diff(range(y.scaled)))
+                conhull <- chull(x.scaled, y.scaled)
+                hullarea <- polygonarea(x.scaled[conhull], y.scaled[conhull])
+                return(hullarea / totalarea)
             } else {
                 if (method %in% c("Outlying", "Skewed", "Clumpy", "Sparse", 
                     "Striated", "Convex", "Skinny", "Stringy", "Monotonic")){
                     if (requireNamespace("scagnostics", quietly = TRUE)){
                         ratio <- scagnostics::scagnostics.default(x, y)[method]
-                        if (method %in% c("Outlying", "Skewed", "Clumpy", "Sparse", 
-                            "Striated", "Skinny", "Stringy", "Monotonic"))
+                        if (method %in% c("Outlying", "Skewed", "Clumpy", 
+                            "Sparse", "Striated", "Skinny", "Stringy", 
+                            "Monotonic"))
                             ratio <- 1 - ratio
                         return(ratio)
                     } else stop("requires package 'scagnostics'")
