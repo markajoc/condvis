@@ -12,7 +12,8 @@ function (key)
         Xc.cond <- plotxsobject$xc.cond
         if (plotxsobject$view3d){
             dev.hold()
-                try(plotxsobject$xc.cond <- get("Xc.cond", envir = parent.frame()), silent = TRUE)
+                try(plotxsobject$xc.cond <- get("Xc.cond", envir = 
+                    parent.frame()), silent = TRUE)
                 if (identical(key, "Down"))
                     plotxsobject$phi3d <- plotxsobject$phi3d + 2
                 if (identical(key, "Up"))
@@ -25,7 +26,8 @@ function (key)
                 par(bg = "white")
                 close.screen(all.screens = TRUE)
                 do.call(plotxs, plotxsobject)
-                assign(x = "plotxsobject", value = plotxsobject, envir = parent.frame())
+                assign(x = "plotxsobject", value = plotxsobject, envir = 
+                    parent.frame())
             dev.flush()    
         }    
     }
@@ -38,18 +40,20 @@ function (key)
         timenow <- Sys.time()
         dev.set(selectorwindow)
         devsizesel <- dev.size()
-        filename1 <- paste("snapshot_", gsub(":", ".", gsub(" ", "_", timenow)), c("-expectation.pdf", "-condition.pdf"), sep = "") 
+        filename1 <- paste("snapshot_", gsub(":", ".", gsub(" ", "_", timenow)), 
+            c("-expectation.pdf", "-condition.pdf"), sep = "") 
         pdf(filename1[1], width = 8.5, height = 8)
         close.screen(all.screens = TRUE)
         do.call(plotxs, plotxsobject)
         dev.off()
         pdf(filename1[2], width = devsizesel[1], height = devsizesel[2])
         close.screen(all.screens = TRUE)
-        conditionselectors(Xc = Xc, type = get("selectortype", envir = parent.frame()), method = get("Corder", envir = parent.frame()), Xc.cond = Xc.cond)
+        conditionselectors(Xc = Xc, type = get("selectortype", envir = 
+            parent.frame()), method = get("Corder", envir = parent.frame()), 
+            Xc.cond = Xc.cond)
         dev.off()
         cat(paste("\nSnapshot saved: '", filename1,"'", sep = ""))
         cat("\n")
-        #cat(paste("\ndistance: ", plotobject$type, ", sigma: ", sigma, sep = ""))
     }
     dev.set(selectorwindow)
     points(NULL)
