@@ -57,14 +57,15 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             S = S, C = C, sigma = sigma, distance = distance, cex.axis = 
             cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = 
             Corder, conf = conf, separate = FALSE)
-    } else if (identical(type, "separate") & identical(selectortype, "minimal")){
+    } else if (identical(type, "separate") & identical(selectortype, 
+        "minimal")){
         ceplot.interactive(data = data, model = model, response = response, 
             S = S, C = C, sigma = sigma, distance = distance, cex.axis = 
             cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = 
             Corder, conf = conf, separate = TRUE)
     } else if (identical(type, "separate")){
-        ceplot.separate(data = data, model = model, response = response, S = S, C = C, 
-            sigma = sigma, distance = distance, cex.axis = cex.axis, 
+        ceplot.separate(data = data, model = model, response = response, S = S, 
+            C = C, sigma = sigma, distance = distance, cex.axis = cex.axis, 
             cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = Corder, 
             selectortype = selectortype)
     } else if (identical(type, "shiny")){
