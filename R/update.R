@@ -158,7 +158,6 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         phi3d
     else object$phi3d
     conf <- object$conf
-    dev.hold()
     if (identical(object$plot.type, "cc")){
         if (any(xc.cond != object$xc.cond)){
             newdata <- makenewdata(xs = object$xs.grid, xc.cond = xc.cond)
@@ -168,6 +167,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
             prednew <- object$prednew
         }
         screen(n = object$screen, new = FALSE)
+        dev.hold()
         rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col = 
             "white", border = NA)
         box()    
@@ -207,9 +207,12 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
                     object$model.lty)
             }    
         dev.flush()
+        object$newdata <- newdata
+        object$prednew <- prednew
         return(object)
     }
     if (!is.null(prednew)){
+    dev.hold()
     screen(n = object$screen, new = TRUE)
     obj <- (plotxs1(xs = object$xs, y = object$y, xc.cond = xc.cond, 
         model = object$model, model.colour = object$model.colour, model.lwd = 
@@ -220,6 +223,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
     dev.flush()
     return(obj)    
     }
+    dev.hold()
     screen(n = object$screen, new = TRUE)
     obj <- plotxs1(xs = object$xs, y = object$y, xc.cond = xc.cond, 
         model = object$model, model.colour = object$model.colour, model.lwd = 
