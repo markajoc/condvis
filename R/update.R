@@ -169,7 +169,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         }
         screen(n = object$screen, new = FALSE)
         rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col = 
-            "white")
+            "white", border = NA)
         if (length(data.order) > 0)
             points(object$xs[data.order, 1L], object$y[data.order, 1L], col = 
                 data.colour[data.order])
