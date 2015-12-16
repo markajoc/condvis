@@ -152,7 +152,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     xc.cond = xc.cond, sigma = sigma, distance = distance)
                 xsplot <<- update(xsplot, data.colour = rgb(1 - vw$k, 1 - vw$k, 
                     1 - vw$k), data.order = vw$order, xs.grid = xsplot$xs.grid, 
-                    prednew = xsplot$prednew)    
+                    newdata = xsplot$newdata, prednew = xsplot$prednew)    
             }
             if (identical(key, "s")){
                 filename <- paste("snapshot_", gsub(":", ".", gsub(" ", "_", 

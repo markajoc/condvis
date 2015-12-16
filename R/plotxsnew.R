@@ -393,5 +393,5 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
         theta3d = theta3d, usr = par("usr"), phi3d = phi3d, plot.type = if 
         (exists("plot.type")) plot.type else NULL, screen = screen(), device = 
         dev.cur(), xs.grid = xs.grid, newdata = newdata, prednew = prednew, 
-        xs.grid = xs.grid, prednew = prednew, conf = conf), class = "xsplot")    
+        xs.grid = xs.grid, conf = conf), class = "xsplot")    
 }
