@@ -159,21 +159,25 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         phi3d
     else object$phi3d
     conf <- FALSE
-    if (FALSE){#(identical(object$plot.type, "cc")){
+    if (identical(object$plot.type, "cc")){
         if (any(xc.cond != object$xc.cond)){
-        newdata <- makenewdata(xs = object$xs.grid, xc.cond = xc.cond)
-        prednew <- lapply(object$model, predict1, newdata = newdata)
-    } else {
-        newdata <- object$newdata
-        prednew <- object$prednew
-    }
+            newdata <- makenewdata(xs = object$xs.grid, xc.cond = xc.cond)
+            prednew <- lapply(object$model, predict1, newdata = newdata)
+        } else {
+            newdata <- object$newdata
+            prednew <- object$prednew
+        }
         screen(n = object$screen, new = FALSE)
-        dev.hold()
         rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col = 
             "white")
         if (length(data.order) > 0)
             points(object$xs[data.order, 1L], object$y[data.order, 1L], col = 
                 data.colour[data.order])
+        for (i in seq_along(object$model)){
+                points.default(object$xs.grid[, 1L], prednew[[i]], type = 'l',
+                    col = object$model.colour[i], lwd = object$model.lwd[i], lty 
+                    = object$model.lty[i]) 
+        }                     
         if (conf){
             prednew2 <- lapply(object$model, confpred, newdata = newdata)     
             for (i in seq_along(object$model)){
@@ -203,8 +207,6 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
                     object$model.lty)
             }    
         dev.flush()
-        print(data.order) 
-        print(data.colour)        
         return(object)
     }
     if (!is.null(prednew)){
