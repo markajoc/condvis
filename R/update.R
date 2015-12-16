@@ -135,7 +135,6 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
 {
     if (dev.cur() != object$device)
         dev.set(object$device)
-    dev.hold()    
     par(bg = "white")
     screen(n = object$screen, new = FALSE)
     par(usr = object$usr)
@@ -158,7 +157,8 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
     phi3d <- if (!is.null(phi3d))
         phi3d
     else object$phi3d
-    conf <- FALSE
+    conf <- object$conf
+    dev.hold()
     if (identical(object$plot.type, "cc")){
         if (any(xc.cond != object$xc.cond)){
             newdata <- makenewdata(xs = object$xs.grid, xc.cond = xc.cond)
@@ -186,15 +186,14 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
                     = object$model.lty[i])
                 if (all(c("lwr", "upr") %in% colnames(prednew2[[i]]))){
                     points.default(object$xs.grid[, 1L], prednew2[[i]][, "lwr"], 
-                        type = 'l', lty = 3, col = object$model.colour[i], lwd = 
-                        object$model.lwd[i])
+                        type = 'l', lty = 2, col = object$model.colour[i], lwd = 
+                        0.75 * object$model.lwd[i])
                     points.default(object$xs.grid[, 1L], prednew2[[i]][, "upr"], 
-                        type = 'l', lty = 3, col = object$model.colour[i], lwd = 
-                        object$model.lwd[i])    
+                        type = 'l', lty = 2, col = object$model.colour[i], lwd = 
+                        0.75 * object$model.lwd[i])    
                 }
             }        
         }    
-
         if (is.numeric(object$xs[, 1L])){
             pos <- if (cor(object$xs, object$y) < 0)
                 "topright"
