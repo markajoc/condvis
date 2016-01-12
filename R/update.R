@@ -222,22 +222,59 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         screen(n = object$screen, new = FALSE)
         dev.hold()  
         if (view3d){
-        
+            screen(n = object$screen, new = TRUE)
+            z <- matrix(prednew[[1L]], ncol = 20L, byrow = FALSE)
+            zfacet <- (z[-1, -1] + z[-1, -ncol(z)] + z[-nrow(z), -1] 
+                + z[-nrow(z), -ncol(z)]) / 4
+            colorfacet <- cont2color(zfacet, range(object$y[, 1L]))
+            par(mar = c(3, 3, 3, 3))
+            persp.object <- suppressWarnings(persp(x = 
+                unique(object$xs.grid[, 1L]), y = unique(object$xs.grid[, 2L]), 
+                border = rgb(0.3, 0.3, 0.3), lwd = 0.1, z = z, col = 
+                colorfacet, zlim = range(object$y), xlab = colnames(object$xs)[
+                1L], ylab = colnames(object$xs)[2L], zlab = colnames(object$y)[
+                1L], d = 10, ticktype = "detailed", main = 
+                "Conditional expectation", theta = theta3d, 
+                phi = phi3d)) 
+            if (length(data.order) > 0){     
+                points(trans3d(object$xs[data.order, 1L], object$xs[data.order, 
+                    2L], object$y[data.order, 1L], pmat = persp.object), 
+                    col = data.colour[data.order])  
+                linestarts <- trans3d(object$xs[data.order, 1L], object$xs[
+                    data.order, 2L], object$y[data.order, 1L], pmat = 
+                    persp.object)   
+                lineends <- trans3d(object$xs[data.order, 1L], object$xs[
+                    data.order, 2L], object$yhat[[1]][data.order], pmat = 
+                    persp.object) 
+                segments(x0 = linestarts$x, y0 = linestarts$y, x1 = 
+                    lineends$x, y1 = lineends$y, col = data.colour[
+                    data.order])                            
+            }
+            object$theta3d <- theta3d
+            object$phi3d <- phi3d                       
         } else {
-            xoffset <- abs(diff(unique(xs.grid[, 1L])[1:2])) / 2
-            yoffset <- abs(diff(unique(xs.grid[, 2L])[1:2])) / 2
-            #plot(range(xs.grid[, 1L]), range(xs.grid[, 2L]), col = 
-            #    NULL, xlab = colnames(xs)[1L], ylab = colnames(xs)[
-            #    2L], main = "Conditional expectation")
-            rect(xleft = xs.grid[, 1L] - xoffset, xright = xs.grid[, 
-                1L] + xoffset, ybottom = xs.grid[, 2L] - yoffset, 
-                ytop = xs.grid[, 2L] + yoffset, col = color, border 
+		    color <- if (is.factor(object$y[, 1L]))
+		        factor2color(as.factor(object$prednew[[1L]]))
+		    else cont2color(object$prednew[[1L]], range(object$y[, 1L]))        
+            ybg <- if (length(data.order) > 0){
+                if (is.factor(object$y[, 1L]))
+		            factor2color(object$y[data.order, 1L])
+		        else cont2color(object$y[data.order, 1L], range(object$y[, 1L])) 
+            } else NULL   
+            xoffset <- abs(diff(unique(object$xs.grid[, 1L])[1:2])) / 2
+            yoffset <- abs(diff(unique(object$xs.grid[, 2L])[1:2])) / 2
+            rect(xleft = object$xs.grid[, 1L] - xoffset, xright = object$xs.grid[, 
+                1L] + xoffset, ybottom = object$xs.grid[, 2L] - yoffset, 
+                ytop = object$xs.grid[, 2L] + yoffset, col = color, border 
                 = NA)
             if (length(data.order) > 0)     
-                points(xs[data.order, , drop = FALSE], bg = ybg, 
-                    col = data.colour[data.order], pch = 21)        
-        }
-        dev.flush()   
+                points(object$xs[data.order, , drop = FALSE], bg = ybg, 
+                    col = data.colour[data.order], pch = 21)   
+            }
+        dev.flush()  
+        object$newdata <- newdata
+        object$prednew <- prednew
+        return(object)        
     }
     if (!is.null(prednew)){
     dev.hold()
