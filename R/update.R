@@ -250,6 +250,8 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
                     lineends$x, y1 = lineends$y, col = data.colour[
                     data.order])                            
             }
+            object$data.colour <- data.colour
+            object$data.order <- data.order
             object$theta3d <- theta3d
             object$phi3d <- phi3d                       
         } else {
