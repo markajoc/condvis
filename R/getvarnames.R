@@ -2,6 +2,8 @@ getvarnames <-
 # helper function for extracting variable names from model objects
 function (model)
 {
+    if (is.null(model$terms))
+        stop("model has no terms slot")
     string1 <- deparse(model$terms[[3L]])
     string2 <- unlist(strsplit(string1, split = NULL))
     string3 <- paste(string2[string2 != " "], collapse = "")
