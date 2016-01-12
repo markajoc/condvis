@@ -211,6 +211,34 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         object$prednew <- prednew
         return(object)
     }
+    if (identical(object$plot.type, "ccc")){
+        if (any(xc.cond != object$xc.cond)){
+            newdata <- makenewdata(xs = object$xs.grid, xc.cond = xc.cond)
+            prednew <- lapply(object$model, predict1, newdata = newdata)
+        } else {
+            newdata <- object$newdata
+            prednew <- object$prednew
+        }
+        screen(n = object$screen, new = FALSE)
+        dev.hold()  
+        if (view3d){
+        
+        } else {
+            xoffset <- abs(diff(unique(xs.grid[, 1L])[1:2])) / 2
+            yoffset <- abs(diff(unique(xs.grid[, 2L])[1:2])) / 2
+            #plot(range(xs.grid[, 1L]), range(xs.grid[, 2L]), col = 
+            #    NULL, xlab = colnames(xs)[1L], ylab = colnames(xs)[
+            #    2L], main = "Conditional expectation")
+            rect(xleft = xs.grid[, 1L] - xoffset, xright = xs.grid[, 
+                1L] + xoffset, ybottom = xs.grid[, 2L] - yoffset, 
+                ytop = xs.grid[, 2L] + yoffset, col = color, border 
+                = NA)
+            if (length(data.order) > 0)     
+                points(xs[data.order, , drop = FALSE], bg = ybg, 
+                    col = data.colour[data.order], pch = 21)        
+        }
+        dev.flush()   
+    }
     if (!is.null(prednew)){
     dev.hold()
     screen(n = object$screen, new = TRUE)
