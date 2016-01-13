@@ -173,6 +173,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
 	        factor2color(object$y[data.order, 1L])
 	    else cont2color(object$y[data.order, 1L], range(object$y[, 1L])) 
     } else NULL 
+    arefactorsxs <- vapply(object$xs, is.factor, logical(1L))
     
     if (identical(object$plot.type, "cc")){
         screen(n = object$screen, new = FALSE)
@@ -234,6 +235,26 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
                 xoffset), jitter(as.integer(object$xs[data.order, 2L]), amount = 
                 0.6 * yoffset), bg = ybg, col = data.colour[data.order], 
                 pch = 21)
+        dev.flush()  
+        object$data.colour <- data.colour
+        object$data.order <- data.order  
+        object$newdata <- newdata
+        object$prednew <- prednew
+        return(object)
+    }
+    if (object$plot.type %in% c("ffc", "cfc")){
+        screen(n = object$screen, new = FALSE)
+    	xrect <- object$xs.grid[, !arefactorsxs]
+		yrect <- as.integer(object$xs.grid[, arefactorsxs])
+		xoffset <- abs(diff(unique(xrect)[1:2])) / 2
+		yoffset <- abs(diff(unique(yrect)[1:2])) / 2.1          
+        dev.hold()
+		rect(xleft = xrect - xoffset, xright = xrect + xoffset, ybottom = yrect 
+            - yoffset, ytop = yrect + yoffset, col = color, border = NA)
+        if (length(data.order) > 0)  
+            points(jitter(object$xs[data.order, !arefactorsxs]), jitter(
+                as.integer(object$xs[data.order, arefactorsxs])), bg = ybg, 
+                col = data.colour[data.order], pch = 21)        
         dev.flush()  
         object$data.colour <- data.colour
         object$data.order <- data.order  
