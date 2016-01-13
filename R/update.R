@@ -158,14 +158,23 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         phi3d
     else object$phi3d
     conf <- object$conf
+    if (any(xc.cond != object$xc.cond)){
+        newdata <- makenewdata(xs = object$xs.grid, xc.cond = xc.cond)
+        prednew <- lapply(object$model, predict1, newdata = newdata)
+    } else {
+        newdata <- object$newdata
+        prednew <- object$prednew
+    }
+    color <- if (is.factor(object$y[, 1L]))
+	    factor2color(as.factor(prednew[[1L]]))
+	else cont2color(prednew[[1L]], range(object$y[, 1L]))        
+    ybg <- if (length(data.order) > 0){
+        if (is.factor(object$y[, 1L]))
+	        factor2color(object$y[data.order, 1L])
+	    else cont2color(object$y[data.order, 1L], range(object$y[, 1L])) 
+    } else NULL 
+    
     if (identical(object$plot.type, "cc")){
-        if (any(xc.cond != object$xc.cond)){
-            newdata <- makenewdata(xs = object$xs.grid, xc.cond = xc.cond)
-            prednew <- lapply(object$model, predict1, newdata = newdata)
-        } else {
-            newdata <- object$newdata
-            prednew <- object$prednew
-        }
         screen(n = object$screen, new = FALSE)
         dev.hold()
         rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col = 
@@ -211,14 +220,28 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         object$prednew <- prednew
         return(object)
     }
+    if (object$plot.type %in% c("fff", "cff")){
+        screen(n = object$screen, new = FALSE)
+	    xrect <- as.integer(object$xs.grid[, 1L])
+		yrect <- as.integer(object$xs.grid[, 2L])
+		xoffset <- abs(diff(unique(xrect)[1:2])) / 2.1
+		yoffset <- abs(diff(unique(yrect)[1:2])) / 2.1
+        dev.hold()        
+		rect(xleft = xrect - xoffset, xright = xrect + xoffset, ybottom = yrect 
+            - yoffset, ytop = yrect + yoffset, col = color)
+        if (length(data.order) > 0)      
+       	    points(jitter(as.integer(object$xs[data.order, 1L]), amount = 0.6 * 
+                xoffset), jitter(as.integer(object$xs[data.order, 2L]), amount = 
+                0.6 * yoffset), bg = ybg, col = data.colour[data.order], 
+                pch = 21)
+        dev.flush()  
+        object$data.colour <- data.colour
+        object$data.order <- data.order  
+        object$newdata <- newdata
+        object$prednew <- prednew
+        return(object)
+    }
     if (identical(object$plot.type, "ccc")){
-        if (any(xc.cond != object$xc.cond)){
-            newdata <- makenewdata(xs = object$xs.grid, xc.cond = xc.cond)
-            prednew <- lapply(object$model, predict1, newdata = newdata)
-        } else {
-            newdata <- object$newdata
-            prednew <- object$prednew
-        }
         screen(n = object$screen, new = FALSE)
         dev.hold()  
         if (view3d){
@@ -254,15 +277,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
             object$data.order <- data.order
             object$theta3d <- theta3d
             object$phi3d <- phi3d                       
-        } else {
-		    color <- if (is.factor(object$y[, 1L]))
-		        factor2color(as.factor(object$prednew[[1L]]))
-		    else cont2color(object$prednew[[1L]], range(object$y[, 1L]))        
-            ybg <- if (length(data.order) > 0){
-                if (is.factor(object$y[, 1L]))
-		            factor2color(object$y[data.order, 1L])
-		        else cont2color(object$y[data.order, 1L], range(object$y[, 1L])) 
-            } else NULL   
+        } else {  
             xoffset <- abs(diff(unique(object$xs.grid[, 1L])[1:2])) / 2
             yoffset <- abs(diff(unique(object$xs.grid[, 2L])[1:2])) / 2
             rect(xleft = object$xs.grid[, 1L] - xoffset, xright = object$xs.grid[, 
