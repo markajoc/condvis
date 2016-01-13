@@ -241,7 +241,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         object$prednew <- prednew
         return(object)
     }
-    if (object$plot.type %in% c("ccc", "fcc")){
+    if (object$plot.type %in% c("fcc", "ccc")){
         screen(n = object$screen, new = FALSE)
         dev.hold()  
         if (view3d & identical(object$plot.type, "ccc")){
