@@ -241,10 +241,10 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         object$prednew <- prednew
         return(object)
     }
-    if (identical(object$plot.type, "ccc")){
+    if (object$plot.type %in% c("ccc", "fcc")){
         screen(n = object$screen, new = FALSE)
         dev.hold()  
-        if (view3d){
+        if (view3d & identical(object$plot.type, "ccc")){
             screen(n = object$screen, new = TRUE)
             z <- matrix(prednew[[1L]], ncol = 20L, byrow = FALSE)
             zfacet <- (z[-1, -1] + z[-1, -ncol(z)] + z[-nrow(z), -1] 
