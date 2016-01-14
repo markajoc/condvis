@@ -174,8 +174,46 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
 	    else cont2color(object$y[data.order, 1L], range(object$y[, 1L])) 
     } else NULL 
     arefactorsxs <- vapply(object$xs, is.factor, logical(1L))
-    
-    if (identical(object$plot.type, "cc")){
+
+    if (object$plot.type %in% c("fc")){
+            screen(n = object$screen, new = FALSE)
+        dev.hold()
+        rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col = 
+            "white", border = NA)
+        box() 
+        if (identical(nlevels(object$y[, 1L]), 2L)){
+            if (length(data.order) > 0)    
+		        points.default(object$xs[data.order, 1L], as.integer(object$y[
+                    data.order, 1L]) - 1, col = data.colour[data.order])
+            for (i in seq_along(object$model)){
+                if ("glm" %in% class(object$model[[i]])){
+                    points.default(object$xs.grid[, 1L], prednew[[i]], 
+                        type = 'l', col = object$model.colour[i], 
+                        lwd = object$model.lwd[i], lty = object$model.lty[i])
+                } else {
+                    points.default(object$xs.grid[, 1L], as.numeric(prednew[[i]
+                        ]) - 1, type = 'l', col = object$model.colour[i], lwd = 
+                        object$model.lwd[i], lty = object$model.lty[i])                    
+                }
+            }
+        } else {
+            if (length(data.order) > 0) 
+                points(object$xs[data.order, 1L], as.integer(object$y[data.order
+                    , 1L]) , col = data.colour[data.order]) 
+            for (i in seq_along(model)){
+                points.default(as.numeric(object$xs.grid[, 1L]), as.integer(
+                    prednew[[i]]), type = 'l', col = object$model.colour[i], 
+                    lwd = object$model.lwd[i], lty = object$model.lty[i])
+            }
+        }
+        legend("topright", legend = object$model.name, col = object$model.colour, 
+            lwd = object$model.lwd, lty = object$model.lty)  
+        dev.flush()
+        object$newdata <- newdata
+        object$prednew <- prednew
+        return(object)                    
+    }    
+    if (object$plot.type %in% c("cc")){
         screen(n = object$screen, new = FALSE)
         dev.hold()
         rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col = 
