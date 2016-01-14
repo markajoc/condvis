@@ -164,9 +164,9 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 cat(paste("\nSnapshot saved: '", filename,"'", sep = ""))
                 cat("\n")            
             } 
-            if (key %in% c("f", "b")){
-                pathindex <<- max(min(pathindex + 1 * (key == "f") - 1 * (key == 
-                    "b"), max(pathindexrange)), min(pathindexrange))
+            if (key %in% c("[", "]")){
+                pathindex <<- max(min(pathindex + 1 * (key == "]") - 1 * (key == 
+                    "["), max(pathindexrange)), min(pathindexrange))
                 xc.cond <- path[pathindex, , drop = FALSE]
                 vw <<- visualweight(xc = data[, uniqC, drop = FALSE], 
                     xc.cond = xc.cond, sigma = sigma, distance = distance)
