@@ -175,6 +175,47 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
     } else NULL 
     arefactorsxs <- vapply(object$xs, is.factor, logical(1L))
 
+    if (object$plot.type %in% c("ff")){
+        screen(n = object$screen, new = FALSE)
+        dev.hold()
+        rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col = 
+            "white", border = NA)
+        box() 
+        if (identical(nlevels(y[, 1L]), 2L)){
+            if (length(data.order) > 0)    
+                points.default((as.numeric(object$xs[data.order, 1L])) + 
+                    rnorm(n = length(data.order), sd = 0.1), (as.integer(
+                    object$y[data.order, 1L]) - 1) + rnorm(n = length(
+                    data.order), sd = 0.01), col = data.colour[data.order])
+            for (i in seq_along(object$model)){
+                if ("glm" %in% class(object$model[[i]])){
+                    points.default(object$xs.grid[, 1L], prednew[[i]], 
+                        type = 'l', col = object$model.colour[i], 
+                        lwd = object$model.lwd[i], lty = object$model.lty[i])
+                } else {
+                    points.default(object$xs.grid[, 1L], as.numeric(prednew[[i
+                        ]]) - 1, type = 'l', col = object$model.colour[i], lwd = 
+                        object$model.lwd[i], lty = object$model.lty[i])                    
+                        }
+                    }
+        } else {
+            if (length(data.order) > 0) 
+                points(as.numeric(object$xs[data.order, 1L]), as.integer(
+                    object$y[data.order, 1L]), col = data.colour[data.order]) 
+            for (i in seq_along(object$model)){
+                points.default(as.numeric(object$xs.grid[, 1L]), 
+                    as.integer(prednew[[i]]), type = 'l', col = 
+                    object$model.colour[i], lwd = object$model.lwd[i], 
+                    lty = object$model.lty[i])
+            }
+        }
+        legend("topright", legend = object$model.name, col = object$model.colour
+            , lwd = object$model.lwd, lty = object$model.lty)        
+        dev.flush()
+        object$newdata <- newdata
+        object$prednew <- prednew
+        return(object)         
+    }
     if (object$plot.type %in% c("cf")){
         screen(n = object$screen, new = FALSE)
         dev.hold()
@@ -391,26 +432,26 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         object$prednew <- prednew
         return(object)        
     }
-    if (!is.null(prednew)){
-    dev.hold()
-    screen(n = object$screen, new = TRUE)
-    obj <- (plotxs1(xs = object$xs, y = object$y, xc.cond = xc.cond, 
-        model = object$model, model.colour = object$model.colour, model.lwd = 
-        object$model.lwd, model.lty = object$model.lty, model.name = 
-        object$model.name, yhat = object$yhat, mar = object$mar, data.colour = 
-        data.colour, data.order = data.order, view3d = view3d, theta3d = 
-        theta3d, phi3d = phi3d, xs.grid = object$xs.grid, prednew = prednew))
-    dev.flush()
-    return(obj)    
-    }
-    dev.hold()
-    screen(n = object$screen, new = TRUE)
-    obj <- plotxs1(xs = object$xs, y = object$y, xc.cond = xc.cond, 
-        model = object$model, model.colour = object$model.colour, model.lwd = 
-        object$model.lwd, model.lty = object$model.lty, model.name = 
-        object$model.name, yhat = object$yhat, mar = object$mar, data.colour = 
-        data.colour, data.order = data.order, view3d = view3d, theta3d = 
-        theta3d, phi3d = phi3d, conf = object$conf)
-    dev.flush()
-    obj    
+    #if (!is.null(prednew)){
+    #dev.hold()
+    #screen(n = object$screen, new = TRUE)
+    #obj <- (plotxs1(xs = object$xs, y = object$y, xc.cond = xc.cond, 
+    #    model = object$model, model.colour = object$model.colour, model.lwd = 
+    #    object$model.lwd, model.lty = object$model.lty, model.name = 
+    #    object$model.name, yhat = object$yhat, mar = object$mar, data.colour = 
+    #    data.colour, data.order = data.order, view3d = view3d, theta3d = 
+    #    theta3d, phi3d = phi3d, xs.grid = object$xs.grid, prednew = prednew))
+    #dev.flush()
+    #return(obj)    
+    #}
+    #dev.hold()
+    #screen(n = object$screen, new = TRUE)
+    #obj <- plotxs1(xs = object$xs, y = object$y, xc.cond = xc.cond, 
+    #    model = object$model, model.colour = object$model.colour, model.lwd = 
+    #    object$model.lwd, model.lty = object$model.lty, model.name = 
+    #    object$model.name, yhat = object$yhat, mar = object$mar, data.colour = 
+    #    data.colour, data.order = data.order, view3d = view3d, theta3d = 
+    #    theta3d, phi3d = phi3d, conf = object$conf)
+    #dev.flush()
+    #obj    
 }
