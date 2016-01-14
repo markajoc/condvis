@@ -181,7 +181,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col = 
             "white", border = NA)
         box() 
-        if (identical(nlevels(y[, 1L]), 2L)){
+        if (identical(nlevels(object$y[, 1L]), 2L)){
             if (length(data.order) > 0)    
                 points.default((as.numeric(object$xs[data.order, 1L])) + 
                     rnorm(n = length(data.order), sd = 0.1), (as.integer(
@@ -280,7 +280,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
             if (length(data.order) > 0) 
                 points(object$xs[data.order, 1L], as.integer(object$y[data.order
                     , 1L]) , col = data.colour[data.order]) 
-            for (i in seq_along(model)){
+            for (i in seq_along(object$model)){
                 points.default(as.numeric(object$xs.grid[, 1L]), as.integer(
                     prednew[[i]]), type = 'l', col = object$model.colour[i], 
                     lwd = object$model.lwd[i], lty = object$model.lty[i])
