@@ -135,7 +135,6 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
 {
     if (dev.cur() != object$device)
         dev.set(object$device)
-    dev.hold()    
     par(bg = "white")
     screen(n = object$screen, new = FALSE)
     par(usr = object$usr)
@@ -158,19 +157,72 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
     phi3d <- if (!is.null(phi3d))
         phi3d
     else object$phi3d
-    conf <- FALSE
-    if (FALSE){#(identical(object$plot.type, "cc")){
-        if (any(xc.cond != object$xc.cond)){
+    conf <- object$conf
+    if (any(xc.cond != object$xc.cond)){
         newdata <- makenewdata(xs = object$xs.grid, xc.cond = xc.cond)
         prednew <- lapply(object$model, predict1, newdata = newdata)
     } else {
         newdata <- object$newdata
         prednew <- object$prednew
     }
+    color <- if (is.factor(object$y[, 1L]))
+	    factor2color(as.factor(prednew[[1L]]))
+	else cont2color(prednew[[1L]], range(object$y[, 1L]))        
+    ybg <- if (length(data.order) > 0){
+        if (is.factor(object$y[, 1L]))
+	        factor2color(object$y[data.order, 1L])
+	    else cont2color(object$y[data.order, 1L], range(object$y[, 1L])) 
+    } else NULL 
+    arefactorsxs <- vapply(object$xs, is.factor, logical(1L))
+
+    if (object$plot.type %in% c("ff")){
         screen(n = object$screen, new = FALSE)
         dev.hold()
         rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col = 
-            "white")
+            "white", border = NA)
+        box() 
+        if (identical(nlevels(object$y[, 1L]), 2L)){
+            if (length(data.order) > 0)    
+                points.default((as.numeric(object$xs[data.order, 1L])) + 
+                    rnorm(n = length(data.order), sd = 0.1), (as.integer(
+                    object$y[data.order, 1L]) - 1) + rnorm(n = length(
+                    data.order), sd = 0.01), col = data.colour[data.order])
+            for (i in seq_along(object$model)){
+                if ("glm" %in% class(object$model[[i]])){
+                    points.default(object$xs.grid[, 1L], prednew[[i]], 
+                        type = 'l', col = object$model.colour[i], 
+                        lwd = object$model.lwd[i], lty = object$model.lty[i])
+                } else {
+                    points.default(object$xs.grid[, 1L], as.numeric(prednew[[i
+                        ]]) - 1, type = 'l', col = object$model.colour[i], lwd = 
+                        object$model.lwd[i], lty = object$model.lty[i])                    
+                        }
+                    }
+        } else {
+            if (length(data.order) > 0) 
+                points(as.numeric(object$xs[data.order, 1L]), as.integer(
+                    object$y[data.order, 1L]), col = data.colour[data.order]) 
+            for (i in seq_along(object$model)){
+                points.default(as.numeric(object$xs.grid[, 1L]), 
+                    as.integer(prednew[[i]]), type = 'l', col = 
+                    object$model.colour[i], lwd = object$model.lwd[i], 
+                    lty = object$model.lty[i])
+            }
+        }
+        legend("topright", legend = object$model.name, col = object$model.colour
+            , lwd = object$model.lwd, lty = object$model.lty)        
+        dev.flush()
+        object$newdata <- newdata
+        object$prednew <- prednew
+        return(object)         
+    }
+    if (object$plot.type %in% c("cf")){
+        screen(n = object$screen, new = FALSE)
+        dev.hold()
+        rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col = 
+            "white", border = NA)
+        box() 
+
         if (length(data.order) > 0)
             points(object$xs[data.order, 1L], object$y[data.order, 1L], col = 
                 data.colour[data.order])
@@ -179,18 +231,98 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
             for (i in seq_along(object$model)){
                 points.default(object$xs.grid[, 1L], prednew[[i]], type = 'l',
                     col = object$model.colour[i], lwd = object$model.lwd[i], lty 
+                        = object$model.lty[i])
+                if (all(c("lwr", "upr") %in% colnames(prednew2[[i]]))){
+                    points.default(object$xs.grid[, 1L], prednew2[[i]][, "lwr"]
+                        , type = 'l', lty = 2, col = object$model.colour[i], 
+                        lwd = 0.75 * object$model.lwd[i])
+                    points.default(object$xs.grid[, 1L], prednew2[[i]][, "upr"] 
+                        , type = 'l', lty = 2, col = object$model.colour[i], 
+                        lwd = 0.75 * object$model.lwd[i])   
+                }
+            }                 
+        } else {
+            for (i in seq_along(object$model)){
+                points.default(object$xs.grid[, 1L], prednew[[i]], type = 'l',
+                    col = object$model.colour[i], lwd = object$model.lwd[i], lty 
+                    = object$model.lty[i])
+            }
+        }   
+        legend("topright", legend = object$model.name, col = object$model.colour
+            , lwd = object$model.lwd, lty = object$model.lty)        
+        dev.flush()
+        object$newdata <- newdata
+        object$prednew <- prednew
+        return(object)         
+    }
+    if (object$plot.type %in% c("fc")){
+        screen(n = object$screen, new = FALSE)
+        dev.hold()
+        rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col = 
+            "white", border = NA)
+        box() 
+        if (identical(nlevels(object$y[, 1L]), 2L)){
+            if (length(data.order) > 0)    
+		        points.default(object$xs[data.order, 1L], as.integer(object$y[
+                    data.order, 1L]) - 1, col = data.colour[data.order])
+            for (i in seq_along(object$model)){
+                if ("glm" %in% class(object$model[[i]])){
+                    points.default(object$xs.grid[, 1L], prednew[[i]], 
+                        type = 'l', col = object$model.colour[i], 
+                        lwd = object$model.lwd[i], lty = object$model.lty[i])
+                } else {
+                    points.default(object$xs.grid[, 1L], as.numeric(prednew[[i]
+                        ]) - 1, type = 'l', col = object$model.colour[i], lwd = 
+                        object$model.lwd[i], lty = object$model.lty[i])                    
+                }
+            }
+        } else {
+            if (length(data.order) > 0) 
+                points(object$xs[data.order, 1L], as.integer(object$y[data.order
+                    , 1L]) , col = data.colour[data.order]) 
+            for (i in seq_along(object$model)){
+                points.default(as.numeric(object$xs.grid[, 1L]), as.integer(
+                    prednew[[i]]), type = 'l', col = object$model.colour[i], 
+                    lwd = object$model.lwd[i], lty = object$model.lty[i])
+            }
+        }
+        legend("topright", legend = object$model.name, col = object$model.colour, 
+            lwd = object$model.lwd, lty = object$model.lty)  
+        dev.flush()
+        object$newdata <- newdata
+        object$prednew <- prednew
+        return(object)                    
+    }    
+    if (object$plot.type %in% c("cc")){
+        screen(n = object$screen, new = FALSE)
+        dev.hold()
+        rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col = 
+            "white", border = NA)
+        box()    
+        if (length(data.order) > 0)
+            points(object$xs[data.order, 1L], object$y[data.order, 1L], col = 
+                data.colour[data.order])
+        for (i in seq_along(object$model)){
+                points.default(object$xs.grid[, 1L], prednew[[i]], type = 'l',
+                    col = object$model.colour[i], lwd = object$model.lwd[i], lty 
+                    = object$model.lty[i]) 
+        }                     
+        if (conf){
+            prednew2 <- lapply(object$model, confpred, newdata = newdata)     
+            for (i in seq_along(object$model)){
+                points.default(object$xs.grid[, 1L], prednew[[i]], type = 'l',
+                    col = object$model.colour[i], lwd = object$model.lwd[i], lty 
                     = object$model.lty[i])
                 if (all(c("lwr", "upr") %in% colnames(prednew2[[i]]))){
                     points.default(object$xs.grid[, 1L], prednew2[[i]][, "lwr"], 
-                        type = 'l', lty = 3, col = object$model.colour[i], lwd = 
-                        object$model.lwd[i])
+                        type = 'l', lty = 2, col = object$model.colour[i], lwd = 
+                        0.75 * object$model.lwd[i])
                     points.default(object$xs.grid[, 1L], prednew2[[i]][, "upr"], 
-                        type = 'l', lty = 3, col = object$model.colour[i], lwd = 
-                        object$model.lwd[i])    
+                        type = 'l', lty = 2, col = object$model.colour[i], lwd = 
+                        0.75 * object$model.lwd[i])    
                 }
             }        
         }    
-
         if (is.numeric(object$xs[, 1L])){
             pos <- if (cor(object$xs, object$y) < 0)
                 "topright"
@@ -203,28 +335,101 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
                     object$model.lty)
             }    
         dev.flush()
-        print(data.order) 
-        print(data.colour)        
+        object$newdata <- newdata
+        object$prednew <- prednew
         return(object)
     }
-    if (!is.null(prednew)){
-    screen(n = object$screen, new = TRUE)
-    obj <- (plotxs1(xs = object$xs, y = object$y, xc.cond = xc.cond, 
-        model = object$model, model.colour = object$model.colour, model.lwd = 
-        object$model.lwd, model.lty = object$model.lty, model.name = 
-        object$model.name, yhat = object$yhat, mar = object$mar, data.colour = 
-        data.colour, data.order = data.order, view3d = view3d, theta3d = 
-        theta3d, phi3d = phi3d, xs.grid = object$xs.grid, prednew = prednew))
-    dev.flush()
-    return(obj)    
+    if (object$plot.type %in% c("fff", "cff")){
+        screen(n = object$screen, new = FALSE)
+	    xrect <- as.integer(object$xs.grid[, 1L])
+		yrect <- as.integer(object$xs.grid[, 2L])
+		xoffset <- abs(diff(unique(xrect)[1:2])) / 2.1
+		yoffset <- abs(diff(unique(yrect)[1:2])) / 2.1
+        dev.hold()        
+		rect(xleft = xrect - xoffset, xright = xrect + xoffset, ybottom = yrect 
+            - yoffset, ytop = yrect + yoffset, col = color)
+        if (length(data.order) > 0)      
+       	    points(jitter(as.integer(object$xs[data.order, 1L]), amount = 0.6 * 
+                xoffset), jitter(as.integer(object$xs[data.order, 2L]), amount = 
+                0.6 * yoffset), bg = ybg, col = data.colour[data.order], 
+                pch = 21)
+        dev.flush()  
+        object$data.colour <- data.colour
+        object$data.order <- data.order  
+        object$newdata <- newdata
+        object$prednew <- prednew
+        return(object)
     }
-    screen(n = object$screen, new = TRUE)
-    obj <- plotxs1(xs = object$xs, y = object$y, xc.cond = xc.cond, 
-        model = object$model, model.colour = object$model.colour, model.lwd = 
-        object$model.lwd, model.lty = object$model.lty, model.name = 
-        object$model.name, yhat = object$yhat, mar = object$mar, data.colour = 
-        data.colour, data.order = data.order, view3d = view3d, theta3d = 
-        theta3d, phi3d = phi3d, conf = object$conf)
-    dev.flush()
-    obj    
+    if (object$plot.type %in% c("ffc", "cfc")){
+        screen(n = object$screen, new = FALSE)
+    	xrect <- object$xs.grid[, !arefactorsxs]
+		yrect <- as.integer(object$xs.grid[, arefactorsxs])
+		xoffset <- abs(diff(unique(xrect)[1:2])) / 2
+		yoffset <- abs(diff(unique(yrect)[1:2])) / 2.1          
+        dev.hold()
+		rect(xleft = xrect - xoffset, xright = xrect + xoffset, ybottom = yrect 
+            - yoffset, ytop = yrect + yoffset, col = color, border = NA)
+        if (length(data.order) > 0)  
+            points(jitter(object$xs[data.order, !arefactorsxs]), jitter(
+                as.integer(object$xs[data.order, arefactorsxs])), bg = ybg, 
+                col = data.colour[data.order], pch = 21)        
+        dev.flush()  
+        object$data.colour <- data.colour
+        object$data.order <- data.order  
+        object$newdata <- newdata
+        object$prednew <- prednew
+        return(object)
+    }
+    if (object$plot.type %in% c("fcc", "ccc")){
+        screen(n = object$screen, new = FALSE)
+        dev.hold()  
+        if (view3d & identical(object$plot.type, "ccc")){
+            screen(n = object$screen, new = TRUE)
+            z <- matrix(prednew[[1L]], ncol = 20L, byrow = FALSE)
+            zfacet <- (z[-1, -1] + z[-1, -ncol(z)] + z[-nrow(z), -1] 
+                + z[-nrow(z), -ncol(z)]) / 4
+            colorfacet <- cont2color(zfacet, range(object$y[, 1L]))
+            par(mar = c(3, 3, 3, 3))
+            persp.object <- suppressWarnings(persp(x = 
+                unique(object$xs.grid[, 1L]), y = unique(object$xs.grid[, 2L]), 
+                border = rgb(0.3, 0.3, 0.3), lwd = 0.1, z = z, col = 
+                colorfacet, zlim = range(object$y), xlab = colnames(object$xs)[
+                1L], ylab = colnames(object$xs)[2L], zlab = colnames(object$y)[
+                1L], d = 10, ticktype = "detailed", main = 
+                "Conditional expectation", theta = theta3d, 
+                phi = phi3d)) 
+            if (length(data.order) > 0){     
+                points(trans3d(object$xs[data.order, 1L], object$xs[data.order, 
+                    2L], object$y[data.order, 1L], pmat = persp.object), 
+                    col = data.colour[data.order])  
+                linestarts <- trans3d(object$xs[data.order, 1L], object$xs[
+                    data.order, 2L], object$y[data.order, 1L], pmat = 
+                    persp.object)   
+                lineends <- trans3d(object$xs[data.order, 1L], object$xs[
+                    data.order, 2L], object$yhat[[1]][data.order], pmat = 
+                    persp.object) 
+                segments(x0 = linestarts$x, y0 = linestarts$y, x1 = 
+                    lineends$x, y1 = lineends$y, col = data.colour[
+                    data.order])                            
+            }
+            object$data.colour <- data.colour
+            object$data.order <- data.order
+            object$theta3d <- theta3d
+            object$phi3d <- phi3d                       
+        } else {  
+            xoffset <- abs(diff(unique(object$xs.grid[, 1L])[1:2])) / 2
+            yoffset <- abs(diff(unique(object$xs.grid[, 2L])[1:2])) / 2
+            rect(xleft = object$xs.grid[, 1L] - xoffset, xright = object$xs.grid[, 
+                1L] + xoffset, ybottom = object$xs.grid[, 2L] - yoffset, 
+                ytop = object$xs.grid[, 2L] + yoffset, col = color, border 
+                = NA)
+            if (length(data.order) > 0)     
+                points(object$xs[data.order, , drop = FALSE], bg = ybg, 
+                    col = data.colour[data.order], pch = 21)   
+            }
+        dev.flush()  
+        object$newdata <- newdata
+        object$prednew <- prednew
+        return(object)        
+    }
 }
