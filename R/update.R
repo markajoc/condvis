@@ -1,5 +1,5 @@
 update.xcplot <- 
-function (object, xclick, yclick, ...)
+function (object, xclick, yclick, xc.cond = NULL, ...)
 {
     if (dev.cur() != object$device)
         dev.set(object$device)   
@@ -7,11 +7,17 @@ function (object, xclick, yclick, ...)
     par(usr = object$usr)
     par(mar = object$mar) 
     screen(n = object$screen, new = FALSE)
-    xclickconv <- grconvertX(xclick, "ndc", "user")
-    yclickconv <- grconvertY(yclick, "ndc", "user")
+    if (is.null(xc.cond)){
+        xclickconv <- grconvertX(xclick, "ndc", "user")
+        yclickconv <- grconvertY(yclick, "ndc", "user")    
+    }
     if (identical(object$plot.type, "histogram")){
-        xc.cond.new <- max(min(xclickconv, max(object$xc, na.rm = TRUE)), 
-            min(object$xc, na.rm = TRUE), na.rm = TRUE)
+        if (is.null(xc.cond)){
+            xc.cond.new <- max(min(xclickconv, max(object$xc, na.rm = TRUE)), 
+                min(object$xc, na.rm = TRUE), na.rm = TRUE)
+        } else {
+            xc.cond.new <- xc.cond
+        }        
         if (xc.cond.new != object$xc.cond.old){
             abline(v = object$xc.cond.old, lwd = 2 * object$select.lwd, 
                 col = "white")
@@ -25,8 +31,12 @@ function (object, xclick, yclick, ...)
             object$xc.cond.old <- xc.cond.new
         } 
     } else if (identical(object$plot.type, "barplot")){
-        xc.cond.new <- as.factor(object$factorcoords$level)[which.min(abs(
-            xclickconv - object$factorcoords$x))]
+        if (is.null(xc.cond)){
+            xc.cond.new <- as.factor(object$factorcoords$level)[which.min(abs(
+                xclickconv - object$factorcoords$x))]
+        } else {
+            xc.cond.new <- xc.cond
+        }        
         if (xc.cond.new != object$xc.cond.old){
             barindex.old <- levels(object$xc) == object$xc.cond.old
             rect(xleft = object$bartmp$w.l[barindex.old], xright = 
@@ -40,11 +50,15 @@ function (object, xclick, yclick, ...)
             object$xc.cond.old <- xc.cond.new
         }
     } else if (identical(object$plot.type, "scatterplot")){
-        xc.cond.new.x <- max(min(xclickconv, max(object$xc[, 1], na.rm = TRUE)), 
-            min(object$xc[, 1], na.rm = TRUE), na.rm = TRUE)
-        xc.cond.new.y <- max(min(yclickconv, max(object$xc[, 2], na.rm = TRUE)), 
-            min(object$xc[, 2], na.rm = TRUE), na.rm = TRUE)
-        xc.cond.new <- c(xc.cond.new.x, xc.cond.new.y)
+        if (is.null(xc.cond)){
+            xc.cond.new.x <- max(min(xclickconv, max(object$xc[, 1], na.rm = TRUE)), 
+                min(object$xc[, 1], na.rm = TRUE), na.rm = TRUE)
+            xc.cond.new.y <- max(min(yclickconv, max(object$xc[, 2], na.rm = TRUE)), 
+                min(object$xc[, 2], na.rm = TRUE), na.rm = TRUE)
+            xc.cond.new <- c(xc.cond.new.x, xc.cond.new.y)
+        } else {
+            xc.cond.new <- xc.cond
+        }    
         if (any(xc.cond.new != object$xc.cond.old)){
             if (nrow(object$xc) > 2000 && requireNamespace("gplots", quietly = 
                 TRUE)){
@@ -74,14 +88,18 @@ function (object, xclick, yclick, ...)
             }
         }
     } else if (identical(object$plot.type, "boxplot")){
-        xc.cond.new.x <- as.factor(object$factorcoords$level)[
-            which.min(abs(xclickconv - object$factorcoords$x))]
-        xc.cond.new.y <- if (abs(yclickconv - object$xc.cond.old[, 2]) > 
-            0.025 * abs(diff(range(object$xc[, 2])))){
-            max(min(yclickconv, max(object$xc[, 2], na.rm = TRUE)), 
+        if (is.null(xc.cond)){    
+            xc.cond.new.x <- as.factor(object$factorcoords$level)[
+                which.min(abs(xclickconv - object$factorcoords$x))]
+            xc.cond.new.y <- if (abs(yclickconv - object$xc.cond.old[, 2]) > 
+                0.025 * abs(diff(range(object$xc[, 2])))){
+                max(min(yclickconv, max(object$xc[, 2], na.rm = TRUE)), 
                 min(object$xc[, 2], na.rm = TRUE), na.rm = TRUE)
-        } else object$xc.cond.old[, 2]    
-        xc.cond.new <- c(xc.cond.new.x, xc.cond.new.y)
+            } else object$xc.cond.old[, 2]    
+            xc.cond.new <- c(xc.cond.new.x, xc.cond.new.y)
+        } else {
+            xc.cond.new <- xc.cond
+        }    
         if (any(xc.cond.new != object$xc.cond.old)){
             if (xc.cond.new.x != object$xc.cond.old[, 1]){
                 abline(v = as.integer(object$xc.cond.old[, 1]), lwd = 2 * 
@@ -101,30 +119,45 @@ function (object, xclick, yclick, ...)
             object$xc.cond.old <- xc.cond.new
         }
     } else if (identical(object$plot.type, "spineplot")){
-        sptmp <- object$sptmp
-        rectcoords <- data.frame(sptmp$xleft, sptmp$xright, sptmp$ybottom, 
-            sptmp$ytop)
-        if (c(xclickconv, yclickconv) %inrectangle% c(min(sptmp$xleft), 
-            max(sptmp$xright) , min(sptmp$ybottom), max(sptmp$ytop)) ){
-            comb.index <- apply(rectcoords, 1L, `%inrectangle%`, point = 
-                c(xclickconv, yclickconv))
-            if (any(comb.index)){
-                xc.cond.new <- data.frame(as.factor(sptmp$xnames)[comb.index], 
-                    as.factor(sptmp$ynames)[comb.index])
-                names(xc.cond.new) <- names(object$xc.cond.old)
-                if (any(xc.cond.new != object$xc.cond.old)){
-                    object$xc.cond.old <- xc.cond.new
-                    par(bg = "white")
-                    screen(new = TRUE)
-                    object <- plotxc(xc = object$xc, xc.cond = xc.cond.new, 
-                        name = object$name, select.colour = 
-                        object$select.colour, select.lwd = object$select.lwd, 
-                        cex.axis = object$cex.axis, cex.lab = object$cex.lab, 
-                        tck = object$tck)
-                }
-            }   
-        }        
-    }
+        if (is.null(xc.cond)){     
+            sptmp <- object$sptmp
+            rectcoords <- data.frame(sptmp$xleft, sptmp$xright, sptmp$ybottom, 
+                sptmp$ytop)
+            if (c(xclickconv, yclickconv) %inrectangle% c(min(sptmp$xleft), 
+                max(sptmp$xright) , min(sptmp$ybottom), max(sptmp$ytop)) ){
+                comb.index <- apply(rectcoords, 1L, `%inrectangle%`, point = 
+                    c(xclickconv, yclickconv))
+                if (any(comb.index)){
+                    xc.cond.new <- data.frame(as.factor(sptmp$xnames)[comb.index], 
+                        as.factor(sptmp$ynames)[comb.index])
+                    names(xc.cond.new) <- names(object$xc.cond.old)
+                    if (any(xc.cond.new != object$xc.cond.old)){
+                        object$xc.cond.old <- xc.cond.new
+                        par(bg = "white")
+                        screen(new = TRUE)
+                        object <- plotxc(xc = object$xc, xc.cond = xc.cond.new, 
+                            name = object$name, select.colour = 
+                            object$select.colour, select.lwd = object$select.lwd, 
+                            cex.axis = object$cex.axis, cex.lab = object$cex.lab, 
+                            tck = object$tck)
+                    }
+                }   
+            }
+        } else {
+            xc.cond.new <- xc.cond
+            names(xc.cond.new) <- names(object$xc.cond.old)
+            if (any(xc.cond.new != object$xc.cond.old)){
+                object$xc.cond.old <- xc.cond.new
+                par(bg = "white")
+                screen(new = TRUE)
+                object <- plotxc(xc = object$xc, xc.cond = xc.cond.new, 
+                    name = object$name, select.colour = 
+                    object$select.colour, select.lwd = object$select.lwd, 
+                    cex.axis = object$cex.axis, cex.lab = object$cex.lab, 
+                    tck = object$tck)
+            }       
+        }
+    }    
     object
 }
 

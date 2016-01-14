@@ -45,7 +45,9 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
                  " names from 'data'.")
     uniqC <- unique(unlist(C))
     C <- uniqC
-    xc.cond <- path[1, , drop = FALSE]
+    pathindex <- 1
+    pathindexrange <- c(1, nrow(path))
+    xc.cond <- path[pathindex, , drop = FALSE]
     if (any(response %in% uniqC))
         stop("cannot have 'response' variable in 'C'")
     if (any(response %in% S))
@@ -98,5 +100,87 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
             name = colnames(data[, C[[i]], drop = FALSE]), select.colour = 
             "blue")
         coords[i, ] <- par("fig")
-    }         
+    }  
+    
+    keystroke <- function ()
+    {
+        function (key)
+        {
+            if (identical(key, "q")){
+                cat("\nInteractive session ended.\n")
+                return(invisible(1))            
+            } 
+            if (identical(xsplot$plot.type, "ccc") & xsplot$view3d & 
+                key %in% c("Up", "Down", "Left", "Right")){
+                xsplot <<- update(xsplot, theta3d = xsplot$theta3d - 2 * 
+                    (key == "Right") + 2 * (key == "Left"), phi3d = xsplot$phi3d 
+                    - 2 * (key == "Up") + 2 * (key == "Down"), xs.grid = 
+                    xsplot$xs.grid, prednew = xsplot$prednew)                
+            }
+            if (identical(xsplot$plot.type, "ccc") & identical(key, "3"))
+                xsplot <<- update(xsplot, view3d = !xsplot$view3d)
+            if (key %in% c(",", ".")){
+                sigma <<- sigma + 0.01 * sigma * (key == ".") - 0.01 * sigma * 
+                    (key == ",")
+                vw <<- visualweight(xc = data[, uniqC, drop = FALSE], 
+                    xc.cond = xc.cond, sigma = sigma, distance = distance)
+                xsplot <<- update(xsplot, data.colour = rgb(1 - vw$k, 1 - vw$k, 
+                    1 - vw$k), data.order = vw$order, xs.grid = xsplot$xs.grid, 
+                    newdata = xsplot$newdata, prednew = xsplot$prednew)    
+            }
+            if (identical(key, "s")){
+                filename <- paste("snapshot_", gsub(":", ".", gsub(" ", "_", 
+                    Sys.time())), ".pdf", sep = "") 
+                pdf(file = filename, width = width, height = height)
+                close.screen(all.screens = TRUE)
+                xcwidth <- selector.colwidth * n.selector.cols / width
+                mainscreens <- split.screen(figs = matrix(c(0, 1 - xcwidth, 1 - 
+                    xcwidth, 1, 0, 0, 1, 1), ncol = 4))
+                xcscreens <- split.screen(c(4, n.selector.cols), screen = 
+                    mainscreens[2L])
+                for (i in seq_along(C)){
+                    screen(xcscreens[i])
+                    plotxc(xc = xcplots[[i]]$xc, 
+                        xc.cond = xcplots[[i]]$xc.cond.old, 
+                        name = xcplots[[i]]$name, 
+                        select.colour = xcplots[[i]]$select.colour)
+                }    
+                xsscreens <- if (plotlegend){
+                    split.screen(figs = matrix(c(0, 1 - legendwidth, 1 - 
+                        legendwidth, 1, 0, 0, 1, 1), ncol = 4L), screen = 
+                        mainscreens[1L])
+                } else mainscreens[1L]
+                if (plotlegend){
+                    screen(xsscreens[2L])
+                    xslegend(data[, response], colnames(data)[response])
+                }
+                screen(xsscreens[1L])
+                plotxs1(xs = data[, S, drop = FALSE], data[, response, 
+                    drop = FALSE], xc.cond = xc.cond, model = model, data.colour 
+                    = rgb(1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, 
+                    view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d = 
+                    xsplot$phi3d, conf = conf)
+                dev.off()    
+                cat(paste("\nSnapshot saved: '", filename,"'", sep = ""))
+                cat("\n")            
+            } 
+            if (key %in% c("f", "b")){
+                pathindex <<- max(min(pathindex + 1 * (key == "f") - 1 * (key == 
+                    "b"), max(pathindexrange)), min(pathindexrange))
+                xc.cond <- path[pathindex, , drop = FALSE]
+                vw <<- visualweight(xc = data[, uniqC, drop = FALSE], 
+                    xc.cond = xc.cond, sigma = sigma, distance = distance)
+                xsplot <<- update(xsplot, xc.cond = xc.cond, data.colour = 
+                    rgb(1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order) 
+                for (i in seq_along(C)){
+                    xcplots[[i]] <<- update(xcplots[[i]], xc.cond = path[pathindex, C[i]])
+                }               
+            }            
+            points(NULL)
+        }
+    } 
+    setGraphicsEventHandlers(
+        onKeybd = keystroke())
+    getGraphicsEventEnv()
+    getGraphicsEvent()    
 }
