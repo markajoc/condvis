@@ -113,7 +113,8 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
     xcscreens <- split.screen(c(n.selector.rows, n.selector.cols))
     for (i in seq_along(uniqC)){
         screen(xcscreens[i])
-        xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = data[1L, C[[i]]], 
+        xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = path[
+                        pathindex, colnames(data)[C[i]]], 
             name = colnames(data[, C[[i]], drop = FALSE]), select.colour = 
             "blue")
         coords[i, ] <- par("fig")
