@@ -90,9 +90,26 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
     xcheight <- selector.colwidth * n.selector.rows    
     if (identical(version$os, "linux-gnu"))
         x11(type = "Xlib", height = xcheight, width = xcwidth)
+    else x11(height = 5, width = 3)
+    devdiag <- dev.cur()    
+    close.screen(all.screens = TRUE)
+    diagscreens <- split.screen(c(2, 1))
+    k <- matrix(ncol = nrow(data), nrow = nrow(path))
+    for (i in 1: nrow(path)){
+        k[i, ] <- visualweight(xc.cond = path[i, , drop = F], xc = data[, colnames(path), drop = FALSE], 
+            basicoutput = T)
+    }
+    screen(diagscreens[1L])
+    par(mar = c(4, 4, 2, 2))
+    plotmaxk(apply(k, 2, max))
+    screen(diagscreens[2L])
+    par(mar = c(4, 4, 2, 2))
+    applot <- plotap(k)
+    if (identical(version$os, "linux-gnu"))
+        x11(type = "Xlib", height = xcheight, width = xcwidth)
     else x11(height = xcheight, width = xcwidth)
     devcond <- dev.cur()    
-    close.screen(all.screens = TRUE)
+    close.screen(all.screens = TRUE)    
     xcscreens <- split.screen(c(n.selector.rows, n.selector.cols))
     for (i in seq_along(uniqC)){
         screen(xcscreens[i])
@@ -101,7 +118,26 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
             "blue")
         coords[i, ] <- par("fig")
     }  
-    
+    mouseclick <- function ()
+    {
+        function (buttons, x, y)
+        {
+            if (0 %in% buttons){
+                pathindex <<- max(min(pathindex + 1, max(pathindexrange)), 
+                    min(pathindexrange))
+                applot <<- update(applot, pathindex = pathindex)    
+                xc.cond <- path[pathindex, , drop = FALSE]
+                vw <<- visualweight(xc = data[, uniqC, drop = FALSE], 
+                    xc.cond = xc.cond, sigma = sigma, distance = distance)
+                xsplot <<- update(xsplot, xc.cond = xc.cond, data.colour = 
+                    rgb(1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order) 
+                for (i in seq_along(C)){
+                    xcplots[[i]] <<- update(xcplots[[i]], xc.cond = path[
+                        pathindex, C[i]])
+                }                 
+            }
+        }
+    }
     keystroke <- function ()
     {
         function (key)
@@ -167,6 +203,7 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
             if (key %in% c("[", "]")){
                 pathindex <<- max(min(pathindex + 1 * (key == "]") - 1 * (key == 
                     "["), max(pathindexrange)), min(pathindexrange))
+                applot <<- update(applot, pathindex = pathindex)    
                 xc.cond <- path[pathindex, , drop = FALSE]
                 vw <<- visualweight(xc = data[, uniqC, drop = FALSE], 
                     xc.cond = xc.cond, sigma = sigma, distance = distance)
@@ -180,6 +217,7 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
         }
     } 
     setGraphicsEventHandlers(
+        onMouseDown = mouseclick(),
         onKeybd = keystroke())
     getGraphicsEventEnv()
     getGraphicsEvent()    

@@ -1,5 +1,5 @@
 visualweight <- 
-function (xc, xc.cond, sigma = NULL, distance = "euclidean")
+function (xc.cond, xc, sigma = NULL, distance = "euclidean", basicoutput = FALSE)
 {
     if(!is.data.frame(xc)) 
         stop("'xc' should be a data.frame.")
@@ -45,7 +45,12 @@ function (xc, xc.cond, sigma = NULL, distance = "euclidean")
         k[factormatches][d < (0.6 * sigma)] <- 0.7        
         k[factormatches][d < (0.3 * sigma)] <- 1
     }  
-    k.order <- order(k) 
-    k.order.trimmed <- k.order[k[k.order] > 0]
-    list(k = k, order = k.order.trimmed)
+    if (basicoutput)
+        return(k)
+    else {
+        k.order <- order(k) 
+        k.order.trimmed <- k.order[k[k.order] > 0]
+        list(k = k, order = k.order.trimmed)    
+    }    
+
 }
