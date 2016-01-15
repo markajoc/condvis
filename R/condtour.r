@@ -96,8 +96,8 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
     diagscreens <- split.screen(c(2, 1))
     k <- matrix(ncol = nrow(data), nrow = nrow(path))
     for (i in 1: nrow(path)){
-        k[i, ] <- visualweight(xc.cond = path[i, , drop = F], xc = data[, colnames(path), drop = FALSE], 
-            basicoutput = T)
+        k[i, ] <- visualweight(xc.cond = path[i, , drop = F], xc = data[, 
+            colnames(path), drop = FALSE], sigma = sigma, basicoutput = T)
     }
     screen(diagscreens[1L])
     par(mar = c(4, 4, 2, 2))
@@ -127,14 +127,15 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     min(pathindexrange))
                 applot <<- update(applot, pathindex = pathindex)    
                 xc.cond <- path[pathindex, , drop = FALSE]
-                vw <<- visualweight(xc = data[, uniqC, drop = FALSE], 
-                    xc.cond = xc.cond, sigma = sigma, distance = distance)
+                k.order <- order(k[pathindex, ])
+                k.order.trimmed <- k.order[k[pathindex, ][k.order] > 0]
                 xsplot <<- update(xsplot, xc.cond = xc.cond, data.colour = 
-                    rgb(1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order) 
+                    rgb(1 - k[pathindex, ], 1 - k[pathindex, ], 1 - k[pathindex, 
+                    ]), data.order = k.order.trimmed) 
                 for (i in seq_along(C)){
                     xcplots[[i]] <<- update(xcplots[[i]], xc.cond = path[
-                        pathindex, C[i]])
-                }                 
+                        pathindex, colnames(data)[C[i]]])
+                }                  
             }
         }
     }
@@ -205,12 +206,16 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     "["), max(pathindexrange)), min(pathindexrange))
                 applot <<- update(applot, pathindex = pathindex)    
                 xc.cond <- path[pathindex, , drop = FALSE]
-                vw <<- visualweight(xc = data[, uniqC, drop = FALSE], 
-                    xc.cond = xc.cond, sigma = sigma, distance = distance)
+                #vw <<- visualweight(xc = data[, uniqC, drop = FALSE], 
+                #    xc.cond = xc.cond, sigma = sigma, distance = distance)
+                k.order <- order(k[pathindex, ])
+                k.order.trimmed <- k.order[k[pathindex, ][k.order] > 0]
                 xsplot <<- update(xsplot, xc.cond = xc.cond, data.colour = 
-                    rgb(1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order) 
+                    rgb(1 - k[pathindex, ], 1 - k[pathindex, ], 1 - k[pathindex, 
+                    ]), data.order = k.order.trimmed) 
                 for (i in seq_along(C)){
-                    xcplots[[i]] <<- update(xcplots[[i]], xc.cond = path[pathindex, C[i]])
+                    xcplots[[i]] <<- update(xcplots[[i]], xc.cond = path[
+                        pathindex, colnames(data)[C[i]]])
                 }               
             }            
             points(NULL)
