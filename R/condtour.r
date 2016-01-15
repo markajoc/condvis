@@ -177,10 +177,9 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     mainscreens[2L])
                 for (i in seq_along(C)){
                     screen(xcscreens[i])
-                    plotxc(xc = xcplots[[i]]$xc, 
-                        xc.cond = xcplots[[i]]$xc.cond.old, 
-                        name = xcplots[[i]]$name, 
-                        select.colour = xcplots[[i]]$select.colour)
+                    plotxc(xc = xcplots[[i]]$xc, xc.cond = xcplots[[i
+                    ]]$xc.cond.old, name = xcplots[[i]]$name, select.colour = 
+                    xcplots[[i]]$select.colour)
                 }    
                 xsscreens <- if (plotlegend){
                     split.screen(figs = matrix(c(0, 1 - legendwidth, 1 - 
