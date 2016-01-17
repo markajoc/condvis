@@ -109,7 +109,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     xc.cond[, xcplots[[plotindex]]$name] <<- 
                         xcplots[[plotindex]]$xc.cond.old
                     vw <<- visualweight(xc = data[, uniqC, drop = FALSE], 
-                        xc.cond = xc.cond, sigma = sigma, distance = distance)
+                        xc.cond = xc.cond, sigma = vw$sigma, distance = 
+                        vw$distance)
                     xsplot <<- update(xsplot, xc.cond = xc.cond, data.colour = 
                         rgb(1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = 
                         vw$order)
@@ -146,10 +147,10 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             if (identical(xsplot$plot.type, "ccc") & identical(key, "3"))
                 xsplot <<- update(xsplot, view3d = !xsplot$view3d)
             if (key %in% c(",", ".")){
-                sigma <<- sigma + 0.01 * sigma * (key == ".") - 0.01 * sigma * 
-                    (key == ",")
+                sigma <- vw$sigma + 0.01 * vw$sigma * (key == ".") - 0.01 * 
+                    vw$sigma * (key == ",")
                 vw <<- visualweight(xc = data[, uniqC, drop = FALSE], 
-                    xc.cond = xc.cond, sigma = sigma, distance = distance)
+                    xc.cond = xc.cond, sigma = vw$sigma, distance = vw$distance)
                 xsplot <<- update(xsplot, data.colour = rgb(1 - vw$k, 1 - vw$k, 
                     1 - vw$k), data.order = vw$order, xs.grid = xsplot$xs.grid, 
                     newdata = xsplot$newdata, prednew = xsplot$prednew)    
