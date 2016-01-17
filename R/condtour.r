@@ -157,15 +157,6 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
             }
             if (identical(xsplot$plot.type, "ccc") & identical(key, "3"))
                 xsplot <<- update(xsplot, view3d = !xsplot$view3d)
-            if (key %in% c(",", ".")){
-                sigma <<- sigma + 0.01 * sigma * (key == ".") - 0.01 * sigma * 
-                    (key == ",")
-                vw <<- visualweight(xc = data[, uniqC, drop = FALSE], 
-                    xc.cond = xc.cond, sigma = sigma, distance = distance)
-                xsplot <<- update(xsplot, data.colour = rgb(1 - vw$k, 1 - vw$k, 
-                    1 - vw$k), data.order = vw$order, xs.grid = xsplot$xs.grid, 
-                    newdata = xsplot$newdata, prednew = xsplot$prednew)    
-            }
             if (identical(key, "s")){
                 filename <- paste("snapshot_", gsub(":", ".", gsub(" ", "_", 
                     Sys.time())), ".pdf", sep = "") 
