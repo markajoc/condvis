@@ -50,7 +50,7 @@ function (xc.cond, xc, sigma = NULL, distance = "euclidean", basicoutput = FALSE
     else {
         k.order <- order(k) 
         k.order.trimmed <- k.order[k[k.order] > 0]
-        list(k = k, order = k.order.trimmed)    
+        list(k = k, order = k.order.trimmed, sigma = sigma, distance = distance)    
     }    
 
 }
