@@ -150,7 +150,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 sigma <- vw$sigma + 0.01 * vw$sigma * (key == ".") - 0.01 * 
                     vw$sigma * (key == ",")
                 vw <<- visualweight(xc = data[, uniqC, drop = FALSE], 
-                    xc.cond = xc.cond, sigma = vw$sigma, distance = vw$distance)
+                    xc.cond = xc.cond, sigma = sigma, distance = vw$distance)
                 xsplot <<- update(xsplot, data.colour = rgb(1 - vw$k, 1 - vw$k, 
                     1 - vw$k), data.order = vw$order, xs.grid = xsplot$xs.grid, 
                     newdata = xsplot$newdata, prednew = xsplot$prednew)    
