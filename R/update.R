@@ -461,6 +461,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
             }
             object$data.colour <- data.colour
             object$data.order <- data.order
+            object$view3d <- view3d
             object$theta3d <- theta3d
             object$phi3d <- phi3d                       
         } else {  
