@@ -61,6 +61,11 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
     selector.colwidth <- 2
     height <- 8    
     width <- height + 0.5 * plotlegend + selector.colwidth * n.selector.cols
+    k <- matrix(ncol = nrow(data), nrow = nrow(path))
+    for (i in 1: nrow(path)){
+        k[i, ] <- visualweight(xc.cond = path[i, , drop = F], xc = data[, 
+            colnames(path), drop = FALSE], sigma = sigma, basicoutput = T)
+    }
     if (identical(version$os, "linux-gnu"))
         x11(type = "Xlib", height = height, width = height + 0.5 * plotlegend)
     else x11(height = height, width = height + 0.5 * plotlegend)
@@ -77,13 +82,13 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
         xslegend(data[, response], colnames(data)[response])
     }
     screen(xsscreens[1L])
-    vw <- visualweight(xc = data[, uniqC, drop = FALSE], xc.cond = xc.cond, 
-        sigma = sigma, distance = distance)
+    k.order <- order(k[pathindex, ])
+    k.order.trimmed <- k.order[k[pathindex, ][k.order] > 0]
     par(mar = c(3, 3, 3, 3))
     xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response, 
-        drop = FALSE], xc.cond = xc.cond, model = model, data.colour = rgb(1 
-        - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, view3d = view3d, 
-        conf = conf)
+        drop = FALSE], xc.cond = xc.cond, model = model, data.colour = rgb(1 - 
+        k[pathindex, ], 1 - k[pathindex, ], 1 - k[pathindex, ]), data.order = 
+        k.order.trimmed, view3d = view3d, conf = conf)
     xscoords <- par("fig") 
     xcwidth <- selector.colwidth * n.selector.cols
     n.selector.rows <- ceiling(length(C) / n.selector.cols)
@@ -94,11 +99,6 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
     devdiag <- dev.cur()    
     close.screen(all.screens = TRUE)
     diagscreens <- split.screen(c(2, 1))
-    k <- matrix(ncol = nrow(data), nrow = nrow(path))
-    for (i in 1: nrow(path)){
-        k[i, ] <- visualweight(xc.cond = path[i, , drop = F], xc = data[, 
-            colnames(path), drop = FALSE], sigma = sigma, basicoutput = T)
-    }
     screen(diagscreens[1L])
     par(mar = c(4, 4, 2, 2))
     plotmaxk(apply(k, 2, max))
