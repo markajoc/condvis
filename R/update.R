@@ -181,9 +181,23 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
     data.order <- if (!is.null(data.order))
         data.order
     else object$data.order
-    view3d <- if (!is.null(view3d))
-        view3d
-    else object$view3d
+    #view3d <- if (!is.null(view3d))
+    #    view3d
+    #else object$view3d
+    if (is.null(view3d)){
+        view3d <-  object$view3d
+        xs.grid <- object$xs.grid
+    } else {
+        xs.grid1 <- seq(min(object$xs[, 1L], na.rm = TRUE), max(object$xs[, 1L], 
+            na.rm = TRUE), length.out = if (view3d) {20L} else 50L)
+        xs.grid2 <- seq(min(object$xs[, 2L], na.rm = TRUE), max(object$xs[, 2L], 
+            na.rm = TRUE), length.out = if (view3d) {20L} else 50L)
+        xs.grid <- data.frame(rep(xs.grid1, by = length(xs.grid2)), rep(xs.grid2
+            , each = length(xs.grid1)))
+        colnames(xs.grid) <- colnames(object$xs)         
+        newdata <- makenewdata(xs = xs.grid, xc.cond = object$xc.cond)
+        prednew <- lapply(object$model, predict1, newdata = newdata)
+    }
     theta3d <- if (!is.null(theta3d))
         theta3d
     else object$theta3d
