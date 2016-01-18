@@ -155,9 +155,9 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     - 2 * (key == "Up") + 2 * (key == "Down"), xs.grid = 
                     xsplot$xs.grid, prednew = xsplot$prednew)                
             }
-            if (identical(xsplot$plot.type, "ccc") & identical(key, "3")){
-                xsplot <<- update(xsplot, view3d = !xsplot$view3d)
-            }    
+            #if (identical(xsplot$plot.type, "ccc") & identical(key, "3")){
+            #    xsplot <<- update(xsplot, view3d = !xsplot$view3d)
+            #}    
             if (identical(key, "s")){
                 filename <- paste("snapshot_", gsub(":", ".", gsub(" ", "_", 
                     Sys.time())), ".pdf", sep = "") 

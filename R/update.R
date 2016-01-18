@@ -170,6 +170,9 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         dev.set(object$device)
     par(bg = "white")
     screen(n = object$screen, new = FALSE)
+    view3d <- if (!is.null(view3d))
+        view3d
+    else object$view3d
     par(usr = object$usr)
     par(mar = object$mar) 
     xc.cond <- if (!is.null(xc.cond))
@@ -181,23 +184,6 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
     data.order <- if (!is.null(data.order))
         data.order
     else object$data.order
-    #view3d <- if (!is.null(view3d))
-    #    view3d
-    #else object$view3d
-    if (is.null(view3d)){
-        view3d <-  object$view3d
-        xs.grid <- object$xs.grid
-    } else {
-        xs.grid1 <- seq(min(object$xs[, 1L], na.rm = TRUE), max(object$xs[, 1L], 
-            na.rm = TRUE), length.out = if (view3d) {20L} else 50L)
-        xs.grid2 <- seq(min(object$xs[, 2L], na.rm = TRUE), max(object$xs[, 2L], 
-            na.rm = TRUE), length.out = if (view3d) {20L} else 50L)
-        xs.grid <- data.frame(rep(xs.grid1, by = length(xs.grid2)), rep(xs.grid2
-            , each = length(xs.grid1)))
-        colnames(xs.grid) <- colnames(object$xs)         
-        newdata <- makenewdata(xs = xs.grid, xc.cond = object$xc.cond)
-        prednew <- lapply(object$model, predict1, newdata = newdata)
-    }
     theta3d <- if (!is.null(theta3d))
         theta3d
     else object$theta3d
@@ -430,7 +416,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
     if (object$plot.type %in% c("fcc", "ccc")){
         screen(n = object$screen, new = FALSE)
         dev.hold()  
-        if (view3d & identical(object$plot.type, "ccc")){
+        if (object$view3d & identical(object$plot.type, "ccc")){
             screen(n = object$screen, new = TRUE)
             z <- matrix(prednew[[1L]], ncol = 20L, byrow = FALSE)
             zfacet <- (z[-1, -1] + z[-1, -ncol(z)] + z[-nrow(z), -1] 
@@ -461,7 +447,6 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
             }
             object$data.colour <- data.colour
             object$data.order <- data.order
-            object$view3d <- view3d
             object$theta3d <- theta3d
             object$phi3d <- phi3d                       
         } else {  
