@@ -3,6 +3,25 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
     distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, view3d 
     = FALSE, conf = FALSE)
 {
+    xold <- NULL
+    yold <- NULL 
+    mousemove <- function ()
+    {
+        function (buttons, x, y)
+        {
+            if (all(findInterval(x, xscoords[1:2]) == 1, identical(
+                xsplot$plot.type, "ccc"), xsplot$view3d, 0 %in% buttons)){
+                if (!is.null(xold))
+                    xsplot <<- update(xsplot, theta3d = xsplot$theta3d + 1 * 
+                        (xold > x) - 1 * (xold < x), phi3d = xsplot$phi3d + 1 * 
+                        (yold > y) - 1 * (yold < y), xs.grid = xsplot$xs.grid, 
+                        prednew = xsplot$prednew)
+                xold <<- x
+                yold <<- y                    
+            }
+            points(NULL)
+        }
+    }
     mouseclick <- function ()
     {
         function (buttons, x, y)
@@ -22,6 +41,7 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
                         pathindex, colnames(data)[C[i]]])
                 }                  
             }
+            points(NULL)
         }
     }
     keystroke <- function ()
@@ -188,7 +208,7 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
     n.selector.rows <- ceiling(length(C) / n.selector.cols)
     xcheight <- selector.colwidth * n.selector.rows
     setGraphicsEventHandlers(
-        onMouseDown = mouseclick(),
+        onMouseMove = mousemove(),
         onKeybd = keystroke())    
     if (identical(version$os, "linux-gnu"))
         x11(type = "Xlib", height = xcheight, width = xcwidth)
