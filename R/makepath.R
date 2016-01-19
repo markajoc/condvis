@@ -16,8 +16,8 @@ function (Xc, ncentroids, ninterp = 4)
     interp <- function(x, n = ninterp)
     {
         out <- vector()
-        for (i in 1:(length(x) - 1)){
-            out <- c(out, seq(x[i], x[i + 1], length.out = n))
+        for (i in 1:(length(x) - 1L)){
+            out <- c(out, seq(x[i], x[i + 1L], length.out = n + 1L)[-(n + 1L)])
         }
         out
     }
