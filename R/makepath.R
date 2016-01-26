@@ -6,8 +6,8 @@ function (Xc, ncentroids, ninterp = 4)
     if (any(apply(Xc, 2L, is.factor))){
         if (!requireNamespace("cluster", quietly = TRUE))
             stop("requires package 'cluster'") 
-        d <- daisy(Xc)
-        clustering <- pam(d, k = ncentroids)  
+        d <- cluster::daisy(Xc)
+        clustering <- cluster::pam(d, k = ncentroids)  
         centers <- clustering$medoids        
     } else {
         if (!requireNamespace("TSP", quietly = TRUE))
