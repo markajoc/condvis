@@ -11,3 +11,4 @@ Description: Exploring fitted model structures interactively.
 License: GPL (>= 2)
 LazyData: false
 Imports: graphics, MASS
+NeedsCompilation: yes
