@@ -43,7 +43,8 @@ c Case I: `mixed' type variables
          nbad=0
          do 450 l=2,nn
             la=l-1
-            do 440 k=1,la
+c            do 440 k=1,la
+               k = 1
                nlk=nlk+1
                if(nlk .gt.nn) goto 700
                ppa=0.
@@ -72,7 +73,7 @@ c               binary variable x(*,j)
                else
                   disv(nlk)=dlk/ppa
                endif
- 440        continue
+c 440       continue
  450     continue
 
       else
@@ -82,7 +83,8 @@ c                       FIXME: common code! }
          pp=jpp
          do 600 l=2,nn
             lsubt=l-1
-            do 520 k=1,lsubt
+c            do 520 k=1,lsubt
+             k = 1
                clk=0.0
                nlk=nlk+1
                if(nlk .gt.nn) goto 700
@@ -103,7 +105,7 @@ c                       FIXME: common code! }
                else
                   disv(nlk)=clk*(pp/rpres)
                endif
- 520        continue
+c 520        continue
  600     continue
       endif
  700     end
