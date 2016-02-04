@@ -9,7 +9,14 @@ function (xc.cond, xc, sigma = NULL, distance = "euclidean", basicoutput = FALSE
     sigma <- if (is.null(sigma))
         1
     else sigma      
-    xc.cond <- xc.cond[, colnames(xc), drop = FALSE]        
+    xc.cond <- xc.cond[, colnames(xc), drop = FALSE]  
+    if (distance = "daisy"){
+        d <- daisy(rbind(xc.cond, xc), stand = TRUE)
+        k <- rep(0, nrow(xc))
+        k[d < sigma] <- 0.4
+        k[d < (0.6 * sigma)] <- 0.7
+        k[d < (0.3 * sigma)] <- 1
+    } else {     
     arefactors <- vapply(xc, is.factor, logical(1))
     xc.factors <- xc[, arefactors, drop = FALSE]
     xc.cond.factors <- xc.cond[, arefactors, drop = FALSE]
@@ -44,7 +51,8 @@ function (xc.cond, xc, sigma = NULL, distance = "euclidean", basicoutput = FALSE
         k[factormatches][d < sigma] <- 0.4  
         k[factormatches][d < (0.6 * sigma)] <- 0.7        
         k[factormatches][d < (0.3 * sigma)] <- 1
-    }  
+    } 
+    } 
     if (basicoutput)
         return(k)
     else {
