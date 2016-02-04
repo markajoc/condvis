@@ -44,7 +44,7 @@ c Case I: `mixed' type variables
          do 450 l=2,nn
             la=l-1
 c            do 440 k=1,la
-               k = 1
+             k = 1
                nlk=nlk+1
                if(nlk .gt.nn) goto 700
                ppa=0.
@@ -54,17 +54,17 @@ c               Dissimilarity between obs.  l & k
                   if(vtype(j) .ge. 3) then
                      ppa=ppa + weights(j)
                      if(vtype(j).eq.3) then
-                        if(x(l,j).ne.x(k,j)) dlk=dlk+ weights(j)
+                        if(x(k,j).ne.x(l,j)) dlk=dlk+ weights(j)
                      else
-                        dlk=dlk+ weights(j)*dabs(x(l,j)-x(k,j))
+                        dlk=dlk+ weights(j)*dabs(x(k,j)-x(l,j))
                      endif
                   else
 c               binary variable x(*,j)
-                     if(x(l,j).ne.0..and.x(l,j).ne.1.) goto 420
                      if(x(k,j).ne.0..and.x(k,j).ne.1.) goto 420
-                     if(vtype(j).eq.2.or.x(l,j).ne.0.or.x(k,j).ne.0)
+                     if(x(l,j).ne.0..and.x(l,j).ne.1.) goto 420
+                     if(vtype(j).eq.2.or.x(k,j).ne.0.or.x(l,j).ne.0)
      *                    ppa=ppa+weights(j)
-                     if(x(l,j).ne.x(k,j)) dlk=dlk+ weights(j)
+                     if(x(k,j).ne.x(l,j)) dlk=dlk+ weights(j)
                   endif
  420           continue
                if(ppa.le.0.5) then
@@ -73,7 +73,7 @@ c               binary variable x(*,j)
                else
                   disv(nlk)=dlk/ppa
                endif
-c 440       continue
+c 440        continue
  450     continue
 
       else
@@ -84,7 +84,7 @@ c                       FIXME: common code! }
          do 600 l=2,nn
             lsubt=l-1
 c            do 520 k=1,lsubt
-             k = 1
+               k = 1
                clk=0.0
                nlk=nlk+1
                if(nlk .gt.nn) goto 700
@@ -92,9 +92,9 @@ c            do 520 k=1,lsubt
                do 530 j=1,jpp
                   npres=npres+1
                   if(ndyst.eq.1) then
-                     clk=clk+ (x(l,j)-x(k,j))*(x(l,j)-x(k,j))
+                     clk=clk+ (x(k,j)-x(l,j))*(x(k,j)-x(l,j))
                   else
-                     clk=clk+ dabs(x(l,j)-x(k,j))
+                     clk=clk+ dabs(x(k,j)-x(l,j))
                   endif
  530           continue
                rpres=npres
