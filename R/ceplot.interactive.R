@@ -1,7 +1,8 @@
 ceplot.interactive <- 
 function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, 
     distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, 
-    view3d = FALSE, Corder = "default", conf = FALSE, separate = TRUE)
+    view3d = FALSE, Corder = "default", conf = FALSE, separate = TRUE, 
+    select.colour = "blue")
 {
     uniqC <- unique(unlist(C))
     xc.cond <- data[1L, uniqC, drop = FALSE]
@@ -53,7 +54,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             screen(xcscreens[i])
             xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = data[1L, 
                 C[[i]]], name = colnames(data[, C[[i]], drop = FALSE]), 
-                select.colour = "blue")
+                select.colour = select.colour)
             coords[i, ] <- par("fig")
         } 
     } else {
@@ -72,7 +73,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             screen(xcscreens[i])
             xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = data[1L, 
                 C[[i]]], name = colnames(data[, C[[i]], drop = FALSE]), 
-                select.colour = "blue")
+                select.colour = select.colour)
             coords[i, ] <- par("fig")
         }    
         legendwidth <- 1.15 / height
