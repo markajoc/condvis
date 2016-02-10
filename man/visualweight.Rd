@@ -37,7 +37,7 @@ Mark O'Connell
 \examples{
 ## Highlighting cases near the first observation
 
-vw <- visualweight(mtcars, mtcars[1, ], sigma = 2)
+vw <- visualweight(mtcars[1, ], mtcars, sigma = 2)
 print(vw)
 
 ## Its use in an interactive ceplot
