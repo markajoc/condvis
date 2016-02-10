@@ -2,7 +2,7 @@ ceplot <-
 function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, 
     distance = "euclidean", type = "default", cex.axis = NULL, cex.lab = NULL, 
     tck = NULL, view3d = FALSE, Corder = "default", selectortype = "minimal", 
-    conf = FALSE, select.colour = "blue")
+    conf = FALSE, select.colour = "blue", select.cex = 1)
 {
     data <- na.omit(data)
     model <- if (!identical(class(model), "list"))
@@ -56,13 +56,13 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         ceplot.interactive(data = data, model = model, response = response, 
             S = S, C = C, sigma = sigma, distance = distance, cex.axis = 
             cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = 
-            Corder, conf = conf, separate = FALSE, select.colour = select.colour)
+            Corder, conf = conf, separate = FALSE, select.colour = select.colour, select.cex = select.cex)
     } else if (identical(type, "separate") & identical(selectortype, 
         "minimal")){
         ceplot.interactive(data = data, model = model, response = response, 
             S = S, C = C, sigma = sigma, distance = distance, cex.axis = 
             cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = 
-            Corder, conf = conf, separate = TRUE, select.colour = select.colour)
+            Corder, conf = conf, separate = TRUE, select.colour = select.colour, select.cex = select.cex)
     } else if (identical(type, "separate")){
         ceplot.separate(data = data, model = model, response = response, S = S, 
             C = C, sigma = sigma, distance = distance, cex.axis = cex.axis, 

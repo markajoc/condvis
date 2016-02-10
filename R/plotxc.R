@@ -1,6 +1,6 @@
 plotxc <-
 function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL, 
-    cex.axis = NULL, cex.lab = NULL, tck = NULL, ...)
+    cex.axis = NULL, cex.lab = NULL, tck = NULL, select.cex = 1, ...)
 {
     select.colour <- if (is.null(select.colour))
         "black"
@@ -99,7 +99,7 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
                     } else {
                         plot.default(xc[, 1], xc[, 2], xlab = colnames(xc)[1],
                             ylab = colnames(xc)[2], cex.axis = cex.axis,
-                            cex.lab = cex.lab, tcl = tck)
+                            cex.lab = cex.lab, tcl = tck, cex = select.cex)
                     }        
                     abline(v = xc.cond[1], h = xc.cond[2], lwd = select.lwd,
                         col = select.colour)
@@ -109,7 +109,7 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
         } else stop("Unexpected value for 'xc'")
     }
     structure(list(xc = xc, xc.cond.old = xc.cond, name = name, select.colour = 
-        select.colour, mar = mar, select.lwd = select.lwd, cex.axis = cex.axis, 
+        select.colour, mar = mar, select.lwd = select.lwd, select.cex = select.cex, cex.axis = cex.axis, 
         cex.lab = cex.lab, tck = tck, device = dev.cur(), usr = par("usr"), 
         screen = screen(), screen.coords = par("fig"), plot.type = plot.type, 
         sptmp = if(exists("sptmp")) sptmp else NULL, factorcoords = if(exists(

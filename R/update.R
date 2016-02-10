@@ -80,7 +80,7 @@ function (object, xclick, yclick, xc.cond = NULL, ...)
                 + xrange * c(-0.125, 0.125) ) == 1
             redrawindex.y <- findInterval(object$xc[, 2], object$xc.cond.old[2] 
                 + yrange * c(-0.125, 0.125) ) == 1
-            points(object$xc[redrawindex.x | redrawindex.y, ])
+            points(object$xc[redrawindex.x | redrawindex.y, ], cex = object$select.cex)
             box()
             abline(v = xc.cond.new.x, h = xc.cond.new.y, lwd = 
                 object$select.lwd, col = object$select.colour)   
