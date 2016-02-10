@@ -10,7 +10,7 @@ function (xc.cond, xc, sigma = NULL, distance = "euclidean", basicoutput = FALSE
         1
     else sigma      
     xc.cond <- xc.cond[, colnames(xc), drop = FALSE]  
-    if (distance == "daisy"){
+    if (identical(distance, "daisy")){
         d <- daisy(rbind(xc.cond, xc), stand = TRUE)
         k <- rep(0, nrow(xc))
         k[d < sigma] <- 0.4
