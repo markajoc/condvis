@@ -41,7 +41,7 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
             barindex <- factorcoords$level == as.character(xc.cond)
             rect(xleft = bartmp$w.l[barindex], xright = bartmp$w.r[barindex],
                 ybottom = 0, ytop = bartmp$height[barindex], col = select.colour
-                , density = 25)
+                , density = -1)
             plot.type <- "barplot"
             xc.cond <- factor(xc.cond, levels(xc))
         }
@@ -59,7 +59,7 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
                     ybottom = sptmp$ybottom[match.index],
                     xright = sptmp$xright[match.index],
                     ytop = sptmp$ytop[match.index],
-                    col = select.colour, density = 25)
+                    col = select.colour, density = -1)
                 axis(1, at = ((sptmp$xat[1L:sptmp$nx] + sptmp$xat[2L:(sptmp$nx
                     + 1L)] - sptmp$off)/2)[xmatch],
                     labels = unique(sptmp$xnames)[xmatch], tick = FALSE,

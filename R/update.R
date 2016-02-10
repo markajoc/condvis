@@ -46,7 +46,7 @@ function (object, xclick, yclick, xc.cond = NULL, ...)
             rect(xleft = object$bartmp$w.l[barindex.new], xright = 
                 object$bartmp$w.r[barindex.new], ybottom = 0, ytop = 
                 object$bartmp$height[barindex.new], col = object$select.colour, 
-                density = 25)
+                density = -1)
             object$xc.cond.old <- xc.cond.new
         }
     } else if (identical(object$plot.type, "scatterplot")){
