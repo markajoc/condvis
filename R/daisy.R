@@ -1,5 +1,5 @@
 
-daisy <- function(x, metric = c("euclidean", "manhattan", "gower"),
+daisy1 <- function(x, metric = c("euclidean", "manhattan", "gower"),
 		  stand = FALSE, type = list(), weights = rep.int(1, p))
 {
     ## check type of input matrix
