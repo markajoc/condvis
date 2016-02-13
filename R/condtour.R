@@ -1,7 +1,7 @@
 condtour <-
 function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL, 
     distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, view3d 
-    = FALSE, conf = FALSE)
+    = FALSE, conf = FALSE, select.colour = "blue")
 {
     xold <- NULL
     yold <- NULL 
@@ -236,7 +236,7 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
         xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = path[
                         pathindex, colnames(data)[C[i]]], 
             name = colnames(data[, C[[i]], drop = FALSE]), select.colour = 
-            "blue")
+            select.colour)
         coords[i, ] <- par("fig")
     }  
     setGraphicsEventHandlers(

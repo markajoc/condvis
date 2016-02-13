@@ -67,7 +67,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         ceplot.separate(data = data, model = model, response = response, S = S, 
             C = C, sigma = sigma, distance = distance, cex.axis = cex.axis, 
             cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = Corder, 
-            selectortype = selectortype)
+            selectortype = selectortype, select.colour = select.colour, select.cex = select.cex)
     } else if (identical(type, "shiny")){
         ceplot.shiny(data = data, model = model, response = response, S = S, 
             C = C, cex.axis = cex.axis, cex.lab = cex.lab, tck = tck, 

@@ -2,7 +2,7 @@ ceplot.static <-
 function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, 
     distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, 
     view3d = FALSE, theta3d = 45, phi3d = 20, Corder = "default", 
-    Xc.cond = NULL)
+    Xc.cond = NULL, select.colour = "blue", select.cex = 1)
 {
     data <- na.omit(data)
     model <- if (!identical(class(model), "list"))
@@ -65,8 +65,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             screen(selectors[C.index])
             xcplots[[C.index]] <- plotxc(xc = data[, C[[C.index]]], xc.cond = 
                 Xc.cond[1L, colnames(data)[C[[C.index]]]], name = colnames(data)
-                [C[[C.index]]], select.colour = "blue", select.lwd = 2, cex.axis 
-                = cex.axis, cex.lab = cex.lab, tck = tck)
+                [C[[C.index]]], select.colour = select.colour, select.lwd = 2, cex.axis 
+                = cex.axis, cex.lab = cex.lab, tck = tck, select.cex = select.cex)
         }
     }
     screen(main[1])

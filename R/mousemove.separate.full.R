@@ -51,7 +51,7 @@ function (buttons, x, y)
             plot(Xc.num[,cols[sc]], Xc.num[,rows[sc]], cex = 0.6, xlab = "", 
                 ylab = "", xaxt = "n", yaxt = "n", col = if (identical(rows[i], 
                 cols[i])) NULL else "black")
-            abline(v = Xc.cond.num[cols[sc]], h = Xc.cond.num[rows[sc]], col = "blue")
+            abline(v = Xc.cond.num[cols[sc]], h = Xc.cond.num[rows[sc]], col = plotxcobject$select.colour)
         }
     }
     dev.flush()
