@@ -186,5 +186,5 @@ daisy(x, metric = c("euclidean", "manhattan", "gower"),
 data(mtcars)
 mtcars$cyl <- as.factor(mtcars$cyl)
 mtcars$carb <- as.factor(mtcars$carb)
-condvis::daisy(mtcars)
+condvis:::daisy1(mtcars)
 }
