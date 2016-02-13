@@ -6,13 +6,14 @@
   the coordinates of a mouseclick.
 }
 \usage{
-\method{update}{xcplot}(object, xclick, yclick, ...)
+\method{update}{xcplot}(object, xclick, yclick, xc.cond = NULL, ...)
 }
 \arguments{
   \item{object}{ an object of class \code{'xcplot'}, as produced by 
     \code{\link{plotxc}}}
   \item{xclick}{ numeric value between 0 and 1, usually captured from mouse}
   \item{yclick}{ numeric value between 0 and 1, usually captured from mouse}
+  \item{xc.cond}{ value to update, for updating without mouseclick info}
   \item{...}{ not used}  
 }
 \value{

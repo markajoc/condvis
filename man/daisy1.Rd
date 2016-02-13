@@ -5,7 +5,10 @@
    This code is adapted from the \code{daisy} function in the \code{cluster} 
    package, to provide just a single row of the dissimilarity matrix, i.e. the 
    dissimilarities between the first object in a data.frame and each other 
-   object.
+   object. The \R{} code is identical. The Fortran subroutine has been edited to
+   only calculate one row of the matrix.
+   
+   The rest of the help file from \code{?cluster::daisy} is presented here.
 }
 \usage{
 daisy1(x, metric = c("euclidean", "manhattan", "gower"),

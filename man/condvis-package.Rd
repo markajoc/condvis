@@ -3,10 +3,10 @@
 \alias{condvis}
 \docType{package}
 \title{
-Conditional visualization for statistical models
+Conditional Visualization for Statistical Models
 }
 \description{
-  Visualizations for exploring statistical models. The main function for end 
+  Visualizations for exploring statistical models. The main function for end
   users is \code{\link{ceplot}} (see example below).
 }
 \details{
@@ -14,7 +14,7 @@ Conditional visualization for statistical models
     Package: \tab condvis\cr
     Type: \tab Package\cr
     Version: \tab 0.2\cr
-    Date: \tab 2015-12-14\cr
+    Date: \tab 2016-2-13\cr
     License: \tab GPL-2\cr
   }
 }
