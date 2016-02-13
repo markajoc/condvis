@@ -1,5 +1,5 @@
-\name{daisy}
-\alias{daisy}
+\name{daisy1}
+\alias{daisy1}
 \title{Dissimilarity Matrix Calculation}
 \description{
    This code is adapted from the \code{daisy} function in the \code{cluster} 
@@ -8,7 +8,7 @@
    object.
 }
 \usage{
-daisy(x, metric = c("euclidean", "manhattan", "gower"),
+daisy1(x, metric = c("euclidean", "manhattan", "gower"),
       stand = FALSE, type = list(), weights = rep.int(1, p))
 }
 \arguments{

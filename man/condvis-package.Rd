@@ -23,6 +23,7 @@ Mark O'Connell <mark.oconnell@maths.nuim.ie>
 }
 \keyword{ package }
 \examples{
+\dontrun{
 mtcars$cyl <- as.factor(mtcars$cyl)
 mtcars$am <- as.factor(mtcars$am)
 
@@ -31,4 +32,5 @@ model1 <- list(quadratic = lm(mpg ~ cyl + am + qsec + wt + I(wt^2), data = mtcar
                additive = gam(mpg ~ cyl + am + qsec + s(wt), data = mtcars))
 
 ceplot(data = mtcars, model = model1, S = "wt")
+}
 }
