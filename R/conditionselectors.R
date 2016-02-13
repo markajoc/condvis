@@ -14,7 +14,7 @@ function (Xc, type = "minimal", method = "default", Xc.cond = NULL, select.colou
         for (i in seq_along(C)){
             screen(selectors[i])
             xcplots[[i]] <- plotxc(xc = Xc[, C[[i]]], xc.cond = Xc.cond[1, C[[i
-                ]]], name = C[[i]], select.colour = select.colour, cex = select.cex, ...)
+                ]]], name = C[[i]], select.colour = select.colour, select.cex = select.cex, ...)
         }
         output <- list(Xc = Xc, Xc.cond = Xc.cond, xcplots = xcplots, 
             screens = selectors, type = type, method = method, select.colour = select.colour, select.cex = select.cex)
