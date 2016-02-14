@@ -33,8 +33,6 @@ data(mtcars)
 arrangeC(mtcars)
 data(wine)
 arrangeC(wine)
-data(pollution)
-arrangeC(pollution)
 }
 
 \keyword{ arrangeC }
