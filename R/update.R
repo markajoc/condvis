@@ -269,10 +269,10 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
                 if (all(c("lwr", "upr") %in% colnames(prednew2[[i]]))){
                     points.default(object$xs.grid[, 1L], prednew2[[i]][, "lwr"]
                         , type = 'l', lty = 2, col = object$model.colour[i], 
-                        lwd = 0.75 * object$model.lwd[i])
+                        lwd = max(0.8, 0.5 * object$model.lwd[i]))
                     points.default(object$xs.grid[, 1L], prednew2[[i]][, "upr"] 
                         , type = 'l', lty = 2, col = object$model.colour[i], 
-                        lwd = 0.75 * object$model.lwd[i])   
+                        lwd = max(0.8, 0.5 * object$model.lwd[i]))   
                 }
             }                 
         } else {
@@ -350,10 +350,10 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
                 if (all(c("lwr", "upr") %in% colnames(prednew2[[i]]))){
                     points.default(object$xs.grid[, 1L], prednew2[[i]][, "lwr"], 
                         type = 'l', lty = 2, col = object$model.colour[i], lwd = 
-                        0.75 * object$model.lwd[i])
+                        max(0.8, 0.5 * object$model.lwd[i]))
                     points.default(object$xs.grid[, 1L], prednew2[[i]][, "upr"], 
                         type = 'l', lty = 2, col = object$model.colour[i], lwd = 
-                        0.75 * object$model.lwd[i])    
+                        max(0.8, 0.5 * object$model.lwd[i]))    
                 }
             }        
         }    
