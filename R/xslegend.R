@@ -10,7 +10,7 @@ function (y, name = NULL)
 			par(mar = c(8, 2.2, 8, 2.2))
             fullrange <- abs(diff(range(y)))
 			yrange <- seq(min(y, na.rm = TRUE) - 0.15 * fullrange, 
-                max(y, na.rm = TRUE) + 0.15 * fullrange, length.out = 50L)
+                max(y, na.rm = TRUE) + 0.15 * fullrange, length.out = 80L)
 			spacing <- abs(diff(unique(yrange[1:2]))) / 2
             plot(0, 0, xaxt = "n", main = if (!is.null(name)) name else "", 
                 ylab = "", col = NULL, pch = 16, xlab = "", bty = "n", 

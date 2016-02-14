@@ -8,18 +8,21 @@
 }
 \usage{
 plotxc(xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL, 
-    cex.axis = NULL, cex.lab = NULL, tck = NULL,  ...)
+    cex.axis = NULL, cex.lab = NULL, tck = NULL, select.cex = 1, ...)
 }
 \arguments{
   \item{xc}{ a vector or dataframe with two columns, containing \code{numeric} or
     \code{factor} values.}
   \item{xc.cond}{ a single value of the same type as \code{xc}.}
-  \item{name}{ a \code{character} vector containing the names of the variables in \code{xc}.}
-  \item{select.colour}{ colour for the lines showing conditioning. Default is \code{"black"}.}
+  \item{name}{ a \code{character} vector containing the names of the variables 
+    in \code{xc}.}
+  \item{select.colour}{ colour for highlighting current section in condition 
+    selector plots. Default is \code{"black"}.}
   \item{select.lwd}{ line thickness for the lines showing conditioning. Default is 2.}
   \item{cex.axis}{ scaling parameter for axis text. Default is 0.7.}
   \item{cex.lab}{ scaling parameter for axis labels. Default is 0.8.}
   \item{tck}{ parameter for axis ticks. Default is -0.05.}
+  \item{select.cex}{ scaling used for plot symbols in condition selector plots}  
   \item{...}{ other arguments passed to \code{abline()} for showing conditioning.}
 }
 \value{

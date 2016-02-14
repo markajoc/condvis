@@ -1,3 +1,5 @@
+# this code is copied from graphics::barplot.default and edited to return some
+# info to allow subsequent editing of the plot
 barplot2 <- function (height, width = 1, space = NULL, names.arg = NULL, 
     legend.text = NULL, beside = FALSE, horiz = FALSE, density = NULL, 
     angle = 45, col = NULL, border = par("fg"), main = NULL, 

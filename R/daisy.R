@@ -1,5 +1,6 @@
-
-daisy <- function(x, metric = c("euclidean", "manhattan", "gower"),
+# this function is copied from cluster::daisy, and the Fortran subroutine
+# has been edited to only run down one column of the dissimilarity matrix
+daisy1 <- function(x, metric = c("euclidean", "manhattan", "gower"),
 		  stand = FALSE, type = list(), weights = rep.int(1, p))
 {
     ## check type of input matrix
@@ -155,44 +156,4 @@ daisy <- function(x, metric = c("euclidean", "manhattan", "gower"),
     ## convert lower matrix, read by rows, to upper matrix, read by rows.
     disv[disv == -1] <- NA
     disv[1:(nrow(x) - 1)]
-}
-
-print.dissimilarity <-
-    function(x, diag = NULL, upper = NULL,
-	     digits = getOption("digits"), justify = "none", right = TRUE, ...)
-{
-    cat("Dissimilarities :\n")
-    NextMethod("print")##-> stats:::print.dist(..)
-    cat("\n")
-    if(!is.null(attr(x, "na.message")))
-	cat("Warning : ", attr(x, "NA.message"), "\n")
-    cat("Metric : ", attr(x, "Metric"),
-	if(!is.null(aT <- attr(x,"Types")))
-	paste(";  Types =", paste(aT, collapse=", ")), "\n")
-    cat("Number of objects : ", attr(x, "Size"), "\n", sep="")
-    invisible(x)
-}
-
-summary.dissimilarity <-
-    function(object, digits = max(3, getOption("digits") - 2), ...)
-    ## 'digits': want a bit higher precision
-{
-    sx <- summary(as.vector(object), digits = digits, ...)
-    at <- attributes(object)
-    r <- c(list(summ = sx, n = length(object)), at[names(at) != "class"])
-    class(r) <- "summary.dissimilarity"
-    r
-}
-
-print.summary.dissimilarity <- function(x, ...)
-{
-    cat(x$n, "dissimilarities, summarized :\n")
-    print(x$summ, ...)
-    cat("Metric : ", x $ Metric,
-	if(!is.null(aT <- x $ Types))
-	paste(";  Types =", paste(aT, collapse=", ")), "\n")
-    cat("Number of objects : ", x $ Size, "\n", sep="")
-    if(!is.null(x $ na.message))
-	cat("Warning : ", x $ NA.message, "\n")
-    invisible(x)
 }

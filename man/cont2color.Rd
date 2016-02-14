@@ -9,14 +9,15 @@
   \code{RColorBrewer} if it is installed.
 }
 \usage{
-cont2color(x, range, breaks = NULL, colors = NULL)
+cont2color(x, xrange = NULL, breaks = NULL, colors = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{ a numeric vector}
-  \item{range}{ a vector of length 2 denoting the boundaries for the colors at
+  \item{xrange}{ a vector of length 2 denoting the boundaries for the colors at
     either end of the color scale. All values outside this range will be 
-    assigned the same color according to which side of the range they fall.}
+    assigned the same color according to which side of the range they fall.
+    Defaults to \code{range(x)}}
   \item{breaks}{ an integer denoting the number of splits between different
     color levels. Defaults to 11. Needs to be set if \code{colors} is 
     specified.}

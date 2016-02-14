@@ -50,7 +50,7 @@ function (buttons, x, y)
                 ylab = "", xaxt = "n", yaxt = "n", col = if (identical(rows[i], 
                 cols[i])) NULL else "black")
             abline(v = Xc.cond.num[cols[sc]], h = Xc.cond.num[rows[sc]], col = 
-                "blue")
+                plotxcobject$select.colour)
         }
     }
     dev.flush()

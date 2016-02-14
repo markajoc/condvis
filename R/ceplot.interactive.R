@@ -1,7 +1,8 @@
 ceplot.interactive <- 
 function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, 
     distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, 
-    view3d = FALSE, Corder = "default", conf = FALSE, separate = TRUE)
+    view3d = FALSE, Corder = "default", conf = FALSE, separate = TRUE, 
+    select.colour = "blue", select.cex = 1)
 {
     uniqC <- unique(unlist(C))
     xc.cond <- data[1L, uniqC, drop = FALSE]
@@ -53,7 +54,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             screen(xcscreens[i])
             xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = data[1L, 
                 C[[i]]], name = colnames(data[, C[[i]], drop = FALSE]), 
-                select.colour = "blue")
+                select.colour = select.colour, select.cex = select.cex)
             coords[i, ] <- par("fig")
         } 
     } else {
@@ -72,7 +73,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             screen(xcscreens[i])
             xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = data[1L, 
                 C[[i]]], name = colnames(data[, C[[i]], drop = FALSE]), 
-                select.colour = "blue")
+                select.colour = select.colour, select.cex = select.cex)
             coords[i, ] <- par("fig")
         }    
         legendwidth <- 1.15 / height
@@ -156,6 +157,11 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     newdata = xsplot$newdata, prednew = xsplot$prednew)    
             }
             if (identical(key, "s")){
+                if (separate){
+                    filename <- paste("snapshot_", gsub(":", ".", gsub(" ", "_", 
+                        Sys.time())), c("-expectation.pdf", "-condition.pdf"), 
+                        sep = "") 
+                } else {
                 filename <- paste("snapshot_", gsub(":", ".", gsub(" ", "_", 
                     Sys.time())), ".pdf", sep = "") 
                 pdf(file = filename, width = width, height = height)
@@ -170,7 +176,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     plotxc(xc = xcplots[[i]]$xc, 
                         xc.cond = xcplots[[i]]$xc.cond.old, 
                         name = xcplots[[i]]$name, 
-                        select.colour = xcplots[[i]]$select.colour)
+                        select.colour = xcplots[[i]]$select.colour,
+                        select.cex = xcplots[[i]]$select.cex)
                 }    
                 xsscreens <- if (plotlegend){
                     split.screen(figs = matrix(c(0, 1 - legendwidth, 1 - 
@@ -189,7 +196,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     xsplot$phi3d, conf = conf)
                 dev.off()    
                 cat(paste("\nSnapshot saved: '", filename,"'", sep = ""))
-                cat("\n")            
+                cat("\n") 
+                }                
             }        
             points(NULL)
         }

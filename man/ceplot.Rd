@@ -12,7 +12,7 @@
 ceplot(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, 
     distance = "euclidean", type = "default", cex.axis = NULL, cex.lab = NULL, 
     tck = NULL, view3d = FALSE, Corder = "default", selectortype = "minimal", 
-    conf = FALSE)
+    conf = FALSE, select.colour = "blue", select.cex = 1)
 }
 \arguments{
   \item{data}{ a dataframe containing the training data for the model(s) 
@@ -49,6 +49,9 @@ ceplot(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     scatterplot matrix from which to choose sections/conditions.}  
   \item{conf}{ if \code{TRUE}, approximate 95\% confidence intervals are plotted 
     where possible}
+  \item{select.colour}{ colour for highlighting current section in condition 
+    selector plots}
+  \item{select.cex}{ scaling used for plot symbols in condition selector plots}    
 }
 \value{
   Returns no value, but produces an interactive plot as a side-effect.  The

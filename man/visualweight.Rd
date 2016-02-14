@@ -9,16 +9,19 @@
   set according to their proximity to a given point in the space. 
 }
 \usage{
-visualweight(xc, xc.cond, sigma = NULL, distance = "euclidean")
+visualweight(xc.cond, xc, sigma = NULL, distance = "euclidean", basicoutput = FALSE)
 }
 \arguments{
-  \item{xc}{ a dataframe containing numeric values or factors.}
   \item{xc.cond}{ a dataframe containing numeric values or factors.}
+  \item{xc}{ a dataframe containing numeric values or factors.}
   \item{sigma}{ a numeric value greater than zero, defaults to 1. Used to scale 
     the distance function for assigning weights. Larger values show more data, 
     smaller values show less data.}
   \item{distance}{ distance metric used, \code{"euclidean"} (default) or 
     \code{"maxnorm"}.}
+  \item{basicoutput}{ if \code{TRUE}, just returns the visual weights. If 
+    \code{FALSE}, returns a list containing non-zero weight values, and an 
+    order vector}  
 }
 \details{
   Observations where the categorical predictor levels do not match are assigned
@@ -37,7 +40,7 @@ Mark O'Connell
 \examples{
 ## Highlighting cases near the first observation
 
-vw <- visualweight(mtcars, mtcars[1, ], sigma = 2)
+vw <- visualweight(mtcars[1, ], mtcars, sigma = 2)
 print(vw)
 
 ## Its use in an interactive ceplot

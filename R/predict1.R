@@ -2,9 +2,9 @@ predict1 <-
 # predict wrapper to deal with awkward predict methods
 function (object, ...)
 {
-    type <- if ("nnet" %in% class(object))
+    type <- if (inherits(object, "nnet"))
         "class"
-    else if ("rpart" %in% class(object)) 
+    else if (inherits(object, "rpart")) 
         "vector"
     else "response"    
     predict(object, ..., n.trees = object$n.trees, type = type)

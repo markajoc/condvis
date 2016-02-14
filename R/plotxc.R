@@ -1,6 +1,6 @@
 plotxc <-
 function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL, 
-    cex.axis = NULL, cex.lab = NULL, tck = NULL, ...)
+    cex.axis = NULL, cex.lab = NULL, tck = NULL, select.cex = 1, ...)
 {
     select.colour <- if (is.null(select.colour))
         "black"
@@ -41,7 +41,7 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
             barindex <- factorcoords$level == as.character(xc.cond)
             rect(xleft = bartmp$w.l[barindex], xright = bartmp$w.r[barindex],
                 ybottom = 0, ytop = bartmp$height[barindex], col = select.colour
-                , density = 25)
+                , density = -1)
             plot.type <- "barplot"
             xc.cond <- factor(xc.cond, levels(xc))
         }
@@ -59,7 +59,7 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
                     ybottom = sptmp$ybottom[match.index],
                     xright = sptmp$xright[match.index],
                     ytop = sptmp$ytop[match.index],
-                    col = select.colour, density = 25)
+                    col = select.colour, density = -1)
                 axis(1, at = ((sptmp$xat[1L:sptmp$nx] + sptmp$xat[2L:(sptmp$nx
                     + 1L)] - sptmp$off)/2)[xmatch],
                     labels = unique(sptmp$xnames)[xmatch], tick = FALSE,
@@ -99,7 +99,7 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
                     } else {
                         plot.default(xc[, 1], xc[, 2], xlab = colnames(xc)[1],
                             ylab = colnames(xc)[2], cex.axis = cex.axis,
-                            cex.lab = cex.lab, tcl = tck)
+                            cex.lab = cex.lab, tcl = tck, cex = select.cex)
                     }        
                     abline(v = xc.cond[1], h = xc.cond[2], lwd = select.lwd,
                         col = select.colour)
@@ -109,11 +109,12 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
         } else stop("Unexpected value for 'xc'")
     }
     structure(list(xc = xc, xc.cond.old = xc.cond, name = name, select.colour = 
-        select.colour, mar = mar, select.lwd = select.lwd, cex.axis = cex.axis, 
-        cex.lab = cex.lab, tck = tck, device = dev.cur(), usr = par("usr"), 
-        screen = screen(), screen.coords = par("fig"), plot.type = plot.type, 
-        sptmp = if(exists("sptmp")) sptmp else NULL, factorcoords = if(exists(
-        "factorcoords")) factorcoords else NULL, histmp = if(exists("histmp")) 
-        histmp else NULL, bartmp = if(exists("bartmp")) bartmp else NULL, boxtmp 
-        = if(exists("boxtmp")) boxtmp else NULL, ...), class = "xcplot")
+        select.colour, mar = mar, select.lwd = select.lwd, select.cex = 
+        select.cex, cex.axis = cex.axis, cex.lab = cex.lab, tck = tck, device = 
+        dev.cur(), usr = par("usr"), screen = screen(), screen.coords = par(
+        "fig"), plot.type = plot.type, sptmp = if(exists("sptmp")) sptmp else 
+        NULL, factorcoords = if(exists("factorcoords")) factorcoords else NULL, 
+        histmp = if(exists("histmp")) histmp else NULL, bartmp = if(exists(
+        "bartmp")) bartmp else NULL, boxtmp = if(exists("boxtmp")) boxtmp else 
+        NULL, ...), class = "xcplot")
 }

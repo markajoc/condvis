@@ -1,7 +1,7 @@
 condtour <-
 function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL, 
     distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, view3d 
-    = FALSE, conf = FALSE)
+    = FALSE, conf = FALSE, select.colour = "blue")
 {
     xold <- NULL
     yold <- NULL 
@@ -59,44 +59,6 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     - 2 * (key == "Up") + 2 * (key == "Down"), xs.grid = 
                     xsplot$xs.grid, prednew = xsplot$prednew)                
             }
-            #if (identical(xsplot$plot.type, "ccc") & identical(key, "3")){
-            #    xsplot <<- update(xsplot, view3d = !xsplot$view3d)
-            #}    
-            if (identical(key, "s")){
-                filename <- paste("snapshot_", gsub(":", ".", gsub(" ", "_", 
-                    Sys.time())), ".pdf", sep = "") 
-                pdf(file = filename, width = width, height = height)
-                close.screen(all.screens = TRUE)
-                xcwidth <- selector.colwidth * n.selector.cols / width
-                mainscreens <- split.screen(figs = matrix(c(0, 1 - xcwidth, 1 - 
-                    xcwidth, 1, 0, 0, 1, 1), ncol = 4))
-                xcscreens <- split.screen(c(4, n.selector.cols), screen = 
-                    mainscreens[2L])
-                for (i in seq_along(C)){
-                    screen(xcscreens[i])
-                    plotxc(xc = xcplots[[i]]$xc, xc.cond = xcplots[[i
-                    ]]$xc.cond.old, name = xcplots[[i]]$name, select.colour = 
-                    xcplots[[i]]$select.colour)
-                }    
-                xsscreens <- if (plotlegend){
-                    split.screen(figs = matrix(c(0, 1 - legendwidth, 1 - 
-                        legendwidth, 1, 0, 0, 1, 1), ncol = 4L), screen = 
-                        mainscreens[1L])
-                } else mainscreens[1L]
-                if (plotlegend){
-                    screen(xsscreens[2L])
-                    xslegend(data[, response], colnames(data)[response])
-                }
-                screen(xsscreens[1L])
-                plotxs1(xs = data[, S, drop = FALSE], data[, response, 
-                    drop = FALSE], xc.cond = xc.cond, model = model, data.colour 
-                    = rgb(1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, 
-                    view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d = 
-                    xsplot$phi3d, conf = conf)
-                dev.off()    
-                cat(paste("\nSnapshot saved: '", filename,"'", sep = ""))
-                cat("\n")            
-            } 
             if (key %in% c("[", "]")){
                 pathindex <<- max(min(pathindex + 1 * (key == "]") - 1 * (key == 
                     "["), max(pathindexrange)), min(pathindexrange))
@@ -146,7 +108,7 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 2)))
             possibleC <- possibleC[possibleC %in% colnames(data)]
             C <- arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])], 
-                drop = FALSE], method = Corder)
+                drop = FALSE])
         }     
     , silent = TRUE) 
     C <- if (all(vapply(C, is.numeric, logical(1))))
@@ -236,7 +198,7 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
         xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = path[
                         pathindex, colnames(data)[C[i]]], 
             name = colnames(data[, C[[i]], drop = FALSE]), select.colour = 
-            "blue")
+            select.colour)
         coords[i, ] <- par("fig")
     }  
     setGraphicsEventHandlers(

@@ -1,7 +1,8 @@
 ceplot.separate <- 
 function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, 
     distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, 
-    view3d = FALSE, Corder = "default", selectortype = "minimal")
+    view3d = FALSE, Corder = "default", selectortype = "minimal", select.colour 
+    = "blue", select.cex = 1)
 {
     data <- na.omit(data)
     model <- if (!identical(class(model), "list"))
@@ -62,7 +63,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         x11(type = "Xlib", width = 8.5, height = 8)
     else
         x11(width = 8.5, height = 8)
-    vw <- visualweight(xc = Xc, xc.cond = Xc.cond, sigma = sigma, distance = distance)
+    vw <- visualweight(xc = Xc, xc.cond = Xc.cond, sigma = sigma, distance = 
+        distance)
     k <- vw$k
     data.colour <- rgb(1 - k, 1 - k, 1 - k)
     data.order <- vw$order
@@ -92,8 +94,6 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         setGraphicsEventHandlers(
             onMouseDown = if (exists(".mouseclick.separate.pcp")) 
                 .mouseclick.separate.pcp,
-            onMouseUp = if (exists(".mouserelease.separate.pcp")) 
-                .mouserelease.separate.pcp,
             onMouseMove = if (exists(".mousemove.separate.pcp")) 
                 .mousemove.separate.pcp,
             onKeybd = if (exists(".keystroke.separate")) 
@@ -103,8 +103,6 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             setGraphicsEventHandlers(
                 onMouseDown = if (exists(".mouseclick.separate.full")) 
                     .mouseclick.separate.full,
-                onMouseUp = if (exists(".mouserelease.separate.full")) 
-                    .mouserelease.separate.full,
                 onMouseMove = if (exists(".mousemove.separate.full")) 
                     .mousemove.separate.full,
                 onKeybd = if (exists(".keystroke.separate")) 
@@ -113,7 +111,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         }
     eventEnv <- getGraphicsEventEnv()
 	assign(x = "plotxcobject", value = conditionselectors(Xc, type = 
-        selectortype, method = Corder), envir = eventEnv)
+        selectortype, method = Corder, select.colour = select.colour, select.cex 
+        = select.cex), envir = eventEnv)
     assign(x = "plotxsobject", value = plotxsobject, envir = eventEnv)
     assign(x = "expectationwindow", value = expectationwindow, envir = eventEnv)
     assign(x = "selectorwindow", value = selectorwindow, envir = eventEnv)
