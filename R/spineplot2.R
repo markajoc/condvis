@@ -1,3 +1,5 @@
+# copied from graphics:::spineplot.default and modified to return info for 
+# subsequent editing
 spineplot2 <-
 function (x, y = NULL, breaks = NULL, tol.ylab = 0.05, 
     off = NULL, ylevels = NULL, col = NULL, main = "", xlab = NULL,
