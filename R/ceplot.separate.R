@@ -94,8 +94,6 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         setGraphicsEventHandlers(
             onMouseDown = if (exists(".mouseclick.separate.pcp")) 
                 .mouseclick.separate.pcp,
-            onMouseUp = if (exists(".mouserelease.separate.pcp")) 
-                .mouserelease.separate.pcp,
             onMouseMove = if (exists(".mousemove.separate.pcp")) 
                 .mousemove.separate.pcp,
             onKeybd = if (exists(".keystroke.separate")) 
@@ -105,8 +103,6 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             setGraphicsEventHandlers(
                 onMouseDown = if (exists(".mouseclick.separate.full")) 
                     .mouseclick.separate.full,
-                onMouseUp = if (exists(".mouserelease.separate.full")) 
-                    .mouserelease.separate.full,
                 onMouseMove = if (exists(".mousemove.separate.full")) 
                     .mousemove.separate.full,
                 onKeybd = if (exists(".keystroke.separate")) 
