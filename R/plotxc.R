@@ -109,11 +109,12 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
         } else stop("Unexpected value for 'xc'")
     }
     structure(list(xc = xc, xc.cond.old = xc.cond, name = name, select.colour = 
-        select.colour, mar = mar, select.lwd = select.lwd, select.cex = select.cex, cex.axis = cex.axis, 
-        cex.lab = cex.lab, tck = tck, device = dev.cur(), usr = par("usr"), 
-        screen = screen(), screen.coords = par("fig"), plot.type = plot.type, 
-        sptmp = if(exists("sptmp")) sptmp else NULL, factorcoords = if(exists(
-        "factorcoords")) factorcoords else NULL, histmp = if(exists("histmp")) 
-        histmp else NULL, bartmp = if(exists("bartmp")) bartmp else NULL, boxtmp 
-        = if(exists("boxtmp")) boxtmp else NULL, ...), class = "xcplot")
+        select.colour, mar = mar, select.lwd = select.lwd, select.cex = 
+        select.cex, cex.axis = cex.axis, cex.lab = cex.lab, tck = tck, device = 
+        dev.cur(), usr = par("usr"), screen = screen(), screen.coords = par(
+        "fig"), plot.type = plot.type, sptmp = if(exists("sptmp")) sptmp else 
+        NULL, factorcoords = if(exists("factorcoords")) factorcoords else NULL, 
+        histmp = if(exists("histmp")) histmp else NULL, bartmp = if(exists(
+        "bartmp")) bartmp else NULL, boxtmp = if(exists("boxtmp")) boxtmp else 
+        NULL, ...), class = "xcplot")
 }
