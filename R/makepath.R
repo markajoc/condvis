@@ -1,6 +1,7 @@
 makepath <-
 # first attempt at making a path for conditional tour, for continuous
 # variables only
+# Have now added possibility for factors
 function (Xc, ncentroids, ninterp = 4)
 {
     if (any(apply(Xc, 2L, is.factor))){
@@ -8,7 +9,8 @@ function (Xc, ncentroids, ninterp = 4)
             stop("requires package 'cluster'") 
         d <- cluster::daisy(Xc)
         clustering <- cluster::pam(d, k = ncentroids)  
-        centers <- clustering$medoids        
+        centers <- clustering$medoids 
+        path <- centers        
     } else {
         if (!requireNamespace("TSP", quietly = TRUE))
             stop("requires package 'TSP'")
