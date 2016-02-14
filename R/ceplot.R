@@ -56,18 +56,21 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         ceplot.interactive(data = data, model = model, response = response, 
             S = S, C = C, sigma = sigma, distance = distance, cex.axis = 
             cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = 
-            Corder, conf = conf, separate = FALSE, select.colour = select.colour, select.cex = select.cex)
+            Corder, conf = conf, separate = FALSE, select.colour = 
+            select.colour, select.cex = select.cex)
     } else if (identical(type, "separate") & identical(selectortype, 
         "minimal")){
         ceplot.interactive(data = data, model = model, response = response, 
             S = S, C = C, sigma = sigma, distance = distance, cex.axis = 
             cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = 
-            Corder, conf = conf, separate = TRUE, select.colour = select.colour, select.cex = select.cex)
+            Corder, conf = conf, separate = TRUE, select.colour = select.colour, 
+            select.cex = select.cex)
     } else if (identical(type, "separate")){
         ceplot.separate(data = data, model = model, response = response, S = S, 
             C = C, sigma = sigma, distance = distance, cex.axis = cex.axis, 
             cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = Corder, 
-            selectortype = selectortype, select.colour = select.colour, select.cex = select.cex)
+            selectortype = selectortype, select.colour = select.colour, 
+            select.cex = select.cex)
     } else if (identical(type, "shiny")){
         ceplot.shiny(data = data, model = model, response = response, S = S, 
             C = C, cex.axis = cex.axis, cex.lab = cex.lab, tck = tck, 

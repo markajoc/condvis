@@ -65,8 +65,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             screen(selectors[C.index])
             xcplots[[C.index]] <- plotxc(xc = data[, C[[C.index]]], xc.cond = 
                 Xc.cond[1L, colnames(data)[C[[C.index]]]], name = colnames(data)
-                [C[[C.index]]], select.colour = select.colour, select.lwd = 2, cex.axis 
-                = cex.axis, cex.lab = cex.lab, tck = tck, select.cex = select.cex)
+                [C[[C.index]]], select.colour = select.colour, select.lwd = 2, 
+                cex.axis = cex.axis, cex.lab = cex.lab, tck = tck, select.cex = 
+                select.cex)
         }
     }
     screen(main[1])

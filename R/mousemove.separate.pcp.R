@@ -39,7 +39,8 @@ function (buttons, x, y)
             } 
     }
     parcoord(Xc.num, main = "Condition selector")
-    points(xcoord, ycoord, col = plotxcobject$select.colour, type = "l", lwd = 2)
+    points(xcoord, ycoord, col = plotxcobject$select.colour, type = "l", lwd = 
+        2)
     points(xcoord, ycoord, col = plotxcobject$select.colour, pch = 16)
 
         dev.set(expectationwindow)

@@ -1,5 +1,6 @@
 conditionselectors <-
-function (Xc, type = "minimal", method = "default", Xc.cond = NULL, select.colour = "blue", select.cex = 1, ...)
+function (Xc, type = "minimal", method = "default", Xc.cond = NULL, 
+    select.colour = "blue", select.cex = 1, ...)
 {
     C <- arrangeC(data = Xc, method = method)
     Xc.cond <- if (is.null(Xc.cond))
@@ -14,10 +15,12 @@ function (Xc, type = "minimal", method = "default", Xc.cond = NULL, select.colou
         for (i in seq_along(C)){
             screen(selectors[i])
             xcplots[[i]] <- plotxc(xc = Xc[, C[[i]]], xc.cond = Xc.cond[1, C[[i
-                ]]], name = C[[i]], select.colour = select.colour, select.cex = select.cex, ...)
+                ]]], name = C[[i]], select.colour = select.colour, select.cex = 
+                select.cex, ...)
         }
         output <- list(Xc = Xc, Xc.cond = Xc.cond, xcplots = xcplots, 
-            screens = selectors, type = type, method = method, select.colour = select.colour, select.cex = select.cex)
+            screens = selectors, type = type, method = method, select.colour = 
+            select.colour, select.cex = select.cex)
     } else {
         if (identical(type, "full")){
             factorindex <- vapply(Xc, is.factor, logical(1))
@@ -66,7 +69,8 @@ function (Xc, type = "minimal", method = "default", Xc.cond = NULL, select.colou
             coords$xcplots.index <- scr2
             dev.flush()  
             output <- list(Xc = Xc, Xc.cond = Xc.cond, rows = rows, cols = cols, 
-                scr2 = scr2, coords = coords, type = type, method = method, select.colour = select.colour, select.cex = select.cex)            
+                scr2 = scr2, coords = coords, type = type, method = method, 
+                select.colour = select.colour, select.cex = select.cex)            
         } else {
             if (identical(type, "pcp")){
                 factorindex <- vapply(Xc, is.factor, logical(1))
@@ -79,7 +83,8 @@ function (Xc, type = "minimal", method = "default", Xc.cond = NULL, select.colou
                 points(xcoord, ycoord, col = select.colour, type = "l", lwd = 2)
                 points(xcoord, ycoord, col = select.colour, pch = 16)
                 output <- list(Xc = Xc, Xc.cond = Xc.cond, xcoord = xcoord, 
-                    ycoord = ycoord, type = type, method = method, select.colour = select.colour, select.cex = select.cex)
+                    ycoord = ycoord, type = type, method = method, select.colour 
+                    = select.colour, select.cex = select.cex)
             }
         }
     }
