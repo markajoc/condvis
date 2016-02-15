@@ -1,2 +1,4 @@
 src/condvis.so
 src/daisy.o
+src-i386/
+src-x64/
