@@ -136,15 +136,16 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
     n.selector.cols <- ceiling(length(C) / 4L)
     selector.colwidth <- 2
     height <- 8    
-    width <- height + 0.5 * plotlegend + selector.colwidth * n.selector.cols
+    width <- height + 0.5 * plotlegend
     k <- matrix(ncol = nrow(data), nrow = nrow(path))
     for (i in 1: nrow(path)){
         k[i, ] <- visualweight(xc.cond = path[i, , drop = F], xc = data[, 
             colnames(path), drop = FALSE], sigma = sigma, basicoutput = T)
     }
-    if (identical(version$os, "linux-gnu"))
-        x11(type = "Xlib", height = height, width = height + 0.5 * plotlegend)
-    else x11(height = height, width = height + 0.5 * plotlegend)
+    opendev(width = width, height = height)
+    #if (identical(version$os, "linux-gnu"))
+    #    x11(type = "Xlib", height = height, width = height + 0.5 * plotlegend)
+    #else x11(height = height, width = height + 0.5 * plotlegend)
     devexp <- dev.cur()    
     close.screen(all.screens = TRUE)    
     
@@ -171,10 +172,11 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
     xcheight <- selector.colwidth * n.selector.rows
     setGraphicsEventHandlers(
         onMouseMove = mousemove(),
-        onKeybd = keystroke())    
-    if (identical(version$os, "linux-gnu"))
-        x11(type = "Xlib", height = xcheight, width = xcwidth)
-    else x11(height = 5, width = 3)
+        onKeybd = keystroke()) 
+    opendev(width = xcwidth, height = xcheight)    
+    #if (identical(version$os, "linux-gnu"))
+    #    x11(type = "Xlib", height = xcheight, width = xcwidth)
+    #else x11(height = 5, width = 3)
     devdiag <- dev.cur()    
     close.screen(all.screens = TRUE)
     diagscreens <- split.screen(c(2, 1))
@@ -187,9 +189,10 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
     setGraphicsEventHandlers(
         onMouseDown = mouseclick(),
         onKeybd = keystroke())
-    if (identical(version$os, "linux-gnu"))
-        x11(type = "Xlib", height = xcheight, width = xcwidth)
-    else x11(height = xcheight, width = xcwidth)
+    opendev(width = xcwidth, height = xcheight)    
+    #if (identical(version$os, "linux-gnu"))
+    #    x11(type = "Xlib", height = xcheight, width = xcwidth)
+    #else x11(height = xcheight, width = xcwidth)
     devcond <- dev.cur()    
     close.screen(all.screens = TRUE)    
     xcscreens <- split.screen(c(n.selector.rows, n.selector.cols))

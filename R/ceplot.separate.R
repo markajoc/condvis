@@ -59,10 +59,11 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     Xc.cond <- data[1, uniqC, drop = FALSE]    
     Xc <- data[, uniqC, drop = FALSE]
     close.screen(all.screens = TRUE)
-    if (identical(version$os, "linux-gnu"))
-        x11(type = "Xlib", width = 8.5, height = 8)
-    else
-        x11(width = 8.5, height = 8)
+    opendev(width = 8.5, height = 8)
+    #if (identical(version$os, "linux-gnu"))
+    #    x11(type = "Xlib", width = 8.5, height = 8)
+    #else
+    #    x11(width = 8.5, height = 8)
     vw <- visualweight(xc = Xc, xc.cond = Xc.cond, sigma = sigma, distance = 
         distance)
     k <- vw$k
@@ -84,11 +85,12 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         7
     else if (identical(selectortype, "full")) 
         height   
-    else 2 * n.selector.cols        
-    if (identical(version$os, "linux-gnu"))
-        x11(type = "Xlib", height = height, width = width)
-    else
-        x11(height = height, width = width)
+    else 2 * n.selector.cols 
+    opendev(width = width, height = height)    
+    #if (identical(version$os, "linux-gnu"))
+    #    x11(type = "Xlib", height = height, width = width)
+    #else
+    #    x11(height = height, width = width)
     selectorwindow <- dev.cur() 
     if (identical(selectortype, "pcp")){   
         setGraphicsEventHandlers(

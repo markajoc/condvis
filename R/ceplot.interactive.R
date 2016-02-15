@@ -13,12 +13,13 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     selector.colwidth <- 2
     height <- 8
     if (separate){
-        width <- height + 0.5 * plotlegend + selector.colwidth * n.selector.cols
-        if (identical(version$os, "linux-gnu"))
-            x11(type = "Xlib", height = height, width = height + 0.5 * 
-                plotlegend)
-        else
-            x11(height = height, width = height + 0.5 * plotlegend)
+        width <- height + 0.5 * plotlegend 
+        opendev(width = width, height = height)
+        #if (identical(version$os, "linux-gnu"))
+        #    x11(type = "Xlib", height = height, width = height + 0.5 * 
+        #        plotlegend)
+        #else
+        #    x11(height = height, width = height + 0.5 * plotlegend)
         devexp <- dev.cur()    
         close.screen(all.screens = TRUE)    
     
@@ -42,11 +43,12 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         xscoords <- par("fig") 
         xcwidth <- selector.colwidth * n.selector.cols
         n.selector.rows <- ceiling(length(C) / n.selector.cols)
-        xcheight <- selector.colwidth * n.selector.rows    
-        if (identical(version$os, "linux-gnu"))
-            x11(type = "Xlib", height = xcheight, width = xcwidth)
-        else
-            x11(height = xcheight, width = xcwidth)
+        xcheight <- selector.colwidth * n.selector.rows 
+        opendev(height = xcheight, width = xcwidth)        
+        #if (identical(version$os, "linux-gnu"))
+        #    x11(type = "Xlib", height = xcheight, width = xcwidth)
+        #else
+        #    x11(height = xcheight, width = xcwidth)
         devcond <- dev.cur()    
         close.screen(all.screens = TRUE)
         xcscreens <- split.screen(c(n.selector.rows, n.selector.cols))
@@ -59,10 +61,11 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         } 
     } else {
         width <- height + 0.5 * plotlegend + selector.colwidth * n.selector.cols
-        if (identical(version$os, "linux-gnu"))
-            x11(type = "Xlib", height = height, width = width)
-        else
-            x11(height = height, width = width)
+        opendev(width = width, height = height)
+        #if (identical(version$os, "linux-gnu"))
+        #    x11(type = "Xlib", height = height, width = width)
+        #else
+        #    x11(height = height, width = width)
         close.screen(all.screens = TRUE)
         xcwidth <- selector.colwidth * n.selector.cols / width
         mainscreens <- split.screen(figs = matrix(c(0, 1 - xcwidth, 1 - xcwidth, 
