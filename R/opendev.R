@@ -8,7 +8,7 @@ function (width = 7, height = 7)
         if (identical(version$os, "linux-gnu")){
             x11(type = "Xlib", width = width, height = height)
         } else {
-            x11(type = "Xlib", width = width, height = height)
+            x11(width = width, height = height)
         }
     }
 }
