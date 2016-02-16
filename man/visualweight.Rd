@@ -31,7 +31,7 @@ visualweight(xc.cond, xc, sigma = NULL, distance = "euclidean", basicoutput = FA
 \value{
 A list:
   \item{k }{weights between 0 and 1}
-  \item{order }{order index of \code{k} from smallest to largest.}
+  \item{order }{order index of \code{k} from smallest to largest, excluding zero values.}
 }
 \author{
 Mark O'Connell
