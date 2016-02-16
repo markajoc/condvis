@@ -1,0 +1,5 @@
+Check on Windows gives one NOTE
+
+* checking R code for possible problems ... NOTE
+opendev: possible error in x11(type = "Xlib", width = width, height =
+  height): unused argument (type = "Xlib")
