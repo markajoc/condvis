@@ -17,8 +17,8 @@ visualweight(xc.cond, xc, sigma = NULL, distance = "euclidean", basicoutput = FA
   \item{sigma}{ a numeric value greater than zero, defaults to 1. Used to scale 
     the distance function for assigning weights. Larger values show more data, 
     smaller values show less data.}
-  \item{distance}{ distance metric used, \code{"euclidean"} (default) or 
-    \code{"maxnorm"}.}
+  \item{distance}{ distance metric used, \code{"euclidean"} (default), 
+    \code{"maxnorm"} or \code{"daisy"}. See \code{\link{dist1}} and \code{\link{daisy1}}.}
   \item{basicoutput}{ if \code{TRUE}, just returns the visual weights. If 
     \code{FALSE}, returns a list containing non-zero weight values, and an 
     order vector}  
