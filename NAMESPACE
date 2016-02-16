@@ -3,3 +3,5 @@ export(arrangeC, ceplot, cont2color, factor2color, dist1, plotxc, plotxs,
     savingby2d, visualweight, update.xcplot, update.xsplot, condtour, makepath)
 import(graphics)
 importFrom(MASS, parcoord)
+S3method(update, xcplot)
+S3method(update, xsplot)
