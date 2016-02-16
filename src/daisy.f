@@ -2,7 +2,9 @@
       subroutine cldaisy(nn,jpp,x,valmd,weights,
      +     jtmd,jdat,vtype,ndyst,mdata,disv)
 c     c
-c     c  Calculating dissimilarities between objects or variables
+c     c  Calculating dissimilarities between objects or variables.
+c     c  This code has been copied and edited from the cluster 
+c     c  package in R.
 c     c
 
       integer nn, jpp
