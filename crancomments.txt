@@ -23,7 +23,14 @@ event one is needed.
 opendev: possible error in x11(type = "Xlib", width = width, height =
   height): unused argument (type = "Xlib")
   
-## The platform-specific calls are necessary, creating interactive graphics.
+## The platform-specific calls are necessary for creating interactive graphics.
 ## The possible error in x11 is due to the platform-specific definition of x11 
 ## having different arguments on Windows. x11 can only be called on Unix systems
 ## in this package, so this will not matter.
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+Check on Mac
+
+Check on Mac --as-cran
