@@ -171,6 +171,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                         view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
                         xsplot$phi3d, conf = conf)
                     dev.off()
+                    cat(paste("\nSnapshot saved: '", filename[1L],"'", sep = ""))
                     dev.set(devcond)
                     devcondsize <- dev.size()
                     pdf(file = filename[2L], width = devcondsize[1L], height =
@@ -185,6 +186,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                             select.cex)
                     }
                     dev.off()
+                    cat(paste("\nSnapshot saved: '", filename[2L],"'", sep = ""))
+                    cat("\n")
                 } else {
                 filename <- paste("snapshot_", gsub(":", ".", gsub(" ", "_",
                     Sys.time())), ".pdf", sep = "")
