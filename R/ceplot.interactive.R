@@ -180,10 +180,11 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     xcscreens <- split.screen(c(n.selector.rows, n.selector.cols))
                     for (i in seq_along(C)){
                         screen(xcscreens[i])
-                        plotxc(xc = data[, C[[i]]], xc.cond = data[1L, C[[i]]],
-                            name = colnames(data[, C[[i]], drop = FALSE]),
-                            select.colour = select.colour, select.cex =
-                            select.cex)
+                        plotxc(xc = xcplots[[i]]$xc,
+                            xc.cond = xcplots[[i]]$xc.cond.old,
+                            name = xcplots[[i]]$name,
+                            select.colour = xcplots[[i]]$select.colour,
+                            select.cex = xcplots[[i]]$select.cex)
                     }
                     dev.off()
                     cat(paste("\nSnapshot saved: '", filename[2L],"'", sep = ""))
