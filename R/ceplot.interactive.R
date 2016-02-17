@@ -151,6 +151,40 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     filename <- paste("snapshot_", gsub(":", ".", gsub(" ", "_",
                         Sys.time())), c("-expectation.pdf", "-condition.pdf"),
                         sep = "")
+                    dev.set(devexp)
+                    devexpsize <- dev.size()
+                    pdf(file = filename[1L], width = devexpsize[1L], height =
+                        devexpsize[2L])
+                    close.screen(all.screens = TRUE)
+                    xsscreens <- if (plotlegend){
+                        split.screen(figs = matrix(c(0, 1 - legendwidth, 1 -
+                            legendwidth, 1, 0, 0, 1, 1), ncol = 4L))
+                    } else split.screen()
+                    if (plotlegend){
+                        screen(xsscreens[2L])
+                        xslegend(data[, response], colnames(data)[response])
+                    }
+                    screen(xsscreens[1L])
+                    plotxs1(xs = data[, S, drop = FALSE], data[, response,
+                        drop = FALSE], xc.cond = xc.cond, model = model, data.colour
+                        = rgb(1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order,
+                        view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
+                        xsplot$phi3d, conf = conf)
+                    dev.off()
+                    dev.set(devcond)
+                    devcondsize <- dev.size()
+                    pdf(file = filename[2L], width = devcondsize[1L], height =
+                        devcondsize[2L])
+                    close.screen(all.screens = TRUE)
+                    xcscreens <- split.screen(c(n.selector.rows, n.selector.cols))
+                    for (i in seq_along(C)){
+                        screen(xcscreens[i])
+                        plotxc(xc = data[, C[[i]]], xc.cond = data[1L, C[[i]]],
+                            name = colnames(data[, C[[i]], drop = FALSE]),
+                            select.colour = select.colour, select.cex =
+                            select.cex)
+                    }
+                    dev.off()
                 } else {
                 filename <- paste("snapshot_", gsub(":", ".", gsub(" ", "_",
                     Sys.time())), ".pdf", sep = "")
