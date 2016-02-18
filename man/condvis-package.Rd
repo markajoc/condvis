@@ -6,8 +6,10 @@
 Conditional Visualization for Statistical Models
 }
 \description{
-  Visualizations for exploring statistical models. The main function for end
-  users is \code{\link{ceplot}} (see example below).
+  Exploring statistical models by taking 2-D and 3-D sections in data space. The
+  main function for end users is \code{\link{ceplot}} (see example below). Bugs
+  and issues can be raised at
+  \href{https://bitbucket.org/markajoc/condvis/issues}{BitBucket}.
 }
 \details{
   \tabular{ll}{
