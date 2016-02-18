@@ -14,7 +14,7 @@ Conditional Visualization for Statistical Models
     Package: \tab condvis\cr
     Type: \tab Package\cr
     Version: \tab 0.2\cr
-    Date: \tab 2016-2-13\cr
+    Date: \tab 2016-02-18\cr
     License: \tab GPL-2\cr
   }
 }
