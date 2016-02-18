@@ -1,4 +1,4 @@
-Check on Windows 7 gives 1 NOTE
+Check on Windows 7 with R 3.2.3 gives 1 NOTE
 
 * checking R code for possible problems ... NOTE
 opendev: possible error in x11(type = "Xlib", width = width, height =
@@ -8,7 +8,7 @@ opendev: possible error in x11(type = "Xlib", width = width, height =
 ## having different arguments on Windows. x11 can only be called on Unix systems
 ## in this package, so this will not matter.
 
-Check on Windows 7 --as-cran gives 2 NOTEs
+Check on Windows 7 R 3.2.3 --as-cran gives 2 NOTEs
 
 * checking CRAN incoming feasibility ... NOTE
 Maintainer: 'Mark O'Connell <mark.oconnell@maths.nuim.ie>'
@@ -35,9 +35,9 @@ opendev: possible error in x11(type = "Xlib", width = width, height =
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
-Check on Mac (OSX 10.8) gives no ERRORs, WARNINGs, or NOTEs
+Check on Mac (OSX 10.8) with R 3.1 gives no ERRORs, WARNINGs, or NOTEs
 
-Check on Mac (OSX 10.8) --as-cran gives 2 NOTEs
+Check on Mac (OSX 10.8) with R 3.1 --as-cran gives 2 NOTEs
 
 * checking CRAN incoming feasibility ... NOTE
 Maintainer: ‘Mark O'Connell <mark.oconnell@maths.nuim.ie>’
