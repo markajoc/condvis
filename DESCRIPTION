@@ -11,5 +11,5 @@ Description: Exploring fitted model structures by interactively taking 2-D and
   3-D sections in data space.
 License: GPL (>= 2)
 LazyData: false
-Imports: graphics, MASS
+Imports: graphics, grDevices, stats, utils, MASS
 NeedsCompilation: yes
