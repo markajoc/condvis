@@ -8,9 +8,9 @@ Conditional Visualization for Statistical Models
 \description{
   Exploring statistical models by interactively taking 2-D and 3-D sections in
   data space. The main function for end users is \code{\link{ceplot}} (see
-  example below). Requires Xquartz on Mac OS, and X11 on Linux. Bugs and issues
-  can be raised at \href{https://bitbucket.org/markajoc/condvis/issues}{
-  BitBucket}.
+  example below). Requires \href{http://www.xquartz.org/}{Xquartz} on Mac OS,
+  and X11 on Linux. Bugs and issues can be raised at
+  \href{https://bitbucket.org/markajoc/condvis/issues}{BitBucket}.
 }
 \details{
   \tabular{ll}{
