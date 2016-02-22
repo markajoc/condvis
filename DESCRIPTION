@@ -13,3 +13,4 @@ License: GPL (>= 2)
 LazyData: false
 Imports: graphics, grDevices, stats, utils, MASS
 NeedsCompilation: yes
+BugReports: https://bitbucket.org/markajoc/condvis/issues
