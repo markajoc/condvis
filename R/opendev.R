@@ -3,12 +3,12 @@ opendev <-
 function (width = 7, height = 7)
 {
     if (identical(.Platform$OS.type, "windows")){
-        windows(width = width, height = height)
+        options(device = windows)
     } else {
+        options(device = X11)
         if (identical(version$os, "linux-gnu")){
-            x11(type = "Xlib", width = width, height = height)
-        } else {
-            x11(width = width, height = height)
+            X11.options(type = "Xlib")
         }
     }
+    dev.new(width = width, height = height)
 }
