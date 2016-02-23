@@ -14,3 +14,11 @@ Requirements:
   * Windows: the standard graphics device is sufficient.  
   * Mac OS: Xquartz device, [website](http://www.xquartz.org/)  
   * Linux: X11, included in some distributions.  
+
+Example to get started:  
+```r
+library(condvis)
+data(mtcars)
+m <- lm(mpg ~ wt + hp, data = mtcars)
+ceplot(data = mtcars, model = m, S = "hp", type = "default")
+```
