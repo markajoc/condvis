@@ -15,6 +15,11 @@ Requirements:
   * Mac OS: Xquartz device, [website](http://www.xquartz.org/)  
   * Linux: X11, included in some distributions.  
 
+Installation:
+```r
+install.packages("condvis")
+```
+
 Example to get started:  
 ```r
 library(condvis)
