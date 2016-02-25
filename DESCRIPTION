@@ -3,8 +3,9 @@ Type: Package
 Title: Conditional Visualization for Statistical Models
 Version: 0.3
 Date: 2016-02-22
-Author: Mark O'Connell
-Maintainer: Mark O'Connell <mark.oconnell@maths.nuim.ie>
+Authors@R: c(person("Mark", "O'Connell", email = "mark.oconnell@maths.nuim.ie",
+  role = c("aut", "cre")), person("Catherine", "Hurley", role = "ths"),
+  person("Katarina", "Domijan", role = "ths"))
 Depends:  R (>= 2.1.0)
 Suggests: RColorBrewer, shiny, scagnostics, cluster, hdrcde, gplots, TSP
 Description: Exploring fitted model structures by interactively taking 2-D and
