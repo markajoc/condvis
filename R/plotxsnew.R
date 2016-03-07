@@ -4,6 +4,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     NULL, data.order = NULL, view3d = FALSE, theta3d = 45, phi3d = 20, xs.grid =
     NULL, prednew = NULL, conf = FALSE)
 {
+    probs <- TRUE
     dev.hold()
     if (!(ncol(xs) %in% 1:2))
         stop("xs must be a dataframe with 1 or 2 columns")
@@ -219,11 +220,11 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
         if (is.null(xs.grid)){
             xs.grid1 <- if (!is.factor(xs[, 1L]))
                 seq(min(xs[, 1L], na.rm = TRUE), max(xs[, 1L], na.rm = TRUE),
-                    length.out = if (view3d) {20L} else 50L)
+                    length.out = if (view3d | probs) {20L} else 50L)
             else as.factor(levels(xs[, 1L]))
             xs.grid2 <- if (!is.factor(xs[, 2L]))
                 seq(min(xs[, 2L], na.rm = TRUE), max(xs[, 2L], na.rm = TRUE),
-                    length.out = if (view3d) {20L} else 50L)
+                    length.out = if (view3d | probs) {20L} else 50L)
             else as.factor(levels(xs[, 2L]))
             xs.grid <- data.frame(
                 rep(xs.grid1, by = length(xs.grid2)),
@@ -302,6 +303,18 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                 if (is.factor(y[, 1L])){
                     # y is factor
                     plot.type <- "fcc"
+                    if (probs){
+                      plot(range(xs.grid[, 1L]), range(xs.grid[, 2L]), col = NULL,
+                          xlab = colnames(xs)[1L], ylab = colnames(xs)[2L],
+                          main = "Conditional expectation")
+                      pred <- predict(model[[1L]], newdata = newdata, probability = TRUE)
+                      p <- extractprobs(model[[1L]], pred)
+                      totalwidth <- abs(diff(par()$usr[1:2]))
+                      totalheight <- abs(diff(par()$usr[3:4]))
+                      apply(cbind(xs.grid, p), 1, function(x) myglyph(x[1], x[2]
+                        , 0.7 * totalwidth / 20, 0.7 * totalheight / 20, x[3:(2 + ncol(p))],
+                        factor2color(as.factor(levels(y[, 1L])))))
+                    } else {
                     xoffset <- abs(diff(unique(xs.grid[, 1L])[1:2])) / 2
                     yoffset <- abs(diff(unique(xs.grid[, 2L])[1:2])) / 2
                     plot(range(xs.grid[, 1L]), range(xs.grid[, 2L]), col = NULL,
@@ -313,6 +326,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                     if (length(data.order) > 0)
                         points(xs[data.order, , drop = FALSE], bg = ybg, col =
                             data.colour[data.order], pch = 21)
+                    }
                 } else {
                     # y is continuous
                     plot.type <- "ccc"
@@ -373,5 +387,5 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
         theta3d = theta3d, usr = par("usr"), phi3d = phi3d, plot.type = if
         (exists("plot.type")) plot.type else NULL, screen = screen(), device =
         dev.cur(), xs.grid = xs.grid, newdata = newdata, prednew = prednew,
-        xs.grid = xs.grid, conf = conf), class = "xsplot")
+        xs.grid = xs.grid, conf = conf, probs = probs), class = "xsplot")
 }

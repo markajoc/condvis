@@ -454,6 +454,18 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
             object$theta3d <- theta3d
             object$phi3d <- phi3d
         } else {
+            if(object$probs){
+              corners <- par()$usr
+              rect(corners[1], corners[3], corners[2], corners[4], col = "white")
+              pred <- predict(object$model[[1L]], newdata = newdata, probability = TRUE)
+              p <- extractprobs(object$model[[1L]], pred)
+              totalwidth <- abs(diff(par()$usr[1:2]))
+              totalheight <- abs(diff(par()$usr[3:4]))
+              apply(cbind(object$xs.grid, p), 1, function(x) myglyph(x[1], x[2]
+                , 0.7 * totalwidth / 20, 0.7 * totalheight / 20, x[3:(2 + ncol(p))],
+                factor2color(as.factor(levels(object$y[, 1L])))))
+              box()             
+            } else {
             xoffset <- abs(diff(unique(object$xs.grid[, 1L])[1:2])) / 2
             yoffset <- abs(diff(unique(object$xs.grid[, 2L])[1:2])) / 2
             rect(xleft = object$xs.grid[, 1L] - xoffset, xright =
@@ -463,6 +475,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
             if (length(data.order) > 0)
                 points(object$xs[data.order, , drop = FALSE], bg = ybg,
                     col = data.colour[data.order], pch = 21)
+            }
             }
         dev.flush()
         object$newdata <- newdata
