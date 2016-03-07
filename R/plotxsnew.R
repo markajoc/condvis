@@ -2,9 +2,8 @@ plotxs1 <-
 function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     model.lty = NULL, model.name = NULL, yhat = NULL, mar = NULL, data.colour =
     NULL, data.order = NULL, view3d = FALSE, theta3d = 45, phi3d = 20, xs.grid =
-    NULL, prednew = NULL, conf = FALSE)
+    NULL, prednew = NULL, conf = FALSE, probs = FALSE)
 {
-    probs <- TRUE
     dev.hold()
     if (!(ncol(xs) %in% 1:2))
         stop("xs must be a dataframe with 1 or 2 columns")

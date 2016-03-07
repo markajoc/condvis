@@ -1,8 +1,8 @@
-ceplot <- 
-function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, 
-    distance = "euclidean", type = "default", cex.axis = NULL, cex.lab = NULL, 
-    tck = NULL, view3d = FALSE, Corder = "default", selectortype = "minimal", 
-    conf = FALSE, select.colour = "blue", select.cex = 1)
+ceplot <-
+function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
+    distance = "euclidean", type = "default", cex.axis = NULL, cex.lab = NULL,
+    tck = NULL, view3d = FALSE, Corder = "default", selectortype = "minimal",
+    conf = FALSE, select.colour = "blue", select.cex = 1, probs = FALSE)
 {
     data <- na.omit(data)
     model <- if (!identical(class(model), "list"))
@@ -23,19 +23,19 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
          (1:ncol(data))[-response][1L]
         } else if (is.character(S))
             vapply(S, function(x) which(colnames(data) == x), numeric(1))
-            else S       
+            else S
     C <- if (is.null(C))
         arrangeC(data[, -c(response, S)])
     else C
     try(
         if (class(varnamestry) != "try-error"){
-            possibleC <- unique(unlist(lapply(lapply(model, getvarnames), `[[`, 
+            possibleC <- unique(unlist(lapply(lapply(model, getvarnames), `[[`,
                 2)))
             possibleC <- possibleC[possibleC %in% colnames(data)]
-            C <- arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])], 
+            C <- arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])],
                 drop = FALSE], method = Corder)
-        }     
-    , silent = TRUE) 
+        }
+    , silent = TRUE)
     C <- if (all(vapply(C, is.numeric, logical(1))))
         as.list(C)
     else if (all(vapply(C, is.character, logical(1))))
@@ -51,29 +51,29 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         stop("cannot have 'response' variable in 'S'")
     if (!identical(length(intersect(S, uniqC)), 0L))
         stop("cannot have variables common to both 'S' and 'C'")
-        
+
     if (identical(type, "default")){
-        ceplot.interactive(data = data, model = model, response = response, 
-            S = S, C = C, sigma = sigma, distance = distance, cex.axis = 
-            cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = 
-            Corder, conf = conf, separate = FALSE, select.colour = 
-            select.colour, select.cex = select.cex)
-    } else if (identical(type, "separate") & identical(selectortype, 
+        ceplot.interactive(data = data, model = model, response = response,
+            S = S, C = C, sigma = sigma, distance = distance, cex.axis =
+            cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder =
+            Corder, conf = conf, separate = FALSE, select.colour =
+            select.colour, select.cex = select.cex, probs = probs)
+    } else if (identical(type, "separate") & identical(selectortype,
         "minimal")){
-        ceplot.interactive(data = data, model = model, response = response, 
-            S = S, C = C, sigma = sigma, distance = distance, cex.axis = 
-            cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = 
-            Corder, conf = conf, separate = TRUE, select.colour = select.colour, 
-            select.cex = select.cex)
+        ceplot.interactive(data = data, model = model, response = response,
+            S = S, C = C, sigma = sigma, distance = distance, cex.axis =
+            cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder =
+            Corder, conf = conf, separate = TRUE, select.colour = select.colour,
+            select.cex = select.cex, probs = probs)
     } else if (identical(type, "separate")){
-        ceplot.separate(data = data, model = model, response = response, S = S, 
-            C = C, sigma = sigma, distance = distance, cex.axis = cex.axis, 
-            cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = Corder, 
-            selectortype = selectortype, select.colour = select.colour, 
+        ceplot.separate(data = data, model = model, response = response, S = S,
+            C = C, sigma = sigma, distance = distance, cex.axis = cex.axis,
+            cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = Corder,
+            selectortype = selectortype, select.colour = select.colour,
             select.cex = select.cex)
     } else if (identical(type, "shiny")){
-        ceplot.shiny(data = data, model = model, response = response, S = S, 
-            C = C, cex.axis = cex.axis, cex.lab = cex.lab, tck = tck, 
+        ceplot.shiny(data = data, model = model, response = response, S = S,
+            C = C, cex.axis = cex.axis, cex.lab = cex.lab, tck = tck,
             Corder = Corder)
     }
 }

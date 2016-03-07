@@ -2,7 +2,7 @@ ceplot.interactive <-
 function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL,
     view3d = FALSE, Corder = "default", conf = FALSE, separate = TRUE,
-    select.colour = "blue", select.cex = 1)
+    select.colour = "blue", select.cex = 1, probs = FALSE)
 {
     uniqC <- unique(unlist(C))
     xc.cond <- data[1L, uniqC, drop = FALSE]
@@ -34,7 +34,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response,
             drop = FALSE], xc.cond = xc.cond, model = model, data.colour = rgb(1
             - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, view3d = view3d,
-            conf = conf)
+            conf = conf, probs = probs)
         xscoords <- par("fig")
         xcwidth <- selector.colwidth * n.selector.cols
         n.selector.rows <- ceiling(length(C) / n.selector.cols)
@@ -82,7 +82,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response,
             drop = FALSE], xc.cond = xc.cond, model = model, data.colour = rgb(
             1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, view3d =
-            view3d, conf = conf)
+            view3d, conf = conf, probs = probs)
         xscoords <- par("fig")
         xold <- NULL
         yold <- NULL
@@ -169,7 +169,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                         drop = FALSE], xc.cond = xc.cond, model = model, data.colour
                         = rgb(1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order,
                         view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
-                        xsplot$phi3d, conf = conf)
+                        xsplot$phi3d, conf = conf, probs = probs)
                     dev.off()
                     cat(paste("\nSnapshot saved: '", filename[1L],"'", sep = ""))
                     dev.set(devcond)
@@ -221,7 +221,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     drop = FALSE], xc.cond = xc.cond, model = model, data.colour
                     = rgb(1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order,
                     view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
-                    xsplot$phi3d, conf = conf)
+                    xsplot$phi3d, conf = conf, probs = probs)
                 dev.off()
                 cat(paste("\nSnapshot saved: '", filename,"'", sep = ""))
                 cat("\n")
