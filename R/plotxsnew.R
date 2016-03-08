@@ -219,11 +219,11 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
         if (is.null(xs.grid)){
             xs.grid1 <- if (!is.factor(xs[, 1L]))
                 seq(min(xs[, 1L], na.rm = TRUE), max(xs[, 1L], na.rm = TRUE),
-                    length.out = if (view3d | probs) {20L} else 50L)
+                    length.out = if (view3d) {20L} else if (probs) 15 else 50L)
             else as.factor(levels(xs[, 1L]))
             xs.grid2 <- if (!is.factor(xs[, 2L]))
                 seq(min(xs[, 2L], na.rm = TRUE), max(xs[, 2L], na.rm = TRUE),
-                    length.out = if (view3d | probs) {20L} else 50L)
+                    length.out = if (view3d) {20L} else if (probs) 15 else 50L)
             else as.factor(levels(xs[, 2L]))
             xs.grid <- data.frame(
                 rep(xs.grid1, by = length(xs.grid2)),
@@ -310,9 +310,22 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                       p <- extractprobs(model[[1L]], pred)
                       totalwidth <- abs(diff(par()$usr[1:2]))
                       totalheight <- abs(diff(par()$usr[3:4]))
-                      apply(cbind(xs.grid, p), 1, function(x) myglyph(x[1], x[2]
-                        , 0.7 * totalwidth / 20, 0.7 * totalheight / 20, x[3:(2 + ncol(p))],
-                        factor2color(as.factor(levels(y[, 1L])))))
+                      #apply(cbind(xs.grid, p), 1, function(x) myglyph(x[1], x[2]
+                      #  , 0.7 * totalwidth / 15, 0.7 * totalheight / 15,
+                      #  x[3:(2 + ncol(p))],
+                      #  factor2color(as.factor(levels(y[, 1L])))))
+
+                      o1 <- apply(cbind(xs.grid, p), 1, function (x) myglyph2(
+                        x[1], x[2], 0.6 * totalwidth / 15, 0.6 * totalheight /
+                        15, x[3:(2 + ncol(p))], factor2color(as.factor(levels(
+                        y[, 1L])))))
+                      o2 <- matrix(t(o1), ncol = 5, byrow = FALSE)
+                      rect(xleft = o2[, 1], xright = o2[, 2], ybottom = o2[, 3],
+                        ytop = o2[, 4], col = factor2color(as.factor(levels(
+                        y[, 1L])))[o2[, 5]])
+
+
+
                     } else {
                     xoffset <- abs(diff(unique(xs.grid[, 1L])[1:2])) / 2
                     yoffset <- abs(diff(unique(xs.grid[, 2L])[1:2])) / 2

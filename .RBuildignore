@@ -2,4 +2,5 @@
 .gitignore
 man/blank
 src/daisy.o
+src/condvis.so
 crancomments.txt
