@@ -456,23 +456,24 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         } else {
             if(object$probs){
               corners <- par()$usr
-
               rect(corners[1], corners[3], corners[2], corners[4], col = "white")
-              pred <- predict(object$model[[1L]], newdata = newdata, probability = TRUE)
-              p <- extractprobs(object$model[[1L]], pred)
-              totalwidth <- abs(diff(par()$usr[1:2]))
-              totalheight <- abs(diff(par()$usr[3:4]))
+              pred <- predict(object$model[[1L]], newdata = newdata,
+                probability = TRUE)
+              p1 <- extractprobs(object$model[[1L]], pred)
+              totalwidth <- abs(diff(corners[1:2]))
+              totalheight <- abs(diff(corners[3:4]))
               #apply(cbind(object$xs.grid, p), 1, function(x) myglyph(x[1], x[2]
               #  , 0.7 * totalwidth / 15, 0.7 * totalheight / 15, x[3:(2 + ncol(p))],
               #  factor2color(as.factor(levels(object$y[, 1L])))))
 
-              o1 <- apply(cbind(object$xs.grid, p), 1, function (x) myglyph2(
+              o1 <- apply(cbind(object$xs.grid, p1), 1, function (x) myglyph2(
                 x[1], x[2], 0.6 * totalwidth / 15, 0.6 * totalheight / 15,
-                x[3:(2 + ncol(p))], factor2color(as.factor(levels(object$y[, 1L]
+                x[3:(2 + ncol(p1))], factor2color(as.factor(levels(object$y[, 1L]
                 )))))
-              o2 <- matrix(t(o1), ncol = 5, byrow = FALSE) rect(xleft = o2[, 1],
-                xright = o2[, 2], ybottom = o2[, 3], ytop = o2[, 4], col =
-                factor2color(as.factor(levels(object$y[, 1L])))[o2[, 5]])
+              o2 <- matrix(t(o1), ncol = 5, byrow = FALSE)
+              rect(xleft = o2[, 1], xright = o2[, 2], ybottom = o2[, 3], ytop =
+                o2[, 4], col = factor2color(as.factor(levels(object$y[, 1L])))[
+                o2[, 5]])
 
               box()
             } else {
@@ -490,6 +491,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         dev.flush()
         object$newdata <- newdata
         object$prednew <- prednew
+        object$xc.cond <- xc.cond
         return(object)
     }
 }
