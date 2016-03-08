@@ -41,6 +41,6 @@ function (model, pred)
       p <- attr(pred, "probabilities")
     } else stop("predictions do not have 'probabilities' attribute,\n ",
       "maybe svm was fitted without 'probability == TRUE'")
-  }
+  } else stop("cannot display class probabilities for this model class")
   p
 }

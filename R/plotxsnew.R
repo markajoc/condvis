@@ -306,8 +306,9 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                       plot(range(xs.grid[, 1L]), range(xs.grid[, 2L]), col = NULL,
                           xlab = colnames(xs)[1L], ylab = colnames(xs)[2L],
                           main = "Conditional expectation")
-                      pred <- predict(model[[1L]], newdata = newdata, probability = TRUE)
-                      p <- extractprobs(model[[1L]], pred)
+                      pred <- predict(model[[1L]], newdata = newdata,
+                        probability = TRUE)
+                      p1 <- extractprobs(model[[1L]], pred)
                       totalwidth <- abs(diff(par()$usr[1:2]))
                       totalheight <- abs(diff(par()$usr[3:4]))
                       #apply(cbind(xs.grid, p), 1, function(x) myglyph(x[1], x[2]
@@ -315,9 +316,9 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                       #  x[3:(2 + ncol(p))],
                       #  factor2color(as.factor(levels(y[, 1L])))))
 
-                      o1 <- apply(cbind(xs.grid, p), 1, function (x) myglyph2(
+                      o1 <- apply(cbind(xs.grid, p1), 1, function (x) myglyph2(
                         x[1], x[2], 0.6 * totalwidth / 15, 0.6 * totalheight /
-                        15, x[3:(2 + ncol(p))], factor2color(as.factor(levels(
+                        15, x[3:(2 + ncol(p1))], factor2color(as.factor(levels(
                         y[, 1L])))))
                       o2 <- matrix(t(o1), ncol = 5, byrow = FALSE)
                       rect(xleft = o2[, 1], xright = o2[, 2], ybottom = o2[, 3],

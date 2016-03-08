@@ -93,7 +93,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         {
             plotindex <- which(apply(coords, 1, `%inrectangle%`, point =
                 c(x, y)))
-            if (length(plotindex) > 0 && if(exists("buttons")) 0 %in% buttons){
+            if ((length(plotindex) > 0) && (0 %in% buttons)){
                 xcplots[[plotindex]] <<- update(xcplots[[plotindex]], x, y)
                 if (any(xc.cond[, xcplots[[plotindex]]$name] !=
                     xcplots[[plotindex]]$xc.cond.old)){
