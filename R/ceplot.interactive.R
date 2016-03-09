@@ -5,7 +5,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     select.colour = "blue", select.cex = 1, probs = FALSE)
 {
     uniqC <- unique(unlist(C))
-    xc.cond <- data[1L, uniqC, drop = FALSE]
+    xc.cond <- data.frame(lapply(data[, !colnames(data) %in% c(S, response)],
+      mode1))
     xcplots <- list()
     coords <- matrix(ncol = 4L, nrow = length(C))
     plotlegend <- length(S) == 2
