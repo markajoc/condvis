@@ -1,8 +1,12 @@
 arrangeC <- function (data, method = "default")
 {
-    data <- na.omit(data)
     if (ncol(data) <= 2L)
         return(list(colnames(data)))
+    data <- na.omit(data)
+    n <- max(36800 - 6850 * log(ncol(data)), 100) # approx n that is practical
+    nr <- nrow(data)
+    if(nr > n)
+      data <- data[sample(1:nr, n, replace = TRUE), ]
     saving <- matrix(nrow = ncol(data), ncol = ncol(data))
     colnames(saving) <- rownames(saving) <- colnames(data)
     for (i in 1:ncol(saving)){
