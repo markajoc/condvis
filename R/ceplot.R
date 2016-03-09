@@ -17,6 +17,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
            varnamestry$response[1L]
         else stop("could not extract response from 'model'.")
     else response
+
     S <- if(is.null(S)){
       if (!inherits(varnamestry, "try-error")){
         varnamestry$predictors[1L]
@@ -37,15 +38,17 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
    if (is.list(C)){
      C <- C[1:min(length(C), 20L)]
    } else if (is.vector(C)){
-     C <- arrangeC(data[, C], method = Corder)[1:min(length(C), 20L)]
+     C <- arrangeC(data[, C, drop = FALSE], method = Corder)
    } else if (!inherits(varnamestry, "try-error")){
      possibleC <- unique(unlist(lapply(lapply(model, getvarnames), `[[`, 2)))
-     possibleC <- possibleC[possibleC %in% colnames(data)]
-     C <- arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])],
-         drop = FALSE], method = Corder)[1:min(length(C), 20L)]
+     C <- arrangeC(data[, setdiff(possibleC, S),
+         drop = FALSE], method = Corder)
    } else {
-     C <- arrangeC(data[, !colnames(data) %in% c(S, response)], method = Corder)
+     C <- arrangeC(data[, !colnames(data) %in% c(S, response), drop = FALSE],
+       method = Corder)
    }
+     C <- C[1:min(length(C), 20L)]
+
     uniqC <- unique(unlist(C))
     if (any(response %in% uniqC))
         stop("cannot have 'response' variable in 'C'")
