@@ -7,6 +7,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     uniqC <- unique(unlist(C))
     xc.cond <- data.frame(lapply(data[, !colnames(data) %in% c(S, response)],
       mode1))
+
+
     xcplots <- list()
     coords <- matrix(ncol = 4L, nrow = length(C))
     plotlegend <- length(S) == 2
@@ -46,7 +48,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         xcscreens <- split.screen(c(n.selector.rows, n.selector.cols))
         for (i in seq_along(C)){
             screen(xcscreens[i])
-            xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = data[1L,
+            xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = xc.cond[1L,
                 C[[i]]], name = colnames(data[, C[[i]], drop = FALSE]),
                 select.colour = select.colour, select.cex = select.cex)
             coords[i, ] <- par("fig")
@@ -62,7 +64,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             2L])
         for (i in seq_along(C)){
             screen(xcscreens[i])
-            xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = data[1L,
+            xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = xc.cond[1L,
                 C[[i]]], name = colnames(data[, C[[i]], drop = FALSE]),
                 select.colour = select.colour, select.cex = select.cex)
             coords[i, ] <- par("fig")
