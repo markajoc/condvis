@@ -24,6 +24,15 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         } else if (is.character(S))
             vapply(S, function(x) which(colnames(data) == x), numeric(1))
             else S
+
+## TODO: need new hierarchy for specifying C
+##         1. If user supplies list, use that exactly (maybe chop length)
+##         2. If user supplies vector, use that but order/group it
+##         3. If user supplies nothing, try to extract from model, then order
+##         4. Else bung in everything from the data that isn't 'response' or 'S'
+##            and then try to order that and show the top 20
+
+
     C <- if (is.null(C))
         arrangeC(data[, -c(response, S)])
     else C
