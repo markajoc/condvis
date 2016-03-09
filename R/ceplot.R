@@ -5,25 +5,28 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     conf = FALSE, select.colour = "blue", select.cex = 1, probs = FALSE)
 {
     data <- na.omit(data)
-    model <- if (!identical(class(model), "list"))
+    model <- if (!inherits(model, "list"))
         list(model)
     else model
     model.name <- if (!is.null(names(model)))
         names(model)
-    else NULL
+    else paste("model", 1:length(model), sep = "_")
     varnamestry <- try(getvarnames(model[[1]]), silent = TRUE)
     response <- if (is.null(response))
         if (class(varnamestry) != "try-error")
-           which(colnames(data) == varnamestry$response[1])
+           varnamestry$response[1L]
         else stop("could not extract response from 'model'.")
-    else if (is.character(response))
-            which(colnames(data) == response)
-        else response
+    else response
     S <- if(is.null(S)){
-         (1:ncol(data))[-response][1L]
-        } else if (is.character(S))
-            vapply(S, function(x) which(colnames(data) == x), numeric(1))
-            else S
+      if (!inherits(varnamestry, "try-error")){
+        varnamestry$predictors[1L]
+      } else {
+        setdiff(colnames(data), response)[1L]
+      }
+    } else if (is.integer(S)){
+      colnames(data)[S]
+    } else S
+
 
 ## TODO: need new hierarchy for specifying C
 ##         1. If user supplies list, use that exactly (maybe chop length)
@@ -31,28 +34,18 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
 ##         3. If user supplies nothing, try to extract from model, then order
 ##         4. Else bung in everything from the data that isn't 'response' or 'S'
 ##            and then try to order that and show the top 20
-
-
-    C <- if (is.null(C))
-        arrangeC(data[, -c(response, S)])
-    else C
-    try(
-        if (class(varnamestry) != "try-error"){
-            possibleC <- unique(unlist(lapply(lapply(model, getvarnames), `[[`,
-                2)))
-            possibleC <- possibleC[possibleC %in% colnames(data)]
-            C <- arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])],
-                drop = FALSE], method = Corder)
-        }
-    , silent = TRUE)
-    C <- if (all(vapply(C, is.numeric, logical(1))))
-        as.list(C)
-    else if (all(vapply(C, is.character, logical(1))))
-            lapply(C, match, table = colnames(data))
-        else
-            stop("'C' should be a vector or list (containing vectors of length",
-                 " 1 or 2) with integer column indices or character variable",
-                 " names from 'data'.")
+   if (is.list(C)){
+     C <- C[1:min(length(C), 20L)]
+   } else if (is.vector(C)){
+     C <- arrangeC(data[, C], method = Corder)[1:min(length(C), 20L)]
+   } else if (!inherits(varnamestry, "try-error")){
+     possibleC <- unique(unlist(lapply(lapply(model, getvarnames), `[[`, 2)))
+     possibleC <- possibleC[possibleC %in% colnames(data)]
+     C <- arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])],
+         drop = FALSE], method = Corder)[1:min(length(C), 20L)]
+   } else {
+     C <- arrangeC(data[, !colnames(data) %in% c(S, response)], method = Corder)
+   }
     uniqC <- unique(unlist(C))
     if (any(response %in% uniqC))
         stop("cannot have 'response' variable in 'C'")
