@@ -24,15 +24,11 @@ function (xc.cond, xc, sigma = NULL, distance = "euclidean", basicoutput =
       xc.num <- xc[, !arefactors, drop = FALSE]
       xc.cond.num <- xc.cond[, !arefactors, drop = FALSE]
 
-## TODO: this code for finding cases with matching factor levels is
-## very slow!
-
+      tmp <- as.matrix(xc.factors)
+      rownames(tmp) <- colnames(tmp) <- NULL
       factormatches <- if (any(arefactors)){
-        factormatches <- apply(as.matrix(xc.factors), 1,
-        function(x) all(x == xc.cond.factors))
+        factormatches <- apply(tmp, 1, identical, as.character(xc.cond.factors))
       } else rep(TRUE, nrow(xc))
-
-## end of slow code
 
       k <- rep(0, nrow(xc))
       if (all(!factormatches))
