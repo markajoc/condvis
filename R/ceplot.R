@@ -16,7 +16,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         if (class(varnamestry) != "try-error")
            varnamestry$response[1L]
         else stop("could not extract response from 'model'.")
-    else response
+    else if (is.integer(response)){
+      colnames(data)[response]
+    } else response
 
     S <- if(is.null(S)){
       if (!inherits(varnamestry, "try-error")){

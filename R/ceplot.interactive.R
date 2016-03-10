@@ -28,7 +28,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         } else split.screen()
         if (plotlegend){
             screen(xsscreens[2L])
-            xslegend(data[, response], colnames(data)[response])
+            xslegend(data[, response], response)
         }
         screen(xsscreens[1L])
         vw <- visualweight(xc = data[, uniqC, drop = FALSE], xc.cond = xc.cond,
@@ -76,7 +76,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         } else mainscreens[1L]
         if (plotlegend){
             screen(xsscreens[2L])
-            xslegend(data[, response], colnames(data)[response])
+            xslegend(data[, response], response)
         }
         screen(xsscreens[1L])
         vw <- visualweight(xc = data[, uniqC, drop = FALSE], xc.cond = xc.cond,
@@ -165,7 +165,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     } else split.screen()
                     if (plotlegend){
                         screen(xsscreens[2L])
-                        xslegend(data[, response], colnames(data)[response])
+                        xslegend(data[, response], response)
                     }
                     screen(xsscreens[1L])
                     plotxs1(xs = data[, S, drop = FALSE], data[, response,
@@ -217,7 +217,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                 } else mainscreens[1L]
                 if (plotlegend){
                     screen(xsscreens[2L])
-                    xslegend(data[, response], colnames(data)[response])
+                    xslegend(data[, response], response)
                 }
                 screen(xsscreens[1L])
                 plotxs1(xs = data[, S, drop = FALSE], data[, response,
