@@ -8,7 +8,7 @@ function (model, newdata)
         lwr <- pred[, "lwr"]
         return(cbind(lwr, upr))
     }
-    if (inherits(model, "stanpred")){
+    if (inherits(model, "custompred")){
         pred <- predict(model, newdata, interval = "confidence")
         upr <- pred[, "upr"]
         lwr <- pred[, "lwr"]
