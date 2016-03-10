@@ -38,7 +38,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
    if (is.list(C)){
      C <- C[1:min(length(C), 20L)]
    } else if (is.vector(C)){
-     C <- arrangeC(data[, C, drop = FALSE], method = Corder)
+     C <- arrangeC(data[, setdiff(C, S), drop = FALSE], method = Corder)
    } else if (!inherits(varnamestry, "try-error")){
      possibleC <- unique(unlist(lapply(lapply(model, getvarnames), `[[`, 2)))
      C <- arrangeC(data[, setdiff(possibleC, S),
