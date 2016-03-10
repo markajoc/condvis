@@ -36,7 +36,7 @@ function (x, y, xw, yw, heights, col)
 extractprobs <-
 function (model, pred)
 {
-  if (inherits(model, "svm")){
+  if (any(c("svm", "gbm") %in% class(model))){
     if ("probabilities" %in% names(attributes(pred))){
       p <- attr(pred, "probabilities")
     } else stop("predictions do not have 'probabilities' attribute,\n ",

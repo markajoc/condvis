@@ -316,8 +316,8 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                       plot(range(xs.grid[, 1L]), range(xs.grid[, 2L]), col = NULL,
                           xlab = colnames(xs)[1L], ylab = colnames(xs)[2L],
                           main = "Conditional expectation")
-                      pred <- predict(model[[1L]], newdata = newdata,
-                        probability = TRUE)
+                      pred <- predict1(model[[1L]], newdata = newdata,
+                        probability = TRUE, ylevels = levels(y[, 1L]))
                       p1 <- extractprobs(model[[1L]], pred)
                       totalwidth <- abs(diff(par()$usr[1:2]))
                       totalheight <- abs(diff(par()$usr[3:4]))

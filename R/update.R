@@ -466,8 +466,8 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
             if(object$probs){
               corners <- par()$usr
               rect(corners[1], corners[3], corners[2], corners[4], col = "white")
-              pred <- predict(object$model[[1L]], newdata = newdata,
-                probability = TRUE)
+              pred <- predict1(object$model[[1L]], newdata = newdata,
+                probability = TRUE, ylevels = levels(object$y[, 1L]))
               p1 <- extractprobs(object$model[[1L]], pred)
               totalwidth <- abs(diff(corners[1:2]))
               totalheight <- abs(diff(corners[3:4]))

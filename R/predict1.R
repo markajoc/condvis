@@ -15,5 +15,11 @@ function (object, ..., ylevels = NULL)
     if (inherits(object, "nnet") && !is.null(ylevels)){
       return(factor(predict(object, ..., type = type), levels = ylevels))
     }
+    if (inherits(object, "gbm") && !is.null(ylevels)){
+      p1 <- predict(object, ..., n.trees = n.trees, type = type)
+      out <- structure(factor(ylevels[apply(p1, 1,
+        which.max)], levels = ylevels), probabilities = p1)
+      return(out)
+    }
     predict(object, ..., n.trees = n.trees, type = type)
 }
