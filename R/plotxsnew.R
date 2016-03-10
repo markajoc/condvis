@@ -66,7 +66,11 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                             points.default(xs.grid[, 1L], prednew[[i]],
                                 type = 'l', col = model.colour[i],
                                 lwd = model.lwd[i], lty = model.lty[i])
-                        } else {
+                        } else if (inherits(model[[i]], "gbm")){
+                          points.default(xs.grid[, 1L], prednew[[i]],
+                              type = 'l', col = model.colour[i],
+                              lwd = model.lwd[i], lty = model.lty[i])
+                          } else {
                             points.default(xs.grid[, 1L],
                                 as.numeric(prednew[[i]]) - 1, type = 'l',
                                 col = model.colour[i], lwd = model.lwd[i],
@@ -148,7 +152,11 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                             points.default(xs.grid[, 1L], prednew[[i]],
                                 type = 'l', col = model.colour[i],
                                 lwd = model.lwd[i], lty = model.lty[i])
-                        } else {
+                        } else if (inherits(model[[i]], "gbm")){
+                          points.default(xs.grid[, 1L], prednew[[i]],
+                              type = 'l', col = model.colour[i],
+                              lwd = model.lwd[i], lty = model.lty[i])
+                          } else {
                             points.default(xs.grid[, 1L],
                                 as.numeric(prednew[[i]]) - 1, type = 'l',
                                 col = model.colour[i], lwd = model.lwd[i],
