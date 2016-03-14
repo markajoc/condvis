@@ -52,7 +52,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     }
     colnames(xs.grid) <- colnames(xs)
     newdata <- makenewdata(xs = xs.grid, xc.cond = xc.cond)
-	prednew <- lapply(model, predict1, newdata = newdata, ylevels = if (is.factor(y[, 1L]))
+	prednew <- lapply(model, predict1, newdata = newdata, ylevels = if (nlevels(y[, 1L]) > 2)
     levels(y[, 1L]) else NULL)
     if(identical(ncol(xs), 1L)){
         if (is.numeric(y[, 1L])){

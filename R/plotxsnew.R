@@ -44,7 +44,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
         }
         newdata <- makenewdata(xs = xs.grid, xc.cond = xc.cond)
         if (is.null(prednew))
-	        prednew <- lapply(model, predict1, newdata = newdata, ylevels = if (is.factor(y[, 1L]))
+	        prednew <- lapply(model, predict1, newdata = newdata, ylevels = if (nlevels(y[, 1L]) > 2)
             levels(y[, 1L]) else NULL)
         if (is.factor(xs[, 1L])){
             # xs is a factor
@@ -241,7 +241,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
         }
         newdata <- makenewdata(xs = xs.grid, xc.cond = xc.cond)
         if (is.null(prednew))
-            prednew <- lapply(model, predict1, newdata = newdata, ylevels = if (is.factor(y[, 1L]))
+            prednew <- lapply(model, predict1, newdata = newdata, ylevels = if (nlevels(y[, 1L]) > 2)
               levels(y[, 1L]) else NULL)
 		color <- if (is.factor(y[, 1L])){
         if (identical(nlevels(y[, 1L]), 2L) && inherits(model[[1L]], "glm")){
@@ -355,8 +355,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                     plot.type <- "ccc"
                     if (view3d){
                         yhat <- if (is.null(yhat))
-                            lapply(model[1], predict1, ylevels = if (is.factor(y[, 1L]))
-                              levels(y[, 1L]) else NULL)
+                            lapply(model[1], predict1, ylevels = NULL)
                         else yhat
                         z <- matrix(prednew[[1L]], ncol = 20L, byrow = FALSE)
                         zfacet <- (z[-1, -1] + z[-1, -ncol(z)] + z[-nrow(z), -1]
