@@ -2,19 +2,19 @@ ceplot.interactive <-
 function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL,
     view3d = FALSE, Corder = "default", conf = FALSE, separate = TRUE,
-    select.colour = "blue", select.cex = 1, probs = FALSE)
+    select.colour = "blue", select.cex = 1, probs = FALSE, col = "black",
+    pch = 1)
 {
     uniqC <- unique(unlist(C))
     xc.cond <- data.frame(lapply(data[, !colnames(data) %in% c(S, response)],
       mode1))
-
-
     xcplots <- list()
     coords <- matrix(ncol = 4L, nrow = length(C))
     plotlegend <- length(S) == 2
     n.selector.cols <- ceiling(length(C) / 4L)
     selector.colwidth <- 2
     height <- 8
+    col <- rep(col, length.out = nrow(data))
     if (separate){
         width <- height + 0.5 * plotlegend
         opendev(width = width, height = height)
@@ -33,11 +33,16 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         screen(xsscreens[1L])
         vw <- visualweight(xc = data[, uniqC, drop = FALSE], xc.cond = xc.cond,
             sigma = sigma, distance = distance)
+        newcol <- (col2rgb(col[vw$order]) * matrix(rep(vw$k[vw$order], 3), nrow
+          = 3, byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3), nrow =
+          3, byrow = TRUE)
+        data.colour <- rep(NA, length(col))
+        data.colour[vw$order] <- rgb(newcol[1L, ], newcol[2L, ], newcol[3L, ])
         par(mar = c(3, 3, 3, 3))
         xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response,
-            drop = FALSE], xc.cond = xc.cond, model = model, data.colour = rgb(1
-            - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, view3d = view3d,
-            conf = conf, probs = probs)
+            drop = FALSE], xc.cond = xc.cond, model = model, data.colour =
+            data.colour, data.order = vw$order, view3d = view3d, conf = conf,
+            probs = probs, pch = pch)
         xscoords <- par("fig")
         xcwidth <- selector.colwidth * n.selector.cols
         n.selector.rows <- ceiling(length(C) / n.selector.cols)
@@ -81,11 +86,16 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         screen(xsscreens[1L])
         vw <- visualweight(xc = data[, uniqC, drop = FALSE], xc.cond = xc.cond,
             sigma = sigma, distance = distance)
+        newcol <- (col2rgb(col[vw$order]) * matrix(rep(vw$k[vw$order], 3), nrow
+              = 3, byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3), nrow =
+              3, byrow = TRUE)
+        data.colour <- rep(NA, length(col))
+        data.colour[vw$order] <- rgb(newcol[1L, ], newcol[2L, ], newcol[3L, ])
         par(mar = c(3, 3, 3, 3))
         xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response,
-            drop = FALSE], xc.cond = xc.cond, model = model, data.colour = rgb(
-            1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order, view3d =
-            view3d, conf = conf, probs = probs)
+            drop = FALSE], xc.cond = xc.cond, model = model, data.colour =
+            data.colour, data.order = vw$order, view3d = view3d, conf = conf,
+            probs = probs, pch = pch)
         xscoords <- par("fig")
         xold <- NULL
         yold <- NULL
@@ -105,9 +115,13 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     vw <<- visualweight(xc = data[, uniqC, drop = FALSE],
                         xc.cond = xc.cond, sigma = vw$sigma, distance =
                         vw$distance)
+                        newcol <- (col2rgb(col[vw$order]) * matrix(rep(vw$k[vw$order], 3), nrow
+                          = 3, byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3), nrow =
+                          3, byrow = TRUE)
+                    data.colour <- rep(NA, length(col))
+                    data.colour[vw$order] <- rgb(newcol[1L, ], newcol[2L, ], newcol[3L, ])
                     xsplot <<- update(xsplot, xc.cond = xc.cond, data.colour =
-                        rgb(1 - vw$k, 1 - vw$k, 1 - vw$k), data.order =
-                        vw$order)
+                        data.colour, data.order = vw$order)
                 }
             }
             if (all(!separate, findInterval(x, xscoords[1:2]) == 1, identical(
@@ -145,9 +159,14 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     vw$sigma * (key == ",")
                 vw <<- visualweight(xc = data[, uniqC, drop = FALSE],
                     xc.cond = xc.cond, sigma = sigma, distance = vw$distance)
-                xsplot <<- update(xsplot, data.colour = rgb(1 - vw$k, 1 - vw$k,
-                    1 - vw$k), data.order = vw$order, xs.grid = xsplot$xs.grid,
-                    newdata = xsplot$newdata, prednew = xsplot$prednew)
+                    newcol <- (col2rgb(col[vw$order]) * matrix(rep(vw$k[vw$order], 3), nrow
+                      = 3, byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3), nrow =
+                      3, byrow = TRUE)
+                data.colour <- rep(NA, length(col))
+                data.colour[vw$order] <- rgb(newcol[1L, ], newcol[2L, ], newcol[3L, ])
+                xsplot <<- update(xsplot, data.colour = data.colour, data.order
+                  = vw$order, xs.grid = xsplot$xs.grid, newdata = xsplot$newdata
+                  , prednew = xsplot$prednew)
             }
             if (identical(key, "s")){
                 if (separate){
@@ -168,11 +187,16 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                         xslegend(data[, response], response)
                     }
                     screen(xsscreens[1L])
+                    newcol <- (col2rgb(col[vw$order]) * matrix(rep(vw$k[vw$order], 3), nrow
+                      = 3, byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3), nrow =
+                      3, byrow = TRUE)
+                    data.colour <- rep(NA, length(col))
+                    data.colour[vw$order] <- rgb(newcol[1L, ], newcol[2L, ], newcol[3L, ])
                     plotxs1(xs = data[, S, drop = FALSE], data[, response,
                         drop = FALSE], xc.cond = xc.cond, model = model, data.colour
-                        = rgb(1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order,
+                        = data.colour, data.order = vw$order,
                         view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
-                        xsplot$phi3d, conf = conf, probs = probs)
+                        xsplot$phi3d, conf = conf, probs = probs, pch = pch)
                     dev.off()
                     cat(paste("\nSnapshot saved: '", filename[1L],"'", sep = ""))
                     dev.set(devcond)
@@ -220,14 +244,18 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
                     xslegend(data[, response], response)
                 }
                 screen(xsscreens[1L])
+                newcol <- (col2rgb(col[vw$order]) * matrix(rep(vw$k[vw$order], 3), nrow
+                  = 3, byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3), nrow =
+                  3, byrow = TRUE)
+                data.colour <- rep(NA, length(col))
+                data.colour[vw$order] <- rgb(newcol[1L, ], newcol[2L, ], newcol[3L, ])
                 plotxs1(xs = data[, S, drop = FALSE], data[, response,
                     drop = FALSE], xc.cond = xc.cond, model = model, data.colour
-                    = rgb(1 - vw$k, 1 - vw$k, 1 - vw$k), data.order = vw$order,
+                    = data.colour, data.order = vw$order,
                     view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
-                    xsplot$phi3d, conf = conf, probs = probs)
+                    xsplot$phi3d, conf = conf, probs = probs, pch = 1)
                 dev.off()
-                cat(paste("\nSnapshot saved: '", filename,"'", sep = ""))
-                cat("\n")
+                cat(paste("\nSnapshot saved: '", filename,"'\n", sep = ""))
                 }
             }
             points(NULL)

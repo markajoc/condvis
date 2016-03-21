@@ -224,7 +224,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
                 points.default((as.numeric(object$xs[data.order, 1L])) +
                     rnorm(n = length(data.order), sd = 0.1), (as.integer(
                     object$y[data.order, 1L]) - 1) + rnorm(n = length(
-                    data.order), sd = 0.01), col = data.colour[data.order])
+                    data.order), sd = 0.01), col = data.colour[data.order], pch = object$pch[data.order])
             for (i in seq_along(object$model)){
                 if ("glm" %in% class(object$model[[i]])){
                     points.default(object$xs.grid[, 1L], prednew[[i]],
@@ -243,7 +243,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         } else {
             if (length(data.order) > 0)
                 points(as.numeric(object$xs[data.order, 1L]), as.integer(
-                    object$y[data.order, 1L]), col = data.colour[data.order])
+                    object$y[data.order, 1L]), col = data.colour[data.order], pch = object$pch[data.order])
             for (i in seq_along(object$model)){
                 points.default(as.numeric(object$xs.grid[, 1L]),
                     as.integer(prednew[[i]]), type = 'l', col =
@@ -267,7 +267,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
 
         if (length(data.order) > 0)
             points(object$xs[data.order, 1L], object$y[data.order, 1L], col =
-                data.colour[data.order])
+                data.colour[data.order], pch = object$pch[data.order])
         if (conf){
             prednew2 <- lapply(object$model, confpred, newdata = newdata)
             for (i in seq_along(object$model)){
@@ -306,7 +306,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         if (identical(nlevels(object$y[, 1L]), 2L)){
             if (length(data.order) > 0)
 		        points.default(object$xs[data.order, 1L], as.integer(object$y[
-                    data.order, 1L]) - 1, col = data.colour[data.order])
+                    data.order, 1L]) - 1, col = data.colour[data.order], pch = object$pch[data.order])
             for (i in seq_along(object$model)){
                 if ("glm" %in% class(object$model[[i]])){
                     points.default(object$xs.grid[, 1L], prednew[[i]],
@@ -325,7 +325,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         } else {
             if (length(data.order) > 0)
                 points(object$xs[data.order, 1L], as.integer(object$y[data.order
-                    , 1L]) , col = data.colour[data.order])
+                    , 1L]) , col = data.colour[data.order], pch = object$pch[data.order])
             for (i in seq_along(object$model)){
                 points.default(as.numeric(object$xs.grid[, 1L]), as.integer(
                     prednew[[i]]), type = 'l', col = object$model.colour[i],
@@ -347,7 +347,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         box()
         if (length(data.order) > 0)
             points(object$xs[data.order, 1L], object$y[data.order, 1L], col =
-                data.colour[data.order])
+                data.colour[data.order], pch = object$pch[data.order])
         for (i in seq_along(object$model)){
                 points.default(object$xs.grid[, 1L], prednew[[i]], type = 'l',
                     col = object$model.colour[i], lwd = object$model.lwd[i], lty
@@ -397,8 +397,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         if (length(data.order) > 0)
        	    points(jitter(as.integer(object$xs[data.order, 1L]), amount = 0.6 *
                 xoffset), jitter(as.integer(object$xs[data.order, 2L]), amount =
-                0.6 * yoffset), bg = ybg, col = data.colour[data.order],
-                pch = 21)
+                0.6 * yoffset), bg = ybg, col = data.colour[data.order], pch = object$pch[data.order])
         dev.flush()
         object$data.colour <- data.colour
         object$data.order <- data.order
@@ -418,7 +417,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
         if (length(data.order) > 0)
             points(jitter(object$xs[data.order, !arefactorsxs]), jitter(
                 as.integer(object$xs[data.order, arefactorsxs])), bg = ybg,
-                col = data.colour[data.order], pch = 21)
+                col = data.colour[data.order], pch = object$pch[data.order])
         dev.flush()
         object$data.colour <- data.colour
         object$data.order <- data.order
@@ -447,7 +446,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
             if (length(data.order) > 0){
                 points(trans3d(object$xs[data.order, 1L], object$xs[data.order,
                     2L], object$y[data.order, 1L], pmat = persp.object),
-                    col = data.colour[data.order])
+                    col = data.colour[data.order], pch = object$pch[data.order])
                 linestarts <- trans3d(object$xs[data.order, 1L], object$xs[
                     data.order, 2L], object$y[data.order, 1L], pmat =
                     persp.object)
@@ -494,7 +493,7 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
                 border = NA)
             if (length(data.order) > 0)
                 points(object$xs[data.order, , drop = FALSE], bg = ybg,
-                    col = data.colour[data.order], pch = 21)
+                    col = data.colour[data.order], pch = object$pch[data.order])
             }
             }
         dev.flush()
