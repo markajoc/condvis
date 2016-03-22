@@ -18,15 +18,15 @@ savingby2d(x, y = NULL, method = "default")
   \item{x}{ a numeric vector or factor. Can also be a dataframe containing x
   and y.}
   \item{y}{ a numeric vector or factor.}
-  \item{method}{ criterion used to quantify bivariate relationships. Can be 
-    \code{"default"}, a scagnostic measure, or \code{"DECR"} to use a density 
+  \item{method}{ criterion used to quantify bivariate relationships. Can be
+    \code{"default"}, a scagnostic measure, or \code{"DECR"} to use a density
     estimate confidence region.}
 }
 \details{
   If given two continuous variables, the variables are both scaled to mean 0 and
-  variance 1. Then the returned value is the ratio of the area of the convex 
-  hull of the data to the area obtained from the product of the ranges of the 
-  two areas, i.e. the area of the smallest square containing the data.
+  variance 1. Then the returned value is the ratio of the area of the convex
+  hull of the data to the area obtained from the product of the ranges of the
+  two areas, i.e. the area of the bounding rectangle.
 
   If given two categorical variables, all combinations are tabulated.  The
   returned value is the number of non-zero table entries divided by the total
@@ -51,13 +51,13 @@ Mark O'Connell
 x <- runif(1000)
 y <- runif(1000)
 plot(x, y)
-savingby2d(x, y) 
+savingby2d(x, y)
 ## value near 1, no real benefit from bivariate view
 
 x1 <- runif(1000)
 y1 <- x1 + rnorm(sd = 0.3, n = 1000)
 plot(x1, y1)
-savingby2d(x1, y1) 
+savingby2d(x1, y1)
 ## smaller value indicates that the bivariate view reveals some structure
 }
 \keyword{savingby2d}
