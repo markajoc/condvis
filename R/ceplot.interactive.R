@@ -145,8 +145,6 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
           ) + 2 * (key == "Left"), phi3d = xsplot$phi3d - 2 * (key == "Up") + 2
           * (key == "Down"), xs.grid = xsplot$xs.grid, prednew = xsplot$prednew)
       }
-#            if (identical(xsplot$plot.type, "ccc") & identical(key, "3"))
-#                xsplot <<- update(xsplot, view3d = !xsplot$view3d)
       if (key %in% c(",", ".")){
         sigma <- vw$sigma + 0.01 * vw$sigma * (key == ".") - 0.01 * vw$sigma *
           (key == ",")
