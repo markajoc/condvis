@@ -2,8 +2,8 @@ ceplot.interactive <-
 function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, view3d =
   FALSE, Corder = "default", conf = FALSE, separate = TRUE, select.colour =
-  "blue", select.cex = 1, select.type = "minimal", probs = FALSE, col = "black",
-  pch = 1)
+  "blue", select.cex = 1, select.lwd = 2, select.type = "minimal", probs = FALSE
+  , col = "black", pch = 1)
 {
   uniqC <- unique(unlist(C))
   xc.cond <- data.frame(lapply(data[, !colnames(data) %in% c(S, response)],
@@ -61,6 +61,10 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       xcwidth <- 7
       xcheight <- 3
       opendev(height = xcheight, width = xcwidth)
+      xcplots <- plotxc.pcp(Xc = data[, uniqC, drop = FALSE], Xc.cond = xc.cond[
+        1, uniqC, drop = FALSE], select.colour = select.colour, select.lwd =
+        select.lwd, cex.axis = cex.axis, cex.lab = cex.lab, tck = tck,
+        select.cex = select.cex)
     } else if (identical(select.type, "full")){
 
     } else stop("'select.type' must be one of 'minimal', 'pcp' or 'full'")
@@ -110,13 +114,29 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   {
     function (buttons, x, y)
     {
-      plotindex <- which(apply(coords, 1, `%inrectangle%`, point = c(x, y)))
-      if ((length(plotindex) > 0) && (0 %in% buttons)){
-        xcplots[[plotindex]] <<- update(xcplots[[plotindex]], x, y)
-        if (any(xc.cond[, xcplots[[plotindex]]$name] != xcplots[[plotindex
+      if (identical(select.type, "minimal")){
+        plotindex <- which(apply(coords, 1, `%inrectangle%`, point = c(x, y)))
+        if ((length(plotindex) > 0) && (0 %in% buttons)){
+          xcplots[[plotindex]] <<- update(xcplots[[plotindex]], x, y)
+          if (any(xc.cond[, xcplots[[plotindex]]$name] != xcplots[[plotindex
           ]]$xc.cond.old)){
-          xc.cond[, xcplots[[plotindex]]$name] <<-
-            xcplots[[plotindex]]$xc.cond.old
+            xc.cond[, xcplots[[plotindex]]$name] <<-
+              xcplots[[plotindex]]$xc.cond.old
+            vw <<- visualweight(xc = data[, uniqC, drop = FALSE],xc.cond = xc.cond
+              , sigma = vw$sigma, distance = vw$distance)
+            newcol <- (col2rgb(col[vw$order]) * matrix(rep(vw$k[vw$order], 3),
+              nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3),
+              nrow = 3, byrow = TRUE)
+            data.colour <- rep(NA, length(col))
+            data.colour[vw$order] <- rgb(newcol[1L, ], newcol[2L, ], newcol[3L, ])
+            xsplot <<- update(xsplot, xc.cond = xc.cond, data.colour = data.colour
+              , data.order = vw$order)
+          }
+        }
+      } else if (identical(select.type, "pcp")){
+        xcplots <<- update(xcplots, x, y)
+        if (any(xc.cond != xcplots$Xc.cond))
+          xc.cond <<- xcplots$Xc.cond
           vw <<- visualweight(xc = data[, uniqC, drop = FALSE],xc.cond = xc.cond
             , sigma = vw$sigma, distance = vw$distance)
           newcol <- (col2rgb(col[vw$order]) * matrix(rep(vw$k[vw$order], 3),
@@ -126,8 +146,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
           data.colour[vw$order] <- rgb(newcol[1L, ], newcol[2L, ], newcol[3L, ])
           xsplot <<- update(xsplot, xc.cond = xc.cond, data.colour = data.colour
             , data.order = vw$order)
-        }
       }
+
       if (all(!separate, findInterval(x, xscoords[1:2]) == 1, identical(
         xsplot$plot.type, "ccc"), xsplot$view3d, 0 %in% buttons)){
         if (!is.null(xold))

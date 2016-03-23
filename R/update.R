@@ -150,6 +150,55 @@ function (object, xclick, yclick, xc.cond = NULL, ...)
           object$cex.lab, tck = object$tck)
       }
     }
+  } else if (identical(object$plot.type, "pcp")){
+    xwhich <- which.min(abs(xclickconv - object$xcoord))
+    redrawindex <- seq(max(xwhich - 1, 1), min(xwhich + 1, length(object$xcoord)
+      ))
+    ycoord.old <- object$ycoord
+    if (xwhich %in% object$factorindex){
+      tmp <- sort(unique(object$Xc.num.scaled[, xwhich]))
+      yindex <- which.min(abs(yclickconv - tmp))
+      object$ycoord[xwhich] <- tmp[yindex]
+      object$Xc.cond[xwhich] <- factor(levels(object$Xc[, xwhich])[yindex],
+        levels = levels(object$Xc[, xwhich]))
+      if (!identical(ycoord.old[xwhich], object$ycoord[xwhich])){
+        lines(object$xcoord[redrawindex], ycoord.old[redrawindex], col = "white"
+          , lwd = 2 * object$select.lwd)
+        points(xwhich, ycoord.old[xwhich], cex = 1.5 * object$cex, col = "white"
+          , pch = 16)
+        segments(x0 = rep(object$xcoord[head(redrawindex, -1)], each = nrow(
+          object$Xc.num)), x1 = rep(object$xcoord[tail(redrawindex, -1)], each =
+          nrow(object$Xc.num)), y0 = object$Xc.num.scaled[, head(redrawindex, -1
+          )], y1 = object$Xc.num.scaled[, tail(redrawindex, -1)])
+        segments(x0 = rep(redrawindex), y0 = rep(0, length(redrawindex)), y1 =
+          rep(1, length(redrawindex)), col = "gray")
+        points(redrawindex, object$ycoord[redrawindex], cex = object$cex, col =
+          object$select.colour, pch = 16)
+        lines(object$xcoord[redrawindex], object$ycoord[redrawindex], col =
+          object$select.colour, lwd = object$select.lwd)
+      }
+    } else {
+      propy <- max(0, min(yclickconv, 1))
+      if (abs(ycoord.old[xwhich] - propy) > 0.03){
+        object$ycoord[xwhich] <- propy
+        object$Xc.cond[xwhich] <- object$ycoord[xwhich] * (object$xc.num.max[
+          xwhich] - object$xc.num.min[xwhich]) + object$xc.num.min[xwhich]
+        lines(object$xcoord[redrawindex], ycoord.old[redrawindex], col = "white"
+          , lwd = 2 * object$select.lwd)
+        points(xwhich, ycoord.old[xwhich], cex = 1.5 * object$cex, col = "white"
+          , pch = 16)
+        segments(x0 = rep(object$xcoord[head(redrawindex, -1)], each = nrow(
+          object$Xc.num)), x1 = rep(object$xcoord[tail(redrawindex, -1)], each =
+          nrow(object$Xc.num)), y0 = object$Xc.num.scaled[, head(redrawindex, -1
+          )], y1 = object$Xc.num.scaled[, tail(redrawindex, -1)])
+        segments(x0 = rep(redrawindex), y0 = rep(0, length(redrawindex)), y1 =
+          rep(1, length(redrawindex)), col = "gray")
+        points(redrawindex, object$ycoord[redrawindex], cex = object$cex, col =
+          object$select.colour, pch = 16)
+        lines(object$xcoord[redrawindex], object$ycoord[redrawindex], col =
+          object$select.colour, lwd = object$select.lwd)
+      }
+    }
   }
   object
 }

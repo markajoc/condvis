@@ -63,7 +63,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     pch <- if (is.null(pch)){
       if (is.factor(data[, response]))
         rep(21, nrow(data))
-      else rep(1, nrow(data))  
+      else rep(1, nrow(data))
     } else rep(pch, nrow(data))
     if (identical(type, "default")){
         ceplot.interactive(data = data, model = model, response = response,
@@ -72,13 +72,14 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             Corder, conf = conf, separate = FALSE, select.colour =
             select.colour, select.cex = select.cex, probs = probs, col = col,
             pch = pch)
-    } else if (identical(type, "separate") & identical(selectortype,
-        "minimal")){
+    } else if (identical(type, "separate") && selectortype %in% c("minimal",
+      "pcp")){
         ceplot.interactive(data = data, model = model, response = response,
             S = S, C = C, sigma = sigma, distance = distance, cex.axis =
             cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder =
             Corder, conf = conf, separate = TRUE, select.colour = select.colour,
-            select.cex = select.cex, probs = probs, col = col, pch = pch)
+            select.cex = select.cex, probs = probs, col = col, pch = pch,
+            select.type = selectortype)
     } else if (identical(type, "separate")){
         ceplot.separate(data = data, model = model, response = response, S = S,
             C = C, sigma = sigma, distance = distance, cex.axis = cex.axis,
