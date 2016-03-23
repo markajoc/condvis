@@ -114,40 +114,36 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   {
     function (buttons, x, y)
     {
+      needupdate <- FALSE
       if (identical(select.type, "minimal")){
         plotindex <- which(apply(coords, 1, `%inrectangle%`, point = c(x, y)))
         if ((length(plotindex) > 0) && (0 %in% buttons)){
           xcplots[[plotindex]] <<- update(xcplots[[plotindex]], x, y)
-          if (any(xc.cond[, xcplots[[plotindex]]$name] != xcplots[[plotindex
-          ]]$xc.cond.old)){
-            xc.cond[, xcplots[[plotindex]]$name] <<-
-              xcplots[[plotindex]]$xc.cond.old
-            vw <<- visualweight(xc = data[, uniqC, drop = FALSE],xc.cond = xc.cond
-              , sigma = vw$sigma, distance = vw$distance)
-            newcol <- (col2rgb(col[vw$order]) * matrix(rep(vw$k[vw$order], 3),
-              nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3),
-              nrow = 3, byrow = TRUE)
-            data.colour <- rep(NA, length(col))
-            data.colour[vw$order] <- rgb(newcol[1L, ], newcol[2L, ], newcol[3L, ])
-            xsplot <<- update(xsplot, xc.cond = xc.cond, data.colour = data.colour
-              , data.order = vw$order)
+          if (any(xc.cond[, xcplots[[plotindex]]$name] != xcplots[[plotindex]
+            ]$xc.cond.old)){
+            needupdate <- TRUE
+            xc.cond[, xcplots[[plotindex]]$name] <<- xcplots[[plotindex]
+              ]$xc.cond.old
           }
         }
       } else if (identical(select.type, "pcp")){
         xcplots <<- update(xcplots, x, y)
-        if (any(xc.cond != xcplots$Xc.cond))
+        if (any(xc.cond != xcplots$Xc.cond)){
+          needupdate <- TRUE
           xc.cond <<- xcplots$Xc.cond
-          vw <<- visualweight(xc = data[, uniqC, drop = FALSE],xc.cond = xc.cond
-            , sigma = vw$sigma, distance = vw$distance)
-          newcol <- (col2rgb(col[vw$order]) * matrix(rep(vw$k[vw$order], 3),
-            nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3),
-            nrow = 3, byrow = TRUE)
-          data.colour <- rep(NA, length(col))
-          data.colour[vw$order] <- rgb(newcol[1L, ], newcol[2L, ], newcol[3L, ])
-          xsplot <<- update(xsplot, xc.cond = xc.cond, data.colour = data.colour
-            , data.order = vw$order)
+        }
       }
-
+      if (needupdate){
+        vw <<- visualweight(xc = data[, uniqC, drop = FALSE],xc.cond =
+          xc.cond, sigma = vw$sigma, distance = vw$distance)
+        newcol <- (col2rgb(col[vw$order]) * matrix(rep(vw$k[vw$order], 3),
+          nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3)
+          , nrow = 3, byrow = TRUE)
+        data.colour <- rep(NA, length(col))
+        data.colour[vw$order] <- rgb(newcol[1L, ], newcol[2L, ], newcol[3L, ])
+        xsplot <<- update(xsplot, xc.cond = xc.cond, data.colour = data.colour
+          , data.order = vw$order)
+      }
       if (all(!separate, findInterval(x, xscoords[1:2]) == 1, identical(
         xsplot$plot.type, "ccc"), xsplot$view3d, 0 %in% buttons)){
         if (!is.null(xold))
