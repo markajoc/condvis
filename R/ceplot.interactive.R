@@ -60,18 +60,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     } else if (identical(select.type, "pcp")){
       xcwidth <- 7
       xcheight <- 3
-      factorindex <- which(vapply(Xc, is.factor, logical(1)))
-      Xc.num <- vapply(Xc, as.numeric, numeric(nrow(Xc)))
-      Xc.num.scaled <- apply(Xc.num, 2, scale2unit)
-      Xc.cond.num <- vapply(Xc.cond, as.numeric, numeric(1L))
-      xcoord <- 1:ncol(Xc)
-      ycoord <- (Xc.cond.num - apply(Xc.num, 2L, min))/(apply(Xc.num, 2L, max) -
-        apply(Xc.num, 2L, min))
       opendev(height = xcheight, width = xcwidth)
-      parcoord(Xc.num, main = "Condition selector")
-      points(xcoord, ycoord, col = select.colour, type = "l", lwd =
-        select.lwd)
-      points(xcoord, ycoord, col = select.colour, pch = 16)
     } else if (identical(select.type, "full")){
 
     } else stop("'select.type' must be one of 'minimal', 'pcp' or 'full'")
