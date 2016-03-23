@@ -122,10 +122,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       if (all(!separate, findInterval(x, xscoords[1:2]) == 1, identical(
         xsplot$plot.type, "ccc"), xsplot$view3d, 0 %in% buttons)){
         if (!is.null(xold))
-          xsplot <<- update(xsplot, theta3d = xsplot$theta3d + 1 *
-            (xold > x) - 1 * (xold < x), phi3d = xsplot$phi3d + 1 *
-            (yold > y) - 1 * (yold < y), xs.grid = xsplot$xs.grid, prednew =
-            xsplot$prednew)
+          xsplot <<- update(xsplot, theta3d = xsplot$theta3d + 1 * (xold > x) -
+            1 * (xold < x), phi3d = xsplot$phi3d + 1 * (yold > y) - 1 * (yold <
+            y), xs.grid = xsplot$xs.grid, prednew = xsplot$prednew)
         xold <<- x
         yold <<- y
       }
