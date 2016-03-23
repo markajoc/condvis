@@ -2,7 +2,8 @@ ceplot.interactive <-
 function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, view3d =
   FALSE, Corder = "default", conf = FALSE, separate = TRUE, select.colour =
-  "blue", select.cex = 1, probs = FALSE, col = "black", pch = 1)
+  "blue", select.cex = 1, select.type = "minimal", probs = FALSE, col = "black",
+  pch = 1)
 {
   uniqC <- unique(unlist(C))
   xc.cond <- data.frame(lapply(data[, !colnames(data) %in% c(S, response)],
@@ -42,20 +43,39 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       data.order = vw$order, view3d = view3d, conf = conf, probs = probs, pch =
       pch)
     xscoords <- par("fig")
-    xcwidth <- selector.colwidth * n.selector.cols
-    n.selector.rows <- ceiling(length(C) / n.selector.cols)
-    xcheight <- selector.colwidth * n.selector.rows
-    opendev(height = xcheight, width = xcwidth)
+    if (identical(select.type, "minimal")){
+      xcwidth <- selector.colwidth * n.selector.cols
+      n.selector.rows <- ceiling(length(C) / n.selector.cols)
+      xcheight <- selector.colwidth * n.selector.rows
+      opendev(height = xcheight, width = xcwidth)
+      close.screen(all.screens = TRUE)
+      xcscreens <- split.screen(c(n.selector.rows, n.selector.cols))
+      for (i in seq_along(C)){
+        screen(xcscreens[i])
+        xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = xc.cond[1L, C[[i]]
+          ], name = colnames(data[, C[[i]], drop = FALSE]), select.colour =
+          select.colour, select.cex = select.cex)
+        coords[i, ] <- par("fig")
+      }
+    } else if (identical(select.type, "pcp")){
+      xcwidth <- 7
+      xcheight <- 3
+      factorindex <- which(vapply(Xc, is.factor, logical(1)))
+      Xc.num <- vapply(Xc, as.numeric, numeric(nrow(Xc)))
+      Xc.num.scaled <- apply(Xc.num, 2, scale2unit)
+      Xc.cond.num <- vapply(Xc.cond, as.numeric, numeric(1L))
+      xcoord <- 1:ncol(Xc)
+      ycoord <- (Xc.cond.num - apply(Xc.num, 2L, min))/(apply(Xc.num, 2L, max) -
+        apply(Xc.num, 2L, min))
+      opendev(height = xcheight, width = xcwidth)
+      parcoord(Xc.num, main = "Condition selector")
+      points(xcoord, ycoord, col = select.colour, type = "l", lwd =
+        select.lwd)
+      points(xcoord, ycoord, col = select.colour, pch = 16)
+    } else if (identical(select.type, "full")){
+
+    } else stop("'select.type' must be one of 'minimal', 'pcp' or 'full'")
     devcond <- dev.cur()
-    close.screen(all.screens = TRUE)
-    xcscreens <- split.screen(c(n.selector.rows, n.selector.cols))
-    for (i in seq_along(C)){
-      screen(xcscreens[i])
-      xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = xc.cond[1L, C[[i]]],
-        name = colnames(data[, C[[i]], drop = FALSE]), select.colour =
-        select.colour, select.cex = select.cex)
-      coords[i, ] <- par("fig")
-    }
   } else {
     width <- height + 0.5 * plotlegend + selector.colwidth * n.selector.cols
     opendev(width = width, height = height)
