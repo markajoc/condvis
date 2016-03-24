@@ -66,7 +66,12 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         select.lwd, cex.axis = cex.axis, cex.lab = cex.lab, tck = tck,
         select.cex = select.cex)
     } else if (identical(select.type, "full")){
-
+      xcwidth <- 7
+      opendev(height = xcwidth, width = xcwidth)
+      xcplots <- plotxc.full(Xc = data[, uniqC, drop = FALSE], Xc.cond =
+        xc.cond[1, uniqC, drop = FALSE], select.colour = select.colour,
+        select.lwd = select.lwd, cex.axis = cex.axis, cex.lab = cex.lab, tck =
+        tck, select.cex = select.cex)
     } else stop("'select.type' must be one of 'minimal', 'pcp' or 'full'")
     devcond <- dev.cur()
   } else {
@@ -126,11 +131,11 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
               ]$xc.cond.old
           }
         }
-      } else if (identical(select.type, "pcp")){
+      } else if (select.type %in% c("pcp", "full")){
         xcplots <<- update(xcplots, x, y)
-        if (any(xc.cond != xcplots$Xc.cond)){
+        if (any(xc.cond[, uniqC] != xcplots$Xc.cond[, uniqC])){
           needupdate <- TRUE
-          xc.cond <<- xcplots$Xc.cond
+          xc.cond[, uniqC] <<- xcplots$Xc.cond
         }
       }
       if (needupdate){

@@ -3,13 +3,15 @@ function (object, xclick, yclick, xc.cond = NULL, ...)
 {
   if (dev.cur() != object$device)
     dev.set(object$device)
-  screen(n = object$screen, new = FALSE)
-  par(usr = object$usr)
-  par(mar = object$mar)
-  screen(n = object$screen, new = FALSE)
-  if (is.null(xc.cond)){
-    xclickconv <- grconvertX(xclick, "ndc", "user")
-    yclickconv <- grconvertY(yclick, "ndc", "user")
+  if (!identical(object$plot.type, "full")){
+    screen(n = object$screen, new = FALSE)
+    par(usr = object$usr)
+    par(mar = object$mar)
+    screen(n = object$screen, new = FALSE)
+    if (is.null(xc.cond)){
+      xclickconv <- grconvertX(xclick, "ndc", "user")
+      yclickconv <- grconvertY(yclick, "ndc", "user")
+    }
   }
   if (identical(object$plot.type, "histogram")){
     if (is.null(xc.cond)){
@@ -198,6 +200,64 @@ function (object, xclick, yclick, xc.cond = NULL, ...)
         lines(object$xcoord[redrawindex], object$ycoord[redrawindex], col =
           object$select.colour, lwd = object$select.lwd)
       }
+    }
+  } else if (identical(object$plot.type, "full")){
+    o <- (xclick > object$coords$xleft) & (xclick < object$coords$xright) &
+      (yclick > object$coords$ybottom) & (yclick < object$coords$ytop)
+    index <- which(o)
+    if (object$cols[index] == object$rows[index])
+      return(object)
+    xname <- colnames(object$Xc)[object$cols[index]]
+    yname <- colnames(object$Xc)[object$rows[index]]
+    screenindex <- object$coords[index, "xcplots.index"]
+    screen(screenindex)
+    par(usr = object$usr.matrix[index, ])
+    par(mar = object$mar.matrix[index, ])
+    if (is.null(xc.cond)){
+      if (object$factorindex[xname]){
+        tmpx <- 1:nlevels(object$Xc.cond[, xname])
+        propx <- grconvertX(xclick, "ndc", "user")
+        xclickconv <- tmpx[which.min(abs(tmpx - propx))]
+        object$Xc.cond[1, xname] <- factor(levels(object$Xc[, xname])[
+          xclickconv], levels = levels(object$Xc[, xname]))
+      } else {
+        xclickconv <- grconvertX(xclick, "ndc", "user")
+        object$Xc.cond[1, xname] <- xclickconv
+      }
+      if (object$factorindex[yname]){
+        tmpy <- 1:nlevels(object$Xc.cond[, yname])
+        propy <- grconvertY(yclick, "ndc", "user")
+        yclickconv <- tmpy[which.min(abs(tmpy - propy))]
+        object$Xc.cond[1, yname] <- factor(levels(object$Xc[, yname])[
+          yclickconv], levels = levels(object$Xc[, yname]))
+      } else {
+        yclickconv <- grconvertY(yclick, "ndc", "user")
+        object$Xc.cond[1, yname] <- yclickconv
+      }
+    }
+    Xc.cond.num.old <- object$Xc.cond.num
+    abline(v = Xc.cond.num.old[xname], h = Xc.cond.num.old[yname], col = "white"
+      , lwd = 1.5 * object$select.lwd)
+    abline(v = xclickconv, h = yclickconv, lwd = object$select.lwd, col =
+      object$select.colour)
+    box()
+    object$Xc.cond.num[c(xname, yname)] <- c(xclickconv, yclickconv)
+    indices <- c(object$cols[index], object$rows[index])
+    refreshindex <- which((object$cols %in% indices | object$rows %in%
+      indices) & !object$cols == object$rows)
+    for (i in seq_along(refreshindex)){
+      screen(object$scr2[refreshindex[i]])
+      par(usr = object$usr.matrix[refreshindex[i], ])
+      par(mar = object$mar.matrix[refreshindex[i], ])
+      abline(v = Xc.cond.num.old[object$cols[refreshindex[i]]], h =
+        Xc.cond.num.old[object$rows[refreshindex[i]]], col = "white", lwd = 1.5
+        * object$select.lwd)
+      points(object$Xc.num[, object$cols[refreshindex[i]]], object$Xc.num[,
+        object$rows[refreshindex[i]]], cex = object$select.cex)
+      abline(v = object$Xc.cond.num[object$cols[refreshindex[i]]], h =
+        object$Xc.cond.num[object$rows[refreshindex[i]]], lwd =
+        object$select.lwd, col = object$select.colour)
+      box()
     }
   }
   object

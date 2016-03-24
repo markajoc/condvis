@@ -73,7 +73,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             select.colour, select.cex = select.cex, probs = probs, col = col,
             pch = pch)
     } else if (identical(type, "separate") && selectortype %in% c("minimal",
-      "pcp")){
+      "pcp", "full")){
         ceplot.interactive(data = data, model = model, response = response,
             S = S, C = C, sigma = sigma, distance = distance, cex.axis =
             cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder =

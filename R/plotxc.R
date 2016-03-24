@@ -156,3 +156,76 @@ function (Xc, Xc.cond, select.colour = NULL, select.lwd = 3,
     par("mar"), usr = par("usr"), factorindex = factorindex, device = dev.cur(),
     screen = screen()), class = "xcplot")
 }
+
+plotxc.full <-
+function (Xc, Xc.cond, select.colour = NULL, select.lwd = 3,
+    cex.axis = NULL, cex.lab = NULL, tck = NULL, select.cex = 0.6, ...)
+{
+  select.colour <- if (is.null(select.colour))
+    "blue"
+  else select.colour
+  cex.axis <- if (identical(version$os, "linux-gnu"))
+    1
+  else if (is.null(cex.axis))
+      0.7
+    else cex.axis
+  cex.lab <- if (identical(version$os, "linux-gnu"))
+    1
+  else if (is.null(cex.lab))
+      0.8
+    else cex.lab
+  tck <- if (is.null(tck))
+    - 0.2
+  else tck
+  factorindex <- vapply(Xc, is.factor, logical(1))
+  Xc.num <- vapply(Xc, as.numeric, numeric(nrow(Xc)))
+  Xc.cond.num <- vapply(Xc.cond, as.numeric, numeric(1L))
+  close.screen(all.screens = TRUE)
+  scr <- split.screen(c(ncol(Xc) + 2, ncol(Xc) + 2))
+  scr2 <- as.vector(matrix(scr, ncol = ncol(Xc) + 2)[c(-1,
+    -(ncol(Xc) + 2)), c(-1, -(ncol(Xc) + 2))])
+  usr.matrix <- mar.matrix <- fig.matrix <- matrix(ncol = 4L, nrow = length(
+    scr2))
+  rows <- rep(1:ncol(Xc), each = ncol(Xc))
+  cols <- rep(1:ncol(Xc), ncol(Xc))
+  dev.hold()
+  for (i in seq_along(scr2)){
+    screen(scr2[i])
+    par(mar = c(0.1, 0.1, 0.1, 0.1))
+    par(mgp = c(3, 0.25, 0.15))
+    plot(Xc.num[,cols[i]], Xc.num[,rows[i]], cex = select.cex, xlab = "",
+      ylab = "", xaxt = "n", yaxt = "n", col = if (identical(
+      rows[i], cols[i])) NULL else "black")
+    if (!identical(rows[i], cols[i]))
+      abline(v = Xc.cond.num[cols[i]], h = Xc.cond.num[rows[i]],
+        col = select.colour, lwd = select.lwd)
+    if (identical(rows[i], 1L) & (2 * (round(cols[i] / 2)) == cols[i]))
+      axis(3, cex.axis = 0.7, tcl = -0.2)
+    if (identical(rows[i], ncol(Xc)) & !(2 * (round(cols[i] / 2)) == cols[i]))
+      axis(1, cex.axis = 0.7, tcl = -0.2)
+    if (identical(cols[i], 1L) & (2 * (round(rows[i] / 2)) == rows[i]))
+      axis(2, cex.axis = 0.7, tcl = -0.2)
+    if (identical(cols[i], ncol(Xc)) & !(2 * (round(rows[i] / 2)) == rows[i]))
+      axis(4, cex.axis = 0.7, tcl = -0.2)
+    if (identical(rows[i], cols[i]))
+      text(x = mean(range(Xc.num[,rows[i]])), y = mean(range(Xc.num[,cols[i]])),
+        labels = colnames(Xc.num)[rows[i]])
+    mar.matrix[i, ] <- par("mar")
+    usr.matrix[i, ] <- par("usr")
+    fig.matrix[i, ] <- par("fig")
+  }
+  #coords <- data.frame(t(vapply(scr2,
+  #  function(i) {
+  #    screen(i, new = F)
+  #    par("fig")
+  #  }, numeric(4))))
+  coords <- data.frame(fig.matrix)
+  names(coords) <- c("xleft", "xright", "ybottom", "ytop")
+  coords$xcplots.index <- scr2
+  dev.flush()
+  structure(list(Xc = Xc, Xc.cond = Xc.cond, Xc.num = Xc.num, Xc.cond.num = Xc.cond.num,
+    rows = rows, cols = cols, factorindex = factorindex, scr2 = scr2, coords = coords,
+    plot.type = "full", device = dev.cur(), select.colour = select.colour, select.lwd =
+    select.lwd, select.cex = select.cex, mar.matrix = mar.matrix, usr.matrix =
+    usr.matrix), class = "xcplot")
+}
