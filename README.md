@@ -12,7 +12,7 @@ Works on Windows, Mac OS and Linux.
 
 Requirements:  
   * Windows: the standard graphics device is sufficient.  
-  * Mac OS: Xquartz device, [website](http://www.xquartz.org/)  
+  * Mac OS: XQuartz device, [website](http://www.xquartz.org/)  
   * Linux: X11, included in some distributions.  
 
 Installation:
