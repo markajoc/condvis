@@ -205,7 +205,7 @@ function (object, xclick, yclick, xc.cond = NULL, ...)
     o <- (xclick > object$coords$xleft) & (xclick < object$coords$xright) &
       (yclick > object$coords$ybottom) & (yclick < object$coords$ytop)
     index <- which(o)
-    if (object$cols[index] == object$rows[index])
+    if (identical(object$cols[index], object$rows[index]))
       return(object)
     xname <- colnames(object$Xc)[object$cols[index]]
     yname <- colnames(object$Xc)[object$rows[index]]

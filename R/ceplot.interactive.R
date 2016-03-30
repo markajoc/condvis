@@ -119,6 +119,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   {
     function (buttons, x, y)
     {
+      if (0 %in% buttons){
       needupdate <- FALSE
       if (identical(select.type, "minimal")){
         plotindex <- which(apply(coords, 1, `%inrectangle%`, point = c(x, y)))
@@ -160,6 +161,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       }
       points(NULL)
     }
+  }
   }
   keystroke <- function ()
     {
