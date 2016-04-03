@@ -2,7 +2,7 @@ plotxs1 <-
 function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     model.lty = NULL, model.name = NULL, yhat = NULL, mar = NULL, data.colour =
     NULL, data.order = NULL, view3d = FALSE, theta3d = 45, phi3d = 20, xs.grid =
-    NULL, prednew = NULL, conf = FALSE, probs = FALSE)
+    NULL, prednew = NULL, conf = FALSE, probs = FALSE, pch = 1)
 {
     dev.hold()
     if (!(ncol(xs) %in% 1:2))
@@ -59,7 +59,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
 				      points.default((as.numeric(xs[data.order, 1L])) + rnorm(n =
                 length(data.order), sd = 0.1), (as.integer(y[data.order, 1L]) -
                 1) + rnorm(n = length(data.order), sd = 0.01), col =
-                data.colour[data.order])
+                data.colour[data.order], pch = pch[data.order])
             for (i in seq_along(model)){
               if ("glm" %in% class(model[[i]])){
                 points.default(xs.grid[, 1L], prednew[[i]], type = 'l', col =
@@ -84,7 +84,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
               axis(1, at = 1:nlevels(xs[, 1L]), labels = levels(xs[, 1L]))
             if (length(data.order) > 0)
               points(as.numeric(xs[data.order, 1L]), as.integer(y[data.order,
-                1L]), col = data.colour[data.order])
+                1L]), col = data.colour[data.order], pch = pch[data.order])
             for (i in seq_along(model)){
               points.default(as.numeric(xs.grid[, 1L]), as.integer(prednew[[i]])
               , type = 'l', col = model.colour[i], lwd = model.lwd[i], lty =
@@ -101,7 +101,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
             colnames(y)[1L], ylim = range(y[, 1L]))
           if (length(data.order) > 0)
             points(xs[data.order, 1L], y[data.order, 1L], col = data.colour[
-              data.order])
+              data.order], pch = pch[data.order])
           if (conf){
             prednew2 <- lapply(model, confpred, newdata = newdata)
             for (i in seq_along(model)){
@@ -137,7 +137,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
               1L])[2L]), ylim = c(0, 1))
             if (length(data.order) > 0)
 				      points.default(xs[data.order, 1L], as.integer(y[data.order, 1L]) -
-                1, col = data.colour[data.order])
+                1, col = data.colour[data.order], pch = pch[data.order])
             for (i in seq_along(model)){
               if ("glm" %in% class(model[[i]])){
                 points.default(xs.grid[, 1L], prednew[[i]], type = 'l', col =
@@ -161,7 +161,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
               axis(1, at = 1:nlevels(xs[, 1L]), labels = levels(xs[, 1L]))
             if (length(data.order) > 0)
               points(xs[data.order, 1L], as.integer(y[data.order, 1L]), col =
-                data.colour[data.order])
+                data.colour[data.order], pch = pch[data.order])
             for (i in seq_along(model)){
               points.default(as.numeric(xs.grid[, 1L]), as.integer(prednew[[i]])
                 , type = 'l', col = model.colour[i], lwd = model.lwd[i], lty =
@@ -178,7 +178,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
             y)[1L], ylim = range(y[, 1L]))
           if (length(data.order) > 0)
             points(xs[data.order, 1L], y[data.order, 1L], col = data.colour[
-              data.order])
+              data.order], pch = pch[data.order])
           if (conf){
             prednew2 <- lapply(model, confpred, newdata = newdata)
             for (i in seq_along(model)){
@@ -251,7 +251,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
         if (length(data.order) > 0)
           points(jitter(as.integer(xs[data.order, 1L]), amount = 0.6 * xoffset),
             jitter(as.integer(xs[data.order, 2L]), amount = 0.6 * yoffset), bg =
-            ybg, col = data.colour[data.order], pch = 21)
+            ybg, col = data.colour[data.order], pch = pch[data.order])
 		    axis(1L, at = unique(xrect), labels = levels(xs[, 1L]), tick = FALSE)
 			  axis(2L, at = unique(yrect), labels = levels(xs[, 2L]), tick = FALSE)
         if (is.factor(y[, 1L])){
@@ -280,7 +280,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
           if (length(data.order) > 0)
             points(jitter(xs[data.order, !arefactorsxs]), jitter(as.integer(xs[
               data.order, arefactorsxs])), bg = ybg, col = data.colour[
-              data.order], pch = 21)
+              data.order], pch = pch[data.order])
 			    axis(2L, at = unique(yrect), labels = levels(xs[, arefactorsxs]),
             tick = FALSE)
         } else {
@@ -316,7 +316,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                 xs.grid[, 2L] + yoffset, col = color, border = NA)
               if (length(data.order) > 0)
                 points(xs[data.order, , drop = FALSE], bg = ybg, col =
-                  data.colour[data.order], pch = 21)
+                  data.colour[data.order], pch = pch[data.order])
             }
           } else {
             # y is continuous
@@ -339,7 +339,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
               if (length(data.order) > 0){
                 points(trans3d(xs[data.order, 1L], xs[data.order, 2L], y[
                   data.order, 1L], pmat = persp.object), col = data.colour[
-                  data.order])
+                  data.order], pch = pch[data.order])
                 linestarts <- trans3d(xs[data.order, 1L], xs[data.order, 2L],
                   y[data.order, 1L], pmat = persp.object)
                 lineends <- trans3d(xs[data.order, 1L], xs[data.order, 2L],
@@ -358,7 +358,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                 2L] + yoffset, col = color, border = NA)
               if (length(data.order) > 0)
                 points(xs[data.order, , drop = FALSE], bg = ybg, col =
-                  data.colour[data.order], pch = 21)
+                  data.colour[data.order], pch = pch[data.order])
             }
           }
         }
@@ -372,5 +372,6 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
         theta3d = theta3d, usr = par("usr"), phi3d = phi3d, plot.type = if
         (exists("plot.type")) plot.type else NULL, screen = screen(), device =
         dev.cur(), xs.grid = xs.grid, newdata = newdata, prednew = prednew,
-        xs.grid = xs.grid, conf = conf, probs = probs), class = "xsplot")
+        xs.grid = xs.grid, conf = conf, probs = probs, pch = pch),
+        class = "xsplot")
 }

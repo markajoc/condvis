@@ -2,7 +2,8 @@ ceplot <-
 function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     distance = "euclidean", type = "default", cex.axis = NULL, cex.lab = NULL,
     tck = NULL, view3d = FALSE, Corder = "default", selectortype = "minimal",
-    conf = FALSE, select.colour = "blue", select.cex = 1, probs = FALSE)
+    conf = FALSE, select.colour = "blue", select.cex = 1, probs = FALSE, col =
+    "black", pch = NULL)
 {
     data <- na.omit(data)
     model <- if (!inherits(model, "list"))
@@ -58,20 +59,27 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         stop("cannot have 'response' variable in 'S'")
     if (!identical(length(intersect(S, uniqC)), 0L))
         stop("cannot have variables common to both 'S' and 'C'")
-
+    col <- rep(col, nrow(data))
+    pch <- if (is.null(pch)){
+      if (is.factor(data[, response]))
+        rep(21, nrow(data))
+      else rep(1, nrow(data))
+    } else rep(pch, nrow(data))
     if (identical(type, "default")){
         ceplot.interactive(data = data, model = model, response = response,
             S = S, C = C, sigma = sigma, distance = distance, cex.axis =
             cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder =
             Corder, conf = conf, separate = FALSE, select.colour =
-            select.colour, select.cex = select.cex, probs = probs)
-    } else if (identical(type, "separate") & identical(selectortype,
-        "minimal")){
+            select.colour, select.cex = select.cex, probs = probs, col = col,
+            pch = pch)
+    } else if (identical(type, "separate") && selectortype %in% c("minimal",
+      "pcp", "full")){
         ceplot.interactive(data = data, model = model, response = response,
             S = S, C = C, sigma = sigma, distance = distance, cex.axis =
             cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder =
             Corder, conf = conf, separate = TRUE, select.colour = select.colour,
-            select.cex = select.cex, probs = probs)
+            select.cex = select.cex, probs = probs, col = col, pch = pch,
+            select.type = selectortype)
     } else if (identical(type, "separate")){
         ceplot.separate(data = data, model = model, response = response, S = S,
             C = C, sigma = sigma, distance = distance, cex.axis = cex.axis,
