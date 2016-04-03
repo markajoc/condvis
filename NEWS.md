@@ -4,7 +4,7 @@ condvis: Conditional Visualisation for Statistical Models
 News
 -----------------------------------------------
 
-Version 0.2-2 01 Apr 2016
+Version 0.2-2 01 Apr 2016  
   * updated contributors for copied code  
   * added simple example to README  
 
