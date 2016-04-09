@@ -28,9 +28,9 @@ function (xc.cond, xc, sigma = NULL, distance = "euclidean", basicoutput =
     rownames(tmp) <- colnames(tmp) <- rownames(tmp.cond) <-
       colnames(tmp.cond) <- NULL
     factormatches <- if (any(arefactors)){
-# potentially faster implementation      
-      apply(tmp == matrix(tmp.cond, ncol = length(tmp.cond), nrow = nrow(tmp),
-        byrow = TRUE), 1L, all)
+# potentially faster implementation
+      rowSums(tmp == matrix(tmp.cond, ncol = length(tmp.cond), nrow = nrow(tmp),
+        byrow = TRUE)) == length(tmp.cond)
 #      apply(tmp, 1, identical, tmp.cond[1, ])
     } else rep(TRUE, nrow(xc))
     k <- rep(0, nrow(xc))
