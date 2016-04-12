@@ -10,7 +10,7 @@ function (xc.cond, xc, sigma = NULL, distance = "euclidean", basicoutput =
   sigma <- if (is.null(sigma))
     1
   else sigma
-  xc <- xc[, colnames(xc.cond), drop = FALSE]
+  xc.cond <- xc.cond[, colnames(xc), drop = FALSE]
   if (identical(distance, "daisy")){
     d <- daisy1(rbind(xc.cond, xc), stand = TRUE)
     k <- rep(0, nrow(xc))
