@@ -40,24 +40,15 @@ function (xc.cond, xc, sigma = NULL, distance = "euclidean", basicoutput =
       return(list(k = k, order = which(k == 1), sigma = sigma, distance =
         distance))
     }
-    if (identical(distance, "euclidean")){
+    if (any(c("euclidean", "maxnorm") %in% distance)){
       x.mean <- colMeans(xc.num)
       x.sd <- apply(xc.num, 2L, sd)
       x.scaled <- scale(xc.num)[factormatches, ]
       xcond.scaled <- (xc.cond.num - x.mean) / x.sd
-      d <- dist1(xcond.scaled, x.scaled, p = 2, inf = FALSE)
+      d <- dist1(xcond.scaled, x.scaled, inf = identical(distance, "maxnorm"))
       k[factormatches][d < (sigma ^ 2)] <- 0.4
       k[factormatches][d < ((0.6 * sigma) ^ 2)] <- 0.7
       k[factormatches][d < ((0.3 * sigma) ^ 2)] <- 1
-    } else if (identical(distance, "maxnorm")){
-      x.mean <- colMeans(xc.num)
-      x.sd <- apply(xc.num, 2L, sd)
-      x.scaled <- scale(xc.num)[factormatches, ]
-      xcond.scaled <- (xc.cond.num - x.mean) / x.sd
-      d <- dist1(xcond.scaled, x.scaled, inf = TRUE)
-      k[factormatches][d < sigma] <- 0.4
-      k[factormatches][d < (0.6 * sigma)] <- 0.7
-      k[factormatches][d < (0.3 * sigma)] <- 1
     } else stop("unrecognised distance type")
   }
   if (basicoutput)
