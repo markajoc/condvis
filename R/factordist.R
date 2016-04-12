@@ -1,6 +1,7 @@
 factormatchratio <-
 function(x, X)
 {
+  x <- as.matrix(x)
   X <- if (is.null(dim(X)))
     matrix(X, ncol = length(x))
   else as.matrix(X)
