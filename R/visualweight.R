@@ -46,9 +46,10 @@ function (xc.cond, xc, sigma = NULL, distance = "euclidean", basicoutput =
       x.scaled <- scale(xc.num)[factormatches, ]
       xcond.scaled <- (xc.cond.num - x.mean) / x.sd
       d <- dist1(xcond.scaled, x.scaled, inf = identical(distance, "maxnorm"))
-      k[factormatches][d < (sigma ^ 2)] <- 0.4
-      k[factormatches][d < ((0.6 * sigma) ^ 2)] <- 0.7
-      k[factormatches][d < ((0.3 * sigma) ^ 2)] <- 1
+      p <- if (identical(distance, "maxnorm")) 0 else 2
+      k[factormatches][d < (sigma ^ p)] <- 0.4
+      k[factormatches][d < ((0.6 * sigma) ^ p)] <- 0.7
+      k[factormatches][d < ((0.3 * sigma) ^ p)] <- 1
     } else stop("unrecognised distance type")
   }
   if (basicoutput)
