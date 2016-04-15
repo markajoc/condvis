@@ -7,8 +7,8 @@ visualweight2 <- function (xc)
   rm(xc)
   x.scaled <- scale(xc.num)
   k <- rep(0, nrow.xc)
-  function (xc.cond, sigma = 1, distance = "euclidean", basicoutput = FALSE, q =
-    NULL)
+  function (xc.cond, sigma = 1, distance = "euclidean", basicoutput = FALSE,
+    constant = NULL)
   {
     p <- if (identical(distance, "maxnorm")) 1 else 2
     xc.cond.factors <- data.matrix(xc.cond[, arefactors, drop = FALSE])
@@ -31,10 +31,12 @@ visualweight2 <- function (xc)
       xcond.scaled <- (xc.cond.num - attr(x.scaled, "scaled:center")) / attr(
         x.scaled, "scaled:scale")
       d <- dist1(xcond.scaled, x.scaled[factormatches, ], inf = identical(
-        distance, "maxnorm"))
-      k[factormatches][d < (sigma ^ p)] <- 0.4
-      k[factormatches][d < ((0.6 * sigma) ^ p)] <- 0.7
-      k[factormatches][d < ((0.3 * sigma) ^ p)] <- 1
+        distance, "maxnorm")) + nfactormatches[factormatches]
+      k[factormatches] <- c(1, 0.7, 0.4)[cut(d, c((0.3 * sigma) ^ p, (0.6 *
+        sigma) ^ p, (sigma) ^ p), labels = FALSE, include.lowest = TRUE)]
+      #k[factormatches][d < (sigma ^ p)] <- 0.4
+      #k[factormatches][d < ((0.6 * sigma) ^ p)] <- 0.7
+      #k[factormatches][d < ((0.3 * sigma) ^ p)] <- 1
     } else stop("unrecognised distance type")
     if (basicoutput)
       return(k)
