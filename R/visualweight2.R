@@ -1,10 +1,12 @@
 visualweight2 <- function (xc)
 {
+  nrow.xc <- nrow(xc)
   arefactors <- vapply(xc, is.factor, logical(1))
   xc.factors <- data.matrix(xc[, arefactors, drop = FALSE])
   xc.num <- data.matrix(xc[, !arefactors, drop = FALSE])
+  rm(xc)
   x.scaled <- scale(xc.num)
-  k <- rep(0, nrow(xc))
+  k <- rep(0, nrow.xc)
   function (xc.cond, sigma = 1, distance = "euclidean", basicoutput = FALSE, q =
     NULL)
   {
@@ -12,12 +14,13 @@ visualweight2 <- function (xc)
     xc.cond.factors <- data.matrix(xc.cond[, arefactors, drop = FALSE])
     xc.cond.num <- data.matrix(xc.cond[, !arefactors, drop = FALSE])
     factormatches <- if (any(arefactors)){
-      which({nfactormatches <- rowSums(xc.factors == matrix(xc.cond.factors,
-        ncol = length(xc.cond.factors), nrow = nrow(xc.factors), byrow = TRUE))}
+      which((nfactormatches <- rowSums(xc.factors == matrix(xc.cond.factors,
+        ncol = length(xc.cond.factors), nrow = nrow.xc, byrow = TRUE)))
         == length(xc.cond.factors))
-    } else {rep(TRUE, nrow(xc))}
+    } else {rep(TRUE, nrow.xc)}
+    rm(xc.factors)
     if (length(factormatches) < 1L)
-      return(list(k = rep(0, nrow(xc)), order = integer(0), sigma = sigma,
+      return(list(k = rep(0, nrow.xc), order = integer(0), sigma = sigma,
         distance = distance))
     if (all(arefactors)){
       k[factormatches] <- 1
