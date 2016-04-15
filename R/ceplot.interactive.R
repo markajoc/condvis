@@ -30,8 +30,10 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       xslegend(data[, response], response)
     }
     screen(xsscreens[1L])
-    vw <- visualweight(xc = data[, uniqC, drop = FALSE], xc.cond = xc.cond,
-      sigma = sigma, distance = distance)
+    vwfun <- visualweight2(xc = data[, uniqC, drop = FALSE])
+    vw <- vwfun(xc.cond = xc.cond, sigma = sigma, distance = distance)
+    #vw <- visualweight(xc = data[, uniqC, drop = FALSE], xc.cond = xc.cond,
+    #  sigma = sigma, distance = distance)
     newcol <- (col2rgb(col[vw$order]) * matrix(rep(vw$k[vw$order], 3), nrow = 3,
       byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3), nrow = 3, byrow
       = TRUE)
@@ -99,8 +101,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       xslegend(data[, response], response)
     }
     screen(xsscreens[1L])
-    vw <- visualweight(xc = data[, uniqC, drop = FALSE], xc.cond = xc.cond,
-      sigma = sigma, distance = distance)
+    vw <- vwfun(xc.cond = xc.cond, sigma = sigma, distance = distance)
     newcol <- (col2rgb(col[vw$order]) * matrix(rep(vw$k[vw$order], 3), nrow = 3,
       byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3), nrow = 3, byrow
       = TRUE)
@@ -140,8 +141,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         }
       }
       if (needupdate){
-        vw <<- visualweight(xc = data[, uniqC, drop = FALSE],xc.cond =
-          xc.cond, sigma = vw$sigma, distance = vw$distance)
+        vw <<- vwfun(xc.cond = xc.cond, sigma = vw$sigma, distance =
+          vw$distance)
         newcol <- (col2rgb(col[vw$order]) * matrix(rep(vw$k[vw$order], 3),
           nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3)
           , nrow = 3, byrow = TRUE)
@@ -180,8 +181,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       if (key %in% c(",", ".")){
         sigma <- vw$sigma + 0.01 * vw$sigma * (key == ".") - 0.01 * vw$sigma *
           (key == ",")
-        vw <<- visualweight(xc = data[, uniqC, drop = FALSE], xc.cond = xc.cond,
-          sigma = sigma, distance = vw$distance)
+        vw <<- vwfun(xc.cond = xc.cond, sigma = sigma, distance = vw$distance)
         newcol <- (col2rgb(col[vw$order]) * matrix(rep(vw$k[vw$order], 3), nrow
           = 3, byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3), nrow =
           3, byrow = TRUE)
