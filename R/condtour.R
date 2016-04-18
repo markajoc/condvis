@@ -131,7 +131,7 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
   selector.colwidth <- 2
   height <- 8
   width <- height + 0.5 * plotlegend
-  k <- matrix(ncol = nrow(data), nrow = nrow(path))
+  k <- matrix(0, ncol = nrow(data), nrow = nrow(path))
   vwfun <- visualweight2(xc = data[, colnames(path), drop = FALSE])
   for (i in 1: nrow(path)){
     k[i, ] <- vwfun(xc.cond = path[i, , drop = F], sigma = sigma, basicoutput =
