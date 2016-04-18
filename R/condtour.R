@@ -132,9 +132,10 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
   height <- 8
   width <- height + 0.5 * plotlegend
   k <- matrix(ncol = nrow(data), nrow = nrow(path))
+  vwfun <- visualweight2(xc = data[, colnames(path), drop = FALSE])
   for (i in 1: nrow(path)){
-    k[i, ] <- visualweight(xc.cond = path[i, , drop = F], xc = data[, colnames(
-      path), drop = FALSE], sigma = sigma, basicoutput = T)
+    k[i, ] <- vwfun(xc.cond = path[i, , drop = F], sigma = sigma, basicoutput =
+      TRUE)
   }
   opendev(width = width, height = height)
   devexp <- dev.cur()
