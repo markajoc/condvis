@@ -1,7 +1,7 @@
 condtour <-
 function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
   distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, view3d
-  = FALSE, conf = FALSE, select.colour = "blue")
+  = FALSE, conf = FALSE, select.colour = "blue", col = "black", pch = 1)
 {
   xold <- NULL
   yold <- NULL
@@ -115,6 +115,8 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
     " names from 'data'.")
   uniqC <- unique(unlist(C))
   C <- uniqC
+  col <- rep(col, length.out = nrow(data))
+  pch <- rep(pch, length.out = nrow(data))
   pathindex <- 1
   pathindexrange <- c(1, nrow(path))
   xc.cond <- path[pathindex, , drop = FALSE]
@@ -153,10 +155,24 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
   k.order <- order(k[pathindex, ])
   k.order.trimmed <- k.order[k[pathindex, ][k.order] > 0]
   par(mar = c(3, 3, 3, 3))
+
+
+  newcol <- (col2rgb(col[k.order.trimmed]) * matrix(rep(k[pathindex, ][
+    k.order.trimmed], 3), nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - k[
+    pathindex, ][k.order.trimmed], 3), nrow = 3, byrow = TRUE)
+  data.colour <- rep(NA, length(col))
+  data.colour[k.order.trimmed] <- rgb(newcol[1L, ], newcol[2L, ], newcol[3L, ])
+
+print(newcol)
+print(data.colour)
+print(k.order.trimmed)
+
   xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response, drop = FALSE]
-    , xc.cond = xc.cond, model = model, data.colour = rgb(1 - k[pathindex, ], 1
-    - k[pathindex, ], 1 - k[pathindex, ]), data.order = k.order.trimmed, view3d
-    = view3d, conf = conf)
+    , xc.cond = xc.cond, model = model, data.colour = data.colour, data.order =
+    k.order.trimmed, view3d = view3d, conf = conf)
+
+stop()
+
   xscoords <- par("fig")
   xcwidth <- selector.colwidth * n.selector.cols
   n.selector.rows <- ceiling(length(C) / n.selector.cols)
