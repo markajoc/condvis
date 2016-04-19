@@ -15,6 +15,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   selector.colwidth <- 2
   height <- 8
   col <- rep(col, length.out = nrow(data))
+  vwfun <- visualweight2(xc = data[, uniqC, drop = FALSE])
   if (separate){
     width <- height + 0.5 * plotlegend
     opendev(width = width, height = height)
@@ -30,7 +31,6 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       xslegend(data[, response], response)
     }
     screen(xsscreens[1L])
-    vwfun <- visualweight2(xc = data[, uniqC, drop = FALSE])
     vw <- vwfun(xc.cond = xc.cond, sigma = sigma, distance = distance)
     #vw <- visualweight(xc = data[, uniqC, drop = FALSE], xc.cond = xc.cond,
     #  sigma = sigma, distance = distance)
