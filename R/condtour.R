@@ -164,7 +164,7 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
   setGraphicsEventHandlers(
     onMouseMove = mousemove(),
     onKeybd = keystroke())
-  opendev(width = xcwidth, height = xcheight)
+  opendev(width = 4, height = 6)
   devdiag <- dev.cur()
   close.screen(all.screens = TRUE)
   diagscreens <- split.screen(c(2, 1))
