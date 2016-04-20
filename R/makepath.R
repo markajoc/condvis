@@ -29,6 +29,14 @@ function (Xc, ncentroids, ninterp = 4)
     d <- cluster::daisy(Xc)
     clustering <- cluster::pam(d, k = ncentroids)
     centers <- Xc[clustering$medoids, ]
+    if (!requireNamespace("DendSer", quietly = TRUE)){
+      warning("requires package 'DendSer' to order path, left unordered")
+    } else {
+      d.centers <- cluster::daisy(centers)
+      h <- hclust(d.centers)
+      o <- DendSer::DendSer(h, d.centers)
+      centers <- centers[o, ]
+    }
     path <- as.data.frame(lapply(centers, interp))
   } else {
     if (!requireNamespace("TSP", quietly = TRUE))
