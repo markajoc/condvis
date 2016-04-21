@@ -38,7 +38,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3), nrow = 3, byrow
       = TRUE)
     data.colour <- rep(NA, length(col))
-    data.colour[vw$order] <- rgb(newcol[1L, ], newcol[2L, ], newcol[3L, ])
+    data.colour[vw$order] <- rgb(t(newcol))
     par(mar = c(3, 3, 3, 3))
     xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response, drop =
       FALSE], xc.cond = xc.cond, model = model, data.colour = data.colour,
@@ -106,7 +106,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3), nrow = 3, byrow
       = TRUE)
     data.colour <- rep(NA, length(col))
-    data.colour[vw$order] <- rgb(newcol[1L, ], newcol[2L, ], newcol[3L, ])
+    data.colour[vw$order] <- rgb(t(newcol))
     par(mar = c(3, 3, 3, 3))
     xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response, drop =
       FALSE], xc.cond = xc.cond, model = model, data.colour = data.colour,
@@ -147,7 +147,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
           nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3)
           , nrow = 3, byrow = TRUE)
         data.colour <- rep(NA, length(col))
-        data.colour[vw$order] <- rgb(newcol[1L, ], newcol[2L, ], newcol[3L, ])
+        data.colour[vw$order] <- rgb(t(newcol))
         xsplot <<- update(xsplot, xc.cond = xc.cond, data.colour = data.colour
           , data.order = vw$order)
       }
@@ -186,7 +186,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
           = 3, byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3), nrow =
           3, byrow = TRUE)
         data.colour <- rep(NA, length(col))
-        data.colour[vw$order] <- rgb(newcol[1L, ], newcol[2L, ], newcol[3L, ])
+        data.colour[vw$order] <- rgb(t(newcol))
         xsplot <<- update(xsplot, data.colour = data.colour, data.order =
           vw$order, xs.grid = xsplot$xs.grid, newdata = xsplot$newdata, prednew
           = xsplot$prednew)
@@ -213,7 +213,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3),
             nrow = 3, byrow = TRUE)
           data.colour <- rep(NA, length(col))
-          data.colour[vw$order] <- rgb(newcol[1L, ], newcol[2L, ], newcol[3L, ])
+          data.colour[vw$order] <- rgb(t(newcol))
           plotxs1(xs = data[, S, drop = FALSE], data[, response, drop = FALSE],
             xc.cond = xc.cond, model = model, data.colour = data.colour,
             data.order = vw$order, view3d = xsplot$view3d, theta3d =
@@ -265,7 +265,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3),
             nrow = 3, byrow = TRUE)
           data.colour <- rep(NA, length(col))
-          data.colour[vw$order] <- rgb(newcol[1L, ], newcol[2L, ], newcol[3L, ])
+          data.colour[vw$order] <- rgb(t(newcol))
           plotxs1(xs = data[, S, drop = FALSE], data[, response, drop = FALSE],
             xc.cond = xc.cond, model = model, data.colour = data.colour,
             data.order = vw$order, view3d = xsplot$view3d, theta3d =

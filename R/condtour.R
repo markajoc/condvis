@@ -36,8 +36,7 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
           k.order.trimmed], 3), nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 -
           k[pathindex, ][k.order.trimmed], 3), nrow = 3, byrow = TRUE)
         data.colour <- rep(NA, length(col))
-        data.colour[k.order.trimmed] <- rgb(newcol[1L, ], newcol[2L, ], newcol[
-          3L, ])
+        data.colour[k.order.trimmed] <- rgb(t(newcol))
         xsplot <<- update(xsplot, xc.cond = xc.cond, data.colour = data.colour,
           data.order = k.order.trimmed)
         for (i in seq_along(C)){
@@ -73,7 +72,7 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
           k.order.trimmed], 3), nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - k[
           pathindex, ][k.order.trimmed], 3), nrow = 3, byrow = TRUE)
         data.colour <- rep(NA, length(col))
-        data.colour[k.order.trimmed] <- rgb(newcol[1L, ], newcol[2L, ], newcol[3L, ])
+        data.colour[k.order.trimmed] <- rgb(t(newcol))
         xsplot <<- update(xsplot, xc.cond = xc.cond, data.colour = data.colour,
           data.order = k.order.trimmed)
         for (i in seq_along(C)){
@@ -168,7 +167,7 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
     k.order.trimmed], 3), nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - k[
     pathindex, ][k.order.trimmed], 3), nrow = 3, byrow = TRUE)
   data.colour <- rep(NA, length(col))
-  data.colour[k.order.trimmed] <- rgb(newcol[1L, ], newcol[2L, ], newcol[3L, ])
+  data.colour[k.order.trimmed] <- rgb(t(newcol))
   xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response, drop = FALSE]
     , xc.cond = xc.cond, model = model, data.colour = data.colour, data.order =
     k.order.trimmed, view3d = view3d, conf = conf, pch = pch)
