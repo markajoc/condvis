@@ -1,5 +1,5 @@
 scale2unit <-
-function(x)
+function (x)
 {
   x <- as.numeric(x)
   mn <- min(x)
