@@ -14,6 +14,9 @@ visualweight2 <- function (xc)
     sigma <- if (is.null(sigma))
       1
     else sigma
+    constant <- if (is.null(constant))
+      10 * sigma
+    else sigma
     p <- if (identical(distance, "maxnorm")) 1 else 2
     xc.cond <- xc.cond[, colnames.xc, drop = FALSE]
     xc.cond.factors <- data.matrix(xc.cond[, arefactors, drop = FALSE])
@@ -35,7 +38,8 @@ visualweight2 <- function (xc)
       xcond.scaled <- (xc.cond.num - attr(x.scaled, "scaled:center")) / attr(
         x.scaled, "scaled:scale")
       d <- dist1(xcond.scaled, x.scaled[factormatches, ], inf = identical(
-        distance, "maxnorm")) #+ nfactormatches[factormatches]
+        distance, "maxnorm")) + if (any(arefactors)) constant * (sum(arefactors)
+        - nfactormatches[factormatches]) else 0
       #k[factormatches] <- c(1, 0.7, 0.4)[cut(d, c(0, (0.3 * sigma) ^ p, (0.6 *
       #  sigma) ^ p, sigma ^ p), labels = FALSE)]
       k[factormatches][d < (sigma ^ p)] <- 0.4
