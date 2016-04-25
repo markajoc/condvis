@@ -33,7 +33,7 @@ function (Xc, ncentroids, ninterp = 4)
       warning("requires package 'DendSer' to order path, left unordered")
     } else {
       d.centers <- cluster::daisy(centers)
-      h <- hclust(d.centers)
+      h <- hclust(d.centers, method = "single")
       o <- DendSer::DendSer(h, d.centers)
       centers <- centers[o, ]
     }
