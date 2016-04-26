@@ -5,8 +5,8 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     NULL, prednew = NULL, conf = FALSE, probs = FALSE, pch = 1)
 {
     dev.hold()
-    if (!(ncol(xs) %in% 1:2))
-      stop("xs must be a dataframe with 1 or 2 columns")
+    #if (!(ncol(xs) %in% 1:2))
+    #  stop("xs must be a dataframe with 1 or 2 columns")
     if (ncol(y) != 1)
       stop("y must be a dataframe with 1 column")
     model <- if (!is.list(model))
@@ -27,12 +27,28 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
       names(model)
     else seq_along(model)
     data.order <- if (is.null(data.order))
-      1:nrow(xs)
+      1:nrow(y)
     else data.order
     data.colour <- if (is.null(data.colour))
       rep("gray", length(data.order))
     else data.colour
     par(mar = c(5, 4, 3, 2))
+
+
+
+    if (is.null(xs)){
+      if (is.null(prednew)){
+        newdata <- xc.cond
+        prednew <- lapply(model, predict1, newdata = newdata, ylevels = if (
+          nlevels(y[, 1L]) > 2) levels(y[, 1L]) else NULL)
+        }
+      o <- hist(y[data.order, 1L], plot = FALSE)
+      a1 <- hist(y[, 1L], plot = FALSE)
+      abline(v = unlist(prednew), col = model.colour)
+
+
+
+    } else {
     if (identical(ncol(xs), 1L)){
       # xs has one column
       if (is.null(xs.grid)){
@@ -363,6 +379,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
           }
         }
       }
+    }
     }
     dev.flush()
     structure(list(xs = xs, y = y, xc.cond = xc.cond, model = model,
