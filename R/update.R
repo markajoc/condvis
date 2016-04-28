@@ -591,3 +591,53 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
     return(object)
   }
 }
+
+update.xsresplot <-
+function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
+  view3d = NULL, theta3d = NULL, phi3d = NULL, xs.grid = NULL, prednew = NULL,
+  ...)
+{
+  if (dev.cur() != object$device)
+    dev.set(object$device)
+  par(bg = "white")
+  screen(n = object$screen, new = FALSE)
+  view3d <- if (!is.null(view3d))
+    view3d
+  else object$view3d
+  par(usr = object$usr)
+  par(mar = object$mar)
+  xc.cond <- if (!is.null(xc.cond))
+    xc.cond
+  else object$xc.cond
+  data.colour <- if (!is.null(data.colour))
+    data.colour
+  else object$data.colour
+  data.order <- if (!is.null(data.order))
+    data.order
+  else object$data.order
+  theta3d <- if (!is.null(theta3d))
+    theta3d
+  else object$theta3d
+  phi3d <- if (!is.null(phi3d))
+    phi3d
+  else object$phi3d
+  conf <- object$conf
+
+  if (object$plot.type %in% c("cc")){
+    screen(n = object$screen, new = FALSE)
+    dev.hold()
+    rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col =
+      "white", border = NA)
+    box()
+    abline(h = 0, lty = 3)
+    if (length(data.order) > 0){
+      for (i in 1){
+        points(object$xs[data.order, 1L], object$residuals[[i]][data.order], col
+          = data.colour[data.order], pch = object$pch[data.order])
+      }
+    }
+  }
+  dev.flush()
+  object$xc.cond <- xc.cond
+  return(object)
+}

@@ -34,7 +34,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     else data.colour
     pch <- if (is.null(pch))
       rep(1, length(data.order))
-    else rep(pch, length(data.order))  
+    else rep(pch, length(data.order))
     yhat <- if (is.null(yhat))
       lapply(model, predict1, ylevels = NULL)
     else yhat
@@ -196,5 +196,5 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
       usr = par("usr"), phi3d = phi3d, plot.type = if (exists("plot.type"))
       plot.type else NULL, screen = screen(), device = dev.cur(), xs.grid =
       xs.grid,  prednew = prednew, xs.grid = xs.grid, conf =
-      conf, probs = probs, pch = pch), class = "xsresplot")
+      conf, probs = probs, pch = pch, residuals = residuals), class = "xsresplot")
 }
