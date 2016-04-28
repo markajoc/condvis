@@ -56,7 +56,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
           # y is continuous
           plot.type <- "cf"
           plot(unique(xs[, 1L]), rep(-888, length(levels(xs[, 1L]))), col = NULL
-            , main = "Conditional expectation", xlab = colnames(xs)[1L], ylab =
+            , main = "Conditional residualstation", xlab = colnames(xs)[1L], ylab =
             colnames(y)[1L], ylim = resrange)
           abline(h = 0, lty = 3)
           if (length(data.order) > 0){
@@ -77,7 +77,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
           # y is continuous
           plot.type <- "cc"
           plot(range(xs[, 1L]), range(y[, 1L]), col = NULL, main =
-            "Conditional expectation", xlab = colnames(xs)[1L], ylab = colnames(
+            "Conditional residuals", xlab = colnames(xs)[1L], ylab = colnames(
             y)[1L], ylim = resrange)
           abline(h = 0, lty = 3)
           if (length(data.order) > 0){
@@ -102,7 +102,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
 			  plot(xrect, yrect, col = NULL, xlab = colnames(xs)[1L], ylab = colnames(
           xs)[2L], xlim = c(min(xrect) - xoffset, max(xrect) + xoffset), xaxt =
           "n", bty = "n", ylim = c(min(yrect) - yoffset, max(yrect) + yoffset),
-          yaxt = "n", main = "Conditional expectation")
+          yaxt = "n", main = "Conditional residuals")
 			  rect(xleft = xrect - xoffset, xright = xrect + xoffset, ybottom = yrect
           - yoffset, ytop = yrect + yoffset, col = color)
         if (length(data.order) > 0)
@@ -130,7 +130,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
 			    yoffset <- abs(diff(unique(yrect)[1:2])) / 2.1
 		      plot(0, 0, col = NULL, xlab = colnames(xs)[!arefactorsxs], ylab =
             colnames(xs)[arefactorsxs], xlim = c(min(xrect) - xoffset, max(xrect
-            ) + xoffset), bty = "n", main = "Conditional expectation", ylim =
+            ) + xoffset), bty = "n", main = "Conditional residuals", ylim =
             c(min(yrect) - yoffset, max(yrect) + yoffset), yaxt = "n")
 		      rect(xleft = xrect - xoffset, xright = xrect + xoffset, ybottom =
             yrect - yoffset, ytop = yrect + yoffset, col = color, border = NA)
