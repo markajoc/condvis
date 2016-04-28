@@ -32,25 +32,18 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     data.colour <- if (is.null(data.colour))
       rep("gray", length(data.order))
     else data.colour
+    pch <- if (is.null(pch))
+      rep(1, length(data.order))
+    else rep(pch, length(data.order))  
     yhat <- if (is.null(yhat))
       lapply(model, predict1, ylevels = NULL)
     else yhat
     par(mar = c(5, 4, 3, 2))
-
-
-
+    residuals <- lapply(yhat, function(x) y[, 1L] - x)
+    resrange <- range(unlist(lapply(residuals, range)))
     if (is.null(xs)){
-      if (is.null(prednew)){
-        newdata <- xc.cond
-        prednew <- lapply(model, predict1, newdata = newdata, ylevels = if (
-          nlevels(y[, 1L]) > 2) levels(y[, 1L]) else NULL)
-        }
       o <- hist(y[data.order, 1L], plot = FALSE)
       a1 <- hist(y[, 1L], plot = FALSE)
-      abline(v = unlist(prednew), col = model.colour)
-
-
-
     } else {
     if (identical(ncol(xs), 1L)){
       # xs has one column
@@ -64,14 +57,14 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
           plot.type <- "cf"
           plot(unique(xs[, 1L]), rep(-888, length(levels(xs[, 1L]))), col = NULL
             , main = "Conditional expectation", xlab = colnames(xs)[1L], ylab =
-            colnames(y)[1L], ylim = range(y[, 1L]))
-          if (length(data.order) > 0)
-            points(xs[data.order, 1L], y[data.order, 1L], col = data.colour[
-              data.order], pch = pch[data.order])
-          for (i in seq_along(model)){
-            points.default(xs.grid[, 1L], prednew[[i]], type = 'l', col =
-              model.colour[i], lwd = model.lwd[i], lty =  model.lty[i])
+            colnames(y)[1L], ylim = resrange)
+          abline(h = 0, lty = 3)
+          if (length(data.order) > 0){
+            for (i in 1){
+              points(xs[data.order, 1L], residuals[[i]][data.order], col =
+                data.colour[data.order], pch = pch[data.order])
             }
+          }
           #legend("topright", legend = model.name, col = model.colour, lwd =
           #  model.lwd, lty = model.lty)
         }
@@ -85,19 +78,16 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
           plot.type <- "cc"
           plot(range(xs[, 1L]), range(y[, 1L]), col = NULL, main =
             "Conditional expectation", xlab = colnames(xs)[1L], ylab = colnames(
-            y)[1L], ylim = range(y[, 1L]))
-          if (length(data.order) > 0)
-            points(xs[data.order, 1L], y[data.order, 1L], col = data.colour[
-              data.order], pch = pch[data.order])
-            for (i in seq_along(model)){
-              points.default(xs.grid[, 1L], prednew[[i]], type = 'l', col =
-                model.colour[i], lwd = model.lwd[i], lty = model.lty[i])
+            y)[1L], ylim = resrange)
+          abline(h = 0, lty = 3)
+          if (length(data.order) > 0){
+            for (i in 1){
+              points(xs[data.order, 1L], residuals[[i]][data.order], col =
+                data.colour[data.order], pch = pch[data.order])
             }
-          pos <- if (cor(xs, y) < 0)
-            "topright"
-          else "bottomright"
-          legend(pos, legend = model.name, col = model.colour, lwd = model.lwd,
-            lty = model.lty)
+          }
+          #legend("topright", legend = model.name, col = model.colour, lwd = model.lwd,
+          #  lty = model.lty)
         }
       }
     } else {
@@ -205,6 +195,6 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
       data.colour, data.order = data.order, view3d = view3d, theta3d = theta3d,
       usr = par("usr"), phi3d = phi3d, plot.type = if (exists("plot.type"))
       plot.type else NULL, screen = screen(), device = dev.cur(), xs.grid =
-      xs.grid, newdata = newdata, prednew = prednew, xs.grid = xs.grid, conf =
+      xs.grid,  prednew = prednew, xs.grid = xs.grid, conf =
       conf, probs = probs, pch = pch), class = "xsresplot")
 }
