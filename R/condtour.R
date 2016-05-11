@@ -29,7 +29,7 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
         pathindex <<- max(min(pathindex + 1, max(pathindexrange)), min(
           pathindexrange))
         applot <<- update(applot, pathindex = pathindex)
-        xc.cond <- path[pathindex, , drop = FALSE]
+        xc.cond[, colnames(path)] <- path[pathindex, , drop = FALSE]
         k.order <- order(k[pathindex, ])
         k.order.trimmed <- k.order[k[pathindex, ][k.order] > 0]
         newcol <- (col2rgb(col[k.order.trimmed]) * matrix(rep(k[pathindex, ][
@@ -65,7 +65,7 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
         pathindex <<- max(min(pathindex + 1 * (key == "]") - 1 * (key == "["),
           max(pathindexrange)), min(pathindexrange))
         applot <<- update(applot, pathindex = pathindex)
-        xc.cond <- path[pathindex, , drop = FALSE]
+        xc.cond[, colnames(path)] <- path[pathindex, , drop = FALSE]
         k.order <- order(k[pathindex, ])
         k.order.trimmed <- k.order[k[pathindex, ][k.order] > 0]
         newcol <- (col2rgb(col[k.order.trimmed]) * matrix(rep(k[pathindex, ][
@@ -110,6 +110,7 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
     if (class(varnamestry) != "try-error"){
       possibleC <- unique(unlist(lapply(lapply(model, getvarnames), `[[`, 2)))
       possibleC <- possibleC[possibleC %in% colnames(data)]
+message("Arranging C variables...")
       C <- arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])],
         drop = FALSE])
     }
@@ -127,7 +128,8 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
   pch <- rep(pch, length.out = nrow(data))
   pathindex <- 1
   pathindexrange <- c(1, nrow(path))
-  xc.cond <- path[pathindex, , drop = FALSE]
+  xc.cond <- data[, setdiff(colnames(data), c(S, response))]
+  xc.cond[, colnames(path)] <- path[pathindex, , drop = FALSE]
   if (any(response %in% uniqC))
     stop("cannot have 'response' variable in 'C'")
   if (any(response %in% S))
@@ -142,7 +144,9 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
   height <- 8
   width <- height + 0.5 * plotlegend
   k <- matrix(0, ncol = nrow(data), nrow = nrow(path))
+message("Creating visual weight function...")
   vwfun <- visualweight2(xc = data[, colnames(path), drop = FALSE])
+message("Calculating visual weight along path...")
   for (i in 1: nrow(path)){
     k[i, ] <- vwfun(xc.cond = path[i, , drop = FALSE], sigma = sigma,
       basicoutput = TRUE)
