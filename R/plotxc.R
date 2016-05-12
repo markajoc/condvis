@@ -28,7 +28,11 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
     par(mgp = c(1.5, 0.5, 0))
     if (is.vector(xc) | is.factor(xc)){
         if (!is.factor(xc)){
-            histmp <- hist(xc, xlab = name, ylab = "", main = "", cex.axis =
+          if (diff(range(xc, na.rm = TRUE)) / diff(range(xcnew <- xc[findInterval(xc, quantile(xc,
+            c(0.025, 0.975), na.rm = TRUE)) == 1], na.rm = TRUE)) > 3){
+            xc <- xcnew
+          }
+          histmp <- hist(xc, xlab = name, ylab = "", main = "", cex.axis =
                 cex.axis, cex.lab = cex.lab, tcl = tck, mgp = c(1.5, 0.5, 0.1))
             lines(x = rep(xc.cond, 2L), y = c(0, max(histmp$counts)), col =
                 select.colour, lwd = select.lwd)
