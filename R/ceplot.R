@@ -3,7 +3,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     distance = "euclidean", type = "default", cex.axis = NULL, cex.lab = NULL,
     tck = NULL, view3d = FALSE, Corder = "default", selectortype = "minimal",
     conf = FALSE, select.colour = "blue", select.cex = 1, probs = FALSE, col =
-    "black", pch = NULL)
+    "black", pch = NULL, residuals = FALSE)
 {
     data <- na.omit(data)
     model <- if (!inherits(model, "list"))
@@ -71,7 +71,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder =
             Corder, conf = conf, separate = FALSE, select.colour =
             select.colour, select.cex = select.cex, probs = probs, col = col,
-            pch = pch)
+            pch = pch, residuals = residuals)
     } else if (identical(type, "separate") && selectortype %in% c("minimal",
       "pcp", "full")){
         ceplot.interactive(data = data, model = model, response = response,
@@ -79,13 +79,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder =
             Corder, conf = conf, separate = TRUE, select.colour = select.colour,
             select.cex = select.cex, probs = probs, col = col, pch = pch,
-            select.type = selectortype)
-    } else if (identical(type, "separate")){
-        ceplot.separate(data = data, model = model, response = response, S = S,
-            C = C, sigma = sigma, distance = distance, cex.axis = cex.axis,
-            cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = Corder,
-            selectortype = selectortype, select.colour = select.colour,
-            select.cex = select.cex)
+            select.type = selectortype, residuals = residuals)
     } else if (identical(type, "shiny")){
         ceplot.shiny(data = data, model = model, response = response, S = S,
             C = C, cex.axis = cex.axis, cex.lab = cex.lab, tck = tck,

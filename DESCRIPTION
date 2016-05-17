@@ -22,6 +22,5 @@ Description: Exploring fitted model structures by interactively taking 2-D and
 License: GPL (>= 2)
 LazyData: false
 Imports: graphics, grDevices, stats, utils, MASS
-NeedsCompilation: yes
 BugReports: https://github.com/markajoc/condvis/issues
 URL: https://github.com/markajoc/condvis

@@ -3,11 +3,11 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, view3d =
   FALSE, Corder = "default", conf = FALSE, separate = TRUE, select.colour =
   "blue", select.cex = 1, select.lwd = 2, select.type = "minimal", probs = FALSE
-  , col = "black", pch = 1)
+  , col = "black", pch = 1, residuals = FALSE)
 {
   uniqC <- unique(unlist(C))
-  xc.cond <- data.frame(lapply(data[, !colnames(data) %in% c(S, response)],
-    mode1))
+  xc.cond <- data[1, !colnames(data) %in% c(S, response)] #data.frame(lapply(data[, !colnames(data) %in% c(S, response)],
+  #  mode1))
   xcplots <- list()
   coords <- matrix(ncol = 4L, nrow = length(C))
   plotlegend <- length(S) == 2
@@ -40,10 +40,17 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     data.colour <- rep(NA, length(col))
     data.colour[vw$order] <- rgb(t(newcol))
     par(mar = c(3, 3, 3, 3))
-    xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response, drop =
-      FALSE], xc.cond = xc.cond, model = model, data.colour = data.colour,
-      data.order = vw$order, view3d = view3d, conf = conf, probs = probs, pch =
-      pch)
+    if (residuals){
+      xsplot <- plotxsres(xs = data[, S, drop = FALSE], data[, response, drop =
+        FALSE], xc.cond = xc.cond, model = model, data.colour = data.colour,
+        data.order = vw$order, view3d = view3d, conf = conf, probs = probs, pch =
+        pch)
+    } else {
+      xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response, drop =
+        FALSE], xc.cond = xc.cond, model = model, data.colour = data.colour,
+        data.order = vw$order, view3d = view3d, conf = conf, probs = probs, pch =
+        pch)
+    }
     xscoords <- par("fig")
     if (identical(select.type, "minimal")){
       xcwidth <- selector.colwidth * n.selector.cols
@@ -108,10 +115,16 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     data.colour <- rep(NA, length(col))
     data.colour[vw$order] <- rgb(t(newcol))
     par(mar = c(3, 3, 3, 3))
+    if (residuals){
+      xsplot <- plotxsres(xs = data[, S, drop = FALSE], data[, response, drop =
+        FALSE], xc.cond = xc.cond, model = model, data.colour = data.colour,
+        data.order = vw$order, view3d = view3d, conf = conf, probs = probs, pch =
+        pch)    } else {
     xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response, drop =
       FALSE], xc.cond = xc.cond, model = model, data.colour = data.colour,
       data.order = vw$order, view3d = view3d, conf = conf, probs = probs, pch =
       pch)
+    }
     xscoords <- par("fig")
     xold <- NULL
     yold <- NULL
@@ -214,11 +227,19 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             nrow = 3, byrow = TRUE)
           data.colour <- rep(NA, length(col))
           data.colour[vw$order] <- rgb(t(newcol))
-          plotxs1(xs = data[, S, drop = FALSE], data[, response, drop = FALSE],
-            xc.cond = xc.cond, model = model, data.colour = data.colour,
-            data.order = vw$order, view3d = xsplot$view3d, theta3d =
-            xsplot$theta3d, phi3d = xsplot$phi3d, conf = conf, probs = probs,
-            pch = pch)
+          if (residuals){
+            plotxsres(xs = data[, S, drop = FALSE], data[, response, drop = FALSE],
+              xc.cond = xc.cond, model = model, data.colour = data.colour,
+              data.order = vw$order, view3d = xsplot$view3d, theta3d =
+              xsplot$theta3d, phi3d = xsplot$phi3d, conf = conf, probs = probs,
+              pch = pch)
+          } else {
+            plotxs1(xs = data[, S, drop = FALSE], data[, response, drop = FALSE],
+              xc.cond = xc.cond, model = model, data.colour = data.colour,
+              data.order = vw$order, view3d = xsplot$view3d, theta3d =
+              xsplot$theta3d, phi3d = xsplot$phi3d, conf = conf, probs = probs,
+              pch = pch)
+          }
           dev.off()
           cat(paste("\nSnapshot saved: '", filename[1L],"'", sep = ""))
           dev.set(devcond)
@@ -266,11 +287,19 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             nrow = 3, byrow = TRUE)
           data.colour <- rep(NA, length(col))
           data.colour[vw$order] <- rgb(t(newcol))
-          plotxs1(xs = data[, S, drop = FALSE], data[, response, drop = FALSE],
-            xc.cond = xc.cond, model = model, data.colour = data.colour,
-            data.order = vw$order, view3d = xsplot$view3d, theta3d =
-            xsplot$theta3d, phi3d = xsplot$phi3d, conf = conf, probs = probs,
-            pch = 1)
+          if (residuals){
+            plotxsres(xs = data[, S, drop = FALSE], data[, response, drop = FALSE],
+              xc.cond = xc.cond, model = model, data.colour = data.colour,
+              data.order = vw$order, view3d = xsplot$view3d, theta3d =
+              xsplot$theta3d, phi3d = xsplot$phi3d, conf = conf, probs = probs,
+              pch = 1)
+          } else {
+            plotxs1(xs = data[, S, drop = FALSE], data[, response, drop = FALSE],
+              xc.cond = xc.cond, model = model, data.colour = data.colour,
+              data.order = vw$order, view3d = xsplot$view3d, theta3d =
+              xsplot$theta3d, phi3d = xsplot$phi3d, conf = conf, probs = probs,
+              pch = 1)
+          }
           dev.off()
           cat(paste("\nSnapshot saved: '", filename,"'\n", sep = ""))
         }

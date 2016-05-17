@@ -1,4 +1,3 @@
-useDynLib(condvis, .registration=TRUE)
 export(arrangeC, ceplot, cont2color, factor2color, dist1, plotxc, plotxs,
     savingby2d, visualweight, update.xcplot, update.xsplot, condtour, makepath)
 import(graphics, grDevices, stats)

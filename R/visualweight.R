@@ -12,13 +12,6 @@ function (xc.cond, xc, sigma = NULL, distance = "euclidean", basicoutput =
   else sigma
   p <- if (identical(distance, "maxnorm")) 1 else 2
   xc.cond <- xc.cond[, colnames(xc), drop = FALSE]
-  if (identical(distance, "daisy")){
-    d <- daisy1(rbind(xc.cond, xc), stand = TRUE)
-    k <- rep(0, nrow(xc))
-    k[d < sigma] <- 0.4
-    k[d < (0.6 * sigma)] <- 0.7
-    k[d < (0.3 * sigma)] <- 1
-  } else {
     arefactors <- vapply(xc, is.factor, logical(1))
     xc.factors <- as.matrix(xc[, arefactors, drop = FALSE])
     xc.cond.factors <- as.matrix(xc.cond[, arefactors, drop = FALSE])
@@ -56,7 +49,6 @@ function (xc.cond, xc, sigma = NULL, distance = "euclidean", basicoutput =
       k[factormatches][d < ((0.6 * sigma) ^ p)] <- 0.7
       k[factormatches][d < ((0.3 * sigma) ^ p)] <- 1
     } else stop("unrecognised distance type")
-  }
   if (basicoutput)
     return(k)
   else {
