@@ -9,10 +9,6 @@ Authors@R: c(
   person("Catherine", "Hurley", role = "ths"),
   person("Katarina", "Domijan", role = "ths"),
   person("Achim", "Zeileis", role = "ctb"),
-  person("Anja", "Struyf", role = "ctb"),
-  person("Mia", "Hubert", role = "ctb"),
-  person("Peter", "Rousseeuw", role = "ctb"),
-  person("Martin", "Maechler", role = "ctb"),
   person("R Core Team", role = "ctb") )
 Depends:  R (>= 2.1.0)
 Suggests: RColorBrewer, shiny, scagnostics, cluster, hdrcde, gplots, TSP,
