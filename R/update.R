@@ -264,9 +264,8 @@ function (object, xclick, yclick, xc.cond = NULL, ...)
 }
 
 update.xsplot <-
-function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
-  view3d = NULL, theta3d = NULL, phi3d = NULL, xs.grid = NULL, prednew = NULL,
-  ...)
+function (object, xc.cond = NULL, weights = NULL, view3d = NULL, theta3d = NULL,
+  phi3d = NULL, xs.grid = NULL, prednew = NULL, ...)
 {
   if (dev.cur() != object$device)
     dev.set(object$device)
@@ -280,12 +279,20 @@ function (object, xc.cond = NULL, data.colour = NULL, data.order = NULL,
   xc.cond <- if (!is.null(xc.cond))
     xc.cond
   else object$xc.cond
-  data.colour <- if (!is.null(data.colour))
-    data.colour
-  else object$data.colour
-  data.order <- if (!is.null(data.order))
-    data.order
-  else object$data.order
+  if (is.null(weights)){
+    data.order <- object$data.order
+    data.colour <- object$data.colour
+  } else {
+    if (!identical(length(weights), nrow(object$y)))
+      stop("'weights' should be of length equal to number of observations")
+    weightsgr0 <- which(weights > 0)
+    data.order <- weightsgr0[order(weights[weightsgr0])]
+    newcol <- (col2rgb(object$col[data.order]) * matrix(rep(weights[data.order], 3),
+      nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - weights[data.order], 3),
+      nrow = 3, byrow = TRUE)
+    data.colour <- rep(NA, object$ny)
+    data.colour[data.order] <- rgb(t(newcol))
+  }
   theta3d <- if (!is.null(theta3d))
     theta3d
   else object$theta3d

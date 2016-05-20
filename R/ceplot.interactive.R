@@ -6,8 +6,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   , col = "black", pch = 1, residuals = FALSE)
 {
   uniqC <- unique(unlist(C))
-  xc.cond <- data[1, !colnames(data) %in% c(S, response)] #data.frame(lapply(data[, !colnames(data) %in% c(S, response)],
-  #  mode1))
+  xc.cond <- data[1, !colnames(data) %in% c(S, response)]
+  #data.frame(lapply(data[, !colnames(data) %in% c(S, response)], mode1))
   xcplots <- list()
   coords <- matrix(ncol = 4L, nrow = length(C))
   plotlegend <- length(S) == 2
@@ -32,24 +32,15 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     }
     screen(xsscreens[1L])
     vw <- vwfun(xc.cond = xc.cond, sigma = sigma, distance = distance)
-    #vw <- visualweight(xc = data[, uniqC, drop = FALSE], xc.cond = xc.cond,
-    #  sigma = sigma, distance = distance)
-    newcol <- (col2rgb(col[vw$order]) * matrix(rep(vw$k[vw$order], 3), nrow = 3,
-      byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3), nrow = 3, byrow
-      = TRUE)
-    data.colour <- rep(NA, length(col))
-    data.colour[vw$order] <- rgb(t(newcol))
     par(mar = c(3, 3, 3, 3))
     if (residuals){
       xsplot <- plotxsres(xs = data[, S, drop = FALSE], data[, response, drop =
-        FALSE], xc.cond = xc.cond, model = model, data.colour = data.colour,
-        data.order = vw$order, view3d = view3d, conf = conf, probs = probs, pch =
-        pch)
+        FALSE], xc.cond = xc.cond, model = model, col = col, weights = vw$k,
+        view3d = view3d, conf = conf, probs = probs, pch = pch)
     } else {
       xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response, drop =
-        FALSE], xc.cond = xc.cond, model = model, data.colour = data.colour,
-        data.order = vw$order, view3d = view3d, conf = conf, probs = probs, pch =
-        pch)
+        FALSE], xc.cond = xc.cond, model = model, col = col, weights = vw$k,
+        view3d = view3d, conf = conf, probs = probs, pch = pch)
     }
     xscoords <- par("fig")
     if (identical(select.type, "minimal")){
@@ -109,21 +100,15 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     }
     screen(xsscreens[1L])
     vw <- vwfun(xc.cond = xc.cond, sigma = sigma, distance = distance)
-    newcol <- (col2rgb(col[vw$order]) * matrix(rep(vw$k[vw$order], 3), nrow = 3,
-      byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3), nrow = 3, byrow
-      = TRUE)
-    data.colour <- rep(NA, length(col))
-    data.colour[vw$order] <- rgb(t(newcol))
     par(mar = c(3, 3, 3, 3))
     if (residuals){
       xsplot <- plotxsres(xs = data[, S, drop = FALSE], data[, response, drop =
-        FALSE], xc.cond = xc.cond, model = model, data.colour = data.colour,
-        data.order = vw$order, view3d = view3d, conf = conf, probs = probs, pch =
-        pch)    } else {
-    xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response, drop =
-      FALSE], xc.cond = xc.cond, model = model, data.colour = data.colour,
-      data.order = vw$order, view3d = view3d, conf = conf, probs = probs, pch =
-      pch)
+        FALSE], xc.cond = xc.cond, model = model, col = col, weights = vw$k,
+        view3d = view3d, conf = conf, probs = probs, pch = pch)
+    } else {
+      xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response, drop =
+        FALSE], xc.cond = xc.cond, model = model, col = col, weights = vw$k,
+        view3d = view3d, conf = conf, probs = probs, pch = pch)
     }
     xscoords <- par("fig")
     xold <- NULL
@@ -156,13 +141,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       if (needupdate){
         vw <<- vwfun(xc.cond = xc.cond, sigma = vw$sigma, distance =
           vw$distance)
-        newcol <- (col2rgb(col[vw$order]) * matrix(rep(vw$k[vw$order], 3),
-          nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3)
-          , nrow = 3, byrow = TRUE)
-        data.colour <- rep(NA, length(col))
-        data.colour[vw$order] <- rgb(t(newcol))
-        xsplot <<- update(xsplot, xc.cond = xc.cond, data.colour = data.colour
-          , data.order = vw$order)
+        xsplot <<- update(xsplot, xc.cond = xc.cond, weights = vw$k)
       }
       if (all(!separate, findInterval(x, xscoords[1:2]) == 1, identical(
         xsplot$plot.type, "ccc"), xsplot$view3d, 0 %in% buttons)){
@@ -195,14 +174,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         sigma <- vw$sigma + 0.01 * vw$sigma * (key == ".") - 0.01 * vw$sigma *
           (key == ",")
         vw <<- vwfun(xc.cond = xc.cond, sigma = sigma, distance = vw$distance)
-        newcol <- (col2rgb(col[vw$order]) * matrix(rep(vw$k[vw$order], 3), nrow
-          = 3, byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3), nrow =
-          3, byrow = TRUE)
-        data.colour <- rep(NA, length(col))
-        data.colour[vw$order] <- rgb(t(newcol))
-        xsplot <<- update(xsplot, data.colour = data.colour, data.order =
-          vw$order, xs.grid = xsplot$xs.grid, newdata = xsplot$newdata, prednew
-          = xsplot$prednew)
+        xsplot <<- update(xsplot, weights = vw$k, xs.grid = xsplot$xs.grid,
+          newdata = xsplot$newdata, prednew = xsplot$prednew)
       }
       if (identical(key, "s")){
         if (separate){
@@ -222,23 +195,16 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             xslegend(data[, response], response)
           }
           screen(xsscreens[1L])
-          newcol <- (col2rgb(col[vw$order]) * matrix(rep(vw$k[vw$order], 3),
-            nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3),
-            nrow = 3, byrow = TRUE)
-          data.colour <- rep(NA, length(col))
-          data.colour[vw$order] <- rgb(t(newcol))
           if (residuals){
             plotxsres(xs = data[, S, drop = FALSE], data[, response, drop = FALSE],
-              xc.cond = xc.cond, model = model, data.colour = data.colour,
-              data.order = vw$order, view3d = xsplot$view3d, theta3d =
-              xsplot$theta3d, phi3d = xsplot$phi3d, conf = conf, probs = probs,
-              pch = pch)
+              xc.cond = xc.cond, model = model, col = col, weights = vw$k,
+              view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
+              xsplot$phi3d, conf = conf, probs = probs, pch = pch)
           } else {
             plotxs1(xs = data[, S, drop = FALSE], data[, response, drop = FALSE],
-              xc.cond = xc.cond, model = model, data.colour = data.colour,
-              data.order = vw$order, view3d = xsplot$view3d, theta3d =
-              xsplot$theta3d, phi3d = xsplot$phi3d, conf = conf, probs = probs,
-              pch = pch)
+              xc.cond = xc.cond, model = model, col = col, weights = vw$k,
+              view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
+              xsplot$phi3d, conf = conf, probs = probs, pch = pch)
           }
           dev.off()
           cat(paste("\nSnapshot saved: '", filename[1L],"'", sep = ""))
@@ -282,23 +248,16 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
             xslegend(data[, response], response)
           }
           screen(xsscreens[1L])
-          newcol <- (col2rgb(col[vw$order]) * matrix(rep(vw$k[vw$order], 3),
-            nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - vw$k[vw$order], 3),
-            nrow = 3, byrow = TRUE)
-          data.colour <- rep(NA, length(col))
-          data.colour[vw$order] <- rgb(t(newcol))
           if (residuals){
-            plotxsres(xs = data[, S, drop = FALSE], data[, response, drop = FALSE],
-              xc.cond = xc.cond, model = model, data.colour = data.colour,
-              data.order = vw$order, view3d = xsplot$view3d, theta3d =
-              xsplot$theta3d, phi3d = xsplot$phi3d, conf = conf, probs = probs,
-              pch = 1)
+            plotxsres(xs = data[, S, drop = FALSE], data[, response, drop =
+              FALSE], xc.cond = xc.cond, model = model, col = col, weights =
+              vw$k, view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
+              xsplot$phi3d, conf = conf, probs = probs, pch = 1)
           } else {
             plotxs1(xs = data[, S, drop = FALSE], data[, response, drop = FALSE],
-              xc.cond = xc.cond, model = model, data.colour = data.colour,
-              data.order = vw$order, view3d = xsplot$view3d, theta3d =
-              xsplot$theta3d, phi3d = xsplot$phi3d, conf = conf, probs = probs,
-              pch = 1)
+              xc.cond = xc.cond, model = model, col = col, weights = vw$k,
+              view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
+              xsplot$phi3d, conf = conf, probs = probs, pch = 1)
           }
           dev.off()
           cat(paste("\nSnapshot saved: '", filename,"'\n", sep = ""))

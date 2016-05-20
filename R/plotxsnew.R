@@ -1,10 +1,27 @@
 plotxs1 <-
 function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
-    model.lty = NULL, model.name = NULL, yhat = NULL, mar = NULL, data.colour =
-    NULL, data.order = NULL, view3d = FALSE, theta3d = 45, phi3d = 20, xs.grid =
-    NULL, prednew = NULL, conf = FALSE, probs = FALSE, pch = 1)
+  model.lty = NULL, model.name = NULL, yhat = NULL, mar = NULL, col = "black",
+  weights = NULL, view3d = FALSE, theta3d = 45, phi3d = 20, xs.grid
+  = NULL, prednew = NULL, conf = FALSE, probs = FALSE, pch = 1)
 {
+  ny <- nrow(y)
+  col <- rep(col, ny)
     dev.hold()
+    if (is.null(weights)){
+      data.order <- 1:ny
+      data.colour <- col
+    } else {
+      if (!identical(length(weights), ny))
+        stop("'weights' should be same length as number of observations")
+      weightsgr0 <- which(weights > 0)
+      data.order <- weightsgr0[order(weights[weightsgr0])]
+      newcol <- (col2rgb(col[data.order]) * matrix(rep(weights[data.order],
+        3), nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - weights[data.order
+        ], 3), nrow = 3, byrow = TRUE)
+      data.colour <- rep(NA, ny)
+      data.colour[data.order] <- rgb(t(newcol))
+    }
+    pch <- rep(pch, nrow(y))
     #if (!(ncol(xs) %in% 1:2))
     #  stop("xs must be a dataframe with 1 or 2 columns")
     if (ncol(y) != 1)
@@ -26,16 +43,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     model.name <- if(!is.null(names(model)))
       names(model)
     else seq_along(model)
-    data.order <- if (is.null(data.order))
-      1:nrow(y)
-    else data.order
-    data.colour <- if (is.null(data.colour))
-      rep("gray", length(data.order))
-    else data.colour
     par(mar = c(5, 4, 3, 2))
-
-
-
     if (is.null(xs)){
       if (is.null(prednew)){
         newdata <- xc.cond
@@ -45,9 +53,6 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
       o <- hist(y[data.order, 1L], plot = FALSE)
       a1 <- hist(y[, 1L], plot = FALSE)
       abline(v = unlist(prednew), col = model.colour)
-
-
-
     } else {
     if (identical(ncol(xs), 1L)){
       # xs has one column
@@ -192,9 +197,10 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
           plot(range(xs[, 1L]), range(y[, 1L]), col = NULL, main =
             "Conditional expectation", xlab = colnames(xs)[1L], ylab = colnames(
             y)[1L], ylim = range(y[, 1L]))
-          if (length(data.order) > 0)
+          if (length(data.order) > 0){
             points(xs[data.order, 1L], y[data.order, 1L], col = data.colour[
               data.order], pch = pch[data.order])
+          }
           if (conf){
             prednew2 <- lapply(model, confpred, newdata = newdata)
             for (i in seq_along(model)){
@@ -380,15 +386,14 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
         }
       }
     }
-    }
-    dev.flush()
-    structure(list(xs = xs, y = y, xc.cond = xc.cond, model = model,
-        model.colour = model.colour, model.lwd = model.lwd, model.lty =
-        model.lty, model.name = model.name, yhat = yhat, mar = par("mar"),
-        data.colour = data.colour, data.order = data.order, view3d = view3d,
-        theta3d = theta3d, usr = par("usr"), phi3d = phi3d, plot.type = if
-        (exists("plot.type")) plot.type else NULL, screen = screen(), device =
-        dev.cur(), xs.grid = xs.grid, newdata = newdata, prednew = prednew,
-        xs.grid = xs.grid, conf = conf, probs = probs, pch = pch),
-        class = "xsplot")
+  }
+  dev.flush()
+  structure(list(xs = xs, y = y, xc.cond = xc.cond, model = model, model.colour
+    = model.colour, model.lwd = model.lwd, model.lty = model.lty, model.name =
+    model.name, yhat = yhat, mar = par("mar"), data.colour = data.colour,
+    data.order = data.order, view3d = view3d, theta3d = theta3d, usr = par(
+    "usr"), phi3d = phi3d, plot.type = if (exists("plot.type")) plot.type else
+    NULL, screen = screen(), device = dev.cur(), xs.grid = xs.grid, newdata =
+    newdata, prednew = prednew, xs.grid = xs.grid, conf = conf, probs = probs,
+    pch = pch, col = col, ny = ny), class = "xsplot")
 }
