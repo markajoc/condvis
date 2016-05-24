@@ -16,10 +16,10 @@ dat <- data.frame(x1, x2, x3, x4, x5, x6, x7, x8)[, sample(1:8, 50, replace =
 test_that("visualweight fails without required inputs", {
   expect_error(visualweight(xc.cond = mtcars, xc = NULL))
   expect_error(visualweight(xc.cond = NULL, xc = NULL))
+  expect_error(visualweight(xc.cond = mtcars, xc = mtcars[1, ]))
 })
 
 test_that("identical observations have visual weight one", {
-  expect_equal(visualweight(dat[1, ], dat[1, ]), 1)
   expect_equivalent(diag(visualweight(dat[1:20, ], dat[1:20, ])), rep(1, 20))
   expect_equal(visualweight(dat[1:10, ], dat[1:5, ]), t(visualweight(
     dat[1:5, ], dat[1:10, ])))

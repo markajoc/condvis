@@ -1,6 +1,8 @@
 visualweight2 <- function (xc)
 {
   nrow.xc <- nrow(xc)
+  if (nrow.xc < 2)
+    stop("cannot apply scale to data.frame with less than 2 rows")
   colnames.xc <- colnames(xc)
   arefactors <- vapply(xc, is.factor, logical(1))
   xc.factors <- data.matrix(xc[, arefactors, drop = FALSE])
