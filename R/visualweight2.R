@@ -27,7 +27,7 @@ visualweight2 <- function (xc)
         ncol = length(xc.cond.factors), nrow = nrow.xc, byrow = TRUE))) ==
         length(xc.cond.factors))
     } else {rep(TRUE, nrow.xc)}
-    if (length(factormatches) > 1L){
+    if (length(factormatches) > 0){
       if (all(arefactors)){
         k[factormatches] <- 1
       } else {
