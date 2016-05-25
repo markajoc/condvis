@@ -39,7 +39,7 @@ ceplot(data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   \item{cex.lab}{ scaling parameter for axis labels. Default is 0.8.}
   \item{tck}{ parameter for axis ticks. Default is -0.05.}
   \item{view3d}{ logical. If \code{TRUE}, displays the model section as a
-    prespective plot if possible.}
+    perspective plot if possible.}
   \item{Corder}{ method of arranging variables in \code{C} if \code{C} is not
     supplied. See \code{\link{arrangeC}}}
   \item{selectortype}{ only used if \code{type = "separate"}. \code{"minimal"}
