@@ -1,17 +1,18 @@
 context("visualweight")
 
 n <- 250000
-x1 <- factor(sample(letters[1:3], size = n, replace = TRUE))
-x2 <- factor(sample(letters[4:6], size = n, replace = TRUE))
-x3 <- factor(sample(letters[7:9], size = n, replace = TRUE))
-x4 <- factor(sample(letters[10:15], size = n, replace = TRUE))
-x5 <- rnorm(n)
-x6 <- rnorm(n)
-x7 <- rnorm(n)
-x8 <- rnorm(n)
+p <- 50
 
-dat <- data.frame(x1, x2, x3, x4, x5, x6, x7, x8)[, sample(1:8, 50, replace =
-  TRUE)]
+dat <- data.frame(
+  x1 = factor(sample(letters[1:3], size = n, replace = TRUE)),
+  x2 = factor(sample(letters[4:6], size = n, replace = TRUE)),
+  x3 = factor(sample(letters[7:9], size = n, replace = TRUE)),
+  x4 = factor(sample(letters[10:15], size = n, replace = TRUE)),
+  x5 = rnorm(n),
+  x6 = rnorm(n),
+  x7 = rnorm(n),
+  x8 = rnorm(n)
+  )[, sample(1:8, p, replace = TRUE)]
 
 test_that("visualweight fails without required inputs", {
   expect_error(visualweight(xc.cond = mtcars, xc = NULL))
