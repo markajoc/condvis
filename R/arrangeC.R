@@ -28,6 +28,8 @@ arrangeC <- function (data, method = "default")
     return(list(colnames(data)))
   data <- na.omit(data)
   nr.data <- nrow(data)
+  if (nr.data < 5)
+    stop("'data' has less than 5 non-missing rows")
 
 ## Calculate a ceiling on the number of rows of 'data' we will use. This is just
 ## based on a few quick tests on a personal computer, to keep the computation
