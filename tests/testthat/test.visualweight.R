@@ -18,11 +18,17 @@ test_that("visualweight fails without required inputs", {
   expect_error(visualweight(xc.cond = mtcars, xc = NULL))
   expect_error(visualweight(xc.cond = NULL, xc = NULL))
   expect_error(visualweight(xc.cond = mtcars, xc = mtcars[1, ]))
+  expect_error(visualweight(xc.cond = mtcars[1, 1:5], xc = mtcars[, 1:6]))
+})
+
+test_that("visualweight returns the right types", {
+  expect_is(visualweight(dat[1, ], dat[1:20, ]), "numeric")
+  expect_is(visualweight(dat[1:5, ], dat[1:20, ]), "matrix")
 })
 
 test_that("identical observations have visual weight one", {
   expect_equivalent(diag(visualweight(dat[1:20, ], dat[1:20, ])), rep(1, 20))
-  expect_equal(visualweight(dat[1:10, ], dat[1:5, ]), t(visualweight(
+  expect_equal(diag(visualweight(dat[1:10, ], dat[1:5, ])), diag(visualweight(
     dat[1:5, ], dat[1:10, ])))
 })
 
