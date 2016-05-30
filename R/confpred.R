@@ -1,3 +1,8 @@
+## This is a slightly hacky function to extract confidence bounds on predictions
+## from certain classes of model. Most notable is the approach for models of
+## class "custompred", which will be a wrapper object for some model that has no
+## predict method, designed to behave like an lm object under a predict call.
+
 confpred <-
 function (model, newdata)
 {
