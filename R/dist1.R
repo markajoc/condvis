@@ -1,3 +1,33 @@
+#' @title Minkowski distance
+#'
+#' @description Calculate Minkowski distance between one point and a set of
+#'   other points.
+#'
+#' @param x A numeric vector describing point coordinates.
+#' @param X A numeric matrix describing coordinates for several points.
+#' @param p The power in Minkowski distance (see details).
+#' @param inf Logical; switch for calculating maximum norm distance (sometimes
+#'   known as Chebychev distance) which is the limit of Minkowski distance as
+#'   \eqn{p} tends to infinity.
+#'
+#' @return A numeric vector. These are distance^p, for speed of computation.
+#'
+#' @examples
+#' x <- runif(5000)
+#' y <- runif(5000)
+#'
+#' x1 <- 0.5
+#' y1 <- 0.5
+#'
+#' par(mfrow = c(2, 2))
+#'
+#' for(p in c(0.5, 1, 2, 10)){
+#'   d <- dist1(x = c(x1, y1), X = cbind(x, y), p = p) ^ (1/p)
+#'   col <- rep("black", length(x))
+#'   col[d < 0.3] <- "red"
+#'   plot(x, y, pch = 16, col = col, asp = 1, main = paste("p = ", p, sep = ""))
+#'}
+
 dist1 <-
 function (x, X, p = 2, inf = FALSE)
 {
