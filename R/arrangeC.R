@@ -11,7 +11,8 @@
 #' @param data A dataframe
 #' @param method The character name for the method to use for measuring
 #'   bivariate dependency, passed to \code{\link{savingby2d}}.
-#' @return A list containing character vectors describing the variable pairings.
+#'
+#' @return A list containing character vectors giving variable pairings.
 #'
 #' @details If \code{data} is so big as to make \code{arrangeC} very slow, a
 #'   random sample of rows is used instead. The bivariate dependency measures
@@ -20,6 +21,19 @@
 #'   helpful default ordering/pairing for \code{\link{ceplot}}.
 #'
 #' @seealso \code{\link{savingby2d}}
+#'
+#' @examples
+#' data(powerplant)
+#'
+#'pairings <- arrangeC(powerplant)
+#'
+#'dev.new(height = 2, width = 2 * length(pairings))
+#'par(mfrow = c(1, length(pairings)))
+#'
+#'for (i in seq_along(pairings)){
+#'  plotxc(powerplant[, pairings[[i]]], powerplant[1, pairings[[i]]],
+#'    select.col = NA)
+#'}
 
 arrangeC <- function (data, method = "default")
 {
