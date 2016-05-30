@@ -3,13 +3,6 @@
 #' @description Calculate the visual weight for a set of observations, based on their
 #' distance from some sections/conditions
 #'
-#' @details Visual weight is assigned to observations based on their
-#'   distance from a section (treated as an observation here). The distance is
-#'   calculated as Minkowski distance between the numeric elements for the
-#'   observations whose categorical elements match, with the option to use a
-#'   more general dissimilarity measure comprising Minkowski distance and a
-#'   mismatch count.
-#'
 #' @param xc.cond This is a dataframe describing the sections/conditions.
 #' @param xc This is a dataframe with same names as \code{xc.cond} representing
 #'   observed data points.
@@ -21,8 +14,16 @@
 #' @param constant A constant to multiply by the number of categorical
 #'   mismatches, before adding to the Minkowski distance, to give a general
 #'   dissimilarity measure.
+#'
 #' @return The visual weights for the observations in \code{xc} arranged in rows
 #'   for each section in \code{xc.cond}.
+#'
+#' @details Visual weight is assigned to observations based on their
+#'   distance from a section (treated as an observation here). The distance is
+#'   calculated as Minkowski distance between the numeric elements for the
+#'   observations whose categorical elements match, with the option to use a
+#'   more general dissimilarity measure comprising Minkowski distance and a
+#'   mismatch count.
 
 visualweight <-
 function (xc.cond, xc, sigma = NULL, distance = NULL, constant = NULL)
