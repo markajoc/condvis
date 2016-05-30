@@ -79,12 +79,12 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     colnames(data)[S]
   } else S
 
-## TODO: need new hierarchy for specifying C
-##         1. If user supplies list, use that exactly (maybe chop length)
-##         2. If user supplies vector, use that but order/group it
-##         3. If user supplies nothing, try to extract from model, then order
-##         4. Else bung in everything from the data that isn't 'response' or 'S'
-##            and then try to order that and show the top 20
+## Hierarchy for specifying C
+##   1. If user supplies list, use that exactly (maybe chop length).
+##   2. If user supplies vector, use that but order/group it.
+##   3. If user supplies nothing, try to extract from model, then order.
+##   4. Else bung in everything from the data that isn't 'response' or 'S' and
+##        then try to order that and show the top 20.
 
   if (is.list(C)){
     C <- C[1:min(length(C), 20L)]
@@ -121,7 +121,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     else rep(1, nr.data)
   } else rep(pch, nr.data)
 
-## Make the appropriate call to the internal ceplot function
+## Make the appropriate call to an internal ceplot function
 
   if (identical(type, "default")){
     ceplot.interactive(data = data, model = model, response = response, S = S,
