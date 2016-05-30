@@ -51,15 +51,18 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
 ## Need to check here if XQuartz is available when on OS X platform.
 ## capabilities() is hanging up my R session when called with no XQuartz
 ## installed. The problem seems to be that .Internal(capabilitiesX11()) just
-## keeps waiting for X11 to be found, instead of returning FALSE.
+## keeps waiting for X11 to be found, instead of returning FALSE, when some X11
+## files are installed, but X11.app/XQuartz.app is missing.
 ## Resorting to a rough system call of ls on the Utilities directory.
 
-  if (grepl("^darwin", R.version$os)){
-    # if (!capabilities("X11"))
-    if (!any(c("XQuartz.app", "X11.app") %in% system2(command = "ls",  args =
-      "/Applications/Utilities/", stdout = TRUE))){
-      warning("no X11 available, setting 'type' to \"shiny\"")
-      type <- "shiny"
+  if (identical(.Platform$OS.type, "unix")){
+    if (grepl("^darwin", R.version$os)){
+      # if (!capabilities("X11"))
+      if (!any(c("XQuartz.app", "X11.app") %in% system2(command = "ls",  args =
+        "/Applications/Utilities/", stdout = TRUE))){
+        warning("no X11 available, setting 'type' to \"shiny\"")
+        type <- "shiny"
+      }
     }
   }
 
