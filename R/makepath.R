@@ -2,6 +2,7 @@ makepath <-
 # first attempt at making a path for conditional tour, for continuous
 # variables only
 # Have now added possibility for factors
+# TODO: rename this function to defaultpath or something
 function (Xc, ncentroids, ninterp = 4)
 {
   if (any(arefactors <- vapply(Xc, is.factor, logical(1L)))){
