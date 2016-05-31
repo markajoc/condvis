@@ -13,7 +13,8 @@
 #'
 #' @return A character vector of colours.
 #'
-#' @details Uses the \code{RColorBrewer} package if installed.
+#' @details Uses the \code{RColorBrewer} package if installed. Coerces \code{x}
+#'   to numeric with a warning.
 #'
 #' @examples
 #' x <- runif(200)
