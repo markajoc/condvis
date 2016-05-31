@@ -218,9 +218,9 @@ function (Xc, Xc.cond, select.colour = NULL, select.lwd = 3,
   names(coords) <- c("xleft", "xright", "ybottom", "ytop")
   coords$xcplots.index <- scr2
   dev.flush()
-  structure(list(Xc = Xc, Xc.cond = Xc.cond, Xc.num = Xc.num, Xc.cond.num = Xc.cond.num,
-    rows = rows, cols = cols, factorindex = factorindex, scr2 = scr2, coords = coords,
-    plot.type = "full", device = dev.cur(), select.colour = select.colour, select.lwd =
-    select.lwd, select.cex = select.cex, mar.matrix = mar.matrix, usr.matrix =
-    usr.matrix), class = "xcplot")
+  structure(list(Xc = Xc, Xc.cond = Xc.cond, Xc.num = Xc.num, Xc.cond.num =
+    Xc.cond.num, rows = rows, cols = cols, factorindex = factorindex, scr2 =
+    scr2, coords = coords, plot.type = "full", device = dev.cur(), select.colour
+    = select.colour, select.lwd = select.lwd, select.cex = select.cex,
+    mar.matrix = mar.matrix, usr.matrix = usr.matrix), class = "xcplot")
 }
