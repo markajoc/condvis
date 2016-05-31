@@ -11,12 +11,12 @@ Authors@R: c(
   person("Achim", "Zeileis", role = "ctb"),
   person("R Core Team", role = "ctb") )
 Depends:  R (>= 2.1.0)
+Imports: graphics, grDevices, stats, utils, MASS
 Suggests: RColorBrewer, shiny, scagnostics, cluster, hdrcde, gplots, TSP,
   DendSer
 Description: Exploring fitted model structures by interactively taking 2-D and
   3-D sections in data space.
 License: GPL (>= 2)
 LazyData: false
-Imports: graphics, grDevices, stats, utils, MASS
 BugReports: https://github.com/markajoc/condvis/issues
 URL: https://github.com/markajoc/condvis
