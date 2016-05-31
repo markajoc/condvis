@@ -1,3 +1,52 @@
+#' @title Condition selector plot
+#'
+#' @description Data visualisations used to select sections for \code{\link{
+#'   ceplot}}.
+#'
+#' @param xc A numeric or factor vector, or a dataframe with two columns
+#' @param xc.cond Same type as \code{xc}, representing a single point in data
+#'   space to highlight.
+#' @param name The variable name for \code{xc}
+#' @param select.colour Colour to highlight \code{xc.cond}
+#' @param select.lwd Line weight to highlight \code{xc.cond}
+#' @param cex.axis Axis text scaling
+#' @param cex.lab Label text scaling
+#' @param tck Plot axis tick size
+#' @param select.cex Plot symbol size
+#'
+#' @return Produces a plot, and returns a list containing the relevant
+#'   information to update the plot at a later stage.
+#'
+#' @seealso \code{\link{ceplot}},  \code{\link{plotxs}}.
+#'
+#' @examples
+#' ## histogram, highlighting the first case
+#' data(mtcars)
+#' obj <- plotxc(mtcars[, "mpg"], mtcars[1, "mpg"])
+#' obj$usr
+#'
+#' ## barplot, highlighting 'cyl' = 6
+#' plotxc(as.factor(mtcars[, "cyl"]), 6, select.colour = "blue")
+#'
+#' ## scatterplot, highlighting case 25
+#' plotxc(mtcars[, c("qsec", "wt")], mtcars[25, c("qsec", "wt")],
+#'   select.colour = "blue", select.lwd = 1, lty = 3)
+#'
+#' ## boxplot, where 'xc' contains one factor, and one numeric
+#' mtcars$carb <- as.factor(mtcars$carb)
+#' plotxc(mtcars[, c("carb", "wt")], mtcars[25, c("carb", "wt")],
+#'   select.colour = "red", select.lwd = 3)
+#'
+#' ## spineplot, where 'xc' contains two factors
+#' mtcars$gear <- as.factor(mtcars$gear)
+#' mtcars$cyl <- as.factor(mtcars$cyl)
+#' plotxc(mtcars[, c("cyl", "gear")], mtcars[25, c("cyl", "gear")],
+#'   select.colour = "red")
+
+## plotxc plots a univariate or bivariate view of predictors,
+## highlighting one selected point, which represents a section in the data
+## space.
+
 plotxc <-
 function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
   cex.axis = NULL, cex.lab = NULL, tck = NULL, select.cex = 1, ...)
@@ -114,6 +163,28 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
     = if (exists("boxtmp")) boxtmp else NULL, ...), class = "xcplot")
 }
 
+#' @title Condition selector plot
+#'
+#' @description Data visualisations used to select sections for \code{\link{
+#'   ceplot}}.
+#'
+#' @param Xc A dataframe.
+#' @param Xc.cond A dataframe with one row and same names as \code{Xc}.
+#' @param select.colour Colour to highlight \code{xc.cond}
+#' @param select.lwd Line weight to highlight \code{xc.cond}
+#' @param cex.axis Axis text scaling
+#' @param cex.lab Label text scaling
+#' @param tck Plot axis tick size
+#' @param select.cex Plot symbol size
+#'
+#' @return Produces a plot, and returns a list containing the relevant
+#'   information to update the plot at a later stage.
+#'
+#' @seealso \code{\link{ceplot}},  \code{\link{plotxs}}.
+
+## plotxc.pcp plots a parallel coordinates plot of predictors, highlighting
+## one selected point, which represents a section in the data space.
+
 plotxc.pcp <-
 function (Xc, Xc.cond, select.colour = NULL, select.lwd = 3,
     cex.axis = NULL, cex.lab = NULL, tck = NULL, select.cex = 1, ...)
@@ -151,6 +222,11 @@ function (Xc, Xc.cond, select.colour = NULL, select.lwd = 3,
     par("mar"), usr = par("usr"), factorindex = factorindex, device = dev.cur(),
     screen = screen()), class = "xcplot")
 }
+
+#' @rdname plotxc.pcp
+
+## plotxc.full plots a full scatterplot matrix of predictors, highlighting
+## one selected point, which represents a section in the data space.
 
 plotxc.full <-
 function (Xc, Xc.cond, select.colour = NULL, select.lwd = 3,
@@ -209,11 +285,6 @@ function (Xc, Xc.cond, select.colour = NULL, select.lwd = 3,
     usr.matrix[i, ] <- par("usr")
     fig.matrix[i, ] <- par("fig")
   }
-  #coords <- data.frame(t(vapply(scr2,
-  #  function(i) {
-  #    screen(i, new = F)
-  #    par("fig")
-  #  }, numeric(4))))
   coords <- data.frame(fig.matrix)
   names(coords) <- c("xleft", "xright", "ybottom", "ytop")
   coords$xcplots.index <- scr2
