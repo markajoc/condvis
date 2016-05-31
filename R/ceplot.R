@@ -13,12 +13,12 @@
 #'   section, can be of length 1 or 2.
 #' @param C Character names of conditioning variables from \code{data}. Can be a
 #'   list of vectors of length 1 or 2. Can be a character vector, which is then
-#'   paired up using \link{\code{arrangeC}}. If \code{NULL}, an attempt will be
+#'   paired up using \code{\link{arrangeC}}. If \code{NULL}, an attempt will be
 #'   made to extract all variable names which are not \code{response} or
-#'   \code{S} from \code{model}, and these will be arranged using \link{\code{
+#'   \code{S} from \code{model}, and these will be arranged using \code{\link{
 #'   arrangeC}}.
 #' @param sigma This is a threshold distance. Points further than \code{sigma}
-#'   away from the current section will not be visible. Passed to \link{\code{
+#'   away from the current section will not be visible. Passed to \code{\link{
 #'   visualweight}}
 #' @param distance A character vector describing the type of distance measure to
 #'   use, either \code{"euclidean"} (default) or \code{"maxnorm"}.
