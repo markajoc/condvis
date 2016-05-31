@@ -1,3 +1,6 @@
+## Function to calculate a rough Hamming-style distance between categorical
+## elements of data points. Not currently in use 2016-05-31.
+
 factormatchratio <-
 function(x, X)
 {
