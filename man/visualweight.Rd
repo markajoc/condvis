@@ -20,8 +20,8 @@ types of Minkowski distance: \code{"euclidean"} (default), and
 \code{"maxnorm"}.}
 
 \item{constant}{A constant to multiply by the number of categorical
-mismatches, before adding to the Minkowski distance, to give a general
-dissimilarity measure.}
+  mismatches, before adding to the Minkowski distance, to give a general
+  dissimilarity measure.}
 }
 \value{
 The visual weights for the observations in \code{xc} arranged in rows

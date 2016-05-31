@@ -6,7 +6,7 @@
 #'   extrapolations, rather than two univariate marginal views.
 #'
 #' @param x A numeric or factor vector. Can also be a dataframe containing
-#'   \code{x] and \code{y}, if \code{y} is \code{NULL}.
+#'   \code{x} and \code{y}, if \code{y} is \code{NULL}.
 #' @param y A numeric or factor vector.
 #' @param method Character; criterion used to quantify bivariate relationships.
 #'   Can be \code{"default"}, a scagnostic measure, or \code{"DECR"} to use a

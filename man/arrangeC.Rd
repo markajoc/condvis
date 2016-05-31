@@ -11,10 +11,10 @@ arrangeC(data, method = "default")
 \item{data}{A dataframe}
 
 \item{method}{The character name for the method to use for measuring
-bivariate dependency, passed to \code{\link{savingby2d}}.}
+  bivariate dependency, passed to \code{\link{savingby2d}}.}
 }
 \value{
-A list containing character vectors describing the variable pairings.
+A list containing character vectors giving variable pairings.
 }
 \description{
 This function arranges a number of variables in pairs, ordered
@@ -30,6 +30,19 @@ If \code{data} is so big as to make \code{arrangeC} very slow, a
   are rough, and the ordering algorithm is a simple greedy one, so it is not
   worth allowing it too much time. This function exists mainly to provide a
   helpful default ordering/pairing for \code{\link{ceplot}}.
+}
+\examples{
+data(powerplant)
+
+pairings <- arrangeC(powerplant)
+
+dev.new(height = 2, width = 2 * length(pairings))
+par(mfrow = c(1, length(pairings)))
+
+for (i in seq_along(pairings)){
+ plotxc(powerplant[, pairings[[i]]], powerplant[1, pairings[[i]]],
+   select.col = NA)
+}
 }
 \seealso{
 \code{\link{savingby2d}}

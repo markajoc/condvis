@@ -1,6 +1,10 @@
 #' @title Interactive conditional expectation plot
 #'
-#' @description
+#' @description Creates an interactive conditional expectation plot, which
+#'   consists of two main parts. One part is a single plot depicting a section
+#'   through a fitted model surface, or conditional expectation. The other part
+#'   shows small data summaries which give the current condition, which can be
+#'   altered by clicking with the mouse.
 #'
 #' @param data A dataframe containing the data to plot
 #' @param model A model object, or list of model objects
@@ -14,7 +18,7 @@
 #'   \code{S} from \code{model}, and these will be arranged using \link{\code{
 #'   arrangeC}}.
 #' @param sigma This is a threshold distance. Points further than \code{sigma}
-#'   away from the current section will not be visible. Passed to \link\code{
+#'   away from the current section will not be visible. Passed to \link{\code{
 #'   visualweight}}
 #' @param distance A character vector describing the type of distance measure to
 #'   use, either \code{"euclidean"} (default) or \code{"maxnorm"}.
@@ -22,6 +26,94 @@
 #'   places everything on one device. \code{"separate"} places condition
 #'   selectors on one device and the section on another. (These two options
 #'   require XQuartz on OS X). \code{"shiny"} produces a Shiny application.
+#'
+#' @examples
+#' \dontrun{
+#' ## Example 1: Multivariate regression, xs one continuous predictor
+#'
+#' mtcars$cyl <- as.factor(mtcars$cyl)
+#'
+#' library(mgcv)
+#' model1 <- list(
+#'     quadratic = lm(mpg ~ cyl + hp + wt + I(wt^2), data = mtcars),
+#'     additive = mgcv::gam(mpg ~ cyl + hp + s(wt), data = mtcars))
+#'
+#' conditionvars1 <- list(c("cyl", "hp"))
+#'
+#' ceplot(data = mtcars, model = model1, response = "mpg", S = "wt",
+#'   C = conditionvars1, sigma = 0.3, conf = T)
+#'
+#' ## Example 2: Binary classification, xs one categorical predictor
+#'
+#' mtcars$cyl <- as.factor(mtcars$cyl)
+#' mtcars$am <- as.factor(mtcars$am)
+#'
+#' library(e1071)
+#' model2 <- list(
+#'   svm = svm(am ~ mpg + wt + cyl, data = mtcars, family = "binomial"),
+#'   glm = glm(am ~ mpg + wt + cyl, data = mtcars, family = "binomial"))
+#'
+#' ceplot(data = mtcars, model = model2, S = "wt", sigma = 1, type = "shiny")
+#'
+#' ## Example 3: Multivariate regression, xs both continuous
+#'
+#' mtcars$cyl <- as.factor(mtcars$cyl)
+#' mtcars$gear <- as.factor(mtcars$gear)
+#'
+#' library(e1071)
+#' model3 <- list(svm(mpg ~ wt + qsec + cyl + hp + gear,
+#'   data = mtcars, family = "binomial"))
+#'
+#' conditionvars3 <- list(c("cyl","gear"), "hp")
+#'
+#' ceplot(data = mtcars, model = model3, S = c("wt", "qsec"),
+#'   sigma = 1, C = conditionvars3)
+#'
+#' ceplot(data = mtcars, model = model3, S = c("wt", "qsec"),
+#'     sigma = 1, type = "separate", view3d = T)
+#'
+#' ## Example 4: Multi-class classification, xs both categorical
+#'
+#' mtcars$cyl <- as.factor(mtcars$cyl)
+#' mtcars$vs <- as.factor(mtcars$vs)
+#' mtcars$am <- as.factor(mtcars$am)
+#' mtcars$gear <- as.factor(mtcars$gear)
+#' mtcars$carb <- as.factor(mtcars$carb)
+#'
+#' library(e1071)
+#' model4 <- list(svm(carb ~ ., data = mtcars, family = "binomial"))
+#'
+#' ceplot(data = mtcars, model = model4, S = c("cyl", "gear"), sigma = 3)
+#'
+#' ## Example 5: Multi-class classification, xs both continuous
+#'
+#' data(wine)
+#' wine$Class <- as.factor(wine$Class)
+#' library(e1071)
+#'
+#' model5 <- list(svm(Class ~ ., data = wine, probability = TRUE))
+#'
+#' ceplot(data = wine, model = model5, S = c("Hue", "Flavanoids"), sigma = 3,
+#'   probs = TRUE)
+#'
+#' ceplot(data = wine, model = model5, S = c("Hue", "Flavanoids"), sigma = 3,
+#'   type = "separate")
+#'
+#' ceplot(data = wine, model = model5, S = c("Hue", "Flavanoids"), sigma = 3,
+#'   type = "separate", selectortype = "pcp")
+#'
+#' ## Example 6: Multi-class classification, xs with one categorical predictor,
+#' ##            and one continuous predictor.
+#'
+#' mtcars$cyl <- as.factor(mtcars$cyl)
+#' mtcars$carb <- as.factor(mtcars$carb)
+#'
+#' library(e1071)
+#' model6 <- list(svm(cyl ~ carb + wt + hp, data = mtcars, family = "binomial"))
+#'
+#' ceplot(data = mtcars, model = model6, sigma = 1, S = c("carb", "wt"),
+#'   C = "hp")
+#' }
 
 ceplot <-
 function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
