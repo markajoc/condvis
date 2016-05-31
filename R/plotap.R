@@ -1,3 +1,7 @@
+## This is a diagnostic plot to be used with condtour. The plot shows the sum of
+## the visual weights for each section along the entire path. The plot is given
+## its own update method.
+
 plotap <-
 function (k, pathindex = 1, lcol = "blue")
 {
