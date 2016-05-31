@@ -1,3 +1,5 @@
+## This is a helper function for use in parallel coordinates plots in plotxc.pcp
+
 scale2unit <-
 function (x)
 {
