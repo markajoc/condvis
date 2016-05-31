@@ -8,8 +8,8 @@ Authors@R: c(
   role = c("aut", "cre")),
   person("Catherine", "Hurley", role = "ths"),
   person("Katarina", "Domijan", role = "ths"),
-  person("Achim", "Zeileis", role = "ctb"),
-  person("R Core Team", role = "ctb") )
+  person("Achim", "Zeileis", role = "ctb", comment = "spineplot, see copied.R"),
+  person("R Core Team", role = "ctb", comment = "barplot, see copied.R") )
 Depends:  R (>= 2.1.0)
 Imports: graphics, grDevices, stats, utils, MASS
 Suggests: RColorBrewer, shiny, scagnostics, cluster, hdrcde, gplots, TSP,
