@@ -1,5 +1,7 @@
+## This is a helper function used only in savingby2d. Calculates the area of a
+## polygon coming out of grDevices::chull
+
 polygonarea <- function (x, y = NULL)
-# calculate the area of polygon coming out of chull function
 {
   if (is.null(y) && identical(ncol(x), 2L)){
     y <- x[, 2L]
