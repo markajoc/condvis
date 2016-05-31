@@ -1,12 +1,17 @@
+## This is the default interactive plot for visualising sections which are
+## chosen interactively. NOT EXPORTED.
+
 ceplot.interactive <-
 function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, view3d =
   FALSE, Corder = "default", conf = FALSE, separate = TRUE, select.colour =
   "blue", select.cex = 1, select.lwd = 2, select.type = "minimal", probs = FALSE
-  , col = "black", pch = 1, residuals = FALSE)
+  , col = "black", pch = 1, residuals = FALSE, xc.cond = NULL)
 {
   uniqC <- unique(unlist(C))
-  xc.cond <- data[1, !colnames(data) %in% c(S, response)]
+  xc.cond <- if (is.null(xc.cond))
+    data[1, !colnames(data) %in% c(S, response)]
+  else xc.cond
   #data.frame(lapply(data[, !colnames(data) %in% c(S, response)], mode1))
   xcplots <- list()
   coords <- matrix(ncol = 4L, nrow = length(C))
@@ -17,6 +22,11 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   col <- rep(col, length.out = nrow(data))
   vwfun <- visualweight2(xc = data[, uniqC, drop = FALSE])
   if (separate){
+
+## Plot condition selectors on a separate device
+
+## Set up section visualisation first
+
     width <- height + 0.5 * plotlegend
     opendev(width = width, height = height)
     devexp <- dev.cur()
@@ -33,6 +43,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     screen(xsscreens[1L])
     vw <- vwfun(xc.cond = xc.cond, sigma = sigma, distance = distance)
     par(mar = c(3, 3, 3, 3))
+
+## Check whether response should be raw or residual
+
     if (residuals){
       xsplot <- plotxsres(xs = data[, S, drop = FALSE], data[, response, drop =
         FALSE], xc.cond = xc.cond, model = model, col = col, weights = vw$k,
@@ -43,6 +56,11 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         view3d = view3d, conf = conf, probs = probs, pch = pch)
     }
     xscoords <- par("fig")
+
+## Produce the condition selector plots. Can be either "minimal", meaning
+## bivariate and univariate plots, "pcp" for parallel coordinates or "full" for
+## a full scatterplot matrix.
+
     if (identical(select.type, "minimal")){
       xcwidth <- selector.colwidth * n.selector.cols
       n.selector.rows <- ceiling(length(C) / n.selector.cols)
@@ -75,6 +93,11 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     } else stop("'select.type' must be one of 'minimal', 'pcp' or 'full'")
     devcond <- dev.cur()
   } else {
+
+## Otherwise, put everything on one device.
+
+## Do condition selectors first
+
     width <- height + 0.5 * plotlegend + selector.colwidth * n.selector.cols
     opendev(width = width, height = height)
     close.screen(all.screens = TRUE)
@@ -89,6 +112,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         select.colour, select.cex = select.cex)
       coords[i, ] <- par("fig")
     }
+
+## Do section visualisation
+
     legendwidth <- 1.15 / height
     xsscreens <- if (plotlegend){
     split.screen(figs = matrix(c(0, 1 - legendwidth, 1 - legendwidth, 1, 0, 0, 1
@@ -114,6 +140,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     xold <- NULL
     yold <- NULL
   }
+
+## Define event handling functions; mouseclick and keystroke
+
   mouseclick <- function (separate = FALSE)
   {
     function (buttons, x, y)
@@ -270,6 +299,6 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     onMouseDown = mouseclick(separate),
     onMouseMove = mouseclick(separate),
     onKeybd = keystroke())
-  getGraphicsEventEnv()
+  #getGraphicsEventEnv()
   getGraphicsEvent()
 }
