@@ -1,8 +1,31 @@
+#' @title Make a default path for conditional tour
+#'
+#' @description Provides a default path (a set of sections) as input to a
+#'   conditional tour. Clusters the data using k-means or partitioning around
+#'   medoids (from the \code{cluster} package). The cluster centres/prototypes
+#'   are then ordered to create a sensible way to visit each section as smoothly
+#'   as possible. Ordering uses either the \code{DendSer} or \code{TSP} package.
+#'   Linear interpolation is then used to create intermediate points between the
+#'   path nodes.
+#'
+#' @param Xc A dataframe
+#' @param ncentroids The number of centroids to use as path nodes.
+#' @param ninterp The number of points to linearly interpolate between path
+#'   nodes.
+#'
+#' @return A list with two dataframes: \code{centers} giving the path nodes, and
+#'   \code{path} giving the full interpolated path.
+#'
+#' @examples
+#' d <- data.frame(x = runif(500), y = runif(500))
+#' plot(d)
+#' mp1 <- makepath(d, 5)
+#' points(mp1$centers, type = "b", col = "blue", pch = 16)
+#' mp2 <- makepath(d, 40)
+#' points(mp2$centers, type = "b", col = "red", pch = 16)
+
 makepath <-
-# first attempt at making a path for conditional tour, for continuous
-# variables only
-# Have now added possibility for factors
-# TODO: rename this function to defaultpath or something
+## TODO: rename this function to defaultpath or something
 function (Xc, ncentroids, ninterp = 4)
 {
   if (any(arefactors <- vapply(Xc, is.factor, logical(1L)))){
