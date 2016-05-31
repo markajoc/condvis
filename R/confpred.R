@@ -8,20 +8,20 @@ confpred <-
 function (model, newdata)
 {
   if (identical(class(model), "lm")){
-    pred <- predict(model = model, newdata = newdata, interval = "confidence",
+    pred <- predict(object = model, newdata = newdata, interval = "confidence",
       type = "response")
     upr <- pred[, "upr"]
     lwr <- pred[, "lwr"]
     return(cbind(lwr, upr))
   }
   if (inherits(model, "custompred")){
-    pred <- predict(model = model, newdata = newdata, interval = "confidence")
+    pred <- predict(object = model, newdata = newdata, interval = "confidence")
     upr <- pred[, "upr"]
     lwr <- pred[, "lwr"]
     return(cbind(lwr, upr))
   }
   if (identical(class(model), c("glm", "lm"))){
-    pred <- predict(model = model, newdata = newdata, type = "link", se.fit =
+    pred <- predict(object = model, newdata = newdata, type = "link", se.fit =
       TRUE)
     upr <- model$family$linkinv(pred$fit + (2 * pred$se.fit))
     lwr <- model$family$linkinv(pred$fit - (2 * pred$se.fit))
@@ -29,7 +29,7 @@ function (model, newdata)
     }
   if (identical(class(model), c("gam", "glm", "lm")) && "mgcv.conv" %in% names(
     model)){
-    pred <- predict(model = model, newdata = newdata, type = "link", se.fit =
+    pred <- predict(object = model, newdata = newdata, type = "link", se.fit =
       TRUE)
     upr <- model$family$linkinv(pred$fit + (2 * pred$se.fit))
     lwr <- model$family$linkinv(pred$fit - (2 * pred$se.fit))
