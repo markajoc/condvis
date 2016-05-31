@@ -1,3 +1,6 @@
+## These are some helper functions to be used when plotxs is representing the
+## predicted class probabilities using little barcharts (i.e., probs = TRUE)
+
 myglyph <-
 function (x, y, xw, yw, heights, col)
 {
