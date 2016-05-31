@@ -8,11 +8,11 @@ Conditional Visualization for Statistical Models
 \description{
   Exploring statistical models by interactively taking 2-D and 3-D sections in
   data space. The main function for end users are \code{\link{ceplot}} (see
-  example below) and \code{\link{condtour}}. Requires \href{
-  http://www.xquartz.org/}{XQuartz} on Mac OS, and X11 on Linux. Source code is
-  available to browse at \href{https://github.com/markajoc/condvis/}{GitHub}.
-  Bug reports and feature requests are very welcome at \href{
-  https://github.com/markajoc/condvis/issues}{GitHub}.
+  example below) and \code{\link{condtour}}. Requires
+  \href{http://www.xquartz.org/}{XQuartz} on Mac OS, and X11 on Linux. Source
+  code is available to browse at \href{https://github.com/markajoc/condvis/}{
+  GitHub}. Bug reports and feature requests are very welcome at
+  \href{https://github.com/markajoc/condvis/issues}{GitHub}.
 }
 \details{
   \tabular{ll}{
