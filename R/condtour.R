@@ -1,3 +1,65 @@
+#' @title Conditional tour; a tour through sections in data space
+#'
+#' @description Whereas \code{\link{ceplot}} allows the user to interactively
+#'   choose sections to visualise, \code{condtour} allows the user to pre-select
+#'   all sections to visualise, order them, and cycle through them one by one.
+#'
+#' @param data A dataframe.
+#' @param model A fitted model object, or a list of such objects.
+#' @param path A dataframe, describing the sections to take. Basically a
+#'   dataframe with its \code{colnames} being a subset of the
+#'   \code{colnames(data)}.
+#' @param response Character name of response variable in \code{data}.
+#' @param S Character name(s) of variables in \code{data} on which to take
+#'   sections.
+#' @param C Character name(s) of variables in \code{data} on which to condition.
+#' @param sigma Threshold distance. Observed data which are a distance greater
+#'   than \code{sigma} from the current section are not visible.
+#' @param distance The type of distance measure to use, either
+#'   \code{"euclidean"} (default) or \code{"maxnorm"}.
+#' @param cex.axis Scaling for axis text
+#' @param cex.lab Scaling for labels
+#' @param tck Tick size for axes.
+#' @param view3d Logical; if \code{TRUE}, plots a three-dimensional regression
+#'   surface when possible.
+#' @param conf Logical; if \code{TRUE}, plots confidence bounds or equivalent
+#'   when possible.
+#' @param select.colour Colour to highlight current section.
+#' @param col Colour for observed data points.
+#' @param pch Plot symbols for observed data points.
+#'
+#' @return Produces a set of interactive plots. One device displays the current
+#'   section. A second device shows the the current section in the space of the
+#'   conditioning predictors given by \code{C}. A third device shows some simple
+#'   diagnostic plots; one to show how approximately how much data are visible
+#'   on each section, and another to show what proportion of data are
+#'   \emph{visited} by the tour.
+#'
+#' @seealso \code{\link{ceplot}}, \code{\link{visualweight}}
+#'
+#' @examples
+#' \dontrun{
+#'
+#' data(powerplant)
+#' library(e1071)
+#' model <- svm(PE ~ ., data = powerplant)
+#' path <- makepath(powerplant[-5], 25)
+#' condtour(data = powerplant, model = model, path = path$path, S = "AT")
+#'
+#' data(wine)
+#' wine$Class <- as.factor(wine$Class)
+#' library(e1071)
+#' model5 <- list(svm(Class ~ ., data = wine))
+#' C <- setdiff(colnames(wine), c("Class", "Hue", "Flavanoids"))
+#' path <- makepath(wine[, C], 50)
+#' condtour(data = wine, model = model5, path = path$path, S = c("Hue",
+#'   "Flavanoids"), sigma = 3)
+#'
+#'}
+
+
+
+
 condtour <-
 function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
   distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, view3d
