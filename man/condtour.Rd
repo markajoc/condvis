@@ -5,9 +5,9 @@
 \title{Conditional tour; a tour through sections in data space}
 \usage{
 condtour(data, model, path, response = NULL, S = NULL, C = NULL,
-  sigma = NULL, distance = "euclidean", cex.axis = NULL, cex.lab = NULL,
-  tck = NULL, view3d = FALSE, conf = FALSE, select.colour = "blue",
-  col = "black", pch = 1)
+  sigma = NULL, distance = c("euclidean", "maxnorm"), cex.axis = NULL,
+  cex.lab = NULL, tck = NULL, view3d = FALSE, conf = FALSE,
+  select.colour = "blue", col = "black", pch = 1)
 }
 \arguments{
 \item{data}{A dataframe.}
