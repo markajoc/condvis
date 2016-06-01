@@ -38,6 +38,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
     yhat <- if (is.null(yhat))
       lapply(model, predict1, ylevels = NULL)
     else yhat
+    color <- ybg <- NULL
     par(mar = c(5, 4, 3, 2))
     residuals <- lapply(yhat, function(x) y[, 1L] - x)
     resrange <- range(unlist(lapply(residuals, range)))
