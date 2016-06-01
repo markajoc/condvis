@@ -30,7 +30,7 @@ made to extract all variable names which are not \code{response} or
 
 \item{sigma}{This is a threshold distance. Points further than \code{sigma}
 away from the current section will not be visible. Passed to
-\code{\link{visualweight}}}
+\code{\link{visualweight}}.}
 
 \item{distance}{A character vector describing the type of distance measure to
 use, either \code{"euclidean"} (default) or \code{"maxnorm"}.}
@@ -39,6 +39,40 @@ use, either \code{"euclidean"} (default) or \code{"maxnorm"}.}
 places everything on one device. \code{"separate"} places condition
 selectors on one device and the section on another. (These two options
 require XQuartz on OS X). \code{"shiny"} produces a Shiny application.}
+
+\item{cex.axis}{Scaling for axis text.}
+
+\item{cex.lab}{Scaling for label text.}
+
+\item{tck}{Tick size for axes.}
+
+\item{view3d}{Logical; if \code{TRUE} plots a three-dimensional
+regression surface if possible.}
+
+\item{Corder}{Character name for method of ordering conditioning variables.
+See \code{\link{arrangeC}}.}
+
+\item{selectortype}{Type of condition selector plots to use. Must be
+\code{"minimal"} if \code{type} is \code{"default"}. If \code{type} is
+\code{"separate"}, can be \code{"pcp"} (see \code{\link{plotxc.pcp}} or
+\code{"full"} (see \code{\link{plotxc.full}}).}
+
+\item{conf}{Logical; if \code{TRUE} plots confidence bounds (or equivalent)
+for models which provide this.}
+
+\item{select.colour}{Colour for highlighting current condition/section.}
+
+\item{select.cex}{Scaling of data in condition selector plots.}
+
+\item{probs}{Logical; if \code{TRUE}, shows predicted class probabilities
+instead of just predicted classes when possible.}
+
+\item{col}{Colour for observed data}
+
+\item{pch}{Plot symbols for observed data}
+
+\item{residuals}{Logical; if \code{TRUE}, plots a residual versus predictor
+plot instead of the usual scale of raw response.}
 }
 \description{
 Creates an interactive conditional expectation plot, which

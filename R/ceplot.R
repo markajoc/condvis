@@ -19,13 +19,34 @@
 #'   \code{\link{arrangeC}}.
 #' @param sigma This is a threshold distance. Points further than \code{sigma}
 #'   away from the current section will not be visible. Passed to
-#'   \code{\link{visualweight}}
+#'   \code{\link{visualweight}}.
 #' @param distance A character vector describing the type of distance measure to
 #'   use, either \code{"euclidean"} (default) or \code{"maxnorm"}.
 #' @param type This specifies the type of interactive plot. \code{"default"}
 #'   places everything on one device. \code{"separate"} places condition
 #'   selectors on one device and the section on another. (These two options
 #'   require XQuartz on OS X). \code{"shiny"} produces a Shiny application.
+#' @param cex.axis Scaling for axis text.
+#' @param cex.lab Scaling for label text.
+#' @param tck Tick size for axes.
+#' @param view3d Logical; if \code{TRUE} plots a three-dimensional
+#'   regression surface if possible.
+#' @param Corder Character name for method of ordering conditioning variables.
+#'   See \code{\link{arrangeC}}.
+#' @param selectortype Type of condition selector plots to use. Must be
+#'   \code{"minimal"} if \code{type} is \code{"default"}. If \code{type} is
+#'   \code{"separate"}, can be \code{"pcp"} (see \code{\link{plotxc.pcp}} or
+#'   \code{"full"} (see \code{\link{plotxc.full}}).
+#' @param conf Logical; if \code{TRUE} plots confidence bounds (or equivalent)
+#'   for models which provide this.
+#' @param select.colour Colour for highlighting current condition/section.
+#' @param select.cex Scaling of data in condition selector plots.
+#' @param probs Logical; if \code{TRUE}, shows predicted class probabilities
+#'   instead of just predicted classes when possible.
+#' @param col Colour for observed data
+#' @param pch Plot symbols for observed data
+#' @param residuals Logical; if \code{TRUE}, plots a residual versus predictor
+#'   plot instead of the usual scale of raw response.
 #'
 #' @examples
 #' \dontrun{
