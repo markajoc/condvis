@@ -1,4 +1,4 @@
-export(arrangeC, ceplot, cont2color, factor2color, dist1, plotxc, plotxs,
+export(arrangeC, ceplot, cont2color, factor2color, dist1, plotxc,
     savingby2d, visualweight, condtour, makepath)
 import(graphics, grDevices, stats)
 importFrom(utils, tail)
