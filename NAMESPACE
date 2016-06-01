@@ -3,5 +3,3 @@ export(arrangeC, ceplot, cont2color, factor2color, dist1, plotxc, plotxs,
 import(graphics, grDevices, stats)
 importFrom(utils, tail)
 importFrom(MASS, parcoord)
-S3method(update, xcplot)
-S3method(update, xsplot)
