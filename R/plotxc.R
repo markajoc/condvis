@@ -13,6 +13,7 @@
 #' @param cex.lab Label text scaling
 #' @param tck Plot axis tick size
 #' @param select.cex Plot symbol size
+#' @param ... Passed to \code{condvis:::spineplot2}.
 #'
 #' @return Produces a plot, and returns a list containing the relevant
 #'   information to update the plot at a later stage.
@@ -176,6 +177,7 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
 #' @param cex.lab Label text scaling
 #' @param tck Plot axis tick size
 #' @param select.cex Plot symbol size
+#' @param ... not used.
 #'
 #' @return Produces a plot, and returns a list containing the relevant
 #'   information to update the plot at a later stage.
