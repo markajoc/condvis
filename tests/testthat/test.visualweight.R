@@ -33,8 +33,8 @@ test_that("identical observations have visual weight one", {
 })
 
 test_that("internal visual weight function returns a function", {
-  expect_is(visualweight2(mtcars), "function")
-  expect_error(visualweight2())
+  expect_is(.visualweight(mtcars), "function")
+  expect_error(.visualweight())
 })
 
 test_that("visualweight is not too slow", {
