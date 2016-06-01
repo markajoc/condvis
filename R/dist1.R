@@ -19,6 +19,7 @@
 #' x1 <- 0.5
 #' y1 <- 0.5
 #'
+#' dev.new(width = 4, height = 5.3)
 #' par(mfrow = c(2, 2))
 #'
 #' for(p in c(0.5, 1, 2, 10)){
