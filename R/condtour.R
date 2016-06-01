@@ -31,8 +31,8 @@
 #' @return Produces a set of interactive plots. One device displays the current
 #'   section. A second device shows the the current section in the space of the
 #'   conditioning predictors given by \code{C}. A third device shows some simple
-#'   diagnostic plots; one to show how approximately how much data are visible
-#'   on each section, and another to show what proportion of data are
+#'   diagnostic plots; one to show approximately how much data are visible on
+#'   each section, and another to show what proportion of data are
 #'   \emph{visited} by the tour.
 #'
 #' @seealso \code{\link{ceplot}}, \code{\link{visualweight}}
