@@ -14,8 +14,8 @@ cont2color(x, xrange = NULL, breaks = NULL, colors = NULL)
 \item{breaks}{The number of breaks at which to change colour.}
 
 \item{colors}{The colours to use. Defaults to a diverging colour scheme;
-either \code{"PiYG"} from \code{RColorBrewer} if available, or \code{\link{
-cm.colors}} otherwise.}
+either \code{"PiYG"} from \code{RColorBrewer} if available, or
+\code{\link{cm.colors}} otherwise.}
 }
 \value{
 A character vector of colours.

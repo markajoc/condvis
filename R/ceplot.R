@@ -15,11 +15,11 @@
 #'   list of vectors of length 1 or 2. Can be a character vector, which is then
 #'   paired up using \code{\link{arrangeC}}. If \code{NULL}, an attempt will be
 #'   made to extract all variable names which are not \code{response} or
-#'   \code{S} from \code{model}, and these will be arranged using \code{\link{
-#'   arrangeC}}.
+#'   \code{S} from \code{model}, and these will be arranged using
+#'   \code{\link{arrangeC}}.
 #' @param sigma This is a threshold distance. Points further than \code{sigma}
-#'   away from the current section will not be visible. Passed to \code{\link{
-#'   visualweight}}
+#'   away from the current section will not be visible. Passed to
+#'   \code{\link{visualweight}}
 #' @param distance A character vector describing the type of distance measure to
 #'   use, either \code{"euclidean"} (default) or \code{"maxnorm"}.
 #' @param type This specifies the type of interactive plot. \code{"default"}

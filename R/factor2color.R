@@ -6,8 +6,8 @@
 #'
 #' @param x A factor vector.
 #' @param colors The colours to use. Defaults to a qualitative colour scheme;
-#'   either \code{"Set3"} from \code{RColorBrewer} if available, or \code{\link{
-#'   rainbow}} otherwise.
+#'   either \code{"Set3"} from \code{RColorBrewer} if available, or
+#'   \code{\link{rainbow}} otherwise.
 #'
 #' @return A character vector of colours.
 #'

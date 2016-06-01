@@ -26,14 +26,16 @@ space to highlight.}
 \item{tck}{Plot axis tick size}
 
 \item{select.cex}{Plot symbol size}
+
+\item{...}{Passed to \code{condvis:::spineplot2}.}
 }
 \value{
 Produces a plot, and returns a list containing the relevant
   information to update the plot at a later stage.
 }
 \description{
-Data visualisations used to select sections for \code{\link{
-  ceplot}}.
+Data visualisations used to select sections for
+  \code{\link{ceplot}}.
 }
 \examples{
 ## histogram, highlighting the first case

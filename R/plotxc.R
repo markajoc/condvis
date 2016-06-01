@@ -1,7 +1,7 @@
 #' @title Condition selector plot
 #'
-#' @description Data visualisations used to select sections for \code{\link{
-#'   ceplot}}.
+#' @description Data visualisations used to select sections for
+#'   \code{\link{ceplot}}.
 #'
 #' @param xc A numeric or factor vector, or a dataframe with two columns
 #' @param xc.cond Same type as \code{xc}, representing a single point in data
@@ -166,8 +166,8 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
 
 #' @title Condition selector plot
 #'
-#' @description Data visualisations used to select sections for \code{\link{
-#'   ceplot}}.
+#' @description Data visualisations used to select sections for
+#'   \code{\link{ceplot}}.
 #'
 #' @param Xc A dataframe.
 #' @param Xc.cond A dataframe with one row and same names as \code{Xc}.

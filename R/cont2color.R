@@ -8,8 +8,8 @@
 #' @param xrange The range to use for the colour scale.
 #' @param breaks The number of breaks at which to change colour.
 #' @param colors The colours to use. Defaults to a diverging colour scheme;
-#'   either \code{"PiYG"} from \code{RColorBrewer} if available, or \code{\link{
-#'   cm.colors}} otherwise.
+#'   either \code{"PiYG"} from \code{RColorBrewer} if available, or
+#'   \code{\link{cm.colors}} otherwise.
 #'
 #' @return A character vector of colours.
 #'
