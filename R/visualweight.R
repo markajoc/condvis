@@ -28,7 +28,7 @@
 visualweight <-
 function (xc.cond, xc, sigma = NULL, distance = NULL, constant = NULL)
 {
-  vwfun <- visualweight2(xc = xc)
+  vwfun <- .visualweight(xc = xc)
   k <- matrix(nrow = nrow(xc.cond), ncol = nrow(xc), dimnames = list(rownames(
     xc.cond), rownames(xc)))
   rm(xc)
@@ -39,7 +39,7 @@ function (xc.cond, xc, sigma = NULL, distance = NULL, constant = NULL)
   k[, , drop = TRUE]
 }
 
-visualweight2 <-
+.visualweight <-
 function (xc)
 {
   nrow.xc <- nrow(xc)
