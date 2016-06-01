@@ -125,15 +125,7 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
           max(pathindexrange)), min(pathindexrange))
         applot <<- update(applot, pathindex = pathindex)
         xc.cond[, colnames(path)] <- path[pathindex, , drop = FALSE]
-        k.order <- order(k[pathindex, ])
-        k.order.trimmed <- k.order[k[pathindex, ][k.order] > 0]
-        newcol <- (col2rgb(col[k.order.trimmed]) * matrix(rep(k[pathindex, ][
-          k.order.trimmed], 3), nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - k[
-          pathindex, ][k.order.trimmed], 3), nrow = 3, byrow = TRUE)
-        data.colour <- rep(NA, length(col))
-        data.colour[k.order.trimmed] <- rgb(t(newcol))
-        xsplot <<- update(xsplot, xc.cond = xc.cond, data.colour = data.colour,
-          data.order = k.order.trimmed)
+        xsplot <<- update(xsplot, xc.cond = xc.cond, weights = k[pathindex, ])
         for (i in seq_along(C)){
           xcplots[[i]] <<- update(xcplots[[i]], xc.cond = path[pathindex,
             colnames(data)[C[i]]])
