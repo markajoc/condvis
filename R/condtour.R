@@ -57,9 +57,6 @@
 #'
 #'}
 
-
-
-
 condtour <-
 function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
   distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, view3d
