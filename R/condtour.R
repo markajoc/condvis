@@ -59,7 +59,7 @@
 
 condtour <-
 function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
-  distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, view3d
+  distance = c("euclidean", "maxnorm"), cex.axis = NULL, cex.lab = NULL, tck = NULL, view3d
   = FALSE, conf = FALSE, select.colour = "blue", col = "black", pch = 1)
 {
   xold <- NULL
@@ -161,7 +161,6 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
     if (class(varnamestry) != "try-error"){
       possibleC <- unique(unlist(lapply(lapply(model, getvarnames), `[[`, 2)))
       possibleC <- possibleC[possibleC %in% colnames(data)]
-message("Arranging C variables...")
       C <- arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])],
         drop = FALSE])
     }
@@ -177,6 +176,7 @@ message("Arranging C variables...")
   C <- uniqC
   col <- rep(col, length.out = nrow(data))
   pch <- rep(pch, length.out = nrow(data))
+  distance <- match.arg(distance)
   pathindex <- 1
   pathindexrange <- c(1, nrow(path))
   xc.cond <- data[, setdiff(colnames(data), c(S, response))]
@@ -194,15 +194,8 @@ message("Arranging C variables...")
   selector.colwidth <- 2
   height <- 8
   width <- height + 0.5 * plotlegend
-#  k <- matrix(0, ncol = nrow(data), nrow = nrow(path))
-#message("Creating visual weight function...")
-#  vwfun <- visualweight2(xc = data[, colnames(path), drop = FALSE])
-#message("Calculating visual weight along path...")
-#  for (i in 1: nrow(path)){
-#    k[i, ] <- vwfun(xc.cond = path[i, , drop = FALSE], sigma = sigma,
-#      basicoutput = TRUE)
-#  }
-  k <- visualweight(xc.cond = path, xc = data[, colnames(path), drop = FALSE])
+  k <- visualweight(xc.cond = path, xc = data[, colnames(path), drop = FALSE],
+    sigma = sigma, distance = distance)
   opendev(width = width, height = height)
   devexp <- dev.cur()
   close.screen(all.screens = TRUE)
