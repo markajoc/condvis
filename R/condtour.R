@@ -202,14 +202,15 @@ message("Arranging C variables...")
   selector.colwidth <- 2
   height <- 8
   width <- height + 0.5 * plotlegend
-  k <- matrix(0, ncol = nrow(data), nrow = nrow(path))
-message("Creating visual weight function...")
-  vwfun <- visualweight2(xc = data[, colnames(path), drop = FALSE])
-message("Calculating visual weight along path...")
-  for (i in 1: nrow(path)){
-    k[i, ] <- vwfun(xc.cond = path[i, , drop = FALSE], sigma = sigma,
-      basicoutput = TRUE)
-  }
+#  k <- matrix(0, ncol = nrow(data), nrow = nrow(path))
+#message("Creating visual weight function...")
+#  vwfun <- visualweight2(xc = data[, colnames(path), drop = FALSE])
+#message("Calculating visual weight along path...")
+#  for (i in 1: nrow(path)){
+#    k[i, ] <- vwfun(xc.cond = path[i, , drop = FALSE], sigma = sigma,
+#      basicoutput = TRUE)
+#  }
+  k <- visualweight(xc.cond = path, xc = data[, colnames(path), drop = FALSE])
   opendev(width = width, height = height)
   devexp <- dev.cur()
   close.screen(all.screens = TRUE)
@@ -232,8 +233,8 @@ message("Calculating visual weight along path...")
   data.colour <- rep(NA, length(col))
   data.colour[k.order.trimmed] <- rgb(t(newcol))
   xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response, drop = FALSE]
-    , xc.cond = xc.cond, model = model, data.colour = data.colour, data.order =
-    k.order.trimmed, view3d = view3d, conf = conf, pch = pch)
+    , xc.cond = xc.cond, model = model, weights = k[pathindex, ], col = col,
+    view3d = view3d, conf = conf, pch = pch)
   xscoords <- par("fig")
   xcwidth <- selector.colwidth * n.selector.cols
   n.selector.rows <- ceiling(length(C) / n.selector.cols)
