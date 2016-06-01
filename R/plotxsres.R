@@ -1,10 +1,27 @@
 plotxsres <-
 function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
-    model.lty = NULL, model.name = NULL, yhat = NULL, mar = NULL, data.colour =
-    NULL, data.order = NULL, view3d = FALSE, theta3d = 45, phi3d = 20, xs.grid =
-    NULL, prednew = NULL, conf = FALSE, probs = FALSE, pch = 1)
+  model.lty = NULL, model.name = NULL, yhat = NULL, mar = NULL, col = "black",
+  weights = NULL, view3d = FALSE, theta3d = 45, phi3d = 20, xs.grid
+  = NULL, prednew = NULL, conf = FALSE, probs = FALSE, pch = 1)
 {
+  ny <- nrow(y)
+  col <- rep(col, ny)
     dev.hold()
+    if (is.null(weights)){
+      data.order <- 1:ny
+      data.colour <- col
+    } else {
+      if (!identical(length(weights), ny))
+        stop("'weights' should be same length as number of observations")
+      weightsgr0 <- which(weights > 0)
+      data.order <- weightsgr0[order(weights[weightsgr0])]
+      newcol <- (col2rgb(col[data.order]) * matrix(rep(weights[data.order],
+        3), nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - weights[data.order
+        ], 3), nrow = 3, byrow = TRUE)
+      data.colour <- rep(NA, ny)
+      data.colour[data.order] <- rgb(t(newcol))
+    }
+    pch <- rep(pch, nrow(y))
     #if (!(ncol(xs) %in% 1:2))
     #  stop("xs must be a dataframe with 1 or 2 columns")
     if (ncol(y) != 1)
