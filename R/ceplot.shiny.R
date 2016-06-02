@@ -175,7 +175,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
                     k <- vw$k
                     data.colour <- rgb(1 - k, 1 - k, 1 - k)
                     data.order <- vw$order
-                    plotxsobject <- plotxs1(xs = data[, S, drop = FALSE],
+                    plotxsobject <- plotxs(xs = data[, S, drop = FALSE],
                         y = data[, response, drop = FALSE], xc.cond = get('Xc.cond', envir = tmp), model = model,
                         model.colour = NULL, model.lwd = NULL, model.lty = NULL,
                         model.name = model.name, yhat = NULL, mar = NULL,

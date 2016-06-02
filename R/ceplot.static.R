@@ -75,7 +75,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     vw <- visualweight(xc = Xc, xc.cond = Xc.cond, sigma = sigma, distance =
         distance)
     col <- rep("black", nrow(data))
-    xsplot <- plotxs1(xs = data[, S, drop = FALSE], y = data[, response, drop =
+    xsplot <- plotxs(xs = data[, S, drop = FALSE], y = data[, response, drop =
       FALSE], xc.cond = Xc.cond, model = model, model.colour = NULL, model.lwd =
       NULL, model.lty = NULL, model.name = model.name, yhat = NULL, mar = NULL,
       weights = vw$k, col = col, view3d = view3d, theta3d = theta3d, phi3d =

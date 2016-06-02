@@ -51,7 +51,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         FALSE], xc.cond = xc.cond, model = model, col = col, weights = vw$k,
         view3d = view3d, conf = conf, probs = probs, pch = pch)
     } else {
-      xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response, drop =
+      xsplot <- plotxs(xs = data[, S, drop = FALSE], data[, response, drop =
         FALSE], xc.cond = xc.cond, model = model, col = col, weights = vw$k,
         view3d = view3d, conf = conf, probs = probs, pch = pch)
     }
@@ -132,7 +132,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         FALSE], xc.cond = xc.cond, model = model, col = col, weights = vw$k,
         view3d = view3d, conf = conf, probs = probs, pch = pch)
     } else {
-      xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response, drop =
+      xsplot <- plotxs(xs = data[, S, drop = FALSE], data[, response, drop =
         FALSE], xc.cond = xc.cond, model = model, col = col, weights = vw$k,
         view3d = view3d, conf = conf, probs = probs, pch = pch)
     }
@@ -230,7 +230,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
               view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
               xsplot$phi3d, conf = conf, probs = probs, pch = pch)
           } else {
-            plotxs1(xs = data[, S, drop = FALSE], data[, response, drop = FALSE],
+            plotxs(xs = data[, S, drop = FALSE], data[, response, drop = FALSE],
               xc.cond = xc.cond, model = model, col = col, weights = vw$k,
               view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
               xsplot$phi3d, conf = conf, probs = probs, pch = pch)
@@ -283,7 +283,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
               vw$k, view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
               xsplot$phi3d, conf = conf, probs = probs, pch = 1)
           } else {
-            plotxs1(xs = data[, S, drop = FALSE], data[, response, drop = FALSE],
+            plotxs(xs = data[, S, drop = FALSE], data[, response, drop = FALSE],
               xc.cond = xc.cond, model = model, col = col, weights = vw$k,
               view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
               xsplot$phi3d, conf = conf, probs = probs, pch = 1)
