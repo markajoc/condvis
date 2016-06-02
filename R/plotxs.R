@@ -1,8 +1,62 @@
+#' @title Visualise a section in data space
+#'
+#' @description Visualise a section in data space, showing fitted models where
+#'   they intersect the section, and nearby observations. The visual weight for
+#'   observations can be calculated with \code{\link{visualweight}}. This
+#'   function is mainly for use in \code{\link{ceplot}} and
+#'   \code{\link{condtour}}.
+#'
+#' @param xs A dataframe with one or two columns.
+#' @param y A dataframe with one column.
+#' @param xc.cond A dataframe with a single row, with all columns required for
+#'   passing to \code{\link{predict}} methods of models in \code{model}.
+#' @param model A fitted model object, or a list of such objects.
+#' @param model.colour Colours for fitted models. If \code{model} is a list,
+#'   this should be of same length as \code{model}.
+#' @param model.lwd Line weight for fitted models. If \code{model} is a list,
+#'   this should be of same length as \code{model}.
+#' @param model.lty Line style for fitted models. If \code{model} is a list,
+#'   this should be of same length as \code{model}.
+#' @param model.name Character labels for models, for legend.
+#' @param yhat Fitted values for the observations in \code{y}. Calculated if
+#'   needed and not provided. Only used if showing residuals, or \code{xs} has
+#'   two columns.
+#' @param mar Margins for plot.
+#' @param col Colours for observed data. Should be of length \code{nrow(xs)}.
+#' @param weights Visual weights for observed data. Should be of length
+#'   \code{nrow(xs)}. Usually calculated with \code{\link{visualweight}}.
+#' @param view3d Logical; if \code{TRUE} plots a three-dimensional
+#'   regression surface if possible.
+#' @param theta3d,phi3d Angles defining the viewing direction. \code{theta3d}
+#'   gives the azimuthal direction and \code{phi3d} the colatitude. See
+#'   \code{\link[graphics]{persp}}.
+#' @param xs.grid The grid of values defining the part of the section to
+#'   visualise. Calculated if not provided.
+#' @param prednew The \code{y} values where the models in \code{model} intersect
+#'   the section. Useful when providing \code{theta3d}, \code{phi3d}, or
+#'   \code{weights}, where the predict methods have been called elsewhere.
+#' @param conf Logical; if \code{TRUE} plots confidence bounds (or equivalent)
+#'   for models which provide this.
+#' @param probs Logical; if \code{TRUE}, shows predicted class probabilities
+#'   instead of just predicted classes when possible.
+#' @param pch Plot symbols for observed data
+#' @param residuals Logical; if \code{TRUE}, plots a residual versus predictor
+#'   plot instead of the usual scale of raw response.
+#'
+#' @return A list containing relevant information for updating the plot.
+#'
+#' @examples
+#' data(mtcars)
+#' model <- lm(mpg ~ ., data = mtcars)
+#' plotxs(xs = mtcars[, "wt", drop = FALSE], y = mtcars[, "mpg", drop = FALSE],
+#'   xc.cond = mtcars[1, ], model = list(model))
+
 plotxs <-
 function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
   model.lty = NULL, model.name = NULL, yhat = NULL, mar = NULL, col = "black",
   weights = NULL, view3d = FALSE, theta3d = 45, phi3d = 20, xs.grid
-  = NULL, prednew = NULL, conf = FALSE, probs = FALSE, pch = 1)
+  = NULL, prednew = NULL, conf = FALSE, probs = FALSE, pch = 1, residuals =
+  FALSE)
 {
   ny <- nrow(y)
   col <- rep(col, ny)
