@@ -32,6 +32,26 @@ test_that("identical observations have visual weight one", {
     dat[1:5, ], dat[1:10, ])))
 })
 
+data(powerplant)
+test_that("larger sigma values give equal or larger visual weights", {
+  expect_true(all(visualweight(powerplant[1:50, ], powerplant, sigma = 0.2) >=
+    visualweight(powerplant[1:50, ], powerplant, sigma = 0.1)))
+  expect_true(all(visualweight(powerplant[1:50, ], powerplant, sigma = 0.5) >=
+    visualweight(powerplant[1:50, ], powerplant, sigma = 0.2)))
+  expect_true(all(visualweight(powerplant[1:50, ], powerplant, sigma = 3) >=
+    visualweight(powerplant[1:50, ], powerplant, sigma = 1)))
+})
+
+test_that("setting sigma to Inf gives visual weight one to everything", {
+  expect_true(all(visualweight(powerplant[1:50, ], powerplant, sigma = Inf) >=
+    1))
+
+## Doesn't work with factors present. Should fix this.
+
+  #expect_true(all(visualweight(dat[1, ], dat, sigma = Inf) >=
+  #  1))
+})
+
 test_that("internal visual weight function returns a function", {
   expect_is(.visualweight(mtcars), "function")
   expect_error(.visualweight())
