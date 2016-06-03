@@ -38,6 +38,6 @@ test_that("internal visual weight function returns a function", {
 })
 
 test_that("visualweight is not too slow", {
-  takes_less_than(2)(visualweight(xc.cond = dat[1, ], xc = dat))
-  takes_less_than(5)(visualweight(xc.cond = dat[1:15, ], xc = dat))
+  takes_less_than(3)(visualweight(xc.cond = dat[1, ], xc = dat))
+  takes_less_than(6)(visualweight(xc.cond = dat[1:15, ], xc = dat))
 })
