@@ -60,54 +60,67 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
 {
   ny <- nrow(y)
   col <- rep(col, ny)
-    dev.hold()
-    if (is.null(weights)){
-      data.order <- 1:ny
-      data.colour <- col
-    } else {
-      if (!identical(length(weights), ny))
-        stop("'weights' should be same length as number of observations")
-      weightsgr0 <- which(weights > 0)
-      data.order <- weightsgr0[order(weights[weightsgr0])]
-      newcol <- (col2rgb(col[data.order]) * matrix(rep(weights[data.order],
-        3), nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - weights[data.order
-        ], 3), nrow = 3, byrow = TRUE)
-      data.colour <- rep(NA, ny)
-      data.colour[data.order] <- rgb(t(newcol))
+  dev.hold()
+
+## If no weights are provided, just show all data with the appropriate colour.
+## Otherwise, adjust the colours according to the weights, find the
+## observations with weights greater than one, and order them for plotting.
+
+  if (is.null(weights)){
+    data.order <- 1:ny
+    data.colour <- col
+  } else {
+    if (!identical(length(weights), ny))
+      stop("'weights' should be same length as number of observations")
+    weightsgr0 <- which(weights > 0)
+    data.order <- weightsgr0[order(weights[weightsgr0])]
+    newcol <- (col2rgb(col[data.order]) * matrix(rep(weights[data.order], 3),
+      nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - weights[data.order], 3),
+      nrow = 3, byrow = TRUE)
+    data.colour <- rep(NA, ny)
+    data.colour[data.order] <- rgb(t(newcol))
+  }
+
+## Organise defaults and check inputs.
+
+  pch <- rep(pch, nrow(y))
+  if (ncol(y) != 1)
+    stop("y must be a dataframe with 1 column")
+  model <- if (!is.list(model))
+    list(model)
+  else model
+  model.colour <- if (is.null(model.colour)){
+    if (requireNamespace("RColorBrewer", quietly = TRUE))
+	    RColorBrewer::brewer.pal(n = max(length(model), 3L), name = "Dark2")
+	  else rainbow(max(length(model), 4L))
+  } else rep(model.colour, length.out = length(model))
+  model.lwd <- if (is.null(model.lwd))
+    rep(2, length(model))
+  else rep(model.lwd, length.out = length(model))
+  model.lty <- if (is.null(model.lty))
+    rep(1, length(model))
+  else rep(model.lty, length.out = length(model))
+  model.name <- if(!is.null(names(model)))
+    names(model)
+  else seq_along(model)
+  par(mar = c(5, 4, 3, 2))
+
+## If xs is NULL, show a univariate summary
+
+  if (is.null(xs)){
+    if (is.null(prednew)){
+      newdata <- xc.cond
+      prednew <- lapply(model, predict1, newdata = newdata, ylevels = if (
+        nlevels(y[, 1L]) > 2) levels(y[, 1L]) else NULL)
     }
-    pch <- rep(pch, nrow(y))
-    #if (!(ncol(xs) %in% 1:2))
-    #  stop("xs must be a dataframe with 1 or 2 columns")
-    if (ncol(y) != 1)
-      stop("y must be a dataframe with 1 column")
-    model <- if (!is.list(model))
-      list(model)
-    else model
-    model.colour <- if (is.null(model.colour)){
-      if (requireNamespace("RColorBrewer", quietly = TRUE))
-		    RColorBrewer::brewer.pal(n = max(length(model), 3L), name = "Dark2")
-		  else rainbow(max(length(model), 4L))
-    } else rep(model.colour, length.out = length(model))
-    model.lwd <- if (is.null(model.lwd))
-      rep(2, length(model))
-    else rep(model.lwd, length.out = length(model))
-    model.lty <- if (is.null(model.lty))
-      rep(1, length(model))
-    else rep(model.lty, length.out = length(model))
-    model.name <- if(!is.null(names(model)))
-      names(model)
-    else seq_along(model)
-    par(mar = c(5, 4, 3, 2))
-    if (is.null(xs)){
-      if (is.null(prednew)){
-        newdata <- xc.cond
-        prednew <- lapply(model, predict1, newdata = newdata, ylevels = if (
-          nlevels(y[, 1L]) > 2) levels(y[, 1L]) else NULL)
-        }
-      o <- hist(y[data.order, 1L], plot = FALSE)
-      a1 <- hist(y[, 1L], plot = FALSE)
-      abline(v = unlist(prednew), col = model.colour)
-    } else {
+    o <- hist(y[data.order, 1L], plot = FALSE)
+    a1 <- hist(y[, 1L], plot = FALSE)
+    abline(v = unlist(prednew), col = model.colour)
+  } else {
+
+## Otherwise, go through the various combinations of xs having one or two
+## columns of factors or numerics, and y being factor or numeric.
+
     if (identical(ncol(xs), 1L)){
       # xs has one column
       if (is.null(xs.grid)){
