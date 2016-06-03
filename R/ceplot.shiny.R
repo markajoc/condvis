@@ -1,6 +1,6 @@
 ceplot.shiny <-
 ## this code really needs a rewrite!
-function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL, 
+function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
     cex.lab = NULL, tck = NULL, Corder = "default")
 {
     ui <- NULL
@@ -8,7 +8,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
     data <- na.omit(data)
     if(!requireNamespace("shiny", quietly = TRUE))
         stop("requires package 'shiny'")
-    else if (!exists("shinyApp")) attachNamespace("shiny")    
+    else if (!exists("shinyApp")) attachNamespace("shiny")
     model <- if (!identical(class(model), "list"))
         list(model)
     else model
@@ -33,12 +33,12 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
     else C
     try(
         if (class(varnamestry) != "try-error"){
-            possibleC <- unique(unlist(lapply(lapply(model, getvarnames), `[[`, 
+            possibleC <- unique(unlist(lapply(lapply(model, getvarnames), `[[`,
                 2)))
             possibleC <- possibleC[possibleC %in% colnames(data)]
-            C <- arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])], 
+            C <- arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])],
                 drop = FALSE], method = Corder)
-        }     
+        }
     , silent = TRUE)
     C <- if (all(vapply(C, is.numeric, logical(1))))
         as.list(C)
@@ -64,6 +64,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
     tmp <- new.env()
     assign("Xc.cond", Xc.cond, tmp)
     Xc <- data[, uniqC, drop = FALSE]
+    vwfun <- .visualweight(Xc)
     xcplotsize <- 190
     contplot <- !is.factor(data[, response]) & !any(vapply(data[, S, drop = FALSE], is.factor, logical(1))) & identical(length(S), 2L)
     eval(parse(text = paste("
@@ -71,7 +72,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
             fluidRow(
                 column(5
                     , fluidRow(
-                        column(8, 
+                        column(8,
                             if (contplot) {
                                 tabsetPanel(
                                     tabPanel('Contour', plotOutput('plotS', height = '100%', width = '80%'), value = 1),
@@ -101,19 +102,19 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
                     , column(3,",
                         paste("if (length(C) >= ", 9:12, ") {plotOutput('plotC", 9:12, "', height = ", xcplotsize,", width = ", xcplotsize,", click = 'plotC", 9:12, "click') }", sep = "", collapse = ",\n")
                     ,"
-                    )  
+                    )
                     , column(3,",
                         paste("if (length(C) >= ", 13:16, ") {plotOutput('plotC", 13:16, "', height = ", xcplotsize,", width = ", xcplotsize,", click = 'plotC", 13:16, "click') }", sep = "", collapse = ",\n")
                     ,"
-                    ) 
+                    )
                     )
                     , fluidRow( helpText(strong('Current condition/section')) )
                     , fluidRow( tableOutput('text') )
-                )               
+                )
             )
         )
     ")))
-    
+
     eval(parse(text = paste("
         server <-
         function (input, output){
@@ -128,7 +129,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
                 }
                 if (identical(length(arefactors), 2L)){
                     if (all(arefactors)){
-            
+
                     } else if (any(arefactors)){
                        Xc.cond[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]] <- factor(levels(data[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]])[which.min(abs(input$plotC", 1:length(C), "click$x - (1:length(levels(data[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]])))))], levels = levels(data[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]]))
                         Xc.cond[, names(data)[C[[", 1:length(C), "]]][which(!arefactors)]] <- input$plotC", 1:length(C), "click$y
@@ -136,9 +137,9 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
                             Xc.cond[, names(data)[C[[", 1:length(C), "]]][1]] <- input$plotC", 1:length(C), "click$x
                             Xc.cond[, names(data)[C[[", 1:length(C), "]]][2]] <- input$plotC", 1:length(C), "click$y
                         }
-            
+
                 }
-                assign('Xc.cond', Xc.cond, envir = tmp) 
+                assign('Xc.cond', Xc.cond, envir = tmp)
             }
             ", sep = "", collapse = ""),"
             colnames(Xc.cond) <- vapply(colnames(Xc.cond), substr, character(1), 1, 3)
@@ -158,7 +159,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
                 }
                 if (identical(length(arefactors), 2L)){
                     if (all(arefactors)){
-            
+
                     } else if (any(arefactors)){
                        Xc.cond[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]] <- factor(levels(data[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]])[which.min(abs(input$plotC", 1:length(C), "click$x - (1:length(levels(data[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]])))))], levels = levels(data[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]]))
                         Xc.cond[, names(data)[C[[", 1:length(C), "]]][which(!arefactors)]] <- input$plotC", 1:length(C), "click$y
@@ -166,20 +167,17 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
                             Xc.cond[, names(data)[C[[", 1:length(C), "]]][1]] <- input$plotC", 1:length(C), "click$x
                             Xc.cond[, names(data)[C[[", 1:length(C), "]]][2]] <- input$plotC", 1:length(C), "click$y
                         }
-            
+
                 }
-                assign('Xc.cond', Xc.cond, envir = tmp) 
+                assign('Xc.cond', Xc.cond, envir = tmp)
             }
             ", sep = "", collapse = ""),"
-                    vw <- visualweight(xc = Xc, xc.cond = get('Xc.cond', envir = tmp), sigma = input$sigma, distance = input$type)
-                    k <- vw$k
-                    data.colour <- rgb(1 - k, 1 - k, 1 - k)
-                    data.order <- vw$order
+                    vw <- vwfun(xc.cond = get('Xc.cond', envir = tmp), sigma = input$sigma, distance = input$type)
                     plotxsobject <- plotxs(xs = data[, S, drop = FALSE],
                         y = data[, response, drop = FALSE], xc.cond = get('Xc.cond', envir = tmp), model = model,
                         model.colour = NULL, model.lwd = NULL, model.lty = NULL,
                         model.name = model.name, yhat = NULL, mar = NULL,
-                        data.colour = data.colour, data.order = data.order, view3d = FALSE)
+                        weights = vw$k, col = 'black', view3d = FALSE)
             }, width = 400, height = 400)
             output$plotS2 <- renderPlot({
             Xc.cond <- get('Xc.cond', envir = tmp)", paste("
@@ -192,7 +190,7 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
                 }
                 if (identical(length(arefactors), 2L)){
                     if (all(arefactors)){
-            
+
                     } else if (any(arefactors)){
                        Xc.cond[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]] <- factor(levels(data[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]])[which.min(abs(input$plotC", 1:length(C), "click$x - (1:length(levels(data[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]])))))], levels = levels(data[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]]))
                         Xc.cond[, names(data)[C[[", 1:length(C), "]]][which(!arefactors)]] <- input$plotC", 1:length(C), "click$y
@@ -200,28 +198,25 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
                             Xc.cond[, names(data)[C[[", 1:length(C), "]]][1]] <- input$plotC", 1:length(C), "click$x
                             Xc.cond[, names(data)[C[[", 1:length(C), "]]][2]] <- input$plotC", 1:length(C), "click$y
                         }
-            
+
                 }
-                assign('Xc.cond', Xc.cond, envir = tmp) 
+                assign('Xc.cond', Xc.cond, envir = tmp)
             }
             ", sep = "", collapse = ""),"
-                    vw <- visualweight(xc = Xc, xc.cond = get('Xc.cond', envir = tmp), sigma = input$sigma, distance = input$type)
-                    k <- vw$k
-                    data.colour <- rgb(1 - k, 1 - k, 1 - k)
-                    data.order <- vw$order
-                    plotxsobject <- plotxs.shiny(xs = data[, S, drop = FALSE],
+                    vw <- vwfun(xc.cond = get('Xc.cond', envir = tmp), sigma = input$sigma, distance = input$type)
+                    plotxsobject <- plotxs(xs = data[, S, drop = FALSE],
                         y = data[, response, drop = FALSE], xc.cond = get('Xc.cond', envir = tmp), model = model,
                         model.colour = NULL, model.lwd = NULL, model.lty = NULL,
                         model.name = model.name, yhat = NULL, mar = NULL,
-                        data.colour = data.colour, data.order = data.order, view3d = TRUE, phi3d = input$phi, theta3d = input$theta)
+                        weights = vw$k, col = 'black', view3d = TRUE, phi3d = input$phi, theta3d = input$theta)
             }, width = 400, height = 400)
             ", paste("
             output$plotC", 1:length(C), " <- renderPlot({
-                o <- plotxc(xc = data[, C[[", 1:length(C), "]]], 
+                o <- plotxc(xc = data[, C[[", 1:length(C), "]]],
                     xc.cond = get('Xc.cond', envir = tmp)[, names(data)[C[[", 1:length(C), "]]]],
                     name = colnames(data)[C[[", 1:length(C), "]]],
                     select.colour = 'blue', select.lwd = 2, cex.axis = cex.axis,
-                    cex.lab = cex.lab, tck = tck, shiny = TRUE)            
+                    cex.lab = cex.lab, tck = tck, shiny = TRUE)
                 Xc.cond <- get('Xc.cond', envir = tmp)
             if (!is.null(input$plotC", 1:length(C), "click$x)){
                 arefactors <- unlist(lapply(data[, C[[", 1:length(C), "]], drop = FALSE], is.factor))
@@ -234,17 +229,17 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
                     if (all(arefactors)){
                         varnames <- o$name
                         sptmp <- o$sptmp
-                        rectcoords <- data.frame(sptmp$xleft, sptmp$xright, 
+                        rectcoords <- data.frame(sptmp$xleft, sptmp$xright,
                             sptmp$ybottom, sptmp$ytop)
-                        if (c(input$plotC", 1:length(C), "click$x, input$plotC", 1:length(C), "click$y) %inrectangle% 
+                        if (c(input$plotC", 1:length(C), "click$x, input$plotC", 1:length(C), "click$y) %inrectangle%
                             c(min(sptmp$xleft), max(sptmp$xright) ,
                             min(sptmp$ybottom), max(sptmp$ytop)) ){
-                                comb.index <- apply(rectcoords, 1L, 
+                                comb.index <- apply(rectcoords, 1L,
                                     `%inrectangle%`, point = c(input$plotC", 1:length(C), "click$x, input$plotC", 1:length(C), "click$y))
                                 if (any(comb.index)){
                                     Xc.cond[, names(data)[C[[", 1:length(C), "]]][1]] <- as.factor(sptmp$xnames)[comb.index]
                                     Xc.cond[, names(data)[C[[", 1:length(C), "]]][2]] <- as.factor(sptmp$ynames)[comb.index]
-                                }     
+                                }
                             }
                     } else if (any(arefactors)){
                        Xc.cond[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]] <- factor(levels(data[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]])[which.min(abs(input$plotC", 1:length(C), "click$x - (1:length(levels(data[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]])))))], levels = levels(data[, names(data)[C[[", 1:length(C), "]]][which(arefactors)]]))
@@ -253,12 +248,12 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
                             Xc.cond[, names(data)[C[[", 1:length(C), "]]][1]] <- input$plotC", 1:length(C), "click$x
                             Xc.cond[, names(data)[C[[", 1:length(C), "]]][2]] <- input$plotC", 1:length(C), "click$y
                         }
-            
+
                 }
-                assign('Xc.cond', Xc.cond, envir = tmp) 
-            }            
-            
-                plotxc(xc = data[, C[[", 1:length(C), "]]], 
+                assign('Xc.cond', Xc.cond, envir = tmp)
+            }
+
+                plotxc(xc = data[, C[[", 1:length(C), "]]],
                     xc.cond = get('Xc.cond', envir = tmp)[, names(data)[C[[", 1:length(C), "]]]],
                     name = colnames(data)[C[[", 1:length(C), "]]],
                     select.colour = 'blue', select.lwd = 2, cex.axis = cex.axis,
@@ -267,14 +262,14 @@ function(data, model, response = NULL, S = NULL, C = NULL, cex.axis = NULL,
             ", sep = "", collapse = "\n"),"
             observeEvent(input$saveButton, {
                 n.selector.cols <- ceiling(length(C) / 4L)
-                select.colwidth <- max(min(0.18 * n.selector.cols, 0.45), 0.2)  
-                width <- 8.5 + 2 * n.selector.cols 
-                filename <- paste('snapshot_', gsub(':', '.', gsub(' ', '_', Sys.time())), '.pdf', sep = '') 
+                select.colwidth <- max(min(0.18 * n.selector.cols, 0.45), 0.2)
+                width <- 8.5 + 2 * n.selector.cols
+                filename <- paste('snapshot_', gsub(':', '.', gsub(' ', '_', Sys.time())), '.pdf', sep = '')
                 pdf(file = filename, width = width, height = 8)
-                ceplot.static(data = data, model = model, response = response, 
-                    S = S, C = C, sigma = input$sigma, distance = input$type, 
-                    cex.axis = cex.axis, cex.lab = cex.lab, tck = tck, 
-                    view3d = if (!is.null(input$tab)) input$tab == 2 else FALSE, Xc.cond = get('Xc.cond', envir = tmp), 
+                ceplot.static(data = data, model = model, response = response,
+                    S = S, C = C, sigma = input$sigma, distance = input$type,
+                    cex.axis = cex.axis, cex.lab = cex.lab, tck = tck,
+                    view3d = if (!is.null(input$tab)) input$tab == 2 else FALSE, Xc.cond = get('Xc.cond', envir = tmp),
                     theta3d = if (!is.null(input$theta)) input$theta else NULL, phi3d = if (!is.null(input$phi)) input$phi else NULL)
                 dev.off()
             })
