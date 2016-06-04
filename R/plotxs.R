@@ -83,7 +83,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
 
 ## Organise defaults and check inputs.
 
-  pch <- rep(pch, nrow(y))
+  pch <- rep(pch, ny)
   if (ncol(y) != 1)
     stop("y must be a dataframe with 1 column")
   model <- if (!is.list(model))
@@ -107,15 +107,17 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
 
 ## If xs is NULL, show a univariate summary
 
-  if (is.null(xs)){
+  if (is.null(xs) || identical(ncol(xs), 0L)){
     if (is.null(prednew)){
       newdata <- xc.cond
       prednew <- lapply(model, predict1, newdata = newdata, ylevels = if (
         nlevels(y[, 1L]) > 2) levels(y[, 1L]) else NULL)
     }
-    o <- hist(y[data.order, 1L], plot = FALSE)
-    a1 <- hist(y[, 1L], plot = FALSE)
+    fullhist <- hist(y[, 1L], border = NA)
     abline(v = unlist(prednew), col = model.colour)
+    legend("topright", legend = model.name, col = model.colour, lwd =
+      model.lwd, lty = model.lty)
+    box()
   } else {
 
 ## Otherwise, go through the various combinations of xs having one or two
