@@ -114,10 +114,12 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
         nlevels(y[, 1L]) > 2) levels(y[, 1L]) else NULL)
     }
     fullhist <- hist(y[, 1L], border = NA)
-    abline(v = unlist(prednew), col = model.colour)
+    abline(v = unlist(prednew), col = model.colour, lwd = model.lwd, lty =
+      model.lty)
     legend("topright", legend = model.name, col = model.colour, lwd =
       model.lwd, lty = model.lty)
     box()
+    plot.type <- "residuals"
   } else {
 
 ## Otherwise, go through the various combinations of xs having one or two
