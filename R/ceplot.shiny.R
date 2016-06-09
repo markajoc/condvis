@@ -45,7 +45,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       conditionalPanel(condition = "input.tab == 2", numericInput("theta",
         "Horizontal rotation: ", 45, -180, 180)),
       sliderInput("sigma", "Weighting function parameter: ", 0.01, 5, step =
-        0.01, value = 1),
+        0.01, value = if (is.null(sigma)) 1 else sigma),
       radioButtons("type", "Weighting function type:", c("euclidean", "maxnorm")
         )
     ),
@@ -114,12 +114,12 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       dev.off()
     })
     observeEvent(input$deployButton, {
-      app.path <- paste0(tempdir(), "/condvis-shinyapp-deploy")
-      dir.create(app.path)
-      write(ui, file = paste0(app.path, "/ui.R"))
-      write(server(deploy = TRUE), file = paste0(app.path, "/server.R"))
-      print(ls())
-      save(list = ls(), file = paste0(app.path, "/app.Rdata"))
+      deploy.path <- paste0(tempdir(), "/condvis-shinyapp-deploy")
+      dir.create(deploy.path)
+      write(ui, file = paste0(deploy.path, "/ui.R"))
+      write(server(deploy = TRUE), file = paste0(deploy.path, "/server.R"))
+      file.copy(from = paste0(app.path, "/app.Rdata"), to = paste0(deploy.path,
+        "/app.Rdata"))
       rsconnect::deployApp(app.path)
     })'}, '
   })
