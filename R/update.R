@@ -1,5 +1,5 @@
 update.xcplot <-
-function (object, xclick, yclick, xc.cond = NULL, ...)
+function (object, xclick, yclick, xc.cond = NULL, user = FALSE, ...)
 {
   if (dev.cur() != object$device)
     dev.set(object$device)
@@ -9,8 +9,13 @@ function (object, xclick, yclick, xc.cond = NULL, ...)
     par(mar = object$mar)
     screen(n = object$screen, new = FALSE)
     if (is.null(xc.cond)){
-      xclickconv <- grconvertX(xclick, "ndc", "user")
-      yclickconv <- grconvertY(yclick, "ndc", "user")
+      if (user){
+        xclickconv <- xclick
+        yclickconv <- yclick
+      } else {
+        xclickconv <- grconvertX(xclick, "ndc", "user")
+        yclickconv <- grconvertY(yclick, "ndc", "user")
+      }
     }
   }
   if (identical(object$plot.type, "histogram")){
