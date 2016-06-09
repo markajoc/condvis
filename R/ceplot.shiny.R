@@ -114,7 +114,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       dev.off()
     })
     observeEvent(input$deployButton, {
-      app.path <- paste0(tempdir(), "/condvis-shinyapp-deploy_", timestamp1())
+      app.path <- paste0(tempdir(), "/condvis-shinyapp-deploy")
       dir.create(app.path)
       write(ui, file = paste0(app.path, "/ui.R"))
       write(server(deploy = TRUE), file = paste0(app.path, "/server.R"))
