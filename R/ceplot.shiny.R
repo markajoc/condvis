@@ -65,7 +65,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
 
   seqC <- seq_along(C)
 
-  server <-
+  server <- function (deploy = FALSE){
   paste('
   library(condvis)
   library(shiny)
@@ -100,7 +100,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         xc.cond <<- xc.cond
       }
       xc.cond <<- xc.cond
-    })
+    })',
+    if (!deploy){'
     observeEvent(input$saveButton, {
       n.selector.cols <- ceiling(length(C) / 4L)
       select.colwidth <- max(min(0.18 * n.selector.cols, 0.45), 0.2)
@@ -113,16 +114,23 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       dev.off()
     })
     observeEvent(input$deployButton, {
+      app.path <- paste0(tempdir(), "/condvis-shinyapp-deploy_", timestamp1())
+      dir.create(app.path)
+      write(ui, file = paste0(app.path, "/ui.R"))
+      write(server(deploy = TRUE), file = paste0(app.path, "/server.R"))
+      print(ls())
+      save(list = ls(), file = paste0(app.path, "/app.Rdata"))
       rsconnect::deployApp(app.path)
-    })
+    })'}, '
   })
   ')
+  }
 
   wd <- getwd()
   app.path <- paste0(tempdir(), "/condvis-shinyapp_", timestamp1())
   dir.create(app.path)
   write(ui, file = paste0(app.path, "/ui.R"))
-  write(server, file = paste0(app.path, "/server.R"))
+  write(server(), file = paste0(app.path, "/server.R"))
   print(ls())
   save(list = ls(), file = paste0(app.path, "/app.Rdata"))
   shiny::runApp(appDir = app.path)
