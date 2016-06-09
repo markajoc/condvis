@@ -250,7 +250,10 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       probs = probs, col = col, pch = pch, select.type = selectortype, residuals
       = residuals)
   } else if (identical(type, "shiny")){
-    ceplot.shiny(data = data, model = model, response = response, S = S, C = C,
-      cex.axis = cex.axis, cex.lab = cex.lab, tck = tck, Corder = Corder)
+    ceplot.shiny(data = data, model = model, response = response, S = S,
+      C = C, sigma = sigma, distance = distance, cex.axis = cex.axis, cex.lab =
+      cex.lab, tck = tck, view3d = view3d, Corder = Corder, conf = conf,
+      separate = FALSE, select.colour = select.colour, select.cex = select.cex,
+      probs = probs, col = col, pch = pch, residuals = residuals)
   }
 }

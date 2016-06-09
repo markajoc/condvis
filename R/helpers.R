@@ -176,3 +176,10 @@ polygonarea <- function (x, y = NULL)
   }
   abs(area) / 2
 }
+
+## Timestamp function to make a string for appending to filenames
+
+timestamp1 <- function()
+{
+  gsub(":", "-", gsub(" ", "_", Sys.time()))
+}
