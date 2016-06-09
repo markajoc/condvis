@@ -120,7 +120,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       write(server(deploy = TRUE), file = paste0(deploy.path, "/server.R"))
       file.copy(from = paste0(app.path, "/app.Rdata"), to = paste0(deploy.path,
         "/app.Rdata"))
-      rsconnect::deployApp(app.path)
+      rsconnect::deployApp(deploy.path)
     })'}, '
   })
   ')
