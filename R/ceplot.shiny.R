@@ -45,7 +45,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       conditionalPanel(condition = "input.tab == 2", numericInput("theta",
         "Horizontal rotation: ", 45, -180, 180)),
       sliderInput("sigma", "Weighting function parameter: ", 0.01, 5, step =
-        0.01, value = if (is.null(sigma)) 1 else sigma),
+        0.01, value = 1),
       radioButtons("type", "Weighting function type:", c("euclidean", "maxnorm")
         )
     ),
