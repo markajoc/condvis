@@ -74,9 +74,10 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   server <- function (deploy = FALSE){
   paste('
   library(condvis)
-  library(shiny)
+  library(shiny)\n',
+  paste(paste0("library(", packages, ")"), "\n")
+  ,'
   load("app.Rdata")
-  lapply(packages, require, character.only = TRUE)
   shinyServer(function (input, output)
   {
     ', paste("
