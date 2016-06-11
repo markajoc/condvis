@@ -3,11 +3,11 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, view3d =
   FALSE, Corder = "default", conf = FALSE, separate = TRUE, select.colour =
   "blue", select.cex = 1, select.lwd = 2, select.type = "minimal", probs = FALSE
-  , col = "black", pch = 1, residuals = FALSE, xc.cond = NULL)
+  , col = "black", pch = 1, residuals = FALSE, xc.cond = NULL, packages = NULL)
 {
   if(!requireNamespace("shiny", quietly = TRUE))
     stop("requires package 'shiny'")
-  else if (!exists("shinyApp")) attachNamespace("shiny")
+  else if (!exists("runApp")) attachNamespace("shiny")
   uniqC <- unique(unlist(C))
   xc.cond <- if (is.null(xc.cond))
     data[1, !colnames(data) %in% c(S, response)]
@@ -21,6 +21,11 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   height <- 8
   col <- rep(col, length.out = nrow(data))
   vwfun <- .visualweight(xc = data[, uniqC, drop = FALSE])
+  plotS3d <- identical(length(S), 2L)
+
+  packages <- if (is.null(packages))
+    rev(gsub("package:", "", grep("package:", search(), value = TRUE)))
+  else packages
 
   ui <-
   '
@@ -29,7 +34,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   h <- "200px"
   basicPage(
     column(3,
-      if (FALSE) {
+      if (plotS3d) {
         tabsetPanel(
           tabPanel("Contour", plotOutput("plotS", height = "100%", width = "80%"
             ), value = 1),
@@ -38,8 +43,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
           id = "tab"
         )
       } else plotOutput("plotS", height = "300px", width = "300px"),
-      actionButton("saveButton", "Take snapshot (pdf)"),
+      #actionButton("saveButton", "Take snapshot (pdf)"),
       actionButton("deployButton", "Deploy app to web"),
+      downloadButton("download", "Download snapshot (pdf)"),
       conditionalPanel(condition = "input.tab == 2", numericInput("phi",
         "Vertical rotation: ", 20, -180, 180)),
       conditionalPanel(condition = "input.tab == 2", numericInput("theta",
@@ -70,6 +76,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   library(condvis)
   library(shiny)
   load("app.Rdata")
+  lapply(packages, require, character.only = TRUE)
   shinyServer(function (input, output)
   {
     ', paste("
@@ -100,6 +107,20 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         xc.cond <<- xc.cond
       }
       xc.cond <<- xc.cond
+    })
+    output$download <- downloadHandler(filename = function() { paste0(
+      "condvis-download-", condvis:::timestamp1(), ".pdf")}, {
+      function(file){
+        n.selector.cols <- ceiling(length(C) / 4L)
+        select.colwidth <- max(min(0.18 * n.selector.cols, 0.45), 0.2)
+        width <- 8.5 + 2 * n.selector.cols
+        pdf(file = file, width = width, height = 8)
+        condvis:::ceplot.static(data = data, model = model, response = response,
+          S = S, C = C, cex.axis = cex.axis, cex.lab = cex.lab, tck = tck,
+          xc.cond = xc.cond, weights = vw$k, col  = col, select.colour =
+          select.colour, conf = conf)
+        dev.off()
+      }
     })',
     if (!deploy){'
     observeEvent(input$saveButton, {
@@ -110,16 +131,21 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         = width, height = 8)
       condvis:::ceplot.static(data = data, model = model, response = response, S
         = S, C = C, cex.axis = cex.axis, cex.lab = cex.lab, tck = tck, xc.cond =
-        xc.cond, weights = vw$k, col  = col, select.colour = select.colour)
+        xc.cond, weights = vw$k, col  = col, select.colour = select.colour, conf
+        = conf)
       dev.off()
     })
     observeEvent(input$deployButton, {
-      deploy.path <- paste0(tempdir(), "/condvis-shinyapp-deploy")
-      dir.create(deploy.path)
-      write(ui, file = paste0(deploy.path, "/ui.R"))
+      deploy.path <- paste0(wd, "/condvis-shinyapp-deploy")
+      dir.create(deploy.path, showWarnings = FALSE)
+      file.copy(from = paste0(app.path, "/ui.R"), to = paste0(deploy.path,
+        "/ui.R"), overwrite = TRUE)
       write(server(deploy = TRUE), file = paste0(deploy.path, "/server.R"))
       file.copy(from = paste0(app.path, "/app.Rdata"), to = paste0(deploy.path,
-        "/app.Rdata"))
+        "/app.Rdata"), overwrite = TRUE)
+      if (!requireNamespace("rsconnect", quietly = TRUE))
+        stop("requires package \'rsconnect\'")
+      else if (!exists("deployApp")) attachNamespace("rsconnect")
       rsconnect::deployApp(deploy.path)
     })'}, '
   })
@@ -127,11 +153,10 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   }
 
   wd <- getwd()
-  app.path <- paste0(tempdir(), "/condvis-shinyapp_", timestamp1())
-  dir.create(app.path)
+  app.path <- paste0(tempdir(), "/condvis-shinyapp-temp")
+  dir.create(app.path, showWarnings = FALSE)
   write(ui, file = paste0(app.path, "/ui.R"))
   write(server(), file = paste0(app.path, "/server.R"))
-  print(ls())
   save(list = ls(), file = paste0(app.path, "/app.Rdata"))
   shiny::runApp(appDir = app.path)
 }
