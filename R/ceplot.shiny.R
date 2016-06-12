@@ -5,31 +5,50 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   "blue", select.cex = 1, select.lwd = 2, select.type = "minimal", probs = FALSE
   , col = "black", pch = 1, residuals = FALSE, xc.cond = NULL, packages = NULL)
 {
+  ## First check for shiny package, and stop if not installed
+
   if(!requireNamespace("shiny", quietly = TRUE))
     stop("requires package 'shiny'")
   else if (!exists("runApp")) attachNamespace("shiny")
-  uniqC <- unique(unlist(C))
+
+  ## Set up the initial section
+
   xc.cond <- if (is.null(xc.cond))
     data[1, !colnames(data) %in% c(S, response)]
   else xc.cond
   #data.frame(lapply(data[, !colnames(data) %in% c(S, response)], mode1))
+  uniqC <- unique(unlist(C))
+
+  ## Set some variables and the visualweight function
+
   xcplots <- list()
-  coords <- matrix(ncol = 4L, nrow = length(C))
   plotlegend <- length(S) == 2
   n.selector.cols <- ceiling(length(C) / 4L)
   selector.colwidth <- 2
   height <- 8
   col <- rep(col, length.out = nrow(data))
-  vwfun <- .visualweight(xc = data[, uniqC, drop = FALSE])
   plotS3d <- identical(length(S), 2L)
+  seqC <- seq_along(C)
+  wd <- getwd()
+
+  vwfun <- .visualweight(xc = data[, uniqC, drop = FALSE])
+
+  ## These are the packages required to call predict on all models in 'model'
+  ## If not supplied, all packages attached to the search path at the time of
+  ## calling ceplot are recorded.
 
   packages <- if (is.null(packages))
     rev(gsub("package:", "", grep("package:", search(), value = TRUE)))
   else packages
 
+  ## Function to create the shiny ui.R file. 'deploy' switch removes certain
+  ## elements when deploying the application.
+
   ui <- function (deploy = FALSE)
   {
   paste0('
+  ## This ui.R file was created by condvis:::ceplot.shiny
+  
   library(shiny)
   load("app.Rdata")
   h <- "200px"
@@ -71,10 +90,13 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   ')
   }
 
-  seqC <- seq_along(C)
+  ## Function to create the shiny server.R file. 'deploy' switch removes certain
+  ## elements when deploying the application.
 
   server <- function (deploy = FALSE){
   paste('
+  ## This server.R file was created by condvis:::ceplot.shiny
+
   library(condvis)
   library(shiny)\n',
   paste(paste0("library(", packages, ")"), collapse = "\n")
@@ -154,7 +176,10 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   ')
   }
 
-  wd <- getwd()
+  ## Create a temporary directory to store the application files (including a
+  ## snapshot of the objects in this environment in "app.Rdata") and run the
+  ## application
+
   app.path <- paste0(tempdir(), "/condvis-shinyapp-temp")
   dir.create(app.path, showWarnings = FALSE)
   write(ui(), file = paste0(app.path, "/ui.R"))
