@@ -27,8 +27,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     rev(gsub("package:", "", grep("package:", search(), value = TRUE)))
   else packages
 
-  ui <-
-  '
+  ui <- function (deploy = FALSE)
+  {
+  paste0('
   library(shiny)
   load("app.Rdata")
   h <- "200px"
@@ -44,7 +45,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         )
       } else plotOutput("plotS", height = "300px", width = "300px"),
       #actionButton("saveButton", "Take snapshot (pdf)"),
-      actionButton("deployButton", "Deploy app to web"),
+      ', if (!deploy) 'actionButton("deployButton", "Deploy app to web"),','
       downloadButton("download", "Download snapshot (pdf)"),
       conditionalPanel(condition = "input.tab == 2", numericInput("phi",
         "Vertical rotation: ", 20, -180, 180)),
@@ -67,7 +68,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       plotOutput("plot6", click = "plot_click6", height = h)
     )
   )
-  '
+  ')
+  }
 
   seqC <- seq_along(C)
 
@@ -139,8 +141,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     observeEvent(input$deployButton, {
       deploy.path <- paste0(wd, "/condvis-shinyapp-deploy")
       dir.create(deploy.path, showWarnings = FALSE)
-      file.copy(from = paste0(app.path, "/ui.R"), to = paste0(deploy.path,
-        "/ui.R"), overwrite = TRUE)
+      write(ui(deploy = TRUE), file = paste0(deploy.path, "/ui.R"))
       write(server(deploy = TRUE), file = paste0(deploy.path, "/server.R"))
       file.copy(from = paste0(app.path, "/app.Rdata"), to = paste0(deploy.path,
         "/app.Rdata"), overwrite = TRUE)
@@ -156,7 +157,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   wd <- getwd()
   app.path <- paste0(tempdir(), "/condvis-shinyapp-temp")
   dir.create(app.path, showWarnings = FALSE)
-  write(ui, file = paste0(app.path, "/ui.R"))
+  write(ui(), file = paste0(app.path, "/ui.R"))
   write(server(), file = paste0(app.path, "/server.R"))
   save(list = ls(), file = paste0(app.path, "/app.Rdata"))
   shiny::runApp(appDir = app.path)
