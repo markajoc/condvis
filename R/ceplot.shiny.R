@@ -75,7 +75,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   paste('
   library(condvis)
   library(shiny)\n',
-  paste(paste0("library(", packages, ")"), "\n")
+  paste(paste0("library(", packages, ")"), collapse = "\n")
   ,'
   load("app.Rdata")
   shinyServer(function (input, output)
