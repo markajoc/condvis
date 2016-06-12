@@ -3,3 +3,7 @@ r:
   - oldrel
   - release
   - devel
+env:
+  global:
+    - R_CHECK_ARGS="--as-cran"
+cache: packages    
