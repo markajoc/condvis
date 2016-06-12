@@ -48,24 +48,22 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   {
   paste0('
   ## This ui.R file was created by condvis:::ceplot.shiny
-  
+
   library(shiny)
   load("app.Rdata")
   h <- "200px"
+  hS <- "400px"
   basicPage(
-    column(3,
+    column(4,
       if (plotS3d) {
         tabsetPanel(
-          tabPanel("Contour", plotOutput("plotS", height = "100%", width = "80%"
+          tabPanel("Contour", plotOutput("plotS", height = hS, width = hS
             ), value = 1),
-          tabPanel("Perspective", plotOutput("plotS2", height = "100%", width =
-            "80%"), value = 2),
+          tabPanel("Perspective", plotOutput("plotS2", height = hS, width =
+            hS), value = 2),
           id = "tab"
         )
-      } else plotOutput("plotS", height = "300px", width = "300px"),
-      #actionButton("saveButton", "Take snapshot (pdf)"),
-      ', if (deploy) '#', 'actionButton("deployButton", "Deploy app to web"),
-      downloadButton("download", "Download snapshot (pdf)"),
+      } else plotOutput("plotS", height = hS, width = hS),
       conditionalPanel(condition = "input.tab == 2", numericInput("phi",
         "Vertical rotation: ", 20, -180, 180)),
       conditionalPanel(condition = "input.tab == 2", numericInput("theta",
@@ -73,18 +71,22 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       sliderInput("sigma", "Weighting function parameter: ", 0.01, 5, step =
         0.01, value = if (is.null(sigma)) 1 else sigma),
       radioButtons("type", "Weighting function type:", c("euclidean", "maxnorm")
-        )
+        ),',
+      if (deploy) '#', 'actionButton("deployButton", "Deploy app to web"),
+      downloadButton("download", "Download snapshot (pdf)")
     ),
-    column(2,
-      plotOutput("plot1", click = "plot_click1", height = h),
-      plotOutput("plot2", click = "plot_click2", height = h),
-      plotOutput("plot3", click = "plot_click3", height = h),
-      tableOutput("info")
-    ),
-    column(2,
-      plotOutput("plot4", click = "plot_click4", height = h),
-      plotOutput("plot5", click = "plot_click5", height = h),
-      plotOutput("plot6", click = "plot_click6", height = h)
+    column(8,
+      column(3,
+        plotOutput("plot1", click = "plot_click1", height = h),
+        plotOutput("plot2", click = "plot_click2", height = h),
+        plotOutput("plot3", click = "plot_click3", height = h),
+        tableOutput("info")
+      ),
+      column(3,
+        plotOutput("plot4", click = "plot_click4", height = h),
+        plotOutput("plot5", click = "plot_click5", height = h),
+        plotOutput("plot6", click = "plot_click6", height = h)
+      )
     )
   )
   ')
