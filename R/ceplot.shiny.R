@@ -45,7 +45,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         )
       } else plotOutput("plotS", height = "300px", width = "300px"),
       #actionButton("saveButton", "Take snapshot (pdf)"),
-      ', if (!deploy) 'actionButton("deployButton", "Deploy app to web"),','
+      ', if (deploy) '#', 'actionButton("deployButton", "Deploy app to web"),
       downloadButton("download", "Download snapshot (pdf)"),
       conditionalPanel(condition = "input.tab == 2", numericInput("phi",
         "Vertical rotation: ", 20, -180, 180)),
