@@ -51,15 +51,15 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
 
   library(shiny)
   load("app.Rdata")
-  h <- "200px"
-  hS <- "400px"
+  h <- "170px"
+  hS <- "350px"
   basicPage(
     column(4,
       if (plotS3d) {
         tabsetPanel(
           tabPanel("Contour", plotOutput("plotS", height = hS, width = hS
             ), value = 1),
-          tabPanel("Perspective", plotOutput("plotS2", height = hS, width =
+          tabPanel("Perspective", plotOutput("plotS", height = hS, width =
             hS), value = 2),
           id = "tab"
         )
@@ -76,16 +76,16 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       downloadButton("download", "Download snapshot (pdf)")
     ),
     column(8,
-      column(3,
-        plotOutput("plot1", click = "plot_click1", height = h),
-        plotOutput("plot2", click = "plot_click2", height = h),
-        plotOutput("plot3", click = "plot_click3", height = h),
+      column(4,
+        plotOutput("plot1", click = "plot_click1", height = h, width = h),
+        plotOutput("plot2", click = "plot_click2", height = h, width = h),
+        plotOutput("plot3", click = "plot_click3", height = h, width = h),
         tableOutput("info")
       ),
-      column(3,
-        plotOutput("plot4", click = "plot_click4", height = h),
-        plotOutput("plot5", click = "plot_click5", height = h),
-        plotOutput("plot6", click = "plot_click6", height = h)
+      column(4,
+        plotOutput("plot4", click = "plot_click4", height = h, width = h),
+        plotOutput("plot5", click = "plot_click5", height = h, width = h),
+        plotOutput("plot6", click = "plot_click6", height = h, width = h)
       )
     )
   )
@@ -96,30 +96,51 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   ## elements when deploying the application.
 
   server <- function (deploy = FALSE){
-  paste('
-  ## This server.R file was created by condvis:::ceplot.shiny
+  paste(
+'  ## This server.R file was created by condvis:::ceplot.shiny
 
   library(condvis)
-  library(shiny)\n',
-  paste(paste0("library(", packages, ")"), collapse = "\n")
+  library(shiny)\n ',
+  paste(paste0("library(", packages, ")"), collapse = "\n  ")
   ,'
   load("app.Rdata")
   shinyServer(function (input, output)
   {
-    ', paste("
+
+message(\"running shiny server\")
+
+    ## First do condition selector plots.
+    ## Need to call close.screen in here to avoid problems after the pdf call in
+    ## output$download. Problem lies in update.xcplot trying to set screens and
+    ## draw... this seems like a cheaper fix for now. Maybe update.xcplot could
+    ## have a logical switch added to suppress attempts to draw.
+    ',
+    paste("
     output$plot", seqC, " <- renderPlot({
       i <- ", seqC, "
+
+message(\"running renderPlot for plotxc\")
+a <- Sys.time()
       if(!is.null(input$plot_click", seqC, "$x)){
-          xc.cond[, xcplots[[i]]$name] <<- condvis:::update.xcplot(xcplots[[i]],
-            xclick = input$plot_click", seqC, "$x, yclick =
-            input$plot_click", seqC, "$y, user = TRUE)$xc.cond.old
+        close.screen(all.screens = TRUE)
+        xc.cond[, xcplots[[i]]$name] <<- condvis:::update.xcplot(xcplots[[i]],
+          xclick = input$plot_click", seqC, "$x, yclick =
+          input$plot_click", seqC, "$y, user = TRUE)$xc.cond.old
       }
       xcplots[[i]] <<- plotxc(xc = data[, C[[i]]], xc.cond = xc.cond[1L, C[[i]]
         ], name = colnames(data[, C[[i]], drop = FALSE]), select.colour =
         select.colour, select.cex = select.cex)
+print(a - Sys.time())
+message(\"finished renderPlot for plotxc\")
     })"
     , sep = "", collapse = "\n"), '
+
+    ## Next do the section visualisation.
+
     output$plotS <- renderPlot({
+
+message(\"running renderPlot for plotxs\")
+a <- Sys.time()
       if (!is.null(input$plot_click1$x) || !is.null(input$plot_click2$x)){
         xc.cond <<- xc.cond
       }
@@ -127,14 +148,25 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       xsplot <<- condvis:::plotxs1(xs = data[, S, drop = FALSE], data[, response, drop =
         FALSE], xc.cond = xc.cond, model = model, col = col, weights = vw$k,
         view3d = view3d, conf = conf, probs = probs, pch = pch)
-
+print(a - Sys.time())         
+message(\"finished renderPlot for plotxs\")
     })
+
+    ## Give a basic table showing the section/condition values
+
     output$info <- renderTable({
+
+      message(\"running renderTable\")
+
+
       if (!is.null(input$plot_click1$x) || !is.null(input$plot_click2$x)){
         xc.cond <<- xc.cond
       }
       xc.cond <<- xc.cond
     })
+
+    ## Allow the user to download a snapshot of the current visualisation
+
     output$download <- downloadHandler(filename = function() { paste0(
       "condvis-download-", condvis:::timestamp1(), ".pdf")}, {
       function(file){
@@ -150,18 +182,10 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       }
     })',
     if (!deploy){'
-    observeEvent(input$saveButton, {
-      n.selector.cols <- ceiling(length(C) / 4L)
-      select.colwidth <- max(min(0.18 * n.selector.cols, 0.45), 0.2)
-      width <- 8.5 + 2 * n.selector.cols
-      pdf(file = paste0(wd, "/snapshot_", condvis:::timestamp1(), ".pdf"), width
-        = width, height = 8)
-      condvis:::ceplot.static(data = data, model = model, response = response, S
-        = S, C = C, cex.axis = cex.axis, cex.lab = cex.lab, tck = tck, xc.cond =
-        xc.cond, weights = vw$k, col  = col, select.colour = select.colour, conf
-        = conf)
-      dev.off()
-    })
+
+    ## Code after here relates to deploying the current application, and will
+    ## not be present in a deployed application.
+
     observeEvent(input$deployButton, {
       deploy.path <- paste0(wd, "/condvis-shinyapp-deploy")
       dir.create(deploy.path, showWarnings = FALSE)
