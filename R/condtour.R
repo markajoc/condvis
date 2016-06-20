@@ -215,8 +215,8 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
   selector.colwidth <- 2
   height <- 8
   width <- height + 0.5 * plotlegend
-  k <- similarityweight(xc.cond = path, xc = data[, colnames(path), drop =
-    FALSE], sigma = sigma, distance = distance)
+  k <- similarityweight(x = path, data = data[, colnames(path), drop = FALSE],
+    threshold = sigma, distance = distance)
   opendev(width = width, height = height)
   devexp <- dev.cur()
   close.screen(all.screens = TRUE)
