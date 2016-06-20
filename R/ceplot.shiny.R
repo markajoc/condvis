@@ -148,7 +148,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     output$plotS <- renderPlot({\n     ',
       paste('input$plot_click', seqC, sep = '', collapse = '\n      '), '
       vw <<- vwfun(xc.cond = xc.cond, sigma = sigma, distance = distance)
-      xsplot <<- condvis:::plotxs1(xs = data[, S, drop = FALSE], data[, response
+      xsplot <<- condvis:::plotxs(xs = data[, S, drop = FALSE], data[, response
         , drop = FALSE], xc.cond = xc.cond, model = model, col = col, weights =
         vw$k, view3d = view3d, conf = conf, probs = probs, pch = pch)
     })
