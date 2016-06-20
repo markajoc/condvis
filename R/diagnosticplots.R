@@ -36,7 +36,7 @@ function (object, pathindex = NULL, ...)
 ## plotmaxk a diagnostic plot to be used with condtour. This is a static plot.
 ## Shows the deciles of the maximum visual weight given to the data by the
 ## current conditional tour. If too many observations are reaching maximum
-## visual weight of 1, the 'sigma' used in visualweight might be too big. If
+## visual weight of 1, the 'sigma' used in similarityweight might be too big. If
 ## no observations are reaching maximum visual weights of 0.3, we may not see
 ## any data on the sections.
 

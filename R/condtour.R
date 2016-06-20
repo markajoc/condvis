@@ -10,32 +10,32 @@
 #'   dataframe with its \code{colnames} being a subset of the
 #'   \code{colnames(data)}.
 #' @param response Character name of response variable in \code{data}.
-#' @param S Character name(s) of variables in \code{data} on which to take
-#'   sections.
-#' @param C Character name(s) of variables in \code{data} on which to condition.
-#' @param sigma Threshold distance. Observed data which are a distance greater
-#'   than \code{sigma} from the current section are not visible.
+#' @param sectionvars Character name(s) of variables in \code{data} on which to
+#'   take sections.
+#' @param conditionvars Character name(s) of variables in \code{data} on which
+#'   to condition.
+#' @param threshold Threshold distance. Observed data which are a distance
+#'   greater than \code{threshold} from the current section are not visible.
 #' @param distance The type of distance measure to use, either
 #'   \code{"euclidean"} (default) or \code{"maxnorm"}.
-#' @param cex.axis Scaling for axis text
-#' @param cex.lab Scaling for labels
-#' @param tck Tick size for axes.
 #' @param view3d Logical; if \code{TRUE}, plots a three-dimensional regression
 #'   surface when possible.
 #' @param conf Logical; if \code{TRUE}, plots confidence bounds or equivalent
 #'   when possible.
-#' @param select.colour Colour to highlight current section.
 #' @param col Colour for observed data points.
 #' @param pch Plot symbols for observed data points.
+#' @param xcplotpar Plotting parameters for condition selector plots as a list,
+#'   passed to \code{\link{plotxc}}. Can specify \code{cex.axis}, \code{cex.lab}
+#'   , \code{tck}, \code{col} for highlighting current section, \code{cex}.
 #'
 #' @return Produces a set of interactive plots. One device displays the current
 #'   section. A second device shows the the current section in the space of the
-#'   conditioning predictors given by \code{C}. A third device shows some simple
-#'   diagnostic plots; one to show approximately how much data are visible on
-#'   each section, and another to show what proportion of data are
+#'   conditioning predictors given by \code{conditionvars}. A third device shows
+#'   some simple diagnostic plots; one to show approximately how much data are
+#'   visible on each section, and another to show what proportion of data are
 #'   \emph{visited} by the tour.
 #'
-#' @seealso \code{\link{ceplot}}, \code{\link{visualweight}}
+#' @seealso \code{\link{ceplot}}, \code{\link{similarityweight}}
 #'
 #' @examples
 #' \dontrun{
@@ -44,24 +44,45 @@
 #' library(e1071)
 #' model <- svm(PE ~ ., data = powerplant)
 #' path <- makepath(powerplant[-5], 25)
-#' condtour(data = powerplant, model = model, path = path$path, S = "AT")
+#' condtour(data = powerplant, model = model, path = path$path,
+#'   sectionvars = "AT")
 #'
 #' data(wine)
 #' wine$Class <- as.factor(wine$Class)
 #' library(e1071)
 #' model5 <- list(svm(Class ~ ., data = wine))
-#' C <- setdiff(colnames(wine), c("Class", "Hue", "Flavanoids"))
-#' path <- makepath(wine[, C], 50)
-#' condtour(data = wine, model = model5, path = path$path, S = c("Hue",
-#'   "Flavanoids"), sigma = 3)
+#' conditionvars1 <- setdiff(colnames(wine), c("Class", "Hue", "Flavanoids"))
+#' path <- makepath(wine[, conditionvars1], 50)
+#' condtour(data = wine, model = model5, path = path$path, sectionvars = c("Hue"
+#'   , "Flavanoids"), threshold = 3)
 #'
 #'}
 
 condtour <-
-function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
-  distance = c("euclidean", "maxnorm"), cex.axis = NULL, cex.lab = NULL, tck = NULL, view3d
-  = FALSE, conf = FALSE, select.colour = "blue", col = "black", pch = 1)
+function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
+  NULL, threshold = NULL, distance = c("euclidean", "maxnorm"), view3d = FALSE,
+  conf = FALSE, col = "black", pch = 1, xcplotpar = NULL)
 {
+  ## Rename for internal
+
+  S <- sectionvars
+  C <- conditionvars
+  sigma <- threshold
+
+  ## Check for optional inputs
+
+  cex.axis <- xcplotpar$cex.axis
+  cex.lab <- xcplotpar$cex.lab
+  tck <- xcplotpar$tck
+  select.colour <- if (is.null(xcplotpar$col))
+    "blue"
+  else xcplotpar$col
+  select.cex <- if (is.null(xcplotpar$select.cex))
+    1
+  else xcplotpar$select.cex
+
+  ##
+
   xold <- NULL
   yold <- NULL
   mousemove <- function ()
@@ -194,8 +215,8 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
   selector.colwidth <- 2
   height <- 8
   width <- height + 0.5 * plotlegend
-  k <- visualweight(xc.cond = path, xc = data[, colnames(path), drop = FALSE],
-    sigma = sigma, distance = distance)
+  k <- similarityweight(xc.cond = path, xc = data[, colnames(path), drop =
+    FALSE], sigma = sigma, distance = distance)
   opendev(width = width, height = height)
   devexp <- dev.cur()
   close.screen(all.screens = TRUE)

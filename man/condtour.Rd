@@ -83,6 +83,6 @@ condtour(data = wine, model = model5, path = path$path, S = c("Hue",
 }
 }
 \seealso{
-\code{\link{ceplot}}, \code{\link{visualweight}}
+\code{\link{ceplot}}, \code{\link{similarityweight}}
 }
 

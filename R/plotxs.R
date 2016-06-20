@@ -2,7 +2,7 @@
 #'
 #' @description Visualise a section in data space, showing fitted models where
 #'   they intersect the section, and nearby observations. The visual weight for
-#'   observations can be calculated with \code{\link{visualweight}}. This
+#'   observations can be calculated with \code{\link{similarityweight}}. This
 #'   function is mainly for use in \code{\link{ceplot}} and
 #'   \code{\link{condtour}}.
 #'
@@ -24,7 +24,7 @@
 #' @param mar Margins for plot.
 #' @param col Colours for observed data. Should be of length \code{nrow(xs)}.
 #' @param weights Visual weights for observed data. Should be of length
-#'   \code{nrow(xs)}. Usually calculated with \code{\link{visualweight}}.
+#'   \code{nrow(xs)}. Usually calculated with \code{\link{similarityweight}}.
 #' @param view3d Logical; if \code{TRUE} plots a three-dimensional
 #'   regression surface if possible.
 #' @param theta3d,phi3d Angles defining the viewing direction. \code{theta3d}

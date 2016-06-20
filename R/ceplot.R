@@ -9,26 +9,23 @@
 #' @param data A dataframe containing the data to plot
 #' @param model A model object, or list of model objects
 #' @param response Character name of response in \code{data}
-#' @param S Character name of variable(s) from \code{data} on which to take a
-#'   section, can be of length 1 or 2.
-#' @param C Character names of conditioning variables from \code{data}. Can be a
-#'   list of vectors of length 1 or 2. Can be a character vector, which is then
-#'   paired up using \code{\link{arrangeC}}. If \code{NULL}, an attempt will be
-#'   made to extract all variable names which are not \code{response} or
-#'   \code{S} from \code{model}, and these will be arranged using
-#'   \code{\link{arrangeC}}.
-#' @param sigma This is a threshold distance. Points further than \code{sigma}
-#'   away from the current section will not be visible. Passed to
-#'   \code{\link{visualweight}}.
+#' @param sectionvars Character name of variable(s) from \code{data} on which to
+#'   take a section, can be of length 1 or 2.
+#' @param conditionvars Character names of conditioning variables from
+#'   \code{data}. Can be a list of vectors of length 1 or 2. Can be a character
+#'   vector, which is then paired up using \code{\link{arrangeC}}. If
+#'   \code{NULL}, an attempt will be made to extract all variable names which
+#'   are not \code{response} or \code{sectionvars} from \code{model}, and these
+#'   will be arranged using \code{\link{arrangeC}}.
+#' @param threshold This is a threshold distance. Points further than
+#'   \code{threshold} away from the current section will not be visible. Passed
+#'   to \code{\link{similarityweight}}.
 #' @param distance A character vector describing the type of distance measure to
 #'   use, either \code{"euclidean"} (default) or \code{"maxnorm"}.
 #' @param type This specifies the type of interactive plot. \code{"default"}
 #'   places everything on one device. \code{"separate"} places condition
 #'   selectors on one device and the section on another. (These two options
 #'   require XQuartz on OS X). \code{"shiny"} produces a Shiny application.
-#' @param cex.axis Scaling for axis text.
-#' @param cex.lab Scaling for label text.
-#' @param tck Tick size for axes.
 #' @param view3d Logical; if \code{TRUE} plots a three-dimensional
 #'   regression surface if possible.
 #' @param Corder Character name for method of ordering conditioning variables.
@@ -39,14 +36,19 @@
 #'   \code{"full"} (see \code{\link{plotxc.full}}).
 #' @param conf Logical; if \code{TRUE} plots confidence bounds (or equivalent)
 #'   for models which provide this.
-#' @param select.colour Colour for highlighting current condition/section.
-#' @param select.cex Scaling of data in condition selector plots.
 #' @param probs Logical; if \code{TRUE}, shows predicted class probabilities
 #'   instead of just predicted classes when possible.
-#' @param col Colour for observed data
-#' @param pch Plot symbols for observed data
+#' @param col Colour for observed data.
+#' @param pch Plot symbols for observed data.
 #' @param residuals Logical; if \code{TRUE}, plots a residual versus predictor
 #'   plot instead of the usual scale of raw response.
+#' @param xsplotpar Plotting parameters for section visualisation as a list,
+#'   passed to \code{\link{plotxs}}. Not used.
+#' @param modelpar Plotting parameters for models as a list, passed to
+#'   \code{\link{plotxs}}. Not used.
+#' @param xcplotpar Plotting parameters for condition selector plots as a list,
+#'   passed to \code{\link{plotxc}}. Can specify \code{cex.axis}, \code{cex.lab}
+#'   , \code{tck}, \code{col} for highlighting current section, \code{cex}.
 #'
 #' @examples
 #' \dontrun{
@@ -61,8 +63,8 @@
 #'
 #' conditionvars1 <- list(c("cyl", "hp"))
 #'
-#' ceplot(data = mtcars, model = model1, response = "mpg", S = "wt",
-#'   C = conditionvars1, sigma = 0.3, conf = T)
+#' ceplot(data = mtcars, model = model1, response = "mpg", sectionvars = "wt",
+#'   conditionvars = conditionvars1, threshold = 0.3, conf = T)
 #'
 #' ## Example 2: Binary classification, xs one categorical predictor
 #'
@@ -74,7 +76,8 @@
 #'   svm = svm(am ~ mpg + wt + cyl, data = mtcars, family = "binomial"),
 #'   glm = glm(am ~ mpg + wt + cyl, data = mtcars, family = "binomial"))
 #'
-#' ceplot(data = mtcars, model = model2, S = "wt", sigma = 1, type = "shiny")
+#' ceplot(data = mtcars, model = model2, sectionvars = "wt", threshold = 1,
+#'   type = "shiny")
 #'
 #' ## Example 3: Multivariate regression, xs both continuous
 #'
@@ -87,11 +90,11 @@
 #'
 #' conditionvars3 <- list(c("cyl","gear"), "hp")
 #'
-#' ceplot(data = mtcars, model = model3, S = c("wt", "qsec"),
-#'   sigma = 1, C = conditionvars3)
+#' ceplot(data = mtcars, model = model3, sectionvars = c("wt", "qsec"),
+#'   threshold = 1, conditionvars = conditionvars3)
 #'
-#' ceplot(data = mtcars, model = model3, S = c("wt", "qsec"),
-#'     sigma = 1, type = "separate", view3d = T)
+#' ceplot(data = mtcars, model = model3, sectionvars = c("wt", "qsec"),
+#'     threshold = 1, type = "separate", view3d = T)
 #'
 #' ## Example 4: Multi-class classification, xs both categorical
 #'
@@ -104,7 +107,8 @@
 #' library(e1071)
 #' model4 <- list(svm(carb ~ ., data = mtcars, family = "binomial"))
 #'
-#' ceplot(data = mtcars, model = model4, S = c("cyl", "gear"), sigma = 3)
+#' ceplot(data = mtcars, model = model4, sectionvars = c("cyl", "gear"),
+#'   threshold = 3)
 #'
 #' ## Example 5: Multi-class classification, xs both continuous
 #'
@@ -114,14 +118,14 @@
 #'
 #' model5 <- list(svm(Class ~ ., data = wine, probability = TRUE))
 #'
-#' ceplot(data = wine, model = model5, S = c("Hue", "Flavanoids"), sigma = 3,
-#'   probs = TRUE)
+#' ceplot(data = wine, model = model5, sectionvars = c("Hue", "Flavanoids"),
+#'   threshold = 3, probs = TRUE)
 #'
-#' ceplot(data = wine, model = model5, S = c("Hue", "Flavanoids"), sigma = 3,
-#'   type = "separate")
+#' ceplot(data = wine, model = model5, sectionvars = c("Hue", "Flavanoids"),
+#'   threshold = 3, type = "separate")
 #'
-#' ceplot(data = wine, model = model5, S = c("Hue", "Flavanoids"), sigma = 3,
-#'   type = "separate", selectortype = "pcp")
+#' ceplot(data = wine, model = model5, sectionvars = c("Hue", "Flavanoids"),
+#'   threshold = 3, type = "separate", selectortype = "pcp")
 #'
 #' ## Example 6: Multi-class classification, xs with one categorical predictor,
 #' ##            and one continuous predictor.
@@ -132,17 +136,37 @@
 #' library(e1071)
 #' model6 <- list(svm(cyl ~ carb + wt + hp, data = mtcars, family = "binomial"))
 #'
-#' ceplot(data = mtcars, model = model6, sigma = 1, S = c("carb", "wt"),
-#'   C = "hp")
+#' ceplot(data = mtcars, model = model6, threshold = 1, sectionvars = c("carb",
+#'   "wt"), conditionvars = "hp")
 #' }
 
 ceplot <-
-function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
-  distance = c("euclidean", "maxnorm"), type = c("default", "separate", "shiny")
-  , cex.axis = NULL, cex.lab = NULL, tck = NULL, view3d = FALSE, Corder =
-  "default", selectortype = "minimal", conf = FALSE, select.colour = "blue",
-  select.cex = 1, probs = FALSE, col = "black", pch = NULL, residuals = FALSE)
+function (data, model, response = NULL, sectionvars = NULL, conditionvars = NULL
+  , threshold = NULL, distance = c("euclidean", "maxnorm"), type = c("default",
+  "separate", "shiny"), view3d = FALSE, Corder = "default", selectortype =
+  "minimal", conf = FALSE, probs = FALSE, col = "black", pch = NULL, residuals =
+  FALSE, xsplotpar = NULL, modelpar = NULL, xcplotpar = NULL)
 {
+## Rename for internal
+
+  S <- sectionvars
+  C <- conditionvars
+  sigma <- threshold
+
+## Check for optional inputs
+
+  cex.axis <- xcplotpar$cex.axis
+  cex.lab <- xcplotpar$cex.lab
+  tck <- xcplotpar$tck
+  select.colour <- if (is.null(xcplotpar$col))
+    "blue"
+  else xcplotpar$col
+  select.cex <- if (is.null(xcplotpar$select.cex))
+    1
+  else xcplotpar$select.cex
+
+## Prepare variables
+
   data <- na.omit(data)
   model <- if (!inherits(model, "list"))
     list(model)
