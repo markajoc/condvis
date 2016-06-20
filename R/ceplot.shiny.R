@@ -68,10 +68,10 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         "Vertical rotation: ", 20, -180, 180)),
       conditionalPanel(condition = "input.tab == 2", numericInput("theta",
         "Horizontal rotation: ", 45, -180, 180)),
-      sliderInput("sigma", "Weighting function parameter: ", 0.01, 5, step =
+      sliderInput("threshold", "Distance threshold: ", 0.01, 5, step =
         0.01, value = if (is.null(sigma)) 1 else sigma),
-      radioButtons("type", "Weighting function type:", c("euclidean", "maxnorm")
-        ),',
+      radioButtons("distance", "Distance function type:", c("euclidean",
+        "maxnorm")),',
       if (deploy) '#', 'actionButton("deployButton", "Deploy app to web"),
       downloadButton("download", "Download snapshot (pdf)")
     ),
@@ -147,7 +147,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
 
     output$plotS <- renderPlot({\n     ',
       paste('input$plot_click', seqC, sep = '', collapse = '\n      '), '
-      vw <<- vwfun(xc.cond = xc.cond, sigma = sigma, distance = distance)
+      vw <<- vwfun(xc.cond = xc.cond, sigma = input$threshold, distance =
+        input$distance)
       xsplot <<- condvis:::plotxs(xs = data[, S, drop = FALSE], data[, response
         , drop = FALSE], xc.cond = xc.cond, model = model, col = col, weights =
         vw$k, view3d = view3d, conf = conf, probs = probs, pch = pch)
