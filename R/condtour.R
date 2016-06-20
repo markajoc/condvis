@@ -217,7 +217,7 @@ function(data, model, path, response = NULL, S = NULL, C = NULL, sigma = NULL,
     pathindex, ][k.order.trimmed], 3), nrow = 3, byrow = TRUE)
   data.colour <- rep(NA, length(col))
   data.colour[k.order.trimmed] <- rgb(t(newcol))
-  xsplot <- plotxs1(xs = data[, S, drop = FALSE], data[, response, drop = FALSE]
+  xsplot <- plotxs(xs = data[, S, drop = FALSE], data[, response, drop = FALSE]
     , xc.cond = xc.cond, model = model, weights = k[pathindex, ], col = col,
     view3d = view3d, conf = conf, pch = pch)
   xscoords <- par("fig")

@@ -182,15 +182,15 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
 ## If no section variables have been specified, just try and pick the first
 ## predictor out of the model.
 
-  S <- if(is.null(S)){
-    if (!inherits(varnamestry, "try-error")){
-      varnamestry$predictors[1L]
-    } else {
-      setdiff(colnames(data), response)[1L]
-    }
-  } else if (is.integer(S)){
-    colnames(data)[S]
-  } else S
+#  S <- if(is.null(S)){
+#    if (!inherits(varnamestry, "try-error")){
+#      varnamestry$predictors[1L]
+#    } else {
+#      setdiff(colnames(data), response)[1L]
+#    }
+#  } else if (is.integer(S)){
+#    colnames(data)[S]
+#  } else S
 
 ## Hierarchy for specifying C
 ##   1. If user supplies list, use that exactly (maybe chop length).

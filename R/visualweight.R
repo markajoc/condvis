@@ -15,8 +15,9 @@
 #'   mismatches, before adding to the Minkowski distance, to give a general
 #'   dissimilarity measure.
 #'
-#' @return The visual weights for the observations in \code{xc} arranged in rows
-#'   for each section in \code{xc.cond}.
+#' @return A numeric vector or matrix, with values between 0 and 1. The visual
+#'   weights for the observations in \code{xc} arranged in rows for each row
+#'   in \code{xc.cond}.
 #'
 #' @details Visual weight is assigned to observations based on their
 #'   distance from a section (treated as an observation here). The distance is

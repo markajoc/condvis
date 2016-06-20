@@ -326,7 +326,7 @@ function (object, xc.cond = NULL, weights = NULL, view3d = NULL, theta3d = NULL,
   } else NULL
   arefactorsxs <- vapply(object$xs, is.factor, logical(1L))
 
-  if (object$plot.type %in% c("ff")){
+  if (identical(object$plot.type, "ff")){
     screen(n = object$screen, new = FALSE)
     dev.hold()
     rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col =
@@ -370,8 +370,7 @@ function (object, xc.cond = NULL, weights = NULL, view3d = NULL, theta3d = NULL,
     object$newdata <- newdata
     object$prednew <- prednew
     return(object)
-  }
-  if (object$plot.type %in% c("cf")){
+  } else if (identical(object$plot.type, "cf")){
     screen(n = object$screen, new = FALSE)
     dev.hold()
     rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col =
@@ -408,8 +407,7 @@ function (object, xc.cond = NULL, weights = NULL, view3d = NULL, theta3d = NULL,
     object$newdata <- newdata
     object$prednew <- prednew
     return(object)
-  }
-  if (object$plot.type %in% c("fc")){
+  } else if (identical(object$plot.type, "fc")){
     screen(n = object$screen, new = FALSE)
     dev.hold()
     rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col =
@@ -450,8 +448,7 @@ function (object, xc.cond = NULL, weights = NULL, view3d = NULL, theta3d = NULL,
     object$newdata <- newdata
     object$prednew <- prednew
     return(object)
-  }
-  if (object$plot.type %in% c("cc")){
+  } else if (identical(object$plot.type, "cc")){
     screen(n = object$screen, new = FALSE)
     dev.hold()
     rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col =
@@ -495,8 +492,8 @@ function (object, xc.cond = NULL, weights = NULL, view3d = NULL, theta3d = NULL,
     object$newdata <- newdata
     object$prednew <- prednew
     return(object)
-  }
-  if (object$plot.type %in% c("fff", "cff")){
+  } else if (any(vapply(c("fff", "cff"), identical, logical(1), object$plot.type
+    ))){
     screen(n = object$screen, new = FALSE)
 	  xrect <- as.integer(object$xs.grid[, 1L])
 		yrect <- as.integer(object$xs.grid[, 2L])
@@ -515,8 +512,8 @@ function (object, xc.cond = NULL, weights = NULL, view3d = NULL, theta3d = NULL,
     object$newdata <- newdata
     object$prednew <- prednew
     return(object)
-  }
-  if (object$plot.type %in% c("ffc", "cfc")){
+  } else if (any(vapply(c("ffc", "cfc"), identical, logical(1), object$plot.type
+    ))){
     screen(n = object$screen, new = FALSE)
   	xrect <- object$xs.grid[, !arefactorsxs]
 		yrect <- as.integer(object$xs.grid[, arefactorsxs])
@@ -535,8 +532,8 @@ function (object, xc.cond = NULL, weights = NULL, view3d = NULL, theta3d = NULL,
     object$newdata <- newdata
     object$prednew <- prednew
     return(object)
-  }
-  if (object$plot.type %in% c("fcc", "ccc")){
+  } else if (any(vapply(c("fcc", "ccc"), identical, logical(1), object$plot.type
+    ))){
     screen(n = object$screen, new = FALSE)
     dev.hold()
     if (object$view3d & identical(object$plot.type, "ccc")){
@@ -601,7 +598,19 @@ function (object, xc.cond = NULL, weights = NULL, view3d = NULL, theta3d = NULL,
     object$prednew <- prednew
     object$xc.cond <- xc.cond
     return(object)
-  }
+  } else if (identical(object$plot.type, "residuals")){
+    screen(n = object$screen, new = FALSE)
+    dev.hold()
+    rect(object$usr[1], object$usr[3], object$usr[2], object$usr[4], col =
+      "white", border = NA)
+    abline(v = unlist(prednew), col = object$model.colour, lwd =
+      object$model.lwd, lty = object$model.lty)
+    legend("topright", legend = object$model.name, col = object$model.colour,
+      lwd = object$model.lwd, lty = object$model.lty)
+    box()
+    dev.flush()
+  } else stop("unrecognised plotxs type to update")
+  object
 }
 
 update.xsresplot <-
