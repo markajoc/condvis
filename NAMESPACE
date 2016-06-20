@@ -1,5 +1,5 @@
 export(arrangeC, ceplot, cont2color, factor2color, dist1, plotxc, plotxs,
     savingby2d, visualweight, condtour, makepath)
 import(graphics, grDevices, stats)
-importFrom(utils, tail)
+importFrom(utils, head, tail)
 importFrom(MASS, parcoord)
