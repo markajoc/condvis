@@ -17,10 +17,10 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     data[1, !colnames(data) %in% c(S, response)]
   else xc.cond
   #data.frame(lapply(data[, !colnames(data) %in% c(S, response)], mode1))
-  uniqC <- unique(unlist(C))
 
   ## Set some variables and the visualweight function
 
+  uniqC <- unique(unlist(C))
   xcplots <- list()
   plotlegend <- length(S) == 2
   n.selector.cols <- ceiling(length(C) / 4L)
@@ -100,15 +100,23 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
 '  ## This server.R file was created by condvis:::ceplot.shiny
 
   library(condvis)
-  library(shiny)\n ',
+  library(shiny)
+
+  ## Include the packages required for the application. If these have not been
+  ## specified, the package list will be inferred from the search path at the
+  ## time ceplot was called.
+  \n ',
   paste(paste0("library(", packages, ")"), collapse = "\n  ")
   ,'
+
+  ## Load the objects that were in the environment of the ceplot call.
+
   load("app.Rdata")
+
+  ## Shiny server
+
   shinyServer(function (input, output)
   {
-
-message(\"running shiny server\")
-
     ## First do condition selector plots.
     ## Need to call close.screen in here to avoid problems after the pdf call in
     ## output$download. Problem lies in update.xcplot trying to set screens and
@@ -118,9 +126,6 @@ message(\"running shiny server\")
     paste("
     output$plot", seqC, " <- renderPlot({
       i <- ", seqC, "
-
-message(\"running renderPlot for plotxc\")
-a <- Sys.time()
       if(!is.null(input$plot_click", seqC, "$x)){
         close.screen(all.screens = TRUE)
         xc.cond[, xcplots[[i]]$name] <<- condvis:::update.xcplot(xcplots[[i]],
@@ -130,39 +135,24 @@ a <- Sys.time()
       xcplots[[i]] <<- plotxc(xc = data[, C[[i]]], xc.cond = xc.cond[1L, C[[i]]
         ], name = colnames(data[, C[[i]], drop = FALSE]), select.colour =
         select.colour, select.cex = select.cex)
-print(a - Sys.time())
-message(\"finished renderPlot for plotxc\")
     })"
     , sep = "", collapse = "\n"), '
 
     ## Next do the section visualisation.
 
-    output$plotS <- renderPlot({
-
-message(\"running renderPlot for plotxs\")
-a <- Sys.time()
-      if (!is.null(input$plot_click1$x) || !is.null(input$plot_click2$x)){
-        xc.cond <<- xc.cond
-      }
+    output$plotS <- renderPlot({\n     ',
+      paste('input$plot_click', seqC, sep = '', collapse = '\n      '), '
       vw <<- vwfun(xc.cond = xc.cond, sigma = sigma, distance = distance)
       xsplot <<- condvis:::plotxs1(xs = data[, S, drop = FALSE], data[, response, drop =
         FALSE], xc.cond = xc.cond, model = model, col = col, weights = vw$k,
         view3d = view3d, conf = conf, probs = probs, pch = pch)
-print(a - Sys.time())         
-message(\"finished renderPlot for plotxs\")
     })
 
     ## Give a basic table showing the section/condition values
 
-    output$info <- renderTable({
-
-      message(\"running renderTable\")
-
-
-      if (!is.null(input$plot_click1$x) || !is.null(input$plot_click2$x)){
-        xc.cond <<- xc.cond
-      }
-      xc.cond <<- xc.cond
+    output$info <- renderTable({\n     ',
+      paste('input$plot_click', seqC, sep = '', collapse = '\n      '), '
+      xc.cond
     })
 
     ## Allow the user to download a snapshot of the current visualisation
