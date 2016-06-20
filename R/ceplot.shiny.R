@@ -86,6 +86,11 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         plotOutput("plot4", click = "plot_click4", height = h, width = h),
         plotOutput("plot5", click = "plot_click5", height = h, width = h),
         plotOutput("plot6", click = "plot_click6", height = h, width = h)
+      ),
+      column(4,
+        plotOutput("plot7", click = "plot_click4", height = h, width = h),
+        plotOutput("plot8", click = "plot_click5", height = h, width = h),
+        plotOutput("plot9", click = "plot_click6", height = h, width = h)
       )
     )
   )
