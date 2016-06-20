@@ -29,7 +29,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, weights = NULL, col 
   }
   screen(main[1])
   Xc <- data[, uniqC, drop = FALSE]
-  xsplot <- plotxs1(xs = data[, S, drop = FALSE], y = data[, response, drop =
+  xsplot <- plotxs(xs = data[, S, drop = FALSE], y = data[, response, drop =
     FALSE], xc.cond = xc.cond, model = model, model.colour = NULL, model.lwd =
     NULL, model.lty = NULL, yhat = NULL, mar = NULL, weights = weights, col =
     col, view3d = view3d, theta3d = theta3d, phi3d = phi3d, conf = conf)
