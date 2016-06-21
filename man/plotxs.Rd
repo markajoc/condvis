@@ -39,7 +39,7 @@ two columns.}
 
 \item{col}{Colours for observed data. Should be of length \code{nrow(xs)}.}
 
-\item{weights}{Visual weights for observed data. Should be of length
+\item{weights}{Similarity weights for observed data. Should be of length
 \code{nrow(xs)}. Usually calculated with \code{\link{similarityweight}}.}
 
 \item{view3d}{Logical; if \code{TRUE} plots a three-dimensional
@@ -72,7 +72,7 @@ A list containing relevant information for updating the plot.
 }
 \description{
 Visualise a section in data space, showing fitted models where
-  they intersect the section, and nearby observations. The visual weight for
+  they intersect the section, and nearby observations. The similarity weight for
   observations can be calculated with \code{\link{similarityweight}}. This
   function is mainly for use in \code{\link{ceplot}} and
   \code{\link{condtour}}.

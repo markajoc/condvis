@@ -15,7 +15,7 @@ data (i.e., with same \code{colnames} as \code{data}).}
 representing observed data points.}
 
 \item{threshold}{This is a threshold distance outside which observations will
-be assigned visual weight zero. This is numeric (and should be > 0).}
+be assigned similarity weight zero. This is numeric (and should be > 0).}
 
 \item{distance}{The type of distance measure to be used, currently just two
 types of Minkowski distance: \code{"euclidean"} (default), and
