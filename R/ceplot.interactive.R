@@ -239,9 +239,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
           }
           screen(xsscreens[1L])
           if (residuals){
-            plotxsres(xs = data[, S, drop = FALSE], data[, response, drop = FALSE],
-              xc.cond = xc.cond, model = model, col = col, weights = vw$k,
-              view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
+            plotxsres(xs = data[, S, drop = FALSE], data[, response, drop =
+              FALSE], xc.cond = xc.cond, model = model, col = col, weights =
+              vw$k, view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
               xsplot$phi3d, conf = conf, probs = probs, pch = pch)
           } else {
             plotxs(xs = data[, S, drop = FALSE], data[, response, drop = FALSE],
