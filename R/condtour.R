@@ -3,6 +3,7 @@
 #' @description Whereas \code{\link{ceplot}} allows the user to interactively
 #'   choose sections to visualise, \code{condtour} allows the user to pre-select
 #'   all sections to visualise, order them, and cycle through them one by one.
+#'   ']' advances the tour, and '[' goes back.
 #'
 #' @param data A dataframe.
 #' @param model A fitted model object, or a list of such objects.
@@ -81,7 +82,7 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
     1
   else xcplotpar$select.cex
 
-  ##
+  ## Set up interactive functions for mousemove, mouseclick and keystroke.
 
   xold <- NULL
   yold <- NULL
@@ -89,6 +90,9 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
   {
     function (buttons, x, y)
     {
+
+      ## Rotate 3-D perspective plot from plotxs.
+
       if (all(findInterval(x, xscoords[1:2]) == 1, identical(
         xsplot$plot.type, "ccc"), xsplot$view3d, 0 %in% buttons)){
         if (!is.null(xold))
@@ -106,6 +110,9 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
     function (buttons, x, y)
     {
       if (0 %in% buttons){
+
+        ## Clicking the mouse advances the tour by one.
+
         pathindex <<- max(min(pathindex + 1, max(pathindexrange)), min(
           pathindexrange))
         applot <<- update(applot, pathindex = pathindex)
@@ -131,16 +138,25 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
   {
     function (key)
     {
+
+      ## 'q' key ends the interactive session.
+
       if (identical(key, "q")){
         cat("\nInteractive session ended.\n")
         return(invisible(1))
       }
+
+      ## Arrow keys rotate a 3-D perspective plot from plotxs.
+
       if (identical(xsplot$plot.type, "ccc") & xsplot$view3d &
         key %in% c("Up", "Down", "Left", "Right")){
         xsplot <<- update(xsplot, theta3d = xsplot$theta3d - 2 * (key == "Right"
           ) + 2 * (key == "Left"), phi3d = xsplot$phi3d - 2 * (key == "Up") + 2
           * (key == "Down"), xs.grid = xsplot$xs.grid, prednew = xsplot$prednew)
       }
+
+      ## '[' and ']' reverse and advance the tour respectively.
+
       if (key %in% c("[", "]")){
         pathindex <<- max(min(pathindex + 1 * (key == "]") - 1 * (key == "["),
           max(pathindexrange)), min(pathindexrange))
@@ -155,6 +171,9 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
       points(NULL)
     }
   }
+
+  ## Set up variable default values etc.
+
   data <- na.omit(data)
   model <- if (!identical(class(model), "list"))
     list(model)
@@ -215,8 +234,14 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
   selector.colwidth <- 2
   height <- 8
   width <- height + 0.5 * plotlegend
+
+  ## Calculate the similarity weights for the entire tour.
+
   k <- similarityweight(x = path, data = data[, colnames(path), drop = FALSE],
     threshold = sigma, distance = distance)
+
+  ## Do section visualisation.
+
   opendev(width = width, height = height)
   devexp <- dev.cur()
   close.screen(all.screens = TRUE)
@@ -242,12 +267,12 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
     , xc.cond = xc.cond, model = model, weights = k[pathindex, ], col = col,
     view3d = view3d, conf = conf, pch = pch)
   xscoords <- par("fig")
-  xcwidth <- selector.colwidth * n.selector.cols
-  n.selector.rows <- ceiling(length(C) / n.selector.cols)
-  xcheight <- selector.colwidth * n.selector.rows
   setGraphicsEventHandlers(
     onMouseMove = mousemove(),
     onKeybd = keystroke())
+
+  ## Do diagnostic plots.
+
   opendev(width = 4, height = 6)
   devdiag <- dev.cur()
   close.screen(all.screens = TRUE)
@@ -261,6 +286,12 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
   setGraphicsEventHandlers(
     onMouseDown = mouseclick(),
     onKeybd = keystroke())
+
+  ## Do condition plots, so we can see where we are in the data space.
+
+  xcwidth <- selector.colwidth * n.selector.cols
+  n.selector.rows <- ceiling(length(C) / n.selector.cols)
+  xcheight <- selector.colwidth * n.selector.rows
   opendev(width = xcwidth, height = xcheight)
   devcond <- dev.cur()
   close.screen(all.screens = TRUE)
