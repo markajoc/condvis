@@ -25,7 +25,6 @@
 #' points(mp2$centers, type = "b", col = "red", pch = 16)
 
 makepath <-
-## TODO: rename this function to defaultpath or something
 function (Xc, ncentroids, ninterp = 4)
 {
   if (any(arefactors <- vapply(Xc, is.factor, logical(1L)))){
