@@ -78,6 +78,9 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
   par(mgp = c(1.5, 0.5, 0))
   if (is.vector(xc) | is.factor(xc)){
     if (!is.factor(xc)){
+
+      ## Histogram
+
       if (diff(range(xc, na.rm = TRUE)) / diff(range(xcnew <- xc[findInterval(
         xc, quantile(xc, c(0.025, 0.975), na.rm = TRUE)) == 1], na.rm = TRUE)) >
         3){
@@ -89,6 +92,9 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
         select.colour, lwd = select.lwd)
       plot.type <- "histogram"
     } else {
+
+      ## Bar plot
+
       bartmp <- barplot2(table(xc), main = "", xlab = name, cex.axis = cex.axis,
         cex.lab = cex.lab, tcl = tck)
       factorcoords <- data.frame(level = levels(xc), x = - 0.5 + 1.2 * (1:
@@ -103,6 +109,9 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
     if (is.data.frame(xc) & identical(ncol(xc), 2L)){
       are.factors <- vapply(xc,is.factor, logical(1))
       if (all(are.factors)){
+
+        ## Spineplot, segmented barchart
+
         sptmp <- spineplot2(table(xc), ...)
         xmatch <- as.character(xc.cond[, 1]) == levels(xc[, 1])
         ymatch <- as.character(xc.cond[, 2]) == levels(xc[, 2])
@@ -120,6 +129,9 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
         plot.type <- "spineplot"
       } else {
         if (any(are.factors)){
+
+          ## Boxplot
+
           boxx <- xc[, are.factors]
           boxy <- xc[, !are.factors]
           boxtmp <- boxplot(boxy ~ boxx, xlab = name[are.factors], ylab = name[
@@ -136,6 +148,9 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
           name <- name[order(!are.factors)]
           names(xc.cond) <- name
         } else {
+
+          ## Scatterplot, going to 2-D histogram if required/possible
+          
           if (nrow(xc) > 2000 && requireNamespace("gplots", quietly = TRUE)){
             b <- seq(0.35, 1, length.out = 16)
             gplots::hist2d(xc[, 1], xc[, 2], nbins = 50, col = c("white", rgb(1
