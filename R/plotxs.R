@@ -125,6 +125,11 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
 ## Otherwise, go through the various combinations of xs having one or two
 ## columns of factors or numerics, and y being factor or numeric.
 
+## 'plot.type's are coded with 2 or 3 letters. The first one refers to the
+## response, and the following letters refer to the predictors. For example,
+## "cfc" refers to a continuous response, one factor predictor and one
+## continuous predictor.
+
     if (identical(ncol(xs), 1L)){
       # xs has one column
       if (is.null(xs.grid)){
