@@ -57,8 +57,8 @@ test_that("setting threshold to Inf gives weight one to everything", {
 })
 
 test_that("internal visual weight function returns a function", {
-  expect_is(.visualweight(mtcars), "function")
-  expect_error(.visualweight())
+  expect_is(.similarityweight(mtcars), "function")
+  expect_error(.similarityweight())
 })
 
 test_that("similarityweight is not too slow", {
