@@ -18,7 +18,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   else xc.cond
   #data.frame(lapply(data[, !colnames(data) %in% c(S, response)], mode1))
 
-  ## Set some variables and the visualweight function
+  ## Set some variables and the similarityweight function
 
   uniqC <- unique(unlist(C))
   xcplots <- list()
@@ -31,7 +31,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   seqC <- seq_along(C)
   wd <- getwd()
 
-  vwfun <- .visualweight(xc = data[, uniqC, drop = FALSE])
+  vwfun <- .similarityweight(xc = data[, uniqC, drop = FALSE])
 
   ## These are the packages required to call predict on all models in 'model'
   ## If not supplied, all packages attached to the search path at the time of

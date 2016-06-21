@@ -20,7 +20,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   selector.colwidth <- 2
   height <- 8
   col <- rep(col, length.out = nrow(data))
-  vwfun <- .visualweight(xc = data[, uniqC, drop = FALSE])
+  vwfun <- .similarityweight(xc = data[, uniqC, drop = FALSE])
   if (separate){
 
 ## Plot condition selectors on a separate device

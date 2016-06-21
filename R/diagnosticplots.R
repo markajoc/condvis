@@ -1,5 +1,5 @@
 ## plotap a diagnostic plot to be used with condtour. The plot shows the sum of
-## the visual weights for each section along the entire path. The plot is given
+## the similarity weights for each section along the entire path. The plot is given
 ## its own update method.
 
 plotap <-
@@ -34,10 +34,10 @@ function (object, pathindex = NULL, ...)
 }
 
 ## plotmaxk a diagnostic plot to be used with condtour. This is a static plot.
-## Shows the deciles of the maximum visual weight given to the data by the
+## Shows the deciles of the maximum similarity weight given to the data by the
 ## current conditional tour. If too many observations are reaching maximum
-## visual weight of 1, the 'sigma' used in similarityweight might be too big. If
-## no observations are reaching maximum visual weights of 0.3, we may not see
+## similarity weight of 1, the 'sigma' used in similarityweight might be too big. If
+## no observations are reaching maximum similarity weights of 0.3, we may not see
 ## any data on the sections.
 
 plotmaxk <-

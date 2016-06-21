@@ -10,7 +10,7 @@
 #' @param data This is a dataframe with same names as \code{xc.cond}
 #'   representing observed data points.
 #' @param threshold This is a threshold distance outside which observations will
-#'   be assigned visual weight zero. This is numeric (and should be > 0).
+#'   be assigned similarity weight zero. This is numeric (and should be > 0).
 #' @param distance The type of distance measure to be used, currently just two
 #'   types of Minkowski distance: \code{"euclidean"} (default), and
 #'   \code{"maxnorm"}.
@@ -52,7 +52,7 @@
 similarityweight <-
 function (x, data, threshold = NULL, distance = NULL, constant = NULL)
 {
-  vwfun <- .visualweight(xc = data)
+  vwfun <- .similarityweight(xc = data)
   k <- matrix(nrow = nrow(x), ncol = nrow(data), dimnames = list(rownames(
     x), rownames(data)))
   rm(data)
@@ -63,7 +63,11 @@ function (x, data, threshold = NULL, distance = NULL, constant = NULL)
   k[, , drop = TRUE]
 }
 
-.visualweight <-
+## Internal function which does some preprocessing (particularly scaling) and
+## returns a function which calculates similarity weight for a single row of a
+## dataframe.
+
+.similarityweight <-
 function (xc)
 {
   nrow.xc <- nrow(xc)
