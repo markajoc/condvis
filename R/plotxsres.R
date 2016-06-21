@@ -1,3 +1,6 @@
+## This is a mangled version of plotxs, being used to sandbox some ideas about
+## plotting residual v predictor type plots. Not currently used 2016-06-21.
+
 plotxsres <-
 function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
   model.lty = NULL, model.name = NULL, yhat = NULL, mar = NULL, col = "black",
