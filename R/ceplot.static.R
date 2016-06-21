@@ -1,3 +1,5 @@
+## Function to make a static snapshot of ceplot.interactive
+
 ceplot.static <-
 function (data, model, response = NULL, S = NULL, C = NULL, weights = NULL, col =
   "black", cex.axis = NULL, cex.lab = NULL, tck = NULL, view3d = FALSE, theta3d = 45,
