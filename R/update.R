@@ -2,6 +2,8 @@
 ## minimum amount of work possible to update the plots. Some parts are doing a
 ## wasteful redraw, when the original plot doesn't return enough info to easily
 ## erase and redraw parts of it.
+##
+## Not currently exported 2016-06-21.
 
 update.xcplot <-
 function (object, xclick, yclick, xc.cond = NULL, user = FALSE, ...)
