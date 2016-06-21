@@ -141,64 +141,74 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     yold <- NULL
   }
 
-## Define event handling functions; mouseclick and keystroke
+## Define event handling functions; mouseclick and keystroke.
 
   mouseclick <- function (separate = FALSE)
   {
     function (buttons, x, y)
     {
       if (0 %in% buttons){
-      needupdate <- FALSE
-      if (identical(select.type, "minimal")){
-        plotindex <- which(apply(coords, 1, `%inrectangle%`, point = c(x, y)))
-        if ((length(plotindex) > 0) && (0 %in% buttons)){
-          xcplots[[plotindex]] <<- update(xcplots[[plotindex]], x, y)
-          if (any(xc.cond[, xcplots[[plotindex]]$name] != xcplots[[plotindex]
-            ]$xc.cond.old)){
+        needupdate <- FALSE
+        if (identical(select.type, "minimal")){
+          plotindex <- which(apply(coords, 1, `%inrectangle%`, point = c(x, y)))
+          if ((length(plotindex) > 0) && (0 %in% buttons)){
+            xcplots[[plotindex]] <<- update(xcplots[[plotindex]], x, y)
+            if (any(xc.cond[, xcplots[[plotindex]]$name] != xcplots[[plotindex]
+              ]$xc.cond.old)){
+              needupdate <- TRUE
+              xc.cond[, xcplots[[plotindex]]$name] <<- xcplots[[plotindex]
+                ]$xc.cond.old
+            }
+          }
+        } else if (select.type %in% c("pcp", "full")){
+          xcplots <<- update(xcplots, x, y)
+          if (any(xc.cond[, uniqC] != xcplots$Xc.cond[, uniqC])){
             needupdate <- TRUE
-            xc.cond[, xcplots[[plotindex]]$name] <<- xcplots[[plotindex]
-              ]$xc.cond.old
+            xc.cond[, uniqC] <<- xcplots$Xc.cond
           }
         }
-      } else if (select.type %in% c("pcp", "full")){
-        xcplots <<- update(xcplots, x, y)
-        if (any(xc.cond[, uniqC] != xcplots$Xc.cond[, uniqC])){
-          needupdate <- TRUE
-          xc.cond[, uniqC] <<- xcplots$Xc.cond
+        if (needupdate){
+          vw <<- vwfun(xc.cond = xc.cond, sigma = vw$sigma, distance =
+            vw$distance)
+          xsplot <<- update(xsplot, xc.cond = xc.cond, weights = vw$k)
         }
+        if (all(!separate, findInterval(x, xscoords[1:2]) == 1, identical(
+          xsplot$plot.type, "ccc"), xsplot$view3d, 0 %in% buttons)){
+          if (!is.null(xold))
+            xsplot <<- update(xsplot, theta3d = xsplot$theta3d + 1 * (xold > x)
+              - 1 * (xold < x), phi3d = xsplot$phi3d + 1 * (yold > y) - 1 * (
+              yold < y), xs.grid = xsplot$xs.grid, prednew = xsplot$prednew)
+          xold <<- x
+          yold <<- y
+        }
+        points(NULL)
       }
-      if (needupdate){
-        vw <<- vwfun(xc.cond = xc.cond, sigma = vw$sigma, distance =
-          vw$distance)
-        xsplot <<- update(xsplot, xc.cond = xc.cond, weights = vw$k)
-      }
-      if (all(!separate, findInterval(x, xscoords[1:2]) == 1, identical(
-        xsplot$plot.type, "ccc"), xsplot$view3d, 0 %in% buttons)){
-        if (!is.null(xold))
-          xsplot <<- update(xsplot, theta3d = xsplot$theta3d + 1 * (xold > x) -
-            1 * (xold < x), phi3d = xsplot$phi3d + 1 * (yold > y) - 1 * (yold <
-            y), xs.grid = xsplot$xs.grid, prednew = xsplot$prednew)
-        xold <<- x
-        yold <<- y
-      }
-      points(NULL)
     }
   }
-  }
   keystroke <- function ()
-    {
+  {
     function (key)
-      {
+    {
+
+## 'q' key ends the interactive session.
+
       if (identical(key, "q")){
         cat("\nInteractive session ended.\n")
         return(invisible(1))
       }
+
+## Direction keys rotate a 3-D perspective plot.
+
       if (identical(xsplot$plot.type, "ccc") & xsplot$view3d & key %in% c("Up",
         "Down", "Left", "Right")){
         xsplot <<- update(xsplot, theta3d = xsplot$theta3d - 2 * (key == "Right"
           ) + 2 * (key == "Left"), phi3d = xsplot$phi3d - 2 * (key == "Up") + 2
           * (key == "Down"), xs.grid = xsplot$xs.grid, prednew = xsplot$prednew)
       }
+
+## ',' and '.' decrease and increase the threshold distance used for similarity
+## weight.
+
       if (key %in% c(",", ".")){
         sigma <- vw$sigma + 0.01 * vw$sigma * (key == ".") - 0.01 * vw$sigma *
           (key == ",")
@@ -206,6 +216,10 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         xsplot <<- update(xsplot, weights = vw$k, xs.grid = xsplot$xs.grid,
           newdata = xsplot$newdata, prednew = xsplot$prednew)
       }
+
+## 's' key saves a pdf snapshot to the working directory. Saved in two files if
+## 'separate' is true.
+
       if (identical(key, "s")){
         if (separate){
           filename <- paste("snapshot_", gsub(":", ".", gsub(" ", "_",
