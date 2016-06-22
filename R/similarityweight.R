@@ -146,9 +146,13 @@ function (xc)
 
     if (length(factormatches) > 0){
       if (all(arefactors)){
-        k[factormatches] <- if (is.null(constant))
-          1
-        else constant * (length(xc.cond.factors) - nfactormatches)
+        if (is.null(constant)){
+          k[factormatches] <- 1
+        } else {
+          d <- constant * (sum(arefactors) - nfactormatches[factormatches])
+          k[factormatches] <- c(1, 0.7, 0.4, 0)[findInterval(d, c(0, (0.3 *
+            sigma) ^ p, (0.6 * sigma) ^ p, sigma ^ p))]
+        }
       } else {
         xcond.scaled <- (xc.cond.num - attr(x.scaled, "scaled:center")) / attr(
           x.scaled, "scaled:scale")
