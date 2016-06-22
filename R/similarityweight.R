@@ -52,14 +52,28 @@
 similarityweight <-
 function (x, data, threshold = NULL, distance = NULL, constant = NULL)
 {
+  ## Initialise the internal function
+
   vwfun <- .similarityweight(xc = data)
+
+  ## Make empty matrix
+
   k <- matrix(nrow = nrow(x), ncol = nrow(data), dimnames = list(rownames(
     x), rownames(data)))
+
+  ## Remove 'data' as there is now a scaled copy in 'vwfun'
+
   rm(data)
+
+  ## Loop through rows of 'x'
+
   for (i in 1:nrow(x)){
     k[i, ] <- do.call(vwfun, list(xc.cond = x[i, ], sigma = threshold,
       distance = distance, constant = constant))$k
   }
+
+  ## Return the matrix of weights, dropping to vector if possible
+
   k[, , drop = TRUE]
 }
 
@@ -70,6 +84,8 @@ function (x, data, threshold = NULL, distance = NULL, constant = NULL)
 .similarityweight <-
 function (xc)
 {
+  ## Scale the dataframe and calculate a few things for later use.
+
   nrow.xc <- nrow(xc)
   if (nrow.xc < 2)
     stop("cannot apply scale to data.frame with less than 2 rows")
@@ -80,25 +96,54 @@ function (xc)
   rm(xc)
   x.scaled <- scale(xc.num)
   k <- rep(0, nrow.xc)
+
+  ## Return a function which will calculate the weights for a single arbitrary
+  ## point in the data space.
+
   function (xc.cond, sigma = NULL, distance = c("euclidean", "maxnorm"),
     constant = NULL)
   {
+    ## Set up values
+
     sigma <- if (is.null(sigma))
       1
     else sigma
     distance <- match.arg(distance)
-    constant <- if (is.null(constant))
-      10 * sigma
-    else sigma
     p <- if (identical(distance, "maxnorm")) 1 else 2
+
+    ## Get the arbitary point in order.
+
     xc.cond <- xc.cond[, colnames.xc, drop = FALSE]
     xc.cond.factors <- data.matrix(xc.cond[, arefactors, drop = FALSE])
     xc.cond.num <- data.matrix(xc.cond[, !arefactors, drop = FALSE])
+
+    ## 'factormatches' is the index of observations on which we will calculate
+    ## the Minkowski distance. Basically pre-filtering for speed.
+    ##
+    ## If 'constant' is NULL, we require all factors to be equal to even bother
+    ## calculating Minkowski distance.
+    ##
+    ## If 'constant' is supplied, we only want observations with less than
+    ## (sigma / constant) mismatches in the factors.
+    ##
+    ## If there are no factors, we want all rows.
+
     factormatches <- if (any(arefactors)){
-      which((nfactormatches <- rowSums(xc.factors == matrix(xc.cond.factors,
-        ncol = length(xc.cond.factors), nrow = nrow.xc, byrow = TRUE))) ==
-        length(xc.cond.factors))
+      if (is.null(constant)){
+        which((nfactormatches <- rowSums(xc.factors == matrix(xc.cond.factors,
+          ncol = length(xc.cond.factors), nrow = nrow.xc, byrow = TRUE))) ==
+          length(xc.cond.factors))
+      } else {
+        which(length(xc.cond.factors) - (nfactormatches <- rowSums(xc.factors ==
+          matrix(xc.cond.factors, ncol = length(xc.cond.factors), nrow = nrow.xc
+          , byrow = TRUE))) <= (sigma / constant))
+      }
     } else {rep(TRUE, nrow.xc)}
+
+    ## If any observations make it past the above filtering, we calculate the
+    ## Minkowski distance, adding an adjustment for factor mismatches if
+    ## 'constant' is supplied.
+
     if (length(factormatches) > 0){
       if (all(arefactors)){
         k[factormatches] <- 1
