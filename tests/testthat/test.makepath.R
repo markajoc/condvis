@@ -8,11 +8,11 @@ pathobject <- makepath(Xc = powerplant, ncentroids = ncentroids, ninterp =
   ninterp)
 
 test_that("makepath returns dataframes with correct names", {
-  expect_equal(names(o$path), names(powerplant))
-  expect_equal(names(o$centers), names(powerplant))
+  expect_equal(names(pathobject$path), names(powerplant))
+  expect_equal(names(pathobject$centers), names(powerplant))
 })
 
 test_that("makepath returns the correct number of centers and path points", {
-  expect_equal(nrow(o$centers), ncentroids)
-  expect_equal(nrow(o$path), (ncentroids - 1) * ninterp)
+  expect_equal(nrow(pathobject$centers), ncentroids)
+  expect_equal(nrow(pathobject$path), (ncentroids - 1) * ninterp)
 })
