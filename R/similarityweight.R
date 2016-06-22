@@ -149,7 +149,7 @@ function (xc)
         if (is.null(constant)){
           k[factormatches] <- 1
         } else {
-          d <- constant * (sum(arefactors) - nfactormatches[factormatches])
+          d <- constant * (sum(arefactors) - nfactormatches[factormatches]) ^ p
           k[factormatches] <- c(1, 0.7, 0.4, 0)[findInterval(d, c(0, (0.3 *
             sigma) ^ p, (0.6 * sigma) ^ p, sigma ^ p))]
         }
@@ -158,7 +158,8 @@ function (xc)
           x.scaled, "scaled:scale")
         d <- dist1(xcond.scaled, x.scaled[factormatches, ], inf = identical(
           distance, "maxnorm")) + if (any(arefactors) && !is.null(constant))
-          constant * (sum(arefactors) - nfactormatches[factormatches]) else 0
+          (constant * (sum(arefactors) - nfactormatches[factormatches])) ^ p
+          else 0
         k[factormatches] <- c(1, 0.7, 0.4, 0)[findInterval(d, c(0, (0.3 * sigma)
           ^ p, (0.6 * sigma) ^ p, sigma ^ p))]
       }
