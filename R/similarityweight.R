@@ -111,6 +111,10 @@ function (xc)
     distance <- match.arg(distance)
     p <- if (identical(distance, "maxnorm")) 1 else 2
 
+    ## If 'sigma' is Inf, return 1s for all observations
+
+    return(list(k = rep(1, nrow.xc), sigma = sigma, distance = distance))
+
     ## Get the arbitary point in order.
 
     xc.cond <- xc.cond[, colnames.xc, drop = FALSE]

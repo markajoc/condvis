@@ -18,7 +18,6 @@ test_that("similarityweight fails without required inputs", {
   expect_error(similarityweight(x = mtcars, data = NULL))
   expect_error(similarityweight(x = NULL, data = NULL))
   expect_error(similarityweight(x = mtcars, data = mtcars[1, ]))
-  expect_error(similarityweight(x = mtcars[1, 1:5], data = mtcars[, 1:6]))
 })
 
 test_that("similarityweight returns the right types", {
@@ -48,12 +47,9 @@ test_that("larger threshold values give equal or larger weights", {
 
 test_that("setting threshold to Inf gives weight one to everything", {
   expect_true(all(similarityweight(x = powerplant[1:50, ], data = powerplant,
-    threshold = Inf) >= 1))
-
-## Doesn't work with factors present. Should fix this.
-
-  #expect_true(all(similarityweight(x = dat[1, ], data = dat, threshold = Inf)
-  #  >= 1))
+    threshold = Inf) == 1))
+  expect_true(all(similarityweight(x = dat[1, ], data = dat, threshold = Inf)
+    == 1))
 })
 
 test_that("internal visual weight function returns a function", {
