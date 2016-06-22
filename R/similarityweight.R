@@ -146,13 +146,15 @@ function (xc)
 
     if (length(factormatches) > 0){
       if (all(arefactors)){
-        k[factormatches] <- 1
+        k[factormatches] <- if (is.null(constant))
+          1
+        else constant * (length(xc.cond.factors) - nfactormatches)
       } else {
         xcond.scaled <- (xc.cond.num - attr(x.scaled, "scaled:center")) / attr(
           x.scaled, "scaled:scale")
         d <- dist1(xcond.scaled, x.scaled[factormatches, ], inf = identical(
-          distance, "maxnorm")) + if (any(arefactors)) constant * (sum(
-          arefactors) - nfactormatches[factormatches]) else 0
+          distance, "maxnorm")) + if (any(arefactors) && !is.null(constant))
+          constant * (sum(arefactors) - nfactormatches[factormatches]) else 0
         k[factormatches] <- c(1, 0.7, 0.4, 0)[findInterval(d, c(0, (0.3 * sigma)
           ^ p, (0.6 * sigma) ^ p, sigma ^ p))]
       }
