@@ -27,10 +27,15 @@
 makepath <-
 function (Xc, ncentroids, ninterp = 4)
 {
+  ## If we have factors, make sure 'ninterp' is odd.
+
   if (any(arefactors <- vapply(Xc, is.factor, logical(1L)))){
     if (identical(ninterp %% 2, 0))
       ninterp <- ninterp + 1
   }
+
+  ## Interpolation function.
+
   interp <- function(x, n = ninterp)
   {
     out <- vector()
@@ -46,12 +51,19 @@ function (Xc, ncentroids, ninterp = 4)
     }
     out
   }
+
+  ## If we have factors, do partitioning around medoids (PAM) using the daisy
+  ## distance from the 'cluster' package.
+
   if (any(arefactors)){
     if (!requireNamespace("cluster", quietly = TRUE))
       stop("requires package 'cluster'")
     d <- cluster::daisy(Xc)
     clustering <- cluster::pam(d, k = ncentroids)
     centers <- Xc[clustering$medoids, ]
+
+    ## Order the cluster centres using 'DendSer' if available.
+
     if (!requireNamespace("DendSer", quietly = TRUE)){
       warning("requires package 'DendSer' to order path, left unordered")
     } else {
@@ -62,6 +74,11 @@ function (Xc, ncentroids, ninterp = 4)
     }
     path <- as.data.frame(lapply(centers, interp))
   } else {
+
+    ## For all continuous variables, cluster with 'kmeans'
+
+    ## Order the cluster centres with 'TSP'.
+
     if (!requireNamespace("TSP", quietly = TRUE))
       stop("requires package 'TSP'")
     means <- colMeans(Xc)
@@ -76,5 +93,8 @@ function (Xc, ncentroids, ninterp = 4)
       means)))
     path <- as.data.frame(apply(centers, 2L, interp))
   }
+
+  ## Return the cluster centres and the interpolated path.
+
   list(centers = centers, path = path)
 }
