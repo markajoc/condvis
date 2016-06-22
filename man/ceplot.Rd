@@ -22,11 +22,12 @@ ceplot(data, model, response = NULL, sectionvars = NULL,
 take a section, can be of length 1 or 2.}
 
 \item{conditionvars}{Character names of conditioning variables from
-\code{data}. Can be a list of vectors of length 1 or 2. Can be a character
-vector, which is then paired up using \code{\link{arrangeC}}. If
-\code{NULL}, an attempt will be made to extract all variable names which
-are not \code{response} or \code{sectionvars} from \code{model}, and these
-will be arranged using \code{\link{arrangeC}}.}
+\code{data}. These are the predictors which we can set to single values in
+order to produce a section. Can be a list of vectors of length 1 or 2. Can
+be a character vector, which is then paired up using
+\code{\link{arrangeC}}. If \code{NULL}, an attempt will be made to extract
+all variable names which are not \code{response} or \code{sectionvars} from
+\code{model}, and these will be arranged using \code{\link{arrangeC}}.}
 
 \item{threshold}{This is a threshold distance. Points further than
 \code{threshold} away from the current section will not be visible. Passed
