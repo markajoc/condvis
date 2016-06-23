@@ -55,7 +55,7 @@ function (x, data, threshold = NULL, distance = NULL, constant = NULL)
 
   vwfun <- .similarityweight(xc = data)
 
-  ## Make empty matrix
+  ## Make empty matrix for weights
 
   k <- matrix(nrow = nrow(x), ncol = nrow(data), dimnames = list(rownames(
     x), rownames(data)))
