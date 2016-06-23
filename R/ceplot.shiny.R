@@ -188,7 +188,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         condvis:::ceplot.static(data = data, model = model, response = response,
           S = S, C = C, cex.axis = cex.axis, cex.lab = cex.lab, tck = tck,
           xc.cond = xc.cond, weights = vw$k, col  = col, select.colour =
-          select.colour, conf = conf)
+          select.colour, conf = conf, probs = probs)
         dev.off()
       }
     })',

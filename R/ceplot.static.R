@@ -1,9 +1,10 @@
 ## Function to make a static snapshot of ceplot.interactive
 
 ceplot.static <-
-function (data, model, response = NULL, S = NULL, C = NULL, weights = NULL, col =
-  "black", cex.axis = NULL, cex.lab = NULL, tck = NULL, view3d = FALSE, theta3d = 45,
-  phi3d = 20, Corder = "default", xc.cond = NULL, select.colour = "blue", select.cex = 1, conf = FALSE)
+function (data, model, response = NULL, S = NULL, C = NULL, weights = NULL, col
+  = "black", cex.axis = NULL, cex.lab = NULL, tck = NULL, view3d = FALSE,
+  theta3d = 45, phi3d = 20, Corder = "default", xc.cond = NULL, select.colour =
+  "blue", select.cex = 1, conf = FALSE, probs = FALSE)
 {
   uniqC <- unique(unlist(C))
   xc.cond <- if (is.null(xc.cond))
@@ -34,6 +35,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, weights = NULL, col 
   xsplot <- plotxs(xs = data[, S, drop = FALSE], y = data[, response, drop =
     FALSE], xc.cond = xc.cond, model = model, model.colour = NULL, model.lwd =
     NULL, model.lty = NULL, yhat = NULL, mar = NULL, weights = weights, col =
-    col, view3d = view3d, theta3d = theta3d, phi3d = phi3d, conf = conf)
+    col, view3d = view3d, theta3d = theta3d, phi3d = phi3d, conf = conf, probs =
+    probs)
   dev.flush()
 }
