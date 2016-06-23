@@ -88,7 +88,6 @@ function (xc)
   arefactors <- vapply(xc, is.factor, logical(1))
   xc.factors <- data.matrix(xc[, arefactors, drop = FALSE])
   xc.num <- data.matrix(xc[, !arefactors, drop = FALSE])
-  rm(xc)
   x.scaled <- scale(xc.num)
   k <- rep(0, nrow.xc)
 
