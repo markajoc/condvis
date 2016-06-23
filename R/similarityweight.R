@@ -67,8 +67,8 @@ function (x, data, threshold = NULL, distance = NULL, constant = NULL)
   ## Loop through rows of 'x'
 
   for (i in 1:nrow(x)){
-    k[i, ] <- do.call(vwfun, list(xc.cond = x[i, ], sigma = threshold,
-      distance = distance, constant = constant))$k
+    k[i, ] <- do.call(vwfun, list(xc.cond = x[i, , drop = FALSE], sigma =
+      threshold, distance = distance, constant = constant))$k
   }
 
   ## Return the matrix of weights, dropping to vector if possible
