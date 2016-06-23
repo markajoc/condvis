@@ -83,10 +83,13 @@ function (x, ncentroids, ninterp = 4)
 
     if (!requireNamespace("TSP", quietly = TRUE))
       stop("requires package 'TSP'")
-    means <- colMeans(x)
-    sds <- apply(x, 2L, sd)
-    x <- scale(x)[, ]
-    clustering <- kmeans(x, centers = ncentroids)
+    x <- scale(x)
+    means <- attr(x, "scaled:center")
+    sds <- attr(x, "scaled:scale")
+    #means <- colMeans(x)
+    #sds <- apply(x, 2L, sd)
+    #x <- scale(x)[, ]
+    clustering <- kmeans(x[, ], centers = ncentroids)
     centers <- clustering$centers
     o <- TSP::TSP(dist(centers))
     orderindex <- TSP::solve_TSP(o)
