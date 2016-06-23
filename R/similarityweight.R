@@ -113,7 +113,8 @@ function (xc)
 
     ## If 'sigma' is Inf, return 1s for all observations
 
-    return(list(k = rep(1, nrow.xc), sigma = sigma, distance = distance))
+    if (identical(sigma, Inf))
+      return(list(k = rep(1, nrow.xc), sigma = sigma, distance = distance))
 
     ## Get the arbitary point in order.
 
@@ -124,13 +125,13 @@ function (xc)
     ## 'factormatches' is the index of observations on which we will calculate
     ## the Minkowski distance. Basically pre-filtering for speed.
     ##
-    ## If 'constant' is NULL, we require all factors to be equal to even bother
+    ## If 'constant' is NULL, require all factors to be equal to even bother
     ## calculating Minkowski distance.
     ##
-    ## If 'constant' is supplied, we only want observations with less than
+    ## If 'constant' is supplied, only want observations with less than
     ## (sigma / constant) mismatches in the factors.
     ##
-    ## If there are no factors, we want all rows.
+    ## If there are no factors, want all rows.
 
     factormatches <- if (any(arefactors)){
       if (is.null(constant)){
@@ -144,9 +145,11 @@ function (xc)
       }
     } else {rep(TRUE, nrow.xc)}
 
-    ## If any observations make it past the above filtering, we calculate the
-    ## Minkowski distance, adding an adjustment for factor mismatches if
-    ## 'constant' is supplied.
+    ## If any observations make it past the above filtering, calculate the
+    ## dissimilarity as Minkowski distance plus 'constant' times number of
+    ## factor mismatches if 'constant' is supplied.
+    ##
+    ## Convert the dissimilarity to similarity weights 'k', between 0 and 1.
 
     if (length(factormatches) > 0){
       if (all(arefactors)){
