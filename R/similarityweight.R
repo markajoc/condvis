@@ -60,10 +60,6 @@ function (x, data, threshold = NULL, distance = NULL, constant = NULL)
   k <- matrix(nrow = nrow(x), ncol = nrow(data), dimnames = list(rownames(
     x), rownames(data)))
 
-  ## Remove 'data' as there is now a scaled copy in 'vwfun'
-
-  rm(data)
-
   ## Loop through rows of 'x'
 
   for (i in 1:nrow(x)){
