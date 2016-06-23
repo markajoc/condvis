@@ -4,7 +4,7 @@ data(powerplant)
 
 ncentroids <- 20
 ninterp <- 4
-pathobject <- makepath(Xc = powerplant, ncentroids = ncentroids, ninterp =
+pathobject <- makepath(x = powerplant, ncentroids = ncentroids, ninterp =
   ninterp)
 
 test_that("makepath returns dataframes with correct names", {
