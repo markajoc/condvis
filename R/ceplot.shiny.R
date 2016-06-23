@@ -27,7 +27,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   selector.colwidth <- 2
   height <- 8
   col <- rep(col, length.out = nrow(data))
-  plotS3d <- identical(length(S), 2L)
+  need3d <- identical(length(S), 2L) && all(vapply(data[, S, drop = FALSE],
+    is.numeric, logical(1L))) && is.numeric(data[, response[1]])
   seqC <- seq_along(C)
   wd <- getwd()
 
@@ -55,19 +56,20 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   hS <- "350px"
   basicPage(
     column(4,
-      if (plotS3d) {
+      if (need3d) {
         tabsetPanel(
-          tabPanel("Contour", plotOutput("plotS", height = hS, width = hS
-            ), value = 1),
-          tabPanel("Perspective", plotOutput("plotS", height = hS, width =
-            hS), value = 2),
+          tabPanel("Contour",
+            plotOutput("plotS", height = hS, width = hS),
+            value = 1),
+          tabPanel("Perspective",
+            plotOutput("plotS3D", height = hS, width = hS),
+            value = 2),
           id = "tab"
         )
       } else plotOutput("plotS", height = hS, width = hS),
-      conditionalPanel(condition = "input.tab == 2", numericInput("phi",
-        "Vertical rotation: ", 20, -180, 180)),
-      conditionalPanel(condition = "input.tab == 2", numericInput("theta",
-        "Horizontal rotation: ", 45, -180, 180)),
+      conditionalPanel(condition = "input.tab == 2",
+        numericInput("phi", "Vertical rotation: ", 20, -180, 180),
+        numericInput("theta", "Horizontal rotation: ", 45, -180, 180)),
       sliderInput("threshold", "Distance threshold: ", 0.01, 5, step =
         0.01, value = if (is.null(sigma)) 1 else sigma),
       radioButtons("distance", "Distance function type:", c("euclidean",
@@ -147,11 +149,24 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
 
     output$plotS <- renderPlot({\n     ',
       paste('input$plot_click', seqC, sep = '', collapse = '\n      '), '
+      input$tab
       vw <<- vwfun(xc.cond = xc.cond, sigma = input$threshold, distance =
         input$distance)
       xsplot <<- condvis:::plotxs(xs = data[, S, drop = FALSE], data[, response
         , drop = FALSE], xc.cond = xc.cond, model = model, col = col, weights =
-        vw$k, view3d = view3d, conf = conf, probs = probs, pch = pch)
+        vw$k, view3d = FALSE, conf = conf, probs = probs, pch = pch)
+    })
+
+    ## Section visualisation for 3-D perspective mesh.
+
+    output$plotS3D <- renderPlot({\n     ',
+      paste('input$plot_click', seqC, sep = '', collapse = '\n      '), '
+      input$tab
+      vw <<- vwfun(xc.cond = xc.cond, sigma = input$threshold, distance =
+        input$distance)
+      xsplot <<- condvis:::plotxs(xs = data[, S, drop = FALSE], data[, response
+        , drop = FALSE], xc.cond = xc.cond, model = model, col = col, weights =
+        vw$k, view3d = TRUE, conf = conf, probs = probs, pch = pch)
     })
 
     ## Give a basic table showing the section/condition values
