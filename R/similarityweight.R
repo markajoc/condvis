@@ -48,7 +48,6 @@
 #'
 #' similarityweight(mtcars[1:2, ], mtcars, threshold = 3)
 
-
 similarityweight <-
 function (x, data, threshold = NULL, distance = NULL, constant = NULL)
 {

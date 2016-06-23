@@ -8,7 +8,7 @@
 #'   Linear interpolation is then used to create intermediate points between the
 #'   path nodes.
 #'
-#' @param Xc A dataframe
+#' @param x A dataframe
 #' @param ncentroids The number of centroids to use as path nodes.
 #' @param ninterp The number of points to linearly interpolate between path
 #'   nodes.
@@ -25,28 +25,28 @@
 #' points(mp2$centers, type = "b", col = "red", pch = 16)
 
 makepath <-
-function (Xc, ncentroids, ninterp = 4)
+function (x, ncentroids, ninterp = 4)
 {
   ## If we have factors, make sure 'ninterp' is odd.
 
-  if (any(arefactors <- vapply(Xc, is.factor, logical(1L)))){
+  if (any(arefactors <- vapply(x, is.factor, logical(1L)))){
     if (identical(ninterp %% 2, 0))
       ninterp <- ninterp + 1
   }
 
   ## Interpolation function.
 
-  interp <- function(x, n = ninterp)
+  interp <- function(y, n = ninterp)
   {
     out <- vector()
-    if (is.factor(x)){
-      for (i in 1:(length(x) - 1L)){
-        out <- c(out, rep(x[i], ceiling(n / 2)), rep(x[i + 1], floor(n / 2)))
+    if (is.factor(y)){
+      for (i in 1:(length(y) - 1L)){
+        out <- c(out, rep(y[i], ceiling(n / 2)), rep(y[i + 1], floor(n / 2)))
       }
-      return(factor(levels(x)[c(out)], levels = levels(x)))
+      return(factor(levels(y)[c(out)], levels = levels(y)))
     } else {
-      for (i in 1:(length(x) - 1L)){
-        out <- c(out, seq(x[i], x[i + 1L], length.out = n + 1L)[-(n + 1L)])
+      for (i in 1:(length(y) - 1L)){
+        out <- c(out, seq(y[i], y[i + 1L], length.out = n + 1L)[-(n + 1L)])
       }
     }
     out
@@ -58,9 +58,9 @@ function (Xc, ncentroids, ninterp = 4)
   if (any(arefactors)){
     if (!requireNamespace("cluster", quietly = TRUE))
       stop("requires package 'cluster'")
-    d <- cluster::daisy(Xc)
+    d <- cluster::daisy(x)
     clustering <- cluster::pam(d, k = ncentroids)
-    centers <- Xc[clustering$medoids, ]
+    centers <- x[clustering$medoids, ]
 
     ## Order the cluster centres using 'DendSer' if available.
 
@@ -81,10 +81,10 @@ function (Xc, ncentroids, ninterp = 4)
 
     if (!requireNamespace("TSP", quietly = TRUE))
       stop("requires package 'TSP'")
-    means <- colMeans(Xc)
-    sds <- apply(Xc, 2L, sd)
-    Xc <- scale(Xc)[, ]
-    clustering <- kmeans(Xc, centers = ncentroids)
+    means <- colMeans(x)
+    sds <- apply(x, 2L, sd)
+    x <- scale(x)[, ]
+    clustering <- kmeans(x, centers = ncentroids)
     centers <- clustering$centers
     o <- TSP::TSP(dist(centers))
     orderindex <- TSP::solve_TSP(o)

@@ -4,10 +4,10 @@
 \alias{makepath}
 \title{Make a default path for conditional tour}
 \usage{
-makepath(Xc, ncentroids, ninterp = 4)
+makepath(x, ncentroids, ninterp = 4)
 }
 \arguments{
-\item{Xc}{A dataframe}
+\item{x}{A dataframe}
 
 \item{ncentroids}{The number of centroids to use as path nodes.}
 

@@ -8,14 +8,14 @@ similarityweight(x, data, threshold = NULL, distance = NULL,
   constant = NULL)
 }
 \arguments{
-\item{x}{This is a dataframe describing arbitrary points in the space of the
-data (i.e., with same \code{colnames} as \code{data}).}
+\item{x}{A dataframe describing arbitrary points in the space of the data
+(i.e., with same \code{colnames} as \code{data}).}
 
-\item{data}{This is a dataframe with same names as \code{xc.cond}
-representing observed data points.}
+\item{data}{A dataframe with same names as \code{xc.cond} representing
+observed data points.}
 
-\item{threshold}{This is a threshold distance outside which observations will
-be assigned similarity weight zero. This is numeric (and should be > 0).}
+\item{threshold}{Threshold distance outside which observations will
+be assigned similarity weight zero. This is numeric and should be > 0.}
 
 \item{distance}{The type of distance measure to be used, currently just two
 types of Minkowski distance: \code{"euclidean"} (default), and
@@ -26,15 +26,15 @@ mismatches, before adding to the Minkowski distance, to give a general
 dissimilarity measure.}
 }
 \value{
-A numeric vector or matrix, with values between 0 and 1. The
-  similarity weights for the observations in \code{data} arranged in rows for
-  each row in \code{x}.
+A numeric vector or matrix, with values from 0 to 1. The similarity
+  weights for the observations in \code{data} arranged in rows for each row
+  in \code{x}.
 }
 \description{
 Calculate the similarity weight for a set of observations, based
 on their distance from some arbitary points in data space. Observations which
 are very similar to the point under consideration are given weight 1, while
-dissimilar points are given weight zero.
+observations which are dissimilar to the point are given weight zero.
 }
 \details{
 Similarity weight is assigned to observations based on their
