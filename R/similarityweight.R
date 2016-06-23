@@ -145,7 +145,7 @@ function (xc)
     } else {rep(TRUE, nrow.xc)}
 
     ## If any observations make it past the above filtering, calculate the
-    ## dissimilarity as Minkowski distance plus 'constant' times number of
+    ## dissimilarity 'd' as Minkowski distance plus 'constant' times number of
     ## factor mismatches if 'constant' is supplied.
     ##
     ## Convert the dissimilarity to similarity weights 'k', between 0 and 1.
