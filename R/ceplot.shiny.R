@@ -30,6 +30,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   need3d <- identical(length(S), 2L) && all(vapply(data[, S, drop = FALSE],
     is.numeric, logical(1L))) && is.numeric(data[, response[1]])
   seqC <- seq_along(C)
+  lenC <- length(C)
   wd <- getwd()
 
   vwfun <- .similarityweight(xc = data[, uniqC, drop = FALSE])
@@ -77,23 +78,26 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       if (deploy) '#', 'actionButton("deployButton", "Deploy app to web"),
       downloadButton("download", "Download snapshot (pdf)")
     ),
-    column(8,
+    ', if (identical(length(S), 2L)) 'column(1,
+      plotOutput("legend", height = hS, width = "100px")
+    ),','
+    column(7,
       column(4,
         plotOutput("plot1", click = "plot_click1", height = h, width = h),
         plotOutput("plot2", click = "plot_click2", height = h, width = h),
         plotOutput("plot3", click = "plot_click3", height = h, width = h),
         tableOutput("info")
-      ),
-      column(4,
+      )
+      ', if (lenC > 3){',column(4,
         plotOutput("plot4", click = "plot_click4", height = h, width = h),
         plotOutput("plot5", click = "plot_click5", height = h, width = h),
         plotOutput("plot6", click = "plot_click6", height = h, width = h)
-      ),
-      column(4,
+      )'},
+      if (lenC > 6){',column(4,
         plotOutput("plot7", click = "plot_click4", height = h, width = h),
         plotOutput("plot8", click = "plot_click5", height = h, width = h),
         plotOutput("plot9", click = "plot_click6", height = h, width = h)
-      )
+      )'}, '
     )
   )
   ')
@@ -167,6 +171,12 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       xsplot <<- condvis:::plotxs(xs = data[, S, drop = FALSE], data[, response
         , drop = FALSE], xc.cond = xc.cond, model = model, col = col, weights =
         vw$k, view3d = TRUE, conf = conf, probs = probs, pch = pch)
+    })
+
+    ## Legend for section
+
+    output$legend <- renderPlot({
+      condvis:::xslegend(y = data[, response[1]], name = response[1])
     })
 
     ## Give a basic table showing the section/condition values
