@@ -1,12 +1,12 @@
 #' @title Make a default path for conditional tour
 #'
-#' @description Provides a default path (a set of sections) as input to a
-#'   conditional tour. Clusters the data using k-means or partitioning around
-#'   medoids (from the \code{cluster} package). The cluster centres/prototypes
-#'   are then ordered to create a sensible way to visit each section as smoothly
-#'   as possible. Ordering uses either the \code{DendSer} or \code{TSP} package.
-#'   Linear interpolation is then used to create intermediate points between the
-#'   path nodes.
+#' @description Provides a default path (a set of sections), useful as input to
+#'   a conditional tour (\code{\link{condtour}}). Clusters the data using
+#'   k-means or partitioning around medoids (from the \code{cluster} package).
+#'   The cluster centres/prototypes are then ordered to create a sensible way to
+#'   visit each section as smoothly as possible. Ordering uses either the
+#'   \code{DendSer} or \code{TSP} package. Linear interpolation is then used to
+#'   create intermediate points between the path nodes.
 #'
 #' @param x A dataframe
 #' @param ncentroids The number of centroids to use as path nodes.
@@ -23,6 +23,8 @@
 #' points(mp1$centers, type = "b", col = "blue", pch = 16)
 #' mp2 <- makepath(d, 40)
 #' points(mp2$centers, type = "b", col = "red", pch = 16)
+#'
+#' @seealso \code{\link{condtour}}
 
 makepath <-
 function (x, ncentroids, ninterp = 4)
