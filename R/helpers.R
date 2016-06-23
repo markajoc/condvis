@@ -1,3 +1,5 @@
+## Helper functions. NOT EXPORTED.
+
 ## Helper function for extracting variable names from model objects.
 
 cleanstring <-

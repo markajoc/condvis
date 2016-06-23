@@ -1,4 +1,4 @@
-## This is code that has been copied and modified.
+## This is code that has been copied and modified. NOT EXPORTED.
 
 ## This code is copied from graphics::barplot.default and edited to return some
 ## info to allow subsequent editing of the plot. Originall written by R Core

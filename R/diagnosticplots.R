@@ -1,3 +1,5 @@
+## NOT EXPORTED.
+
 ## plotap a diagnostic plot to be used with condtour. The plot shows the sum of
 ## the similarity weights for each section along the entire path. The plot is
 ## given its own update method.

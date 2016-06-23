@@ -1,3 +1,5 @@
+## NOT EXPORTED.
+
 ## This is a helper function to try to standardise the output from various
 ## predict methods. If 'ylevels' is given, it implies that we want the predicted
 ## class probabilities back, not just the predicted class.
