@@ -128,6 +128,21 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
 
   shinyServer(function (input, output)
   {
+    ## Reactive value for the current condition/section
+
+    rv <- reactiveValues(xc.cond = xc.cond)
+
+    ## Event listeners for mouseclicks on plots
+    ',
+    paste('
+    observeEvent({input$plot_click', seqC,'}, {
+      close.screen(all.screens = TRUE)
+      rv$xc.cond[, xcplots[[', seqC,']]$name] <<- condvis:::update.xcplot(
+        xcplots[[', seqC,']], xclick = input$plot_click', seqC,'$x, yclick =
+        input$plot_click', seqC,'$y, user = TRUE)$xc.cond.old
+    })
+    ', sep = '', collapse = '\n'),'
+
     ## Do condition selector plots.
     ## Need to call close.screen in here to avoid problems after the pdf call in
     ## output$download. Problem lies in update.xcplot trying to set screens and
@@ -137,40 +152,30 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     paste("
     output$plot", seqC, " <- renderPlot({
       i <- ", seqC, "
-      if(!is.null(input$plot_click", seqC, "$x)){
-        close.screen(all.screens = TRUE)
-        xc.cond[, xcplots[[i]]$name] <<- condvis:::update.xcplot(xcplots[[i]],
-          xclick = input$plot_click", seqC, "$x, yclick =
-          input$plot_click", seqC, "$y, user = TRUE)$xc.cond.old
-      }
-      xcplots[[i]] <<- plotxc(xc = data[, C[[i]]], xc.cond = xc.cond[1L, C[[i]]
-        ], name = colnames(data[, C[[i]], drop = FALSE]), select.colour =
+      xcplots[[i]] <<- plotxc(xc = data[, C[[i]]], xc.cond = rv$xc.cond[1L,
+        C[[i]]], name = colnames(data[, C[[i]], drop = FALSE]), select.colour =
         select.colour, select.cex = select.cex)
     })"
     , sep = "", collapse = "\n"), '
 
     ## Next do the section visualisation.
 
-    output$plotS <- renderPlot({\n     ',
-      paste('input$plot_click', seqC, sep = '', collapse = '\n      '), '
-      input$tab
-      vw <<- vwfun(xc.cond = xc.cond, sigma = input$threshold, distance =
+    output$plotS <- renderPlot({
+      vw <<- vwfun(xc.cond = rv$xc.cond, sigma = input$threshold, distance =
         input$distance)
       xsplot <<- condvis:::plotxs(xs = data[, S, drop = FALSE], data[, response
-        , drop = FALSE], xc.cond = xc.cond, model = model, col = col, weights =
+        , drop = FALSE], xc.cond = rv$xc.cond, model = model, col = col, weights =
         vw$k, view3d = FALSE, conf = conf, probs = probs, pch = pch)
     })
 
     ## Section visualisation for 3-D perspective mesh.
 
-    output$plotS3D <- renderPlot({\n     ',
-      paste('input$plot_click', seqC, sep = '', collapse = '\n      '), '
-      input$tab
-      vw <<- vwfun(xc.cond = xc.cond, sigma = input$threshold, distance =
+    output$plotS3D <- renderPlot({
+      vw <<- vwfun(xc.cond = rv$xc.cond, sigma = input$threshold, distance =
         input$distance)
       xsplot <<- condvis:::plotxs(xs = data[, S, drop = FALSE], data[, response
-        , drop = FALSE], xc.cond = xc.cond, model = model, col = col, weights =
-        vw$k, view3d = TRUE, conf = conf, probs = probs, pch = pch)
+        , drop = FALSE], xc.cond = rv$xc.cond, model = model, col = col,
+        weights = vw$k, view3d = TRUE, conf = conf, probs = probs, pch = pch)
     })
 
     ## Legend for section
@@ -181,9 +186,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
 
     ## Give a basic table showing the section/condition values
 
-    output$info <- renderTable({\n     ',
-      paste('input$plot_click', seqC, sep = '', collapse = '\n      '), '
-      xc.cond
+    output$info <- renderTable({
+      structure(rv$xc.cond, row.names = "section")
     })
 
     ## Allow the user to download a snapshot of the current visualisation
@@ -197,7 +201,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         pdf(file = file, width = width, height = 8)
         condvis:::ceplot.static(data = data, model = model, response = response,
           S = S, C = C, cex.axis = cex.axis, cex.lab = cex.lab, tck = tck,
-          xc.cond = xc.cond, weights = vw$k, col  = col, select.colour =
+          xc.cond = rv$xc.cond, weights = vw$k, col  = col, select.colour =
           select.colour, conf = conf, probs = probs)
         dev.off()
       }
