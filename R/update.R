@@ -6,15 +6,18 @@
 ## Not currently exported 2016-06-21.
 
 update.xcplot <-
-function (object, xclick, yclick, xc.cond = NULL, user = FALSE, ...)
+function (object, xclick, yclick, xc.cond = NULL, user = FALSE, draw = TRUE,
+  ...)
 {
-  if (dev.cur() != object$device)
+  if (dev.cur() != object$device && draw)
     dev.set(object$device)
   if (!identical(object$plot.type, "full")){
-    screen(n = object$screen, new = FALSE)
-    par(usr = object$usr)
-    par(mar = object$mar)
-    screen(n = object$screen, new = FALSE)
+    if (draw){
+      screen(n = object$screen, new = FALSE)
+      par(usr = object$usr)
+      par(mar = object$mar)
+      screen(n = object$screen, new = FALSE)
+    }
     if (is.null(xc.cond)){
       if (user){
         xclickconv <- xclick
@@ -33,12 +36,17 @@ function (object, xclick, yclick, xc.cond = NULL, user = FALSE, ...)
       xc.cond.new <- xc.cond
     }
     if (xc.cond.new != object$xc.cond.old){
-      abline(v = object$xc.cond.old, lwd = 2 * object$select.lwd, col = "white")
-      break4redraw <- which.min(abs(object$histmp$breaks - object$xc.cond.old))
-      rect(xleft = object$histmp$breaks[break4redraw + c(-1, 0)], xright =
-        object$histmp$breaks[break4redraw + c(0, 1)], ybottom = c(0, 0), ytop =
-        object$histmp$counts[break4redraw + c(-1, 0)])
-      abline(v = xc.cond.new, lwd = object$select.lwd, col = object$select.col)
+      if (draw){
+        abline(v = object$xc.cond.old, lwd = 2 * object$select.lwd, col =
+          "white")
+        break4redraw <- which.min(abs(object$histmp$breaks - object$xc.cond.old)
+          )
+        rect(xleft = object$histmp$breaks[break4redraw + c(-1, 0)], xright =
+          object$histmp$breaks[break4redraw + c(0, 1)], ybottom = c(0, 0), ytop
+          = object$histmp$counts[break4redraw + c(-1, 0)])
+        abline(v = xc.cond.new, lwd = object$select.lwd, col = object$select.col
+          )
+      }
       object$xc.cond.old <- xc.cond.new
     }
   } else if (identical(object$plot.type, "barplot")){
@@ -49,15 +57,17 @@ function (object, xclick, yclick, xc.cond = NULL, user = FALSE, ...)
       xc.cond.new <- xc.cond
     }
     if (xc.cond.new != object$xc.cond.old){
-      barindex.old <- levels(object$xc) == object$xc.cond.old
-      rect(xleft = object$bartmp$w.l[barindex.old], xright =
-        object$bartmp$w.r[barindex.old], ybottom = 0, ytop =
-        object$bartmp$height[barindex.old], col = "gray")
-      barindex.new <- levels(object$xc) == xc.cond.new
-      rect(xleft = object$bartmp$w.l[barindex.new], xright =
-        object$bartmp$w.r[barindex.new], ybottom = 0, ytop =
-        object$bartmp$height[barindex.new], col = object$select.colour,
-        density = -1)
+      if (draw){
+        barindex.old <- levels(object$xc) == object$xc.cond.old
+        rect(xleft = object$bartmp$w.l[barindex.old], xright =
+          object$bartmp$w.r[barindex.old], ybottom = 0, ytop =
+          object$bartmp$height[barindex.old], col = "gray")
+        barindex.new <- levels(object$xc) == xc.cond.new
+        rect(xleft = object$bartmp$w.l[barindex.new], xright =
+          object$bartmp$w.r[barindex.new], ybottom = 0, ytop =
+          object$bartmp$height[barindex.new], col = object$select.colour,
+          density = -1)
+      }
       object$xc.cond.old <- xc.cond.new
     }
   } else if (identical(object$plot.type, "scatterplot")){
@@ -71,7 +81,8 @@ function (object, xclick, yclick, xc.cond = NULL, user = FALSE, ...)
       xc.cond.new <- xc.cond
     }
     if (any(xc.cond.new != object$xc.cond.old)){
-      if (nrow(object$xc) > 2000 && requireNamespace("gplots", quietly = TRUE)){
+      if (nrow(object$xc) > 2000 && requireNamespace("gplots", quietly = TRUE)
+        && draw){
         par(bg = "white")
         dev.hold()
         screen(new = TRUE)
@@ -81,19 +92,21 @@ function (object, xclick, yclick, xc.cond = NULL, user = FALSE, ...)
           object$cex.lab, tck = object$tck)
         dev.flush()
       } else {
-        abline(v = object$xc.cond.old[1], h = object$xc.cond.old[2], lwd =
-          2 * object$select.lwd, col = "white")
-        xrange <- abs(diff(range(object$xc[, 1])))
-        yrange <- abs(diff(range(object$xc[, 2])))
-        redrawindex.x <- findInterval(object$xc[, 1], object$xc.cond.old[1]
-          + xrange * c(-0.125, 0.125) ) == 1
-        redrawindex.y <- findInterval(object$xc[, 2], object$xc.cond.old[2]
-          + yrange * c(-0.125, 0.125) ) == 1
-        points(object$xc[redrawindex.x | redrawindex.y, ], cex =
-          object$select.cex)
-        box()
-        abline(v = xc.cond.new.x, h = xc.cond.new.y, lwd = object$select.lwd,
-          col = object$select.colour)
+        if (draw){
+          abline(v = object$xc.cond.old[1], h = object$xc.cond.old[2], lwd =
+            2 * object$select.lwd, col = "white")
+          xrange <- abs(diff(range(object$xc[, 1])))
+          yrange <- abs(diff(range(object$xc[, 2])))
+          redrawindex.x <- findInterval(object$xc[, 1], object$xc.cond.old[1]
+            + xrange * c(-0.125, 0.125) ) == 1
+          redrawindex.y <- findInterval(object$xc[, 2], object$xc.cond.old[2]
+            + yrange * c(-0.125, 0.125) ) == 1
+          points(object$xc[redrawindex.x | redrawindex.y, ], cex =
+            object$select.cex)
+          box()
+          abline(v = xc.cond.new.x, h = xc.cond.new.y, lwd = object$select.lwd,
+            col = object$select.colour)
+        }
         object$xc.cond.old <- xc.cond.new
       }
     }
@@ -111,18 +124,20 @@ function (object, xclick, yclick, xc.cond = NULL, user = FALSE, ...)
       xc.cond.new <- xc.cond
     }
     if (any(xc.cond.new != object$xc.cond.old)){
-      if (xc.cond.new.x != object$xc.cond.old[, 1]){
-        abline(v = as.integer(object$xc.cond.old[, 1]), lwd = 2 *
-          object$select.lwd, col = "white")
+      if (draw){
+        if (xc.cond.new.x != object$xc.cond.old[, 1]){
+          abline(v = as.integer(object$xc.cond.old[, 1]), lwd = 2 *
+            object$select.lwd, col = "white")
+        }
+        if (xc.cond.new.y != object$xc.cond.old[, 2]) {
+          abline(h = object$xc.cond.old[, 2], lwd = 2 * object$select.lwd,
+            col = "white")
+        }
+        par(new = TRUE)
+        bxp(object$boxtmp, xaxt = "n", yaxt = "n")
+        abline(v = as.integer(xc.cond.new.x), h = xc.cond.new.y, lwd =
+          object$select.lwd, col = object$select.colour)
       }
-      if (xc.cond.new.y != object$xc.cond.old[, 2]) {
-        abline(h = object$xc.cond.old[, 2], lwd = 2 * object$select.lwd,
-          col = "white")
-      }
-      par(new = TRUE)
-      bxp(object$boxtmp, xaxt = "n", yaxt = "n")
-      abline(v = as.integer(xc.cond.new.x), h = xc.cond.new.y, lwd =
-        object$select.lwd, col = object$select.colour)
       xc.cond.new <- data.frame(xc.cond.new.x, xc.cond.new.y)
       names(xc.cond.new) <- names(object$xc.cond.old)
       object$xc.cond.old <- xc.cond.new
@@ -142,12 +157,14 @@ function (object, xclick, yclick, xc.cond = NULL, user = FALSE, ...)
           names(xc.cond.new) <- names(object$xc.cond.old)
           if (any(xc.cond.new != object$xc.cond.old)){
             object$xc.cond.old <- xc.cond.new
-            par(bg = "white")
-            screen(new = TRUE)
-            object <- plotxc(xc = object$xc, xc.cond = xc.cond.new, name =
-              object$name, select.colour = object$select.colour, select.lwd =
-              object$select.lwd, cex.axis = object$cex.axis, cex.lab =
-              object$cex.lab, tck = object$tck)
+            if (draw){
+              par(bg = "white")
+              screen(new = TRUE)
+              object <- plotxc(xc = object$xc, xc.cond = xc.cond.new, name =
+                object$name, select.colour = object$select.colour, select.lwd =
+                object$select.lwd, cex.axis = object$cex.axis, cex.lab =
+                object$cex.lab, tck = object$tck)
+            }
           }
         }
       }
@@ -156,12 +173,14 @@ function (object, xclick, yclick, xc.cond = NULL, user = FALSE, ...)
       names(xc.cond.new) <- names(object$xc.cond.old)
       if (any(xc.cond.new != object$xc.cond.old)){
         object$xc.cond.old <- xc.cond.new
-        par(bg = "white")
-        screen(new = TRUE)
-        object <- plotxc(xc = object$xc, xc.cond = xc.cond.new, name =
-          object$name, select.colour = object$select.colour, select.lwd =
-          object$select.lwd, cex.axis = object$cex.axis, cex.lab =
-          object$cex.lab, tck = object$tck)
+        if (draw){
+          par(bg = "white")
+          screen(new = TRUE)
+          object <- plotxc(xc = object$xc, xc.cond = xc.cond.new, name =
+            object$name, select.colour = object$select.colour, select.lwd =
+            object$select.lwd, cex.axis = object$cex.axis, cex.lab =
+            object$cex.lab, tck = object$tck)
+        }
       }
     }
   } else if (identical(object$plot.type, "pcp")){

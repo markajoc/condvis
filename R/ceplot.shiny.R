@@ -74,14 +74,23 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       sliderInput("threshold", "Distance threshold: ", 0.01, 5, step =
         0.01, value = if (is.null(sigma)) 1 else sigma),
       radioButtons("distance", "Distance function type:", c("euclidean",
-        "maxnorm")),',
-      if (deploy) '#', 'actionButton("deployButton", "Deploy app to web"),
-      downloadButton("download", "Download snapshot (pdf)")
+        "maxnorm")),
+      hr(),
+      downloadButton("download", "Download snapshot (pdf)")',
+      if (!deploy) ',\n      actionButton("openDeploy", "Deploy app"),
+      br(),
+      conditionalPanel(condition = "input.openDeploy",
+      radioButtons("deployLocation", "", c("to web via rsconnect",
+        "to working directory")),
+        textInput("appName", label = "Application name (valid directory name)"),
+        actionButton("deployButton", "Deploy app")
+      )','
     ),
     ', if (identical(length(S), 2L)) 'column(1,
       plotOutput("legend", height = hS, width = "100px")
     ),','
     column(7,
+      fluidRow(helpText("Condition selectors")),
       column(4,
         plotOutput("plot1", click = "plot_click1", height = h, width = h),
         plotOutput("plot2", click = "plot_click2", height = h, width = h),
@@ -136,18 +145,13 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     ',
     paste('
     observeEvent({input$plot_click', seqC,'}, {
-      close.screen(all.screens = TRUE)
       rv$xc.cond[, xcplots[[', seqC,']]$name] <<- condvis:::update.xcplot(
         xcplots[[', seqC,']], xclick = input$plot_click', seqC,'$x, yclick =
-        input$plot_click', seqC,'$y, user = TRUE)$xc.cond.old
+        input$plot_click', seqC,'$y, user = TRUE, draw = FALSE)$xc.cond.old
     })
-    ', sep = '', collapse = '\n'),'
-
+    ', sep = '', collapse = '\n'),
+    '
     ## Do condition selector plots.
-    ## Need to call close.screen in here to avoid problems after the pdf call in
-    ## output$download. Problem lies in update.xcplot trying to set screens and
-    ## draw... this seems like a cheaper fix for now. Maybe update.xcplot could
-    ## have a logical switch added to suppress attempts to draw.
     ',
     paste("
     output$plot", seqC, " <- renderPlot({
@@ -160,12 +164,13 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
 
     ## Next do the section visualisation.
 
+    vw <- NULL
     output$plotS <- renderPlot({
       vw <<- vwfun(xc.cond = rv$xc.cond, sigma = input$threshold, distance =
         input$distance)
       xsplot <<- condvis:::plotxs(xs = data[, S, drop = FALSE], data[, response
-        , drop = FALSE], xc.cond = rv$xc.cond, model = model, col = col, weights =
-        vw$k, view3d = FALSE, conf = conf, probs = probs, pch = pch)
+        , drop = FALSE], xc.cond = rv$xc.cond, model = model, col = col, weights
+        = vw$k, view3d = FALSE, conf = conf, probs = probs, pch = pch)
     })
 
     ## Section visualisation for 3-D perspective mesh.
@@ -212,16 +217,24 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     ## not be present in a deployed application.
 
     observeEvent(input$deployButton, {
-      deploy.path <- paste0(wd, "/condvis-shinyapp-deploy")
+      folderpath <- if (input$deployLocation == "to working directory")
+        wd
+      else tempdir()
+      appname <- if (input$appName == "")
+        "condvis-shinyapp"
+      else input$appName
+      deploy.path <- paste0(folderpath, "/", appname)
       dir.create(deploy.path, showWarnings = FALSE)
       write(ui(deploy = TRUE), file = paste0(deploy.path, "/ui.R"))
       write(server(deploy = TRUE), file = paste0(deploy.path, "/server.R"))
       file.copy(from = paste0(app.path, "/app.Rdata"), to = paste0(deploy.path,
         "/app.Rdata"), overwrite = TRUE)
-      if (!requireNamespace("rsconnect", quietly = TRUE))
-        stop("requires package \'rsconnect\'")
-      else if (!exists("deployApp")) attachNamespace("rsconnect")
-      rsconnect::deployApp(deploy.path)
+      if (input$deployLocation == "to web via rsconnect"){
+        if (!requireNamespace("rsconnect", quietly = TRUE))
+          stop("requires package \'rsconnect\'")
+        else if (!exists("deployApp")) attachNamespace("rsconnect")
+        rsconnect::deployApp(deploy.path)
+      }
     })'}, '
   })
   ')
