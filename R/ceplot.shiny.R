@@ -5,7 +5,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
   "blue", select.cex = 1, select.lwd = 2, select.type = "minimal", probs = FALSE
   , col = "black", pch = 1, residuals = FALSE, xc.cond = NULL, packages = NULL)
 {
-  ## First check for shiny package, and stop if not installed
+  ## Check for shiny package, and stop if not installed
 
   if(!requireNamespace("shiny", quietly = TRUE))
     stop("requires package 'shiny'")
@@ -128,7 +128,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
 
   shinyServer(function (input, output)
   {
-    ## First do condition selector plots.
+    ## Do condition selector plots.
     ## Need to call close.screen in here to avoid problems after the pdf call in
     ## output$download. Problem lies in update.xcplot trying to set screens and
     ## draw... this seems like a cheaper fix for now. Maybe update.xcplot could
