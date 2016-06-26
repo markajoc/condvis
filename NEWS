@@ -2,7 +2,7 @@ condvis: Conditional Visualisation for Statistical Models
 =========================================================
 
 News
------------------------------------------------
+---------------------------------------------------------
 
 Version 0.3-0
   * removed daisy distance measure, and relevant contributors.
