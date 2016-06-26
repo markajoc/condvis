@@ -103,7 +103,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
   else rep(model.lty, length.out = length(model))
   model.name <- if(!is.null(names(model)))
     names(model)
-  else seq_along(model)
+  else paste("model", seq_along(model), sep = "_")
   par(mar = c(5, 4, 3, 2))
 
 ## If xs is NULL, show a univariate summary
