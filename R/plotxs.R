@@ -38,7 +38,8 @@
 #' @param conf Logical; if \code{TRUE} plots confidence bounds (or equivalent)
 #'   for models which provide this.
 #' @param probs Logical; if \code{TRUE}, shows predicted class probabilities
-#'   instead of just predicted classes when possible.
+#'   instead of just predicted classes. Only available if \code{xs} contains two
+#'   numeric predictors and the model's predict method provides this.
 #' @param pch Plot symbols for observed data
 #' @param residuals Logical; if \code{TRUE}, plots a residual versus predictor
 #'   plot instead of the usual scale of raw response.
