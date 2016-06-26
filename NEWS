@@ -5,14 +5,18 @@ News
 -----------------------------------------------
 
 Version 0.3-0
+  * removed daisy distance measure, and relevant contributors.
+  * renamed `visualweight` to `similarityweight` and changed parameter names.
+  * renamed parameters in `ceplot`.
+  * Shiny implementation completely rewritten, see R/ceplot.shiny.R.
+  * Added Roxygen comments for documentation of exported functions.
   * added update methods to parallel coordinates and scatterplot matrix
-    condition selector plots
-  * condtour can now handle mixed data (categorical and continuous)
-  * removed daisy distance measure, and relevant contributors
+    condition selector plots.
+  * `condtour` can now handle mixed data (categorical and continuous).
 
 Version 0.2-2 01 Apr 2016
-  * updated contributors for copied code
-  * added simple example to README
+  * updated contributors for copied code.
+  * added simple example to README.
 
 Version 0.2-1 23 Feb 2016
-  * initial release on CRAN
+  * initial release on CRAN.
