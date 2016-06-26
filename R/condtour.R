@@ -117,15 +117,7 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
           pathindexrange))
         applot <<- update(applot, pathindex = pathindex)
         xc.cond[, colnames(path)] <- path[pathindex, , drop = FALSE]
-        k.order <- order(k[pathindex, ])
-        k.order.trimmed <- k.order[k[pathindex, ][k.order] > 0]
-        newcol <- (col2rgb(col[k.order.trimmed]) * matrix(rep(k[pathindex, ][
-          k.order.trimmed], 3), nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 -
-          k[pathindex, ][k.order.trimmed], 3), nrow = 3, byrow = TRUE)
-        data.colour <- rep(NA, length(col))
-        data.colour[k.order.trimmed] <- rgb(t(newcol))
-        xsplot <<- update(xsplot, xc.cond = xc.cond, data.colour = data.colour,
-          data.order = k.order.trimmed)
+        xsplot <<- update(xsplot, xc.cond = xc.cond, weights = k[pathindex, ])
         for (i in seq_along(C)){
           xcplots[[i]] <<- update(xcplots[[i]], xc.cond = path[pathindex,
             colnames(data)[C[i]]])
@@ -256,13 +248,6 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
   }
   screen(xsscreens[1L])
   par(mar = c(3, 3, 3, 3))
-  k.order <- order(k[pathindex, ])
-  k.order.trimmed <- k.order[k[pathindex, ][k.order] > 0]
-  newcol <- (col2rgb(col[k.order.trimmed]) * matrix(rep(k[pathindex, ][
-    k.order.trimmed], 3), nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - k[
-    pathindex, ][k.order.trimmed], 3), nrow = 3, byrow = TRUE)
-  data.colour <- rep(NA, length(col))
-  data.colour[k.order.trimmed] <- rgb(t(newcol))
   xsplot <- plotxs(xs = data[, S, drop = FALSE], data[, response, drop = FALSE]
     , xc.cond = xc.cond, model = model, weights = k[pathindex, ], col = col,
     view3d = view3d, conf = conf, pch = pch)
