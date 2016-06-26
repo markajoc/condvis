@@ -32,23 +32,45 @@
       </header>
       <section>
         <h3>
-<a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"
+<a id="welcome-to-github-pages" class="anchor" href="#welcome"
   aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span>
 </a>Welcome</h3>
-
-<p>This is the website for the condvis package in R. This package produces
+<p>
+  This is the website for the condvis package in R. This package produces
   interactive graphics for visualising 2-D and 3-D sections in data space,
   showing both fitted models and observed data.
 </p>
 
 <h3>
-<a id="designer-templates" class="anchor" href="#designer-templates"
+<a id="designer-templates" class="anchor" href="#installation"
   aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span>
 </a>Installation</h3>
 
 <p>You can install the current CRAN release of condvis with
-<div class="highlight highlight-source-r"><pre>install.packages(<span class="pl-s"><span class="pl-pds">"</span>condvis<span class="pl-pds">"</span></span>)</pre></div>. You can browse the code at Github, and download
-  the latest development version.
+<div class="highlight highlight-source-r"><pre>install.packages(<span class="pl-s"><span class="pl-pds">"</span>condvis<span class="pl-pds">"</span></span>)</pre></div>
+You can browse the code at Github, and download the latest development version.
+Bug reports and feature requests are welcome.
+</p>
+
+<h3>
+<a id="condvis-for" class="anchor" href="#purpose"
+  aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span>
+</a>What is condvis for?</h3>
+
+<p>
+  Taking sections is a natural way to display and understand objects embedded in
+  high-dimensional space. The condvis package allows us to directly visualise
+  a complex regression surface (e.g., a random forest or gradient boosted tree
+  model) in high-dimensional data space. This is achieved by taking sections
+  (slices) through the space, or put another way, by holding all but one or two
+  model inputs constant and allowing the remaining input(s) to vary across their
+  range.
+</p>
+<p>
+  Often, we like to see our fitted model and observed data on the same plot, to
+  see if the model is doing the job we want it to do. When continuous predictors
+  are involved, sections in data space very rarely contain much, if any,
+  observed data points.
 </p>
       </section>
       <footer>
