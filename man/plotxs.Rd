@@ -60,7 +60,8 @@ the section. Useful when providing \code{theta3d}, \code{phi3d}, or
 for models which provide this.}
 
 \item{probs}{Logical; if \code{TRUE}, shows predicted class probabilities
-instead of just predicted classes when possible.}
+instead of just predicted classes. Only available if \code{xs} contains two
+numeric predictors and the model's predict method provides this.}
 
 \item{pch}{Plot symbols for observed data}
 

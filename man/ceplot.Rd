@@ -56,7 +56,8 @@ See \code{\link{arrangeC}}.}
 for models which provide this.}
 
 \item{probs}{Logical; if \code{TRUE}, shows predicted class probabilities
-instead of just predicted classes when possible.}
+instead of just predicted classes. Only available if \code{S} specifies two
+numeric predictors and the model's predict method provides this.}
 
 \item{col}{Colour for observed data.}
 
@@ -72,8 +73,8 @@ passed to \code{\link{plotxs}}. Not used.}
 \code{\link{plotxs}}. Not used.}
 
 \item{xcplotpar}{Plotting parameters for condition selector plots as a list,
-passed to \code{\link{plotxc}}. Can specify \code{cex.axis}, \code{cex.lab}
-, \code{tck}, \code{col} for highlighting current section, \code{cex}.}
+passed to \code{\link{plotxc}}. Can specify \code{col} for highlighting
+current section, \code{cex}.}
 }
 \description{
 Creates an interactive conditional expectation plot, which
