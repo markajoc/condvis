@@ -6,6 +6,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, weights = NULL, col
   theta3d = 45, phi3d = 20, Corder = "default", xc.cond = NULL, select.colour =
   "blue", select.cex = 1, conf = FALSE, probs = FALSE)
 {
+  plotlegend <- length(S) == 2
   uniqC <- unique(unlist(C))
   xc.cond <- if (is.null(xc.cond))
     data[1, !colnames(data) %in% c(S, response)]
@@ -31,7 +32,16 @@ function (data, model, response = NULL, S = NULL, C = NULL, weights = NULL, col
     }
   }
   screen(main[1])
-  Xc <- data[, uniqC, drop = FALSE]
+  legendwidth <- 1.15 / height
+  xsscreens <- if (plotlegend){
+    split.screen(figs = matrix(c(0, 1 - legendwidth, 1 - legendwidth, 1, 0, 0,
+      1, 1), ncol = 4))
+  } else split.screen()
+  if (plotlegend){
+    screen(xsscreens[2L])
+    xslegend(data[, response], response)
+  }
+  screen(xsscreens[1L])
   xsplot <- plotxs(xs = data[, S, drop = FALSE], y = data[, response, drop =
     FALSE], xc.cond = xc.cond, model = model, model.colour = NULL, model.lwd =
     NULL, model.lty = NULL, yhat = NULL, mar = NULL, weights = weights, col =
