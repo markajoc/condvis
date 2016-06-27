@@ -236,9 +236,10 @@ function (data, model, response = NULL, sectionvars = NULL, conditionvars = NULL
     C <- arrangeC(data[, setdiff(C, S), drop = FALSE], method = Corder)
   } else if (!inherits(varnamestry, "try-error")){
     possibleC <- unique(unlist(lapply(lapply(model, getvarnames), `[[`, 2)))
-    C <- arrangeC(data[, setdiff(possibleC, S), drop = FALSE], method = Corder)
+    C <- arrangeC(data[, setdiff(intersect(possibleC, colnames(data)), S), drop
+      = FALSE], method = Corder)
   } else {
-    C <- arrangeC(data[, !colnames(data) %in% c(S, response), drop = FALSE],
+    C <- arrangeC(data[, setdiff(colnames(data), c(S, response)), drop = FALSE],
       method = Corder)
   }
   C <- C[1:min(length(C), 20L)]
