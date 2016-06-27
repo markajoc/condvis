@@ -281,7 +281,7 @@ function (data, model, response = NULL, sectionvars = NULL, conditionvars = NULL
       selectortype, residuals = residuals)
   } else if (identical(type, "shiny")){
     ceplot.shiny(data = data, model = model, response = response, S = S,
-      C = C, sigma = sigma, threshold = threshold, distance = distance, cex.axis
+      C = C, sigma = sigma, lambda = lambda, distance = distance, cex.axis
       = cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = Corder
       , conf = conf, separate = FALSE, select.colour = select.colour, select.cex
       = select.cex, probs = probs, col = col, pch = pch, residuals = residuals)
