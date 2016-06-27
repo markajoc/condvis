@@ -37,7 +37,8 @@ to \code{\link{similarityweight}}.}
 \item{lambda}{A constant to multiply by number of factor mismatches in
 constructing a general dissimilarity measure. If left \code{NULL}, behaves
 as though \code{lambda} is set greater than \code{threshold}, and so only
-observations whose factor levels match the current section are visible.}
+observations whose factor levels match the current section are visible.
+Passed to \code{\link{similarityweight}}.}
 
 \item{distance}{A character vector describing the type of distance measure to
 use, either \code{"euclidean"} (default) or \code{"maxnorm"}.}

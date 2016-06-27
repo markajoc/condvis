@@ -25,6 +25,7 @@
 #'   constructing a general dissimilarity measure. If left \code{NULL}, behaves
 #'   as though \code{lambda} is set greater than \code{threshold}, and so only
 #'   observations whose factor levels match the current section are visible.
+#'   Passed to \code{\link{similarityweight}}.
 #' @param distance A character vector describing the type of distance measure to
 #'   use, either \code{"euclidean"} (default) or \code{"maxnorm"}.
 #' @param type This specifies the type of interactive plot. \code{"default"}

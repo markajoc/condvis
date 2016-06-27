@@ -17,10 +17,12 @@
 #'   to condition.
 #' @param threshold Threshold distance. Observed data which are a distance
 #'   greater than \code{threshold} from the current section are not visible.
+#'   Passed to \code{\link{similarityweight}}.
 #' @param lambda A constant to multiply by number of factor mismatches in
 #'   constructing a general dissimilarity measure. If left \code{NULL}, behaves
 #'   as though \code{lambda} is set greater than \code{threshold}, and so only
 #'   observations whose factor levels match the current section are visible.
+#'   Passed to \code{\link{similarityweight}}.
 #' @param distance The type of distance measure to use, either
 #'   \code{"euclidean"} (default) or \code{"maxnorm"}.
 #' @param view3d Logical; if \code{TRUE}, plots a three-dimensional regression
