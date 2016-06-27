@@ -5,9 +5,9 @@
 \title{Conditional tour; a tour through sections in data space}
 \usage{
 condtour(data, model, path, response = NULL, sectionvars = NULL,
-  conditionvars = NULL, threshold = NULL, distance = c("euclidean",
-  "maxnorm"), view3d = FALSE, conf = FALSE, col = "black", pch = 1,
-  xcplotpar = NULL)
+  conditionvars = NULL, threshold = NULL, lambda = NULL,
+  distance = c("euclidean", "maxnorm"), view3d = FALSE, conf = FALSE,
+  col = "black", pch = 1, xcplotpar = NULL)
 }
 \arguments{
 \item{data}{A dataframe.}
@@ -28,6 +28,11 @@ to condition.}
 
 \item{threshold}{Threshold distance. Observed data which are a distance
 greater than \code{threshold} from the current section are not visible.}
+
+\item{lambda}{A constant to multiply by number of factor mismatches in
+constructing a general dissimilarity measure. If left \code{NULL}, behaves
+as though \code{lambda} is set greater than \code{threshold}, and so only
+observations whose factor levels match the current section are visible.}
 
 \item{distance}{The type of distance measure to use, either
 \code{"euclidean"} (default) or \code{"maxnorm"}.}
