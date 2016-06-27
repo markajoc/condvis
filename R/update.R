@@ -1,5 +1,5 @@
 ## Update methods for plots produced by plotxc and plotxs. Essentially doing the
-## minimum amount of work possible to update the plots. Some parts are doing a
+## minimum amount of work possible to update the plots. Some parts are doing a
 ## wasteful redraw, when the original plot doesn't return enough info to easily
 ## erase and redraw parts of it.
 ##
