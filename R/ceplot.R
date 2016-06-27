@@ -168,9 +168,9 @@ function (data, model, response = NULL, sectionvars = NULL, conditionvars = NULL
   select.colour <- if (is.null(xcplotpar$col))
     "blue"
   else xcplotpar$col
-  select.cex <- if (is.null(xcplotpar$select.cex))
+  select.cex <- if (is.null(xcplotpar$cex))
     1
-  else xcplotpar$select.cex
+  else xcplotpar$cex
 
 ## Prepare variables
 
