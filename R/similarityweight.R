@@ -14,7 +14,7 @@
 #' @param distance The type of distance measure to be used, currently just two
 #'   types of Minkowski distance: \code{"euclidean"} (default), and
 #'   \code{"maxnorm"}.
-#' @param constant A constant to multiply by the number of categorical
+#' @param lambda A constant to multiply by the number of categorical
 #'   mismatches, before adding to the Minkowski distance, to give a general
 #'   dissimilarity measure.
 #'
@@ -49,7 +49,7 @@
 #' similarityweight(mtcars[1:2, ], mtcars, threshold = 3)
 
 similarityweight <-
-function (x, data, threshold = NULL, distance = NULL, constant = NULL)
+function (x, data, threshold = NULL, distance = NULL, lambda = NULL)
 {
   ## Initialise the internal function
 
@@ -64,7 +64,7 @@ function (x, data, threshold = NULL, distance = NULL, constant = NULL)
 
   for (i in 1:nrow(x)){
     k[i, ] <- do.call(vwfun, list(xc.cond = x[i, , drop = FALSE], sigma =
-      threshold, distance = distance, constant = constant))$k
+      threshold, distance = distance, lambda = lambda))$k
   }
 
   ## Return the matrix of weights, dropping to vector if possible
@@ -95,7 +95,7 @@ function (xc)
   ## point in the data space.
 
   function (xc.cond, sigma = NULL, distance = c("euclidean", "maxnorm"),
-    constant = NULL)
+    lambda = NULL)
   {
     ## Set up values
 
@@ -119,38 +119,38 @@ function (xc)
     ## 'factormatches' is the index of observations on which we will calculate
     ## the Minkowski distance. Basically pre-filtering for speed.
     ##
-    ## If 'constant' is NULL, require all factors to be equal to even bother
+    ## If 'lambda' is NULL, require all factors to be equal to even bother
     ## calculating Minkowski distance.
     ##
-    ## If 'constant' is supplied, only want observations with less than
-    ## (sigma / constant) mismatches in the factors.
+    ## If 'lambda' is supplied, only want observations with less than
+    ## (sigma / lambda) mismatches in the factors.
     ##
     ## If there are no factors, want all rows.
 
     factormatches <- if (any(arefactors)){
-      if (is.null(constant)){
+      if (is.null(lambda)){
         which((nfactormatches <- rowSums(xc.factors == matrix(xc.cond.factors,
           ncol = length(xc.cond.factors), nrow = nrow.xc, byrow = TRUE))) ==
           length(xc.cond.factors))
       } else {
         which(length(xc.cond.factors) - (nfactormatches <- rowSums(xc.factors ==
           matrix(xc.cond.factors, ncol = length(xc.cond.factors), nrow = nrow.xc
-          , byrow = TRUE))) <= (sigma / constant))
+          , byrow = TRUE))) <= (sigma / lambda))
       }
     } else {rep(TRUE, nrow.xc)}
 
     ## If any observations make it past the above filtering, calculate the
-    ## dissimilarity 'd' as Minkowski distance plus 'constant' times number of
-    ## factor mismatches if 'constant' is supplied.
+    ## dissimilarity 'd' as Minkowski distance plus 'lambda' times number of
+    ## factor mismatches if 'lambda' is supplied.
     ##
     ## Convert the dissimilarity to similarity weights 'k', between 0 and 1.
 
     if (length(factormatches) > 0){
       if (all(arefactors)){
-        if (is.null(constant)){
+        if (is.null(lambda)){
           k[factormatches] <- 1
         } else {
-          d <- constant * (sum(arefactors) - nfactormatches[factormatches]) ^ p
+          d <- lambda * (sum(arefactors) - nfactormatches[factormatches]) ^ p
           k[factormatches] <- c(1, 0.7, 0.4, 0)[findInterval(d, c(0, (0.3 *
             sigma) ^ p, (0.6 * sigma) ^ p, sigma ^ p))]
         }
@@ -158,8 +158,8 @@ function (xc)
         xcond.scaled <- (xc.cond.num - attr(x.scaled, "scaled:center")) / attr(
           x.scaled, "scaled:scale")
         d <- dist1(xcond.scaled, x.scaled[factormatches, ], inf = identical(
-          distance, "maxnorm")) + if (any(arefactors) && !is.null(constant))
-          (constant * (sum(arefactors) - nfactormatches[factormatches])) ^ p
+          distance, "maxnorm")) + if (any(arefactors) && !is.null(lambda))
+          (lambda * (sum(arefactors) - nfactormatches[factormatches])) ^ p
           else 0
         k[factormatches] <- c(1, 0.7, 0.4, 0)[findInterval(d, c(0, (0.3 * sigma)
           ^ p, (0.6 * sigma) ^ p, sigma ^ p))]
