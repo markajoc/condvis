@@ -21,6 +21,10 @@
 #' @param threshold This is a threshold distance. Points further than
 #'   \code{threshold} away from the current section will not be visible. Passed
 #'   to \code{\link{similarityweight}}.
+#' @param lambda A constant to multiply by number of factor mismatches in
+#'   constructing a general dissimilarity measure. If left \code{NULL}, behaves
+#'   as though \code{lambda} is set greater than \code{threshold}, and so only
+#'   observations whose factor levels match the current section are visible.
 #' @param distance A character vector describing the type of distance measure to
 #'   use, either \code{"euclidean"} (default) or \code{"maxnorm"}.
 #' @param type This specifies the type of interactive plot. \code{"default"}
@@ -144,10 +148,10 @@
 
 ceplot <-
 function (data, model, response = NULL, sectionvars = NULL, conditionvars = NULL
-  , threshold = NULL, distance = c("euclidean", "maxnorm"), type = c("default",
-  "separate", "shiny"), view3d = FALSE, Corder = "default", selectortype =
-  "minimal", conf = FALSE, probs = FALSE, col = "black", pch = NULL, residuals =
-  FALSE, xsplotpar = NULL, modelpar = NULL, xcplotpar = NULL)
+  , threshold = NULL, lambda = NULL, distance = c("euclidean", "maxnorm"), type
+  = c("default", "separate", "shiny"), view3d = FALSE, Corder = "default",
+  selectortype = "minimal", conf = FALSE, probs = FALSE, col = "black", pch =
+  NULL, residuals = FALSE, xsplotpar = NULL, modelpar = NULL, xcplotpar = NULL)
 {
 ## Rename for internal
 
@@ -264,22 +268,22 @@ function (data, model, response = NULL, sectionvars = NULL, conditionvars = NULL
 
   if (identical(type, "default")){
     ceplot.interactive(data = data, model = model, response = response, S = S,
-      C = C, sigma = sigma, distance = distance, cex.axis = cex.axis, cex.lab =
-      cex.lab, tck = tck, view3d = view3d, Corder = Corder, conf = conf,
-      separate = FALSE, select.colour = select.colour, select.cex = select.cex,
-      probs = probs, col = col, pch = pch, residuals = residuals)
+      C = C, sigma = sigma, lambda = lambda, distance = distance, cex.axis =
+      cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = Corder,
+      conf = conf, separate = FALSE, select.colour = select.colour, select.cex =
+      select.cex, probs = probs, col = col, pch = pch, residuals = residuals)
   } else if (identical(type, "separate")){
     ceplot.interactive(data = data, model = model, response = response, S = S,
-      C = C, sigma = sigma, distance = distance, cex.axis = cex.axis, cex.lab =
-      cex.lab, tck = tck, view3d = view3d, Corder = Corder, conf = conf,
-      separate = TRUE, select.colour = select.colour, select.cex = select.cex,
-      probs = probs, col = col, pch = pch, select.type = selectortype, residuals
-      = residuals)
+      C = C, sigma = sigma, lambda = lambda, distance = distance, cex.axis =
+      cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = Corder,
+      conf = conf, separate = TRUE, select.colour = select.colour, select.cex =
+      select.cex, probs = probs, col = col, pch = pch, select.type =
+      selectortype, residuals = residuals)
   } else if (identical(type, "shiny")){
     ceplot.shiny(data = data, model = model, response = response, S = S,
-      C = C, sigma = sigma, distance = distance, cex.axis = cex.axis, cex.lab =
-      cex.lab, tck = tck, view3d = view3d, Corder = Corder, conf = conf,
-      separate = FALSE, select.colour = select.colour, select.cex = select.cex,
-      probs = probs, col = col, pch = pch, residuals = residuals)
+      C = C, sigma = sigma, threshold = threshold, distance = distance, cex.axis
+      = cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = Corder
+      , conf = conf, separate = FALSE, select.colour = select.colour, select.cex
+      = select.cex, probs = probs, col = col, pch = pch, residuals = residuals)
   }
 }

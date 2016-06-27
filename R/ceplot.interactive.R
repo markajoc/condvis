@@ -2,11 +2,12 @@
 ## chosen interactively. NOT EXPORTED.
 
 ceplot.interactive <-
-function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
-  distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, view3d =
-  FALSE, Corder = "default", conf = FALSE, separate = TRUE, select.colour =
-  "blue", select.cex = 1, select.lwd = 2, select.type = "minimal", probs = FALSE
-  , col = "black", pch = 1, residuals = FALSE, xc.cond = NULL)
+function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
+  = NULL, distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL,
+  view3d = FALSE, Corder = "default", conf = FALSE, separate = TRUE,
+  select.colour = "blue", select.cex = 1, select.lwd = 2, select.type =
+  "minimal", probs = FALSE, col = "black", pch = 1, residuals = FALSE, xc.cond =
+  NULL)
 {
   uniqC <- unique(unlist(C))
   xc.cond <- if (is.null(xc.cond))
@@ -41,7 +42,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       xslegend(data[, response], response)
     }
     screen(xsscreens[1L])
-    vw <- vwfun(xc.cond = xc.cond, sigma = sigma, distance = distance)
+    vw <- vwfun(xc.cond = xc.cond, sigma = sigma, distance = distance, lambda =
+      lambda)
     par(mar = c(3, 3, 3, 3))
 
 ## Check whether response should be raw or residual
@@ -125,7 +127,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       xslegend(data[, response], response)
     }
     screen(xsscreens[1L])
-    vw <- vwfun(xc.cond = xc.cond, sigma = sigma, distance = distance)
+    vw <- vwfun(xc.cond = xc.cond, sigma = sigma, distance = distance, lambda =
+      lambda)
     par(mar = c(3, 3, 3, 3))
     if (residuals){
       xsplot <- plotxsres(xs = data[, S, drop = FALSE], data[, response, drop =
@@ -169,7 +172,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
         }
         if (needupdate){
           vw <<- vwfun(xc.cond = xc.cond, sigma = vw$sigma, distance =
-            vw$distance)
+            vw$distance, lambda = lambda)
           xsplot <<- update(xsplot, xc.cond = xc.cond, weights = vw$k)
         }
         if (all(!separate, findInterval(x, xscoords[1:2]) == 1, identical(
@@ -212,7 +215,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
       if (key %in% c(",", ".")){
         sigma <- vw$sigma + 0.01 * vw$sigma * (key == ".") - 0.01 * vw$sigma *
           (key == ",")
-        vw <<- vwfun(xc.cond = xc.cond, sigma = sigma, distance = vw$distance)
+        vw <<- vwfun(xc.cond = xc.cond, sigma = sigma, distance = vw$distance,
+          lambda = lambda)
         xsplot <<- update(xsplot, weights = vw$k, xs.grid = xsplot$xs.grid,
           newdata = xsplot$newdata, prednew = xsplot$prednew)
       }

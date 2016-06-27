@@ -5,7 +5,7 @@
 \title{Calculate the similarity weight for a set of observations}
 \usage{
 similarityweight(x, data, threshold = NULL, distance = NULL,
-  constant = NULL)
+  lambda = NULL)
 }
 \arguments{
 \item{x}{A dataframe describing arbitrary points in the space of the data
@@ -21,7 +21,7 @@ be assigned similarity weight zero. This is numeric and should be > 0.}
 types of Minkowski distance: \code{"euclidean"} (default), and
 \code{"maxnorm"}.}
 
-\item{constant}{A constant to multiply by the number of categorical
+\item{lambda}{A constant to multiply by the number of categorical
 mismatches, before adding to the Minkowski distance, to give a general
 dissimilarity measure.}
 }

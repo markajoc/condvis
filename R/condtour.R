@@ -230,7 +230,7 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
   ## Calculate the similarity weights for the entire tour.
 
   k <- similarityweight(x = path, data = data[, colnames(path), drop = FALSE],
-    threshold = sigma, distance = distance)
+    threshold = sigma, distance = distance, lambda = lambda)
 
   ## Do section visualisation.
 

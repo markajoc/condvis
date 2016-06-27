@@ -1,9 +1,10 @@
 ceplot.shiny <-
-function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
-  distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL, view3d =
-  FALSE, Corder = "default", conf = FALSE, separate = TRUE, select.colour =
-  "blue", select.cex = 1, select.lwd = 2, select.type = "minimal", probs = FALSE
-  , col = "black", pch = 1, residuals = FALSE, xc.cond = NULL, packages = NULL)
+function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
+  = NULL, distance = "euclidean", cex.axis = NULL, cex.lab = NULL, tck = NULL,
+  view3d = FALSE, Corder = "default", conf = FALSE, separate = TRUE,
+  select.colour = "blue", select.cex = 1, select.lwd = 2, select.type =
+  "minimal", probs = FALSE, col = "black", pch = 1, residuals = FALSE, xc.cond =
+  NULL, packages = NULL)
 {
   ## Check for shiny package, and stop if not installed
 
@@ -167,7 +168,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
     vw <- NULL
     output$plotS <- renderPlot({
       vw <<- vwfun(xc.cond = rv$xc.cond, sigma = input$threshold, distance =
-        input$distance)
+        input$distance, lambda = lambda)
       xsplot <<- condvis:::plotxs(xs = data[, S, drop = FALSE], data[, response
         , drop = FALSE], xc.cond = rv$xc.cond, model = model, col = col, weights
         = vw$k, view3d = FALSE, conf = conf, probs = probs, pch = pch)
@@ -177,7 +178,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL,
 
     output$plotS3D <- renderPlot({
       vw <<- vwfun(xc.cond = rv$xc.cond, sigma = input$threshold, distance =
-        input$distance)
+        input$distance, lambda = lambda)
       xsplot <<- condvis:::plotxs(xs = data[, S, drop = FALSE], data[, response
         , drop = FALSE], xc.cond = rv$xc.cond, model = model, col = col,
         weights = vw$k, view3d = TRUE, conf = conf, probs = probs, pch = pch)

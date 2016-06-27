@@ -5,11 +5,12 @@
 \title{Interactive conditional expectation plot}
 \usage{
 ceplot(data, model, response = NULL, sectionvars = NULL,
-  conditionvars = NULL, threshold = NULL, distance = c("euclidean",
-  "maxnorm"), type = c("default", "separate", "shiny"), view3d = FALSE,
-  Corder = "default", selectortype = "minimal", conf = FALSE,
-  probs = FALSE, col = "black", pch = NULL, residuals = FALSE,
-  xsplotpar = NULL, modelpar = NULL, xcplotpar = NULL)
+  conditionvars = NULL, threshold = NULL, lambda = NULL,
+  distance = c("euclidean", "maxnorm"), type = c("default", "separate",
+  "shiny"), view3d = FALSE, Corder = "default", selectortype = "minimal",
+  conf = FALSE, probs = FALSE, col = "black", pch = NULL,
+  residuals = FALSE, xsplotpar = NULL, modelpar = NULL,
+  xcplotpar = NULL)
 }
 \arguments{
 \item{data}{A dataframe containing the data to plot}
@@ -32,6 +33,11 @@ all variable names which are not \code{response} or \code{sectionvars} from
 \item{threshold}{This is a threshold distance. Points further than
 \code{threshold} away from the current section will not be visible. Passed
 to \code{\link{similarityweight}}.}
+
+\item{lambda}{A constant to multiply by number of factor mismatches in
+constructing a general dissimilarity measure. If left \code{NULL}, behaves
+as though \code{lambda} is set greater than \code{threshold}, and so only
+observations whose factor levels match the current section are visible.}
 
 \item{distance}{A character vector describing the type of distance measure to
 use, either \code{"euclidean"} (default) or \code{"maxnorm"}.}
