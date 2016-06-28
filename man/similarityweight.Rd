@@ -49,6 +49,7 @@ Similarity weight is assigned to observations based on their
 ## second observation is similar, so it gets some weight. The rest are more
 ## different, and so get zero weight.
 
+data(mtcars)
 similarityweight(x = mtcars[1, ], data = mtcars)
 
 ## By increasing the threshold, we can find observations which are more
