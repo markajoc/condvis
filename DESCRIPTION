@@ -1,8 +1,8 @@
 Package: condvis
 Type: Package
 Title: Conditional Visualization for Statistical Models
-Version: 0.3
-Date: 2016-04-05
+Version: 0.3-0
+Date: 2016-07-01
 Authors@R: c(
   person("Mark", "O'Connell", email = "mark.oconnell@maths.nuim.ie",
   role = c("aut", "cre")),
@@ -33,5 +33,5 @@ Description: Exploring fitted model structures by interactively taking 2-D and
 License: GPL (>= 2)
 LazyData: false
 BugReports: https://github.com/markajoc/condvis/issues
-URL: https://github.com/markajoc/condvis
+URL: http://markajoc.github.io/condvis/
 RoxygenNote: 5.0.1.9000
