@@ -37,6 +37,6 @@ model1 <- list(
   quadratic = lm(mpg ~ cyl + am + qsec + wt + I(wt^2), data = mtcars),
   additive = gam(mpg ~ cyl + am + qsec + s(wt), data = mtcars))
 
-ceplot(data = mtcars, model = model1, S = "wt")
+ceplot(data = mtcars, model = model1, sectionvars = "wt")
 }
 }
