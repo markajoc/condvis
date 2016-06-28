@@ -9,7 +9,7 @@ Version 0.3-0
   * renamed `visualweight` to `similarityweight` and changed parameter names.
   * renamed parameters in `ceplot`.
   * Shiny implementation completely rewritten, see R/ceplot.shiny.R.
-  * Added Roxygen comments for documentation of exported functions.
+  * added Roxygen comments for documentation of exported functions.
   * added update methods to parallel coordinates and scatterplot matrix
     condition selector plots.
   * `condtour` can now handle mixed data (categorical and continuous).
