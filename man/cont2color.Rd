@@ -22,8 +22,8 @@ A character vector of colours.
 }
 \description{
 This function assigns colours on a linear scale to a numeric
-  vector. Default is to try to use RColorBrewer for colours, and \code{
-  cm.colors} otherwise. Can provide custom range, breaks and colours.
+  vector. Default is to try to use \code{RColorBrewer} for colours, and
+  \code{\link{cm.colors}} otherwise. Can provide custom range, breaks and colours.
 }
 \details{
 Uses the \code{RColorBrewer} package if installed. Coerces \code{x}
@@ -37,5 +37,9 @@ plot(x, col = cont2color(x, c(0,0.5)))
 
 plot(sort(x), col = cont2color(sort(x), c(0.25,0.75)), pch = 16)
 abline(h = c(0.25, 0.75), lty = 3)
+
+}
+\seealso{
+\code{\link{factor2color}}
 }
 

@@ -1,8 +1,9 @@
 #' @title Assign colours to factor vector
 #'
 #' @description This function takes a factor vector and returns suitable colours
-#'   representing the factor levels. Default is to try to use RColorBrewer for
-#'   colours, and \code{rainbow} otherwise. Can provide custom colours.
+#'   representing the factor levels. Default is to try to use
+#'   \code{RColorBrewer} for colours, and \code{\link{rainbow}} otherwise. Can
+#'   provide custom colours.
 #'
 #' @param x A factor vector.
 #' @param colors The colours to use. Defaults to a qualitative colour scheme;
@@ -19,6 +20,8 @@
 #'   bg = factor2color(iris$Species))
 #' legend("topleft", legend = levels(iris$Species),
 #'   fill = factor2color(as.factor(levels(iris$Species))))
+#'
+#' @seealso \code{\link{cont2color}}
 
 factor2color <-
 function (x, colors = NULL)

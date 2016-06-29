@@ -1,8 +1,8 @@
 #' @title Assign colours to numeric vector
 #'
 #' @description This function assigns colours on a linear scale to a numeric
-#'   vector. Default is to try to use RColorBrewer for colours, and \code{
-#'   cm.colors} otherwise. Can provide custom range, breaks and colours.
+#'   vector. Default is to try to use \code{RColorBrewer} for colours, and
+#'   \code{\link{cm.colors}} otherwise. Can provide custom range, breaks and colours.
 #'
 #' @param x A numeric vector.
 #' @param xrange The range to use for the colour scale.
@@ -24,6 +24,8 @@
 #'
 #' plot(sort(x), col = cont2color(sort(x), c(0.25,0.75)), pch = 16)
 #' abline(h = c(0.25, 0.75), lty = 3)
+#'
+#' @seealso \code{\link{factor2color}}
 
 cont2color <-
 function (x, xrange = NULL, breaks = NULL, colors = NULL)
