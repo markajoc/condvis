@@ -57,7 +57,7 @@ test_that("internal visual weight function returns a function", {
   expect_error(.similarityweight())
 })
 
-test_that("similarityweight is not too slow", {
-  takes_less_than(3)(similarityweight(x = dat[1, ], data = dat))
-  takes_less_than(6)(similarityweight(x = dat[1:15, ], data = dat))
-})
+#test_that("similarityweight is not too slow", {
+#  takes_less_than(3)(similarityweight(x = dat[1, ], data = dat))
+#  takes_less_than(6)(similarityweight(x = dat[1:15, ], data = dat))
+#})

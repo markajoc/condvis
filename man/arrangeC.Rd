@@ -21,8 +21,8 @@ This function arranges a number of variables in pairs, ordered
 by their bivariate relationships. The goal is to discover which variable
 pairings are most helpful in avoiding extrapolations when exploring the data
 space. Variable pairs with strong bivariate dependencies (not necessarily
-linear) are chosen first. The bivariate dependency is measured using \code{
-\link{savingby2d}}. Each variable appears in the output only once.
+linear) are chosen first. The bivariate dependency is measured using
+\code{\link{savingby2d}}. Each variable appears in the output only once.
 }
 \details{
 If \code{data} is so big as to make \code{arrangeC} very slow, a
