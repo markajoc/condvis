@@ -8,7 +8,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
   = NULL, prednew = NULL, conf = FALSE, probs = FALSE, pch = 1)
 {
   ny <- nrow(y)
-  col <- rep(col, ny)
+  col <- rep(col, length.out = ny)
     dev.hold()
     if (is.null(weights)){
       data.order <- 1:ny
@@ -24,7 +24,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
       data.colour <- rep(NA, ny)
       data.colour[data.order] <- rgb(t(newcol))
     }
-    pch <- rep(pch, nrow(y))
+    pch <- rep(pch, length.out = ny)
     #if (!(ncol(xs) %in% 1:2))
     #  stop("xs must be a dataframe with 1 or 2 columns")
     if (ncol(y) != 1)

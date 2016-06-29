@@ -60,7 +60,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
   FALSE)
 {
   ny <- nrow(y)
-  col <- rep(col, ny)
+  col <- rep(col, length.out = ny)
   dev.hold()
 
 ## If no weights are provided, just show all data with the appropriate colour.
@@ -84,7 +84,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
 
 ## Organise defaults and check inputs.
 
-  pch <- rep(pch, ny)
+  pch <- rep(pch, length.out = ny)
   if (ncol(y) != 1)
     stop("y must be a dataframe with 1 column")
   model <- if (!is.list(model))
