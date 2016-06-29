@@ -68,7 +68,7 @@
 condtour <-
 function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
   NULL, threshold = NULL, lambda = NULL, distance = c("euclidean", "maxnorm"),
-  view3d = FALSE, conf = FALSE, col = "black", pch = 1, xcplotpar = NULL)
+  view3d = FALSE, conf = FALSE, col = "black", pch = NULL, xcplotpar = NULL)
 {
   ## Rename for internal
 
@@ -212,8 +212,18 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
     " names from 'data'.")
   uniqC <- unique(unlist(C))
   C <- uniqC
-  col <- rep(col, length.out = nrow(data))
-  pch <- rep(pch, length.out = nrow(data))
+
+  ## Set up col so it is a vector with length equal to nrow(data). Default pch to
+  ## 1, or 21 for using background colour to represent observed values.
+
+  nr.data <- nrow(data)
+  col <- rep(col, length.out = nr.data)
+  pch <- if (is.null(pch)){
+    if (identical(length(S), 2L))
+      rep(21, nr.data)
+    else rep(1, nr.data)
+  } else rep(pch, length.out = nr.data)
+
   distance <- match.arg(distance)
   pathindex <- 1
   pathindexrange <- c(1, nrow(path))
