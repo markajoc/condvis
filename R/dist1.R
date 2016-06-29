@@ -5,7 +5,8 @@
 #'
 #' @param x A numeric vector describing point coordinates.
 #' @param X A numeric matrix describing coordinates for several points.
-#' @param p The power in Minkowski distance (see details).
+#' @param p The power in Minkowski distance, defaults to 2 for Euclidean
+#'   distance.
 #' @param inf Logical; switch for calculating maximum norm distance (sometimes
 #'   known as Chebychev distance) which is the limit of Minkowski distance as
 #'   \eqn{p} tends to infinity.
@@ -28,6 +29,9 @@
 #'   col[d < 0.3] <- "red"
 #'   plot(x, y, pch = 16, col = col, asp = 1, main = paste("p = ", p, sep = ""))
 #'}
+#'
+#' @seealso \code{\link{similarityweight}}
+
 
 dist1 <-
 function (x, X, p = 2, inf = FALSE)

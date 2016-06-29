@@ -48,6 +48,8 @@
 #' plot(x1, y1)
 #' savingby2d(x1, y1)
 #' ## smaller value indicates that the bivariate view reveals some structure
+#'
+#' @seealso \code{\link{similarityweight}}
 
 savingby2d <- function (x, y = NULL, method = "default")
 {

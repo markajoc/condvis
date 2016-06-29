@@ -15,7 +15,8 @@ similarityweight(x, data, threshold = NULL, distance = NULL,
 observed data points.}
 
 \item{threshold}{Threshold distance outside which observations will
-be assigned similarity weight zero. This is numeric and should be > 0.}
+be assigned similarity weight zero. This is numeric and should be > 0.
+Defaults to 1.}
 
 \item{distance}{The type of distance measure to be used, currently just two
 types of Minkowski distance: \code{"euclidean"} (default), and
@@ -23,7 +24,9 @@ types of Minkowski distance: \code{"euclidean"} (default), and
 
 \item{lambda}{A constant to multiply by the number of categorical
 mismatches, before adding to the Minkowski distance, to give a general
-dissimilarity measure.}
+dissimilarity measure. If left \code{NULL}, behaves as though \code{lambda}
+is set larger than \code{sigma}, meaning that one factor mismatch
+guarantees zero weight.}
 }
 \value{
 A numeric vector or matrix, with values from 0 to 1. The similarity
@@ -63,5 +66,9 @@ similarityweight(x = mtcars[1, ], data = mtcars, threshold = 5)
 ## is more similar to the Merc 280 than the Mazda RX4 is.
 
 similarityweight(mtcars[1:2, ], mtcars, threshold = 3)
+
+}
+\seealso{
+\code{\link{dist1}}
 }
 

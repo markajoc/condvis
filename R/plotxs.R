@@ -51,6 +51,8 @@
 #' model <- lm(mpg ~ ., data = mtcars)
 #' plotxs(xs = mtcars[, "wt", drop = FALSE], y = mtcars[, "mpg", drop = FALSE],
 #'   xc.cond = mtcars[1, ], model = list(model))
+#'
+#' @seealso \code{\link{plotxc}}, \code{\link{ceplot}}, \code{\link{condtour}}
 
 plotxs <-
 function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,

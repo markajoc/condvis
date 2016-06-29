@@ -43,6 +43,8 @@
 #' mtcars$cyl <- as.factor(mtcars$cyl)
 #' plotxc(mtcars[, c("cyl", "gear")], mtcars[25, c("cyl", "gear")],
 #'   select.colour = "red")
+#'
+#' @seealso \code{\link{plotxs}}, \code{\link{ceplot}}, \code{\link{condtour}}
 
 ## plotxc plots a univariate or bivariate view of predictors,
 ## highlighting one selected point, which represents a section in the data
@@ -150,7 +152,7 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
         } else {
 
           ## Scatterplot, going to 2-D histogram if required/possible
-          
+
           if (nrow(xc) > 2000 && requireNamespace("gplots", quietly = TRUE)){
             b <- seq(0.35, 1, length.out = 16)
             gplots::hist2d(xc[, 1], xc[, 2], nbins = 50, col = c("white", rgb(1

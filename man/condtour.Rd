@@ -7,7 +7,7 @@
 condtour(data, model, path, response = NULL, sectionvars = NULL,
   conditionvars = NULL, threshold = NULL, lambda = NULL,
   distance = c("euclidean", "maxnorm"), view3d = FALSE, conf = FALSE,
-  col = "black", pch = 1, xcplotpar = NULL)
+  col = "black", pch = NULL, xcplotpar = NULL)
 }
 \arguments{
 \item{data}{A dataframe.}

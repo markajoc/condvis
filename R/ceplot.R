@@ -146,6 +146,8 @@
 #' ceplot(data = mtcars, model = model6, threshold = 1, sectionvars = c("carb",
 #'   "wt"), conditionvars = "hp")
 #' }
+#'
+#' @seealso \code{\link{condtour}}, \code{\link{similarityweight}}
 
 ceplot <-
 function (data, model, response = NULL, sectionvars = NULL, conditionvars = NULL

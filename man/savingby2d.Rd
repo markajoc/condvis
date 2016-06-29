@@ -60,5 +60,9 @@ y1 <- x1 + rnorm(sd = 0.3, n = 1000)
 plot(x1, y1)
 savingby2d(x1, y1)
 ## smaller value indicates that the bivariate view reveals some structure
+
+}
+\seealso{
+\code{\link{similarityweight}}
 }
 

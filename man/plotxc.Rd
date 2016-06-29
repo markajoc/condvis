@@ -60,8 +60,11 @@ mtcars$gear <- as.factor(mtcars$gear)
 mtcars$cyl <- as.factor(mtcars$cyl)
 plotxc(mtcars[, c("cyl", "gear")], mtcars[25, c("cyl", "gear")],
   select.colour = "red")
+
 }
 \seealso{
 \code{\link{ceplot}},  \code{\link{plotxs}}.
+
+\code{\link{plotxs}}, \code{\link{ceplot}}, \code{\link{condtour}}
 }
 
