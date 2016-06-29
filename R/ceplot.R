@@ -259,12 +259,12 @@ function (data, model, response = NULL, sectionvars = NULL, conditionvars = NULL
 ## 1, or 21 for using background colour to represent observed values.
 
   nr.data <- nrow(data)
-  col <- rep(col, nr.data)
+  col <- rep(col, length.out = nr.data)
   pch <- if (is.null(pch)){
     if (identical(length(S), 2L))
       rep(21, nr.data)
     else rep(1, nr.data)
-  } else rep(pch, nr.data)
+  } else rep(pch, length.out = nr.data)
 
 ## Make the appropriate call to an internal ceplot function
 

@@ -4,6 +4,13 @@ condvis: Conditional Visualisation for Statistical Models
 News
 ---------------------------------------------------------
 
+Version 0.3-2
+  * fixed bug with `rep` for `col` and `pch` where `length.out` was omitted,
+    causing huge delays for `plotxs`. 
+
+Version 0.3-1
+  * removed test which timed `similarityweight` (for CRAN)
+
 Version 0.3-0
   * removed daisy distance measure, and relevant contributors.
   * renamed `visualweight` to `similarityweight` and changed parameter names.
