@@ -15,8 +15,7 @@ condtour(data, model, path, response = NULL, sectionvars = NULL,
 \item{model}{A fitted model object, or a list of such objects.}
 
 \item{path}{A dataframe, describing the sections to take. Basically a
-dataframe with its \code{colnames} being a subset of the
-\code{colnames(data)}.}
+dataframe with its \code{colnames} being \code{conditionvars}.}
 
 \item{response}{Character name of response variable in \code{data}.}
 

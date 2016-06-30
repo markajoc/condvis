@@ -27,20 +27,20 @@
 }
 
 \source{
-  UCI repository. 
+  UCI repository.
   \url{https://archive.ics.uci.edu/ml/datasets/Wine}
 }
 
 \references{
-  S. Aeberhard, D. Coomans and O. de Vel (1992), Comparison of Classifiers in 
-  High Dimensional Settings, \emph{Technical Report} \bold{92}-02, Dept. of 
-  Computer Science and Dept. of Mathematics and Statistics, James Cook 
+  S. Aeberhard, D. Coomans and O. de Vel (1992), Comparison of Classifiers in
+  High Dimensional Settings, \emph{Technical Report} \bold{92}-02, Dept. of
+  Computer Science and Dept. of Mathematics and Statistics, James Cook
   University of North Queensland.
 }
 
 \examples{
 data(wine)
-pairs(wine[, -1], col = factor2color(wine$Class))
+pairs(wine[, -1], col = factor2color(wine$Class), cex = 0.2)
 }
 
 \keyword{ wine }

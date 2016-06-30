@@ -11,8 +11,7 @@ similarityweight(x, data, threshold = NULL, distance = NULL,
 \item{x}{A dataframe describing arbitrary points in the space of the data
 (i.e., with same \code{colnames} as \code{data}).}
 
-\item{data}{A dataframe with same names as \code{xc.cond} representing
-observed data points.}
+\item{data}{A dataframe representing observed data.}
 
 \item{threshold}{Threshold distance outside which observations will
 be assigned similarity weight zero. This is numeric and should be > 0.
