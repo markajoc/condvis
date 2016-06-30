@@ -8,8 +8,7 @@
 #' @param data A dataframe.
 #' @param model A fitted model object, or a list of such objects.
 #' @param path A dataframe, describing the sections to take. Basically a
-#'   dataframe with its \code{colnames} being a subset of the
-#'   \code{colnames(data)}.
+#'   dataframe with its \code{colnames} being \code{conditionvars}.
 #' @param response Character name of response variable in \code{data}.
 #' @param sectionvars Character name(s) of variables in \code{data} on which to
 #'   take sections.

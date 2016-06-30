@@ -7,8 +7,7 @@
 #'
 #' @param x A dataframe describing arbitrary points in the space of the data
 #'   (i.e., with same \code{colnames} as \code{data}).
-#' @param data A dataframe with same names as \code{xc.cond} representing
-#'   observed data points.
+#' @param data A dataframe representing observed data.
 #' @param threshold Threshold distance outside which observations will
 #'   be assigned similarity weight zero. This is numeric and should be > 0.
 #'   Defaults to 1.

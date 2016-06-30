@@ -1,7 +1,7 @@
 #' @title Visualise a section in data space
 #'
 #' @description Visualise a section in data space, showing fitted models where
-#'   they intersect the section, and nearby observations. The similarity weight for
+#'   they intersect the section, and nearby observations. The \code{weights} for
 #'   observations can be calculated with \code{\link{similarityweight}}. This
 #'   function is mainly for use in \code{\link{ceplot}} and
 #'   \code{\link{condtour}}.

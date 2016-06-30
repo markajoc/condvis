@@ -183,13 +183,14 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
 
 #' @title Condition selector plot
 #'
-#' @description Data visualisations used to select sections for
-#'   \code{\link{ceplot}}.
+#' @description Multivariate data visualisations used to select sections for
+#'   \code{\link{ceplot}}. Basically visualises a dataset and highlights a
+#'   single point.
 #'
 #' @param Xc A dataframe.
 #' @param Xc.cond A dataframe with one row and same names as \code{Xc}.
-#' @param select.colour Colour to highlight \code{xc.cond}
-#' @param select.lwd Line weight to highlight \code{xc.cond}
+#' @param select.colour Colour to highlight \code{Xc.cond}
+#' @param select.lwd Line weight to highlight \code{Xc.cond}
 #' @param cex.axis Axis text scaling
 #' @param cex.lab Label text scaling
 #' @param tck Plot axis tick size
@@ -199,7 +200,7 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
 #' @return Produces a plot, and returns a list containing the relevant
 #'   information to update the plot at a later stage.
 #'
-#' @seealso \code{\link{ceplot}},  \code{\link{plotxs}}.
+#' @seealso \code{\link{ceplot}},  \code{\link{plotxs}}, \code{\link{plotxc}}
 
 ## plotxc.pcp plots a parallel coordinates plot of predictors, highlighting
 ## one selected point, which represents a section in the data space.
