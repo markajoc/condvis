@@ -3,7 +3,8 @@
 #' @description Whereas \code{\link{ceplot}} allows the user to interactively
 #'   choose sections to visualise, \code{condtour} allows the user to pre-select
 #'   all sections to visualise, order them, and cycle through them one by one.
-#'   ']' advances the tour, and '[' goes back.
+#'   ']' advances the tour, and '[' goes back. Can adjust `threshold` for the
+#'   current section visualisation with ',' and '.'.
 #'
 #' @param data A dataframe.
 #' @param model A fitted model object, or a list of such objects.
@@ -165,6 +166,22 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
             colnames(data)[C[i]]])
         }
       }
+
+      ## ',' and '.' decrease and increase the threshold distance used for
+      ## similarity weight.
+
+      if (key %in% c(",", ".")){
+        sigma <- vw$sigma + 0.01 * vw$sigma * (key == ".") - 0.01 * vw$sigma *
+          (key == ",")
+
+print(sigma)
+
+        vw <<- vwfun(xc.cond = path[pathindex, ], sigma = sigma, distance =
+          vw$distance, lambda = lambda)
+        xsplot <<- update(xsplot, weights = vw$k, xs.grid = xsplot$xs.grid,
+          newdata = xsplot$newdata, prednew = xsplot$prednew)
+      }
+
       points(NULL)
     }
   }
@@ -244,8 +261,19 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
 
   ## Calculate the similarity weights for the entire tour.
 
-  k <- similarityweight(x = path, data = data[, colnames(path), drop = FALSE],
-    threshold = sigma, distance = distance, lambda = lambda)
+  #k <- similarityweight(x = path, data = data[, colnames(path), drop = FALSE],
+  #  threshold = sigma, distance = distance, lambda = lambda)
+
+  vwfun <- .similarityweight(xc = data[, colnames(path), drop = FALSE])
+  vw <- list(sigma = if (is.null(threshold)) 1 else threshold, distance =
+    distance, lambda = lambda)
+
+  k <- matrix(nrow = nrow(path), ncol = nrow(data), dimnames = list(rownames(
+    path), rownames(data)))
+  for (i in 1:nrow(path)){
+    k[i, ] <- do.call(vwfun, list(xc.cond = path[i, , drop = FALSE], sigma =
+      threshold, distance = distance, lambda = lambda))$k
+  }
 
   ## Do section visualisation.
 

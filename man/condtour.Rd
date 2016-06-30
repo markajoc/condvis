@@ -64,7 +64,8 @@ Produces a set of interactive plots. One device displays the current
 Whereas \code{\link{ceplot}} allows the user to interactively
   choose sections to visualise, \code{condtour} allows the user to pre-select
   all sections to visualise, order them, and cycle through them one by one.
-  ']' advances the tour, and '[' goes back.
+  ']' advances the tour, and '[' goes back. Can adjust `threshold` for the
+  current section visualisation with ',' and '.'.
 }
 \examples{
 \dontrun{
