@@ -80,7 +80,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
       downloadButton("download", "Download snapshot (pdf)")',
       if (!deploy) ',\n      actionButton("openDeploy", "Deploy app"),
       br(),
-      conditionalPanel(condition = "input.openDeploy",
+      conditionalPanel(condition = "input.openDeploy % 2 == 1",
       radioButtons("deployLocation", "", c("to web via rsconnect",
         "to working directory")),
         textInput("appName", label = "Application name (valid directory name)"),
