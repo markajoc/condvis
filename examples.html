@@ -69,6 +69,27 @@
             aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span>
           </a>Example 1: FEV data
         </h3>
+        <p>
+          The FEV dataset in <a href = "http://www.amstat.org/publications/jse/v13n2/datasets.kahn.html">Kahn (2005)</a>
+          gives a good jumping off point for discussing conditional relationships
+          in statistical models. The dataset concerns the relationship between
+          lung health and smoking in children.
+        </p>
+        <p>
+          The response is Forced Expiratory Volume (FEV, the volume of air an
+          individual can exhale in the first second of a forceful breath, used
+          as a proxy for lung health) and the predictors are gender
+          (binary), age (integer), height (inches, numeric) and smoking
+          status (binary).
+        </p>
+        <p>
+          If we visualise the marginal relationship of FEV with smoking, we see
+          something surprising...
+        </p>
+        <div style="margin: 0 auto;">
+          <img src="examples/fev-box.png" height = "350px" width = "350px">
+        </div>
+
         <iframe src="https://markajoc.shinyapps.io/fev-example/" width = 1100
           height = 650>
         </iframe>
