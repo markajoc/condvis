@@ -70,10 +70,10 @@
           </a>Example 1: FEV data
         </h3>
         <p>
-          The FEV dataset in <a href = "http://www.amstat.org/publications/jse/v13n2/datasets.kahn.html">Kahn (2005)</a>
-          gives a good jumping off point for discussing conditional relationships
-          in statistical models. The dataset concerns the relationship between
-          lung health and smoking in children.
+          The FEV data in <a href = "http://www.amstat.org/publications/jse/v13n2/datasets.kahn.html">Kahn (2005)</a>
+          is a good jumping off point for discussing conditional relationships
+          in statistical models. The data concern the relationship between lung
+          health and smoking in children.
         </p>
         <p>
           The response is Forced Expiratory Volume (FEV, the volume of air an
@@ -86,11 +86,47 @@
           If we visualise the marginal relationship of FEV with smoking, we see
           something surprising...
         </p>
-        <div style="display: block; margin-left: auto; margin-right: auto;">
-          <img src="examples/fev-box.png" height = "350px" width = "350px">
-        </div>
+          <img src="examples/fev-box.png" height = "350px" width = "350px"
+            style="display: block; margin-left: auto; margin-right: auto;">
         <p>
-          It looks as though smoking is related with higher FEV values!
+          It looks as though smoking is related with higher FEV values! Of
+          course, something must be fishy here &mdash; and many of you will have
+          already guessed that the marginal view is masking something else going
+          on with the data.
+        </p>
+        <p>
+          So, let's fit a model and use <b>condvis</b> to see what's going on.
+          (We'll just fit a support vector machine with radial kernel and
+          default settings using <b>e1071</b>.) We can call <code>ceplot</code>
+          and get right into visualising slices of data space, and you can try
+          it out yourself with the Shiny application below.
+        </p>
+        <p>
+          Try clicking on the scatterplot for height = 70 and age = 14. Now set
+          the gender to male on the barplot. This seems like a more sensible
+          picture. The model here suggests a small decrease in FEV for smokers
+          versus non-smokers, and the observed data nearby would seem to support
+          this.
+        </p>
+        <p>
+          Now try clicking on the scatterplot for height = 55, age = 8 and
+          gender = female. We seem to be getting the odd suggestion that
+          expected FEV is higher for smokers versus non-smokers, just like the
+          marginal view above! This time, we can see clearly what's going on
+          however. We're asking the model to make a prediction for the FEV of 8
+          year old smokers... but we haven't observed a single 8 year old
+          smoker! This is hardly surprising; it might be rather difficult to get
+          ethical approval for such an experimental design!
+        </p>
+        <p>
+          So, what we're getting here is a prediction based mostly on model
+          assumptions (local smoothness) rather than observed data. This problem
+          is commonly associated with more rigid models, involving more model
+          assumptions. For example, the least squares fit of multiple linear
+          regression is not necessarily a good fit if the assumption of linear
+          effects is invalid. As we've seen here, a similar problem can arise in
+          more flexible models too, where something like overfitting might seem
+          like a more pressing concern!
         </p>
         <iframe src="https://markajoc.shinyapps.io/fev-example/" width = 1100
           height = 650>
