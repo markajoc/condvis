@@ -7,7 +7,8 @@ News
 Version 0.3-3
   * fixed treatment of `pch` by condtour, was previously defaulting to 1 when it
     should have been 21 for background colours.
-  * can now adjust `threshold` while using `condtour`.  
+  * can now adjust `threshold` while using `condtour`.
+  * added help link for `rsconnect` package in Shiny application.
 
 Version 0.3-2
   * fixed bug with `rep` for `col` and `pch` where `length.out` was omitted,

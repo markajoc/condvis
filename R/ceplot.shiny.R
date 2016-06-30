@@ -84,7 +84,11 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
       radioButtons("deployLocation", "", c("to web via rsconnect",
         "to working directory")),
         textInput("appName", label = "Application name (valid directory name)"),
-        actionButton("deployButton", "Deploy app")
+        actionButton("deployButton", "Deploy app"),
+        br(), br(),
+        p("Help configuring", a("rsconnect", href =
+          "http://shiny.rstudio.com/articles/shinyapps.html", target = "_blank")
+        )
       )','
     ),
     ', if (identical(length(S), 2L)) 'column(1,
