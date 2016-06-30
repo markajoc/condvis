@@ -129,6 +129,7 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
           xcplots[[i]] <<- update(xcplots[[i]], xc.cond = path[pathindex,
             colnames(data)[C[i]]])
         }
+        vw$sigma <<- threshold
       }
       points(NULL)
     }
@@ -166,6 +167,7 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
           xcplots[[i]] <<- update(xcplots[[i]], xc.cond = path[pathindex,
             colnames(data)[C[i]]])
         }
+        vw$sigma <<- threshold
       }
 
       ## ',' and '.' decrease and increase the threshold distance used for
@@ -174,9 +176,6 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
       if (key %in% c(",", ".")){
         sigma <- vw$sigma + 0.01 * vw$sigma * (key == ".") - 0.01 * vw$sigma *
           (key == ",")
-
-print(sigma)
-
         vw <<- vwfun(xc.cond = path[pathindex, ], sigma = sigma, distance =
           vw$distance, lambda = lambda)
         xsplot <<- update(xsplot, weights = vw$k, xs.grid = xsplot$xs.grid,
@@ -229,6 +228,9 @@ print(sigma)
     " names from 'data'.")
   uniqC <- unique(unlist(C))
   C <- uniqC
+  threshold <- if (is.null(threshold))
+    1
+  else threshold
 
   ## Set up col so it is a vector with length equal to nrow(data). Default pch to
   ## 1, or 21 for using background colour to represent observed values.
@@ -266,7 +268,7 @@ print(sigma)
   #  threshold = sigma, distance = distance, lambda = lambda)
 
   vwfun <- .similarityweight(xc = data[, colnames(path), drop = FALSE])
-  vw <- list(sigma = if (is.null(threshold)) 1 else threshold, distance =
+  vw <- list(sigma = threshold, distance =
     distance, lambda = lambda)
 
   k <- matrix(nrow = nrow(path), ncol = nrow(data), dimnames = list(rownames(
