@@ -11,7 +11,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
 {
   uniqC <- unique(unlist(C))
   xc.cond <- if (is.null(xc.cond))
-    data[1, !colnames(data) %in% c(S, response)]
+    data[1, setdiff(colnames(data), c(S, response)), drop = FALSE]
   else xc.cond
   #data.frame(lapply(data[, !colnames(data) %in% c(S, response)], mode1))
   xcplots <- list()
