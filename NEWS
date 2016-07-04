@@ -4,7 +4,7 @@ condvis: Conditional Visualisation for Statistical Models
 News
 ---------------------------------------------------------
 
-Version 0.3-3 2016-07-03
+Version 0.3-3 2016-07-04
   * fixed treatment of `pch` by condtour, was previously defaulting to 1 when it
     should have been 21 for background colours.
   * can now adjust `threshold` while using `condtour`.
