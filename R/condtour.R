@@ -3,13 +3,14 @@
 #' @description Whereas \code{\link{ceplot}} allows the user to interactively
 #'   choose sections to visualise, \code{condtour} allows the user to pre-select
 #'   all sections to visualise, order them, and cycle through them one by one.
-#'   ']' advances the tour, and '[' goes back.
+#'   ']' key advances the tour, and '[' key goes back. Can adjust
+#'   \code{threshold} for the current section visualisation with ',' and '.'
+#'   keys.
 #'
 #' @param data A dataframe.
 #' @param model A fitted model object, or a list of such objects.
 #' @param path A dataframe, describing the sections to take. Basically a
-#'   dataframe with its \code{colnames} being a subset of the
-#'   \code{colnames(data)}.
+#'   dataframe with its \code{colnames} being \code{conditionvars}.
 #' @param response Character name of response variable in \code{data}.
 #' @param sectionvars Character name(s) of variables in \code{data} on which to
 #'   take sections.
@@ -68,7 +69,7 @@
 condtour <-
 function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
   NULL, threshold = NULL, lambda = NULL, distance = c("euclidean", "maxnorm"),
-  view3d = FALSE, conf = FALSE, col = "black", pch = 1, xcplotpar = NULL)
+  view3d = FALSE, conf = FALSE, col = "black", pch = NULL, xcplotpar = NULL)
 {
   ## Rename for internal
 
@@ -128,6 +129,7 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
           xcplots[[i]] <<- update(xcplots[[i]], xc.cond = path[pathindex,
             colnames(data)[C[i]]])
         }
+        vw$sigma <<- threshold
       }
       points(NULL)
     }
@@ -165,7 +167,21 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
           xcplots[[i]] <<- update(xcplots[[i]], xc.cond = path[pathindex,
             colnames(data)[C[i]]])
         }
+        vw$sigma <<- threshold
       }
+
+      ## ',' and '.' decrease and increase the threshold distance used for
+      ## similarity weight.
+
+      if (key %in% c(",", ".")){
+        sigma <- vw$sigma + 0.01 * vw$sigma * (key == ".") - 0.01 * vw$sigma *
+          (key == ",")
+        vw <<- vwfun(xc.cond = path[pathindex, ], sigma = sigma, distance =
+          vw$distance, lambda = lambda)
+        xsplot <<- update(xsplot, weights = vw$k, xs.grid = xsplot$xs.grid,
+          newdata = xsplot$newdata, prednew = xsplot$prednew)
+      }
+
       points(NULL)
     }
   }
@@ -212,8 +228,21 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
     " names from 'data'.")
   uniqC <- unique(unlist(C))
   C <- uniqC
-  col <- rep(col, length.out = nrow(data))
-  pch <- rep(pch, length.out = nrow(data))
+  threshold <- if (is.null(threshold))
+    1
+  else threshold
+
+  ## Set up col so it is a vector with length equal to nrow(data). Default pch to
+  ## 1, or 21 for using background colour to represent observed values.
+
+  nr.data <- nrow(data)
+  col <- rep(col, length.out = nr.data)
+  pch <- if (is.null(pch)){
+    if (identical(length(S), 2L))
+      rep(21, nr.data)
+    else rep(1, nr.data)
+  } else rep(pch, length.out = nr.data)
+
   distance <- match.arg(distance)
   pathindex <- 1
   pathindexrange <- c(1, nrow(path))
@@ -235,8 +264,19 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
 
   ## Calculate the similarity weights for the entire tour.
 
-  k <- similarityweight(x = path, data = data[, colnames(path), drop = FALSE],
-    threshold = sigma, distance = distance, lambda = lambda)
+  #k <- similarityweight(x = path, data = data[, colnames(path), drop = FALSE],
+  #  threshold = sigma, distance = distance, lambda = lambda)
+
+  vwfun <- .similarityweight(xc = data[, colnames(path), drop = FALSE])
+  vw <- list(sigma = threshold, distance =
+    distance, lambda = lambda)
+
+  k <- matrix(nrow = nrow(path), ncol = nrow(data), dimnames = list(rownames(
+    path), rownames(data)))
+  for (i in 1:nrow(path)){
+    k[i, ] <- do.call(vwfun, list(xc.cond = path[i, , drop = FALSE], sigma =
+      threshold, distance = distance, lambda = lambda))$k
+  }
 
   ## Do section visualisation.
 

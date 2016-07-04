@@ -332,6 +332,7 @@ function (object, xc.cond = NULL, weights = NULL, view3d = NULL, theta3d = NULL,
   else object$phi3d
   conf <- object$conf
   if (any(xc.cond != object$xc.cond)){
+    object$xc.cond <- xc.cond
     newdata <- makenewdata(xs = object$xs.grid, xc.cond = xc.cond)
     prednew <- lapply(object$model, predict1, newdata = newdata, ylevels = if
       (nlevels(object$y[, 1L]) > 2) levels(object$y[, 1L]) else NULL)

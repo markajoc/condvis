@@ -179,5 +179,9 @@ model6 <- list(svm(cyl ~ carb + wt + hp, data = mtcars, family = "binomial"))
 ceplot(data = mtcars, model = model6, threshold = 1, sectionvars = c("carb",
   "wt"), conditionvars = "hp")
 }
+
+}
+\seealso{
+\code{\link{condtour}}, \code{\link{similarityweight}}
 }
 

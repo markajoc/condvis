@@ -4,14 +4,22 @@ condvis: Conditional Visualisation for Statistical Models
 News
 ---------------------------------------------------------
 
+Version 0.3-3 2016-07-04
+  * fixed treatment of `pch` by condtour, was previously defaulting to 1 when it
+    should have been 21 for background colours.
+  * can now adjust `threshold` while using `condtour`.
+  * added help link for `rsconnect` package in Shiny application.
+  * added fix to `update.xsplot` where the fitted model was not updating
+    properly, due to the section information remaining static.
+
 Version 0.3-2
   * fixed bug with `rep` for `col` and `pch` where `length.out` was omitted,
-    causing huge delays for `plotxs`. 
+    causing huge delays for `plotxs`.
 
 Version 0.3-1
   * removed test which timed `similarityweight` (for CRAN)
 
-Version 0.3-0
+Version 0.3-0 2016-07-01
   * removed daisy distance measure, and relevant contributors.
   * renamed `visualweight` to `similarityweight` and changed parameter names.
   * renamed parameters in `ceplot`.
@@ -21,7 +29,7 @@ Version 0.3-0
     condition selector plots.
   * `condtour` can now handle mixed data (categorical and continuous).
 
-Version 0.2-2 01 Apr 2016
+Version 0.2-2 2016-05-01
   * updated contributors for copied code.
   * added simple example to README.
 

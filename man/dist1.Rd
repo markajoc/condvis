@@ -11,7 +11,8 @@ dist1(x, X, p = 2, inf = FALSE)
 
 \item{X}{A numeric matrix describing coordinates for several points.}
 
-\item{p}{The power in Minkowski distance (see details).}
+\item{p}{The power in Minkowski distance, defaults to 2 for Euclidean
+distance.}
 
 \item{inf}{Logical; switch for calculating maximum norm distance (sometimes
 known as Chebychev distance) which is the limit of Minkowski distance as
@@ -40,5 +41,9 @@ for(p in c(0.5, 1, 2, 10)){
   col[d < 0.3] <- "red"
   plot(x, y, pch = 16, col = col, asp = 1, main = paste("p = ", p, sep = ""))
 }
+
+}
+\seealso{
+\code{\link{similarityweight}}
 }
 

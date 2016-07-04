@@ -16,9 +16,9 @@ plotxc.full(Xc, Xc.cond, select.colour = NULL, select.lwd = 3,
 
 \item{Xc.cond}{A dataframe with one row and same names as \code{Xc}.}
 
-\item{select.colour}{Colour to highlight \code{xc.cond}}
+\item{select.colour}{Colour to highlight \code{Xc.cond}}
 
-\item{select.lwd}{Line weight to highlight \code{xc.cond}}
+\item{select.lwd}{Line weight to highlight \code{Xc.cond}}
 
 \item{cex.axis}{Axis text scaling}
 
@@ -35,10 +35,11 @@ Produces a plot, and returns a list containing the relevant
   information to update the plot at a later stage.
 }
 \description{
-Data visualisations used to select sections for
-  \code{\link{ceplot}}.
+Multivariate data visualisations used to select sections for
+  \code{\link{ceplot}}. Basically visualises a dataset and highlights a
+  single point.
 }
 \seealso{
-\code{\link{ceplot}},  \code{\link{plotxs}}.
+\code{\link{ceplot}},  \code{\link{plotxs}}, \code{\link{plotxc}}
 }
 

@@ -7,16 +7,18 @@
 #'
 #' @param x A dataframe describing arbitrary points in the space of the data
 #'   (i.e., with same \code{colnames} as \code{data}).
-#' @param data A dataframe with same names as \code{xc.cond} representing
-#'   observed data points.
+#' @param data A dataframe representing observed data.
 #' @param threshold Threshold distance outside which observations will
 #'   be assigned similarity weight zero. This is numeric and should be > 0.
+#'   Defaults to 1.
 #' @param distance The type of distance measure to be used, currently just two
 #'   types of Minkowski distance: \code{"euclidean"} (default), and
 #'   \code{"maxnorm"}.
 #' @param lambda A constant to multiply by the number of categorical
 #'   mismatches, before adding to the Minkowski distance, to give a general
-#'   dissimilarity measure.
+#'   dissimilarity measure. If left \code{NULL}, behaves as though \code{lambda}
+#'   is set larger than \code{sigma}, meaning that one factor mismatch
+#'   guarantees zero weight.
 #'
 #' @return A numeric vector or matrix, with values from 0 to 1. The similarity
 #'   weights for the observations in \code{data} arranged in rows for each row
@@ -48,6 +50,8 @@
 #' ## is more similar to the Merc 280 than the Mazda RX4 is.
 #'
 #' similarityweight(mtcars[1:2, ], mtcars, threshold = 3)
+#'
+#' @seealso \code{\link{dist1}}
 
 similarityweight <-
 function (x, data, threshold = NULL, distance = NULL, lambda = NULL)

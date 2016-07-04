@@ -73,7 +73,7 @@ A list containing relevant information for updating the plot.
 }
 \description{
 Visualise a section in data space, showing fitted models where
-  they intersect the section, and nearby observations. The similarity weight for
+  they intersect the section, and nearby observations. The \code{weights} for
   observations can be calculated with \code{\link{similarityweight}}. This
   function is mainly for use in \code{\link{ceplot}} and
   \code{\link{condtour}}.
@@ -83,5 +83,9 @@ data(mtcars)
 model <- lm(mpg ~ ., data = mtcars)
 plotxs(xs = mtcars[, "wt", drop = FALSE], y = mtcars[, "mpg", drop = FALSE],
   xc.cond = mtcars[1, ], model = list(model))
+
+}
+\seealso{
+\code{\link{plotxc}}, \code{\link{ceplot}}, \code{\link{condtour}}
 }
 

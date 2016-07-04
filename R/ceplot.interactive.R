@@ -11,7 +11,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
 {
   uniqC <- unique(unlist(C))
   xc.cond <- if (is.null(xc.cond))
-    data[1, !colnames(data) %in% c(S, response)]
+    data[1, setdiff(colnames(data), c(S, response)), drop = FALSE]
   else xc.cond
   #data.frame(lapply(data[, !colnames(data) %in% c(S, response)], mode1))
   xcplots <- list()
@@ -59,41 +59,43 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
     }
     xscoords <- par("fig")
 
-## Produce the condition selector plots. Can be either "minimal", meaning
-## bivariate and univariate plots, "pcp" for parallel coordinates or "full" for
-## a full scatterplot matrix.
+    ## Produce the condition selector plots. Can be either "minimal", meaning
+    ## bivariate and univariate plots, "pcp" for parallel coordinates or "full"
+    ## for a full scatterplot matrix.
 
-    if (identical(select.type, "minimal")){
-      xcwidth <- selector.colwidth * n.selector.cols
-      n.selector.rows <- ceiling(length(C) / n.selector.cols)
-      xcheight <- selector.colwidth * n.selector.rows
-      opendev(height = xcheight, width = xcwidth)
-      close.screen(all.screens = TRUE)
-      xcscreens <- split.screen(c(n.selector.rows, n.selector.cols))
-      for (i in seq_along(C)){
-        screen(xcscreens[i])
-        xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = xc.cond[1L, C[[i]]
-          ], name = colnames(data[, C[[i]], drop = FALSE]), select.colour =
-          select.colour, select.cex = select.cex)
-        coords[i, ] <- par("fig")
-      }
-    } else if (identical(select.type, "pcp")){
-      xcwidth <- 7
-      xcheight <- 3
-      opendev(height = xcheight, width = xcwidth)
-      xcplots <- plotxc.pcp(Xc = data[, uniqC, drop = FALSE], Xc.cond = xc.cond[
-        1, uniqC, drop = FALSE], select.colour = select.colour, select.lwd =
-        select.lwd, cex.axis = cex.axis, cex.lab = cex.lab, tck = tck,
-        select.cex = select.cex)
-    } else if (identical(select.type, "full")){
-      xcwidth <- 7
-      opendev(height = xcwidth, width = xcwidth)
-      xcplots <- plotxc.full(Xc = data[, uniqC, drop = FALSE], Xc.cond =
-        xc.cond[1, uniqC, drop = FALSE], select.colour = select.colour,
-        select.lwd = select.lwd, cex.axis = cex.axis, cex.lab = cex.lab, tck =
-        tck, select.cex = select.cex)
-    } else stop("'select.type' must be one of 'minimal', 'pcp' or 'full'")
-    devcond <- dev.cur()
+    if (length(uniqC) > 0){
+      if (identical(select.type, "minimal")){
+        xcwidth <- selector.colwidth * n.selector.cols
+        n.selector.rows <- ceiling(length(C) / n.selector.cols)
+        xcheight <- selector.colwidth * n.selector.rows
+        opendev(height = xcheight, width = xcwidth)
+        close.screen(all.screens = TRUE)
+        xcscreens <- split.screen(c(n.selector.rows, n.selector.cols))
+        for (i in seq_along(C)){
+          screen(xcscreens[i])
+          xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = xc.cond[1L, C[[i]]
+            ], name = colnames(data[, C[[i]], drop = FALSE]), select.colour =
+            select.colour, select.cex = select.cex)
+          coords[i, ] <- par("fig")
+        }
+      } else if (identical(select.type, "pcp")){
+        xcwidth <- 7
+        xcheight <- 3
+        opendev(height = xcheight, width = xcwidth)
+        xcplots <- plotxc.pcp(Xc = data[, uniqC, drop = FALSE], Xc.cond = xc.cond[
+          1, uniqC, drop = FALSE], select.colour = select.colour, select.lwd =
+          select.lwd, cex.axis = cex.axis, cex.lab = cex.lab, tck = tck,
+          select.cex = select.cex)
+      } else if (identical(select.type, "full")){
+        xcwidth <- 7
+        opendev(height = xcwidth, width = xcwidth)
+        xcplots <- plotxc.full(Xc = data[, uniqC, drop = FALSE], Xc.cond =
+          xc.cond[1, uniqC, drop = FALSE], select.colour = select.colour,
+          select.lwd = select.lwd, cex.axis = cex.axis, cex.lab = cex.lab, tck =
+          tck, select.cex = select.cex)
+      } else stop("'select.type' must be one of 'minimal', 'pcp' or 'full'")
+      devcond <- dev.cur()
+    }
   } else {
 
 ## Otherwise, put everything on one device.
@@ -107,12 +109,14 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
     mainscreens <- split.screen(figs = matrix(c(0, 1 - xcwidth, 1 - xcwidth, 1,
       0, 0, 1, 1), ncol = 4L))
     xcscreens <- split.screen(c(4L, n.selector.cols), screen = mainscreens[2L])
-    for (i in seq_along(C)){
-      screen(xcscreens[i])
-      xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = xc.cond[1L, C[[i]]],
-        name = colnames(data[, C[[i]], drop = FALSE]), select.colour =
-        select.colour, select.cex = select.cex)
-      coords[i, ] <- par("fig")
+    if (length(uniqC) > 0){
+      for (i in seq_along(C)){
+        screen(xcscreens[i])
+        xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = xc.cond[1L,
+          C[[i]]], name = colnames(data[, C[[i]], drop = FALSE]), select.colour
+          = select.colour, select.cex = select.cex)
+        coords[i, ] <- par("fig")
+      }
     }
 
 ## Do section visualisation

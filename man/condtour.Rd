@@ -7,7 +7,7 @@
 condtour(data, model, path, response = NULL, sectionvars = NULL,
   conditionvars = NULL, threshold = NULL, lambda = NULL,
   distance = c("euclidean", "maxnorm"), view3d = FALSE, conf = FALSE,
-  col = "black", pch = 1, xcplotpar = NULL)
+  col = "black", pch = NULL, xcplotpar = NULL)
 }
 \arguments{
 \item{data}{A dataframe.}
@@ -15,8 +15,7 @@ condtour(data, model, path, response = NULL, sectionvars = NULL,
 \item{model}{A fitted model object, or a list of such objects.}
 
 \item{path}{A dataframe, describing the sections to take. Basically a
-dataframe with its \code{colnames} being a subset of the
-\code{colnames(data)}.}
+dataframe with its \code{colnames} being \code{conditionvars}.}
 
 \item{response}{Character name of response variable in \code{data}.}
 
@@ -65,7 +64,9 @@ Produces a set of interactive plots. One device displays the current
 Whereas \code{\link{ceplot}} allows the user to interactively
   choose sections to visualise, \code{condtour} allows the user to pre-select
   all sections to visualise, order them, and cycle through them one by one.
-  ']' advances the tour, and '[' goes back.
+  ']' key advances the tour, and '[' key goes back. Can adjust
+  \code{threshold} for the current section visualisation with ',' and '.'
+  keys.
 }
 \examples{
 \dontrun{

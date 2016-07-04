@@ -43,6 +43,8 @@
 #' mtcars$cyl <- as.factor(mtcars$cyl)
 #' plotxc(mtcars[, c("cyl", "gear")], mtcars[25, c("cyl", "gear")],
 #'   select.colour = "red")
+#'
+#' @seealso \code{\link{plotxs}}, \code{\link{ceplot}}, \code{\link{condtour}}
 
 ## plotxc plots a univariate or bivariate view of predictors,
 ## highlighting one selected point, which represents a section in the data
@@ -150,7 +152,7 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
         } else {
 
           ## Scatterplot, going to 2-D histogram if required/possible
-          
+
           if (nrow(xc) > 2000 && requireNamespace("gplots", quietly = TRUE)){
             b <- seq(0.35, 1, length.out = 16)
             gplots::hist2d(xc[, 1], xc[, 2], nbins = 50, col = c("white", rgb(1
@@ -181,13 +183,14 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
 
 #' @title Condition selector plot
 #'
-#' @description Data visualisations used to select sections for
-#'   \code{\link{ceplot}}.
+#' @description Multivariate data visualisations used to select sections for
+#'   \code{\link{ceplot}}. Basically visualises a dataset and highlights a
+#'   single point.
 #'
 #' @param Xc A dataframe.
 #' @param Xc.cond A dataframe with one row and same names as \code{Xc}.
-#' @param select.colour Colour to highlight \code{xc.cond}
-#' @param select.lwd Line weight to highlight \code{xc.cond}
+#' @param select.colour Colour to highlight \code{Xc.cond}
+#' @param select.lwd Line weight to highlight \code{Xc.cond}
 #' @param cex.axis Axis text scaling
 #' @param cex.lab Label text scaling
 #' @param tck Plot axis tick size
@@ -197,7 +200,7 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
 #' @return Produces a plot, and returns a list containing the relevant
 #'   information to update the plot at a later stage.
 #'
-#' @seealso \code{\link{ceplot}},  \code{\link{plotxs}}.
+#' @seealso \code{\link{ceplot}},  \code{\link{plotxs}}, \code{\link{plotxc}}
 
 ## plotxc.pcp plots a parallel coordinates plot of predictors, highlighting
 ## one selected point, which represents a section in the data space.
