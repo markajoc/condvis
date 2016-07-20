@@ -8,7 +8,8 @@ plotxs(xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
   model.lty = NULL, model.name = NULL, yhat = NULL, mar = NULL,
   col = "black", weights = NULL, view3d = FALSE, theta3d = 45,
   phi3d = 20, xs.grid = NULL, prednew = NULL, conf = FALSE,
-  probs = FALSE, pch = 1, residuals = FALSE)
+  probs = FALSE, pch = 1, residuals = FALSE,
+  main = "Conditional expectation")
 }
 \arguments{
 \item{xs}{A dataframe with one or two columns.}
@@ -67,6 +68,9 @@ numeric predictors and the model's predict method provides this.}
 
 \item{residuals}{Logical; if \code{TRUE}, plots a residual versus predictor
 plot instead of the usual scale of raw response.}
+
+\item{main}{Character title for plot, default is
+\code{"Conditional expectation"}.}
 }
 \value{
 A list containing relevant information for updating the plot.

@@ -43,6 +43,8 @@
 #' @param pch Plot symbols for observed data
 #' @param residuals Logical; if \code{TRUE}, plots a residual versus predictor
 #'   plot instead of the usual scale of raw response.
+#' @param main Character title for plot, default is
+#'   \code{"Conditional expectation"}.
 #'
 #' @return A list containing relevant information for updating the plot.
 #'
@@ -59,7 +61,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
   model.lty = NULL, model.name = NULL, yhat = NULL, mar = NULL, col = "black",
   weights = NULL, view3d = FALSE, theta3d = 45, phi3d = 20, xs.grid
   = NULL, prednew = NULL, conf = FALSE, probs = FALSE, pch = 1, residuals =
-  FALSE)
+  FALSE, main = "Conditional expectation")
 {
   ny <- nrow(y)
   col <- rep(col, length.out = ny)
@@ -103,10 +105,13 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
   model.lty <- if (is.null(model.lty))
     rep(1, length(model))
   else rep(model.lty, length.out = length(model))
-  model.name <- if(!is.null(names(model)))
+  model.name <- if (!is.null(names(model)))
     names(model)
   else paste("model", seq_along(model), sep = "_")
-  par(mar = c(5, 4, 3, 2))
+  mar <- if (is.null(mar))
+    c(5, 4, 3, 2)
+  else mar
+  par(mar = mar)
 
 ## If xs is NULL, show a univariate summary
 
@@ -153,7 +158,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
           plot.type <- "ff"
           if (identical(nlevels(y[, 1L]), 2L)){
             plot(unique(xs[, 1L]), rep(-888, length(levels(xs[, 1L]))), col =
-              NULL, main = "Conditional expectation", ylab = paste("Probability
+              NULL, main = main, ylab = paste("Probability
               ", colnames(y)[1L], "=", levels(y[, 1L])[2L]), ylim = c(0, 1))
             if (length(data.order) > 0)
 				      points.default((as.numeric(xs[data.order, 1L])) + rnorm(n =
@@ -177,7 +182,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
             plot(range(as.numeric(xs[, 1L])) + c(0, 0.1 * abs(diff(range(
               as.numeric(xs[, 1L])))) ), range(as.integer(y[, 1L])), col = NULL,
               xlab = colnames(xs)[1L], ylab = colnames(y)[1L], yaxt = "n", main
-              = "Conditional expectation", xaxt = if (is.factor(xs[, 1L])) "n"
+              = main, xaxt = if (is.factor(xs[, 1L])) "n"
               else NULL)
             axis(2, at = 1:nlevels(y[, 1L]), labels = levels(y[, 1L]))
             if (is.factor(xs[, 1L]))
@@ -197,7 +202,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
           # y is continuous
           plot.type <- "cf"
           plot(unique(xs[, 1L]), rep(-888, length(levels(xs[, 1L]))), col = NULL
-            , main = "Conditional expectation", xlab = colnames(xs)[1L], ylab =
+            , main = main, xlab = colnames(xs)[1L], ylab =
             colnames(y)[1L], ylim = range(y[, 1L]))
           if (length(data.order) > 0)
             points(xs[data.order, 1L], y[data.order, 1L], col = data.colour[
@@ -232,7 +237,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
           plot.type <- "fc"
           if (identical(nlevels(y[, 1L]), 2L)){
             plot(range(xs[, 1L]) + 0.1 * abs(diff(range(xs[, 1L]))), c(0, 0),
-              col = NULL, main = "Conditional expectation", xlab = colnames(xs)[
+              col = NULL, main = main, xlab = colnames(xs)[
               1L], ylab = paste("Probability ", colnames(y)[1L], "=", levels(y[,
               1L])[2L]), ylim = c(0, 1))
             if (length(data.order) > 0)
@@ -254,7 +259,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
           } else {
             plot(range(xs[, 1L]), range(as.integer(y[, 1L])), col = NULL, xlab =
               colnames(xs)[1L], ylab = colnames(y)[1L], yaxt = "n", main =
-              "Conditional expectation", xaxt = if (is.factor(xs[, 1L])) "n"
+              main, xaxt = if (is.factor(xs[, 1L])) "n"
               else NULL)
             axis(2, at = 1:nlevels(y[, 1L]), labels = levels(y[, 1L]))
             if (is.factor(xs[, 1L]))
@@ -274,7 +279,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
           # y is continuous
           plot.type <- "cc"
           plot(range(xs[, 1L]), range(y[, 1L]), col = NULL, main =
-            "Conditional expectation", xlab = colnames(xs)[1L], ylab = colnames(
+            main, xlab = colnames(xs)[1L], ylab = colnames(
             y)[1L], ylim = range(y[, 1L]))
           if (length(data.order) > 0){
             points(xs[data.order, 1L], y[data.order, 1L], col = data.colour[
@@ -346,7 +351,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
 			  plot(xrect, yrect, col = NULL, xlab = colnames(xs)[1L], ylab = colnames(
           xs)[2L], xlim = c(min(xrect) - xoffset, max(xrect) + xoffset), xaxt =
           "n", bty = "n", ylim = c(min(yrect) - yoffset, max(yrect) + yoffset),
-          yaxt = "n", main = "Conditional expectation")
+          yaxt = "n", main = main)
 			  rect(xleft = xrect - xoffset, xright = xrect + xoffset, ybottom = yrect
           - yoffset, ytop = yrect + yoffset, col = color)
         if (length(data.order) > 0)
@@ -374,7 +379,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
 			    yoffset <- abs(diff(unique(yrect)[1:2])) / 2.1
 		      plot(0, 0, col = NULL, xlab = colnames(xs)[!arefactorsxs], ylab =
             colnames(xs)[arefactorsxs], xlim = c(min(xrect) - xoffset, max(xrect
-            ) + xoffset), bty = "n", main = "Conditional expectation", ylim =
+            ) + xoffset), bty = "n", main = main, ylim =
             c(min(yrect) - yoffset, max(yrect) + yoffset), yaxt = "n")
 		      rect(xleft = xrect - xoffset, xright = xrect + xoffset, ybottom =
             yrect - yoffset, ytop = yrect + yoffset, col = color, border = NA)
@@ -392,7 +397,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
             if (probs){
               plot(range(xs.grid[, 1L]), range(xs.grid[, 2L]), col = NULL, xlab
                 = colnames(xs)[1L], ylab = colnames(xs)[2L], main =
-                "Conditional expectation")
+                main)
               pred <- predict1(model[[1L]], newdata = newdata, probability =
                 TRUE, ylevels = levels(y[, 1L]))
               p1 <- extractprobs(model[[1L]], pred)
@@ -411,7 +416,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
               yoffset <- abs(diff(unique(xs.grid[, 2L])[1:2])) / 2
               plot(range(xs.grid[, 1L]), range(xs.grid[, 2L]), col = NULL,
                 xlab = colnames(xs)[1L], ylab = colnames(xs)[2L],
-                main = "Conditional expectation")
+                main = main)
               rect(xleft = xs.grid[, 1L] - xoffset, xright = xs.grid[, 1L]
                 + xoffset, ybottom = xs.grid[, 2L] - yoffset, ytop =
                 xs.grid[, 2L] + yoffset, col = color, border = NA)
@@ -436,7 +441,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
                 = 0.1, z = z, col = colorfacet, zlim = range(y), xlab =
                 colnames(xs)[1L], ylab = colnames(xs)[2L], zlab = colnames(y)[
                 1L], d = 10, ticktype = "detailed", main =
-                "Conditional expectation", theta = theta3d, phi = phi3d))
+                main, theta = theta3d, phi = phi3d))
               if (length(data.order) > 0){
                 points(trans3d(xs[data.order, 1L], xs[data.order, 2L], y[
                   data.order, 1L], pmat = persp.object), col = data.colour[
@@ -453,7 +458,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
               yoffset <- abs(diff(unique(xs.grid[, 2L])[1:2])) / 2
               plot(range(xs.grid[, 1L]), range(xs.grid[, 2L]), col = NULL,
                 xlab = colnames(xs)[1L], ylab = colnames(xs)[2L], main =
-                "Conditional expectation")
+                main)
               rect(xleft = xs.grid[, 1L] - xoffset, xright = xs.grid[, 1L] +
                 xoffset, ybottom = xs.grid[, 2L] - yoffset, ytop = xs.grid[,
                 2L] + yoffset, col = color, border = NA)
