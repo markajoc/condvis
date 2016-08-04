@@ -4,7 +4,9 @@ condvis: Conditional Visualisation for Statistical Models
 News
 ---------------------------------------------------------
 
+Version 0.3-4 
   * fixed incorrect parameter names in demo files.
+  * fix to `plotxs` to allow `main` and `mar` to be specified.
 
 Version 0.3-3 2016-07-04
   * fixed treatment of `pch` by condtour, was previously defaulting to 1 when it
