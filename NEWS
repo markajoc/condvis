@@ -4,7 +4,7 @@ condvis: Conditional Visualisation for Statistical Models
 News
 ---------------------------------------------------------
 
-Version 0.3-4 
+Version 0.3-4 2016-08-04
   * fixed incorrect parameter names in demo files.
   * fix to `plotxs` to allow `main` and `mar` to be specified.
 
