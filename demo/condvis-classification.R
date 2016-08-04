@@ -7,4 +7,5 @@ wine$Class <- as.factor(wine$Class)
 model <- svm(Class ~ Alcohol + Malic + Ash + Magnesium +
     Phenols + Flavanoids, data = wine)
 ## visualise sections along 'Alcohol' and 'Phenols'
-ceplot(data = wine, model = model, S = c("Alcohol", "Phenols"), sigma = 1.5)
+ceplot(data = wine, model = model, sectionvars = c("Alcohol", "Phenols"),
+  threshold = 1.5)

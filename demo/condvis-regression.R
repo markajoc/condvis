@@ -5,4 +5,4 @@ models <- list(
     lm = lm(PE ~ ., data = powerplant),
     lmquad = lm(PE ~ . + I(AT^2), data = powerplant))
 ## visualise sections along 'AT'
-ceplot(data = powerplant, model = models, S = "AT")
+ceplot(data = powerplant, model = models, sectionvars = "AT")
