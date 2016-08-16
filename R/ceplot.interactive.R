@@ -7,7 +7,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
   view3d = FALSE, Corder = "default", conf = FALSE, separate = TRUE,
   select.colour = "blue", select.cex = 1, select.lwd = 2, select.type =
   "minimal", probs = FALSE, col = "black", pch = 1, residuals = FALSE, xc.cond =
-  NULL, modelpar = NULL)
+  NULL, xsplotpar = NULL, modelpar = NULL, xcplotpar = NULL)
 {
   uniqC <- unique(unlist(C))
   xc.cond <- if (is.null(xc.cond))
