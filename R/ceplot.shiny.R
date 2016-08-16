@@ -4,7 +4,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
   view3d = FALSE, Corder = "default", conf = FALSE, separate = TRUE,
   select.colour = "blue", select.cex = 1, select.lwd = 2, select.type =
   "minimal", probs = FALSE, col = "black", pch = 1, residuals = FALSE, xc.cond =
-  NULL, packages = NULL)
+  NULL, packages = NULL, xsplotpar = NULL, modelpar = NULL, xcplotpar = NULL)
 {
   ## Check for shiny package, and stop if not installed
 
@@ -175,7 +175,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
         input$distance, lambda = lambda)
       xsplot <<- condvis:::plotxs(xs = data[, S, drop = FALSE], data[, response
         , drop = FALSE], xc.cond = rv$xc.cond, model = model, col = col, weights
-        = vw$k, view3d = FALSE, conf = conf, probs = probs, pch = pch)
+        = vw$k, view3d = FALSE, conf = conf, probs = probs, pch = pch,
+        model.colour = modelpar$col, model.lwd = modelpar$lwd, model.lty =
+        modelpar$lty)
     })
 
     ## Section visualisation for 3-D perspective mesh.
@@ -185,7 +187,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
         input$distance, lambda = lambda)
       xsplot <<- condvis:::plotxs(xs = data[, S, drop = FALSE], data[, response
         , drop = FALSE], xc.cond = rv$xc.cond, model = model, col = col,
-        weights = vw$k, view3d = TRUE, conf = conf, probs = probs, pch = pch)
+        weights = vw$k, view3d = TRUE, conf = conf, probs = probs, pch = pch,
+        model.colour = modelpar$col, model.lwd = modelpar$lwd, model.lty =
+        modelpar$lty)
     })
 
     ## Legend for section

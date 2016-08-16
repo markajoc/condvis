@@ -275,19 +275,22 @@ function (data, model, response = NULL, sectionvars = NULL, conditionvars = NULL
       C = C, sigma = sigma, lambda = lambda, distance = distance, cex.axis =
       cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = Corder,
       conf = conf, separate = FALSE, select.colour = select.colour, select.cex =
-      select.cex, probs = probs, col = col, pch = pch, residuals = residuals)
+      select.cex, probs = probs, col = col, pch = pch, residuals = residuals,
+      xsplotpar = xsplotpar, modelpar = modelpar, xcplotpar = xcplotpar)
   } else if (identical(type, "separate")){
     ceplot.interactive(data = data, model = model, response = response, S = S,
       C = C, sigma = sigma, lambda = lambda, distance = distance, cex.axis =
       cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = Corder,
       conf = conf, separate = TRUE, select.colour = select.colour, select.cex =
       select.cex, probs = probs, col = col, pch = pch, select.type =
-      selectortype, residuals = residuals)
+      selectortype, residuals = residuals, xsplotpar = xsplotpar, modelpar =
+      modelpar, xcplotpar = xcplotpar)
   } else if (identical(type, "shiny")){
     ceplot.shiny(data = data, model = model, response = response, S = S,
       C = C, sigma = sigma, lambda = lambda, distance = distance, cex.axis
       = cex.axis, cex.lab = cex.lab, tck = tck, view3d = view3d, Corder = Corder
       , conf = conf, separate = FALSE, select.colour = select.colour, select.cex
-      = select.cex, probs = probs, col = col, pch = pch, residuals = residuals)
+      = select.cex, probs = probs, col = col, pch = pch, residuals = residuals,
+      xsplotpar = xsplotpar, modelpar = modelpar, xcplotpar = xcplotpar)
   }
 }

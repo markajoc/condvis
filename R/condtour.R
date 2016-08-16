@@ -32,6 +32,10 @@
 #'   when possible.
 #' @param col Colour for observed data points.
 #' @param pch Plot symbols for observed data points.
+#' @param xsplotpar Plotting parameters for section visualisation as a list,
+#'   passed to \code{\link{plotxs}}. Not used.
+#' @param modelpar Plotting parameters for models as a list, passed to
+#'   \code{\link{plotxs}}. Not used.
 #' @param xcplotpar Plotting parameters for condition selector plots as a list,
 #'   passed to \code{\link{plotxc}}. Can specify \code{cex.axis}, \code{cex.lab}
 #'   , \code{tck}, \code{col} for highlighting current section, \code{cex}.
@@ -69,7 +73,8 @@
 condtour <-
 function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
   NULL, threshold = NULL, lambda = NULL, distance = c("euclidean", "maxnorm"),
-  view3d = FALSE, conf = FALSE, col = "black", pch = NULL, xcplotpar = NULL)
+  view3d = FALSE, conf = FALSE, col = "black", pch = NULL, xsplotpar = NULL,
+  modelpar = NULL, xcplotpar = NULL)
 {
   ## Rename for internal
 
@@ -232,8 +237,8 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
     1
   else threshold
 
-  ## Set up col so it is a vector with length equal to nrow(data). Default pch to
-  ## 1, or 21 for using background colour to represent observed values.
+  ## Set up col so it is a vector with length equal to nrow(data). Default pch
+  ## to 1, or 21 for using background colour to represent observed values.
 
   nr.data <- nrow(data)
   col <- rep(col, length.out = nr.data)
@@ -296,7 +301,8 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
   par(mar = c(3, 3, 3, 3))
   xsplot <- plotxs(xs = data[, S, drop = FALSE], data[, response, drop = FALSE]
     , xc.cond = xc.cond, model = model, weights = k[pathindex, ], col = col,
-    view3d = view3d, conf = conf, pch = pch)
+    view3d = view3d, conf = conf, pch = pch, model.colour = modelpar$col,
+    model.lwd = modelpar$lwd, model.lty = modelpar$lty)
   xscoords <- par("fig")
   setGraphicsEventHandlers(
     onMouseMove = mousemove(),
