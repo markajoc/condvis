@@ -50,7 +50,7 @@
 #' @param residuals Logical; if \code{TRUE}, plots a residual versus predictor
 #'   plot instead of the usual scale of raw response.
 #' @param xsplotpar Plotting parameters for section visualisation as a list,
-#'   passed to \code{\link{plotxs}}. Not used.
+#'   passed to \code{\link{plotxs}}. Can specify \code{xlim}, \code{ylim}.
 #' @param modelpar Plotting parameters for models as a list, passed to
 #'   \code{\link{plotxs}}. Not used.
 #' @param xcplotpar Plotting parameters for condition selector plots as a list,

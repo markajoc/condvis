@@ -302,7 +302,8 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
   xsplot <- plotxs(xs = data[, S, drop = FALSE], data[, response, drop = FALSE]
     , xc.cond = xc.cond, model = model, weights = k[pathindex, ], col = col,
     view3d = view3d, conf = conf, pch = pch, model.colour = modelpar$col,
-    model.lwd = modelpar$lwd, model.lty = modelpar$lty)
+    model.lwd = modelpar$lwd, model.lty = modelpar$lty, main = xsplotpar$main,
+    xlim = xsplotpar$xlim, ylim = xsplotpar$ylim)
   xscoords <- par("fig")
   setGraphicsEventHandlers(
     onMouseMove = mousemove(),

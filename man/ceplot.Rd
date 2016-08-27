@@ -74,7 +74,7 @@ numeric predictors and the model's predict method provides this.}
 plot instead of the usual scale of raw response.}
 
 \item{xsplotpar}{Plotting parameters for section visualisation as a list,
-passed to \code{\link{plotxs}}. Not used.}
+passed to \code{\link{plotxs}}. Can specify \code{xlim}, \code{ylim}.}
 
 \item{modelpar}{Plotting parameters for models as a list, passed to
 \code{\link{plotxs}}. Not used.}

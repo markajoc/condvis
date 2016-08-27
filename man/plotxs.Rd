@@ -8,8 +8,8 @@ plotxs(xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
   model.lty = NULL, model.name = NULL, yhat = NULL, mar = NULL,
   col = "black", weights = NULL, view3d = FALSE, theta3d = 45,
   phi3d = 20, xs.grid = NULL, prednew = NULL, conf = FALSE,
-  probs = FALSE, pch = 1, residuals = FALSE,
-  main = "Conditional expectation")
+  probs = FALSE, pch = 1, residuals = FALSE, main = NULL, xlim = NULL,
+  ylim = NULL)
 }
 \arguments{
 \item{xs}{A dataframe with one or two columns.}
@@ -71,6 +71,10 @@ plot instead of the usual scale of raw response.}
 
 \item{main}{Character title for plot, default is
 \code{"Conditional expectation"}.}
+
+\item{xlim}{Graphical parameter passed to plotting functions.}
+
+\item{ylim}{Graphical parameter passed to plotting functions.}
 }
 \value{
 A list containing relevant information for updating the plot.

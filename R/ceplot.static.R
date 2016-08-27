@@ -47,6 +47,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, weights = NULL, col
     FALSE], xc.cond = xc.cond, model = model, model.colour = modelpar$col,
     model.lwd = modelpar$lwd, model.lty = modelpar$lty, yhat = NULL, mar = NULL,
     weights = weights, col = col, view3d = view3d, theta3d = theta3d, phi3d =
-    phi3d, conf = conf, probs = probs)
+    phi3d, conf = conf, probs = probs, main = xsplotpar$main, xlim =
+    xsplotpar$xlim, ylim = xsplotpar$ylim)
   dev.flush()
 }

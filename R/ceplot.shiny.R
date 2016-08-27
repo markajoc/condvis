@@ -177,7 +177,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
         , drop = FALSE], xc.cond = rv$xc.cond, model = model, col = col, weights
         = vw$k, view3d = FALSE, conf = conf, probs = probs, pch = pch,
         model.colour = modelpar$col, model.lwd = modelpar$lwd, model.lty =
-        modelpar$lty)
+        modelpar$lty, main = xsplotpar$main, xlim = xsplotpar$xlim, ylim =
+        xsplotpar$ylim)
     })
 
     ## Section visualisation for 3-D perspective mesh.
@@ -189,7 +190,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
         , drop = FALSE], xc.cond = rv$xc.cond, model = model, col = col,
         weights = vw$k, view3d = TRUE, conf = conf, probs = probs, pch = pch,
         model.colour = modelpar$col, model.lwd = modelpar$lwd, model.lty =
-        modelpar$lty)
+        modelpar$lty, main = xsplotpar$main, xlim = xsplotpar$xlim, ylim =
+        xsplotpar$ylim)
     })
 
     ## Legend for section

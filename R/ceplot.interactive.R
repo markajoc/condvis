@@ -59,7 +59,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
         FALSE], xc.cond = xc.cond, model = model, col = col, weights = vw$k,
         view3d = view3d, conf = conf, probs = probs, pch = pch, model.colour =
         modelpar$col, model.lwd = modelpar$lwd, model.lty =
-        modelpar$lty)
+        modelpar$lty, main = xsplotpar$main, xlim = xsplotpar$xlim, ylim =
+        xsplotpar$ylim)
     }
     xscoords <- par("fig")
 
@@ -149,7 +150,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
         FALSE], xc.cond = xc.cond, model = model, col = col, weights = vw$k,
         view3d = view3d, conf = conf, probs = probs, pch = pch, model.colour =
         modelpar$col, model.lwd = modelpar$lwd, model.lty =
-        modelpar$lty)
+        modelpar$lty, main = xsplotpar$main, xlim = xsplotpar$xlim, ylim =
+        xsplotpar$ylim)
     }
     xscoords <- par("fig")
     xold <- NULL
@@ -267,7 +269,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
               view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
               xsplot$phi3d, conf = conf, probs = probs, pch = pch, model.colour
               = modelpar$col, model.lwd = modelpar$lwd, model.lty = modelpar$lty
-              )
+              , main = xsplotpar$main, xlim = xsplotpar$xlim, ylim =
+              xsplotpar$ylim)
           }
           dev.off()
           cat(paste("\nSnapshot saved: '", filename[1L],"'", sep = ""))
@@ -324,7 +327,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
               view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
               xsplot$phi3d, conf = conf, probs = probs, pch = 1, model.colour =
               modelpar$col, model.lwd = modelpar$lwd, model.lty =
-              modelpar$lty)
+              modelpar$lty, main = xsplotpar$main, xlim = xsplotpar$xlim, ylim =
+              xsplotpar$ylim)
           }
           dev.off()
           cat(paste("\nSnapshot saved: '", filename,"'\n", sep = ""))

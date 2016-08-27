@@ -45,6 +45,8 @@
 #'   plot instead of the usual scale of raw response.
 #' @param main Character title for plot, default is
 #'   \code{"Conditional expectation"}.
+#' @param xlim Graphical parameter passed to plotting functions.
+#' @param ylim Graphical parameter passed to plotting functions.
 #'
 #' @return A list containing relevant information for updating the plot.
 #'
@@ -61,10 +63,13 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
   model.lty = NULL, model.name = NULL, yhat = NULL, mar = NULL, col = "black",
   weights = NULL, view3d = FALSE, theta3d = 45, phi3d = 20, xs.grid
   = NULL, prednew = NULL, conf = FALSE, probs = FALSE, pch = 1, residuals =
-  FALSE, main = "Conditional expectation")
+  FALSE, main = NULL, xlim = NULL, ylim = NULL)
 {
   ny <- nrow(y)
   col <- rep(col, length.out = ny)
+  main <- if (is.null(main))
+    "Conditional expectation"
+  else main
   dev.hold()
 
 ## If no weights are provided, just show all data with the appropriate colour.
@@ -140,10 +145,15 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
 
     if (identical(ncol(xs), 1L)){
       # xs has one column
+      xs.min <- if (is.null(xlim))
+        min(xs[, 1L], na.rm = TRUE)
+      else xlim[1]
+      xs.max <- if (is.null(xlim))
+        max(xs[, 1L], na.rm = TRUE)
+      else xlim[2]
       if (is.null(xs.grid)){
         xs.grid <- if (!is.factor(xs[, 1L]))
-          data.frame(seq(min(xs[, 1L], na.rm = TRUE), max(xs[, 1L], na.rm = TRUE
-            ), length.out = if (view3d) {20L} else 50L))
+          data.frame(seq(xs.min, xs.max, length.out = if (view3d) {20L} else 50L))
         else data.frame(as.factor(levels(xs[, 1L])))
         colnames(xs.grid) <- colnames(xs)
       }
@@ -203,7 +213,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
           plot.type <- "cf"
           plot(unique(xs[, 1L]), rep(-888, length(levels(xs[, 1L]))), col = NULL
             , main = main, xlab = colnames(xs)[1L], ylab =
-            colnames(y)[1L], ylim = range(y[, 1L]))
+            colnames(y)[1L], ylim = if(is.null(ylim)) range(y[, 1L]) else ylim)
           if (length(data.order) > 0)
             points(xs[data.order, 1L], y[data.order, 1L], col = data.colour[
               data.order], pch = pch[data.order])
@@ -280,7 +290,7 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
           plot.type <- "cc"
           plot(range(xs[, 1L]), range(y[, 1L]), col = NULL, main =
             main, xlab = colnames(xs)[1L], ylab = colnames(
-            y)[1L], ylim = range(y[, 1L]))
+            y)[1L], xlim = xlim, ylim = ylim)
           if (length(data.order) > 0){
             points(xs[data.order, 1L], y[data.order, 1L], col = data.colour[
               data.order], pch = pch[data.order])
