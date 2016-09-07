@@ -5,7 +5,7 @@ News
 ---------------------------------------------------------
 
 Version 0.3-5
-  * In `plotxc`, now chops off long tails for scatterplot/2-d histogram,
+  * In `plotxc`, can chop off long tails for scatterplot/2-d histogram,
     controlled by `trim` parameter.
   * pass plotting parameters for models from top-level `ceplot` call. See
     parameter `modelpar`.
