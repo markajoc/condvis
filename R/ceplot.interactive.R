@@ -79,8 +79,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
         for (i in seq_along(C)){
           screen(xcscreens[i])
           xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = xc.cond[1L, C[[
-            i]]], name = colnames(data[, C[[i]], drop = FALSE]), select.colour =
-            select.colour, select.cex = select.cex)
+            i]]], name = colnames(data[, C[[i]], drop = FALSE]), trim =
+            xcplotpar$trim, select.colour = select.colour, select.cex =
+            select.cex)
           coords[i, ] <- par("fig")
         }
       } else if (identical(select.type, "pcp")){
@@ -118,8 +119,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
       for (i in seq_along(C)){
         screen(xcscreens[i])
         xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = xc.cond[1L,
-          C[[i]]], name = colnames(data[, C[[i]], drop = FALSE]), select.colour
-          = select.colour, select.cex = select.cex)
+          C[[i]]], name = colnames(data[, C[[i]], drop = FALSE]), trim =
+          xcplotpar$trim, select.colour = select.colour, select.cex =
+          select.cex)
         coords[i, ] <- par("fig")
       }
     }
@@ -283,8 +285,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
           for (i in seq_along(C)){
             screen(xcscreens[i])
             plotxc(xc = xcplots[[i]]$xc, xc.cond = xcplots[[i]]$xc.cond.old,
-              name = xcplots[[i]]$name, select.colour = xcplots[[i]
-              ]$select.colour, select.cex = xcplots[[i]]$select.cex)
+              name = xcplots[[i]]$name, trim = FALSE, select.colour = xcplots[[i
+              ]]$select.colour, select.cex = xcplots[[i]]$select.cex)
           }
           dev.off()
           cat(paste("\nSnapshot saved: '", filename[2L],"'", sep = ""))
@@ -302,8 +304,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
           for (i in seq_along(C)){
             screen(xcscreens[i])
             plotxc(xc = xcplots[[i]]$xc, xc.cond = xcplots[[i]]$xc.cond.old,
-              name = xcplots[[i]]$name, select.colour = xcplots[[i]
-              ]$select.colour, select.cex = xcplots[[i]]$select.cex)
+              name = xcplots[[i]]$name, trim = FALSE, select.colour = xcplots[[i
+              ]]$select.colour, select.cex = xcplots[[i]]$select.cex)
           }
           xsscreens <- if (plotlegend){
             split.screen(figs = matrix(c(0, 1 - legendwidth, 1 - legendwidth, 1,

@@ -28,8 +28,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, weights = NULL, col
     for(i in seq_along(C)){
       screen(selectors[i])
       xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = xc.cond[1L, C[[i]]],
-        name = colnames(data[, C[[i]], drop = FALSE]), select.colour =
-        select.colour, select.cex = select.cex)
+        name = colnames(data[, C[[i]], drop = FALSE]), trim = xcplotpar$trim,
+        select.colour = select.colour, select.cex = select.cex)
     }
   }
   screen(main[1])

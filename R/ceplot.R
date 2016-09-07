@@ -55,7 +55,7 @@
 #'   \code{\link{plotxs}}. Not used.
 #' @param xcplotpar Plotting parameters for condition selector plots as a list,
 #'   passed to \code{\link{plotxc}}. Can specify \code{col} for highlighting
-#'   current section, \code{cex}.
+#'   current section, \code{cex}, and \code{trim} (see \code{\link{plotxc}}).
 #'
 #' @examples
 #' \dontrun{

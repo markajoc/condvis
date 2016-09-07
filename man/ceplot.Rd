@@ -81,7 +81,7 @@ passed to \code{\link{plotxs}}. Can specify \code{xlim}, \code{ylim}.}
 
 \item{xcplotpar}{Plotting parameters for condition selector plots as a list,
 passed to \code{\link{plotxc}}. Can specify \code{col} for highlighting
-current section, \code{cex}.}
+current section, \code{cex}, and \code{trim} (see \code{\link{plotxc}}).}
 }
 \description{
 Creates an interactive conditional expectation plot, which

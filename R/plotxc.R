@@ -7,6 +7,8 @@
 #' @param xc.cond Same type as \code{xc}, representing a single point in data
 #'   space to highlight.
 #' @param name The variable name for \code{xc}
+#' @param trim Logical; if \code{TRUE}, long tails of continuous data are
+#'   chopped off at the 5th and 95th percentiles.
 #' @param select.colour Colour to highlight \code{xc.cond}
 #' @param select.lwd Line weight to highlight \code{xc.cond}
 #' @param cex.axis Axis text scaling
@@ -21,28 +23,39 @@
 #' @seealso \code{\link{ceplot}},  \code{\link{plotxs}}.
 #'
 #' @examples
-#' ## histogram, highlighting the first case
+#' ## Histogram, highlighting the first case.
+#'
 #' data(mtcars)
 #' obj <- plotxc(mtcars[, "mpg"], mtcars[1, "mpg"])
 #' obj$usr
 #'
-#' ## barplot, highlighting 'cyl' = 6
+#' ## Barplot, highlighting 'cyl' = 6.
+#'
 #' plotxc(as.factor(mtcars[, "cyl"]), 6, select.colour = "blue")
 #'
-#' ## scatterplot, highlighting case 25
+#' ## Scatterplot, highlighting case 25.
+#'
 #' plotxc(mtcars[, c("qsec", "wt")], mtcars[25, c("qsec", "wt")],
 #'   select.colour = "blue", select.lwd = 1, lty = 3)
 #'
-#' ## boxplot, where 'xc' contains one factor, and one numeric
+#' ## Boxplot, where 'xc' contains one factor, and one numeric.
+#'
 #' mtcars$carb <- as.factor(mtcars$carb)
 #' plotxc(mtcars[, c("carb", "wt")], mtcars[25, c("carb", "wt")],
 #'   select.colour = "red", select.lwd = 3)
 #'
-#' ## spineplot, where 'xc' contains two factors
+#' ## Spineplot, where 'xc' contains two factors.
+#'
 #' mtcars$gear <- as.factor(mtcars$gear)
 #' mtcars$cyl <- as.factor(mtcars$cyl)
 #' plotxc(mtcars[, c("cyl", "gear")], mtcars[25, c("cyl", "gear")],
 #'   select.colour = "red")
+#'
+#' ## Effect of 'trim'.
+#'
+#' x <- c(-200, runif(400), 200)
+#' plotxc(x, 0.5, trim = FALSE, select.colour = "red")
+#' plotxc(x, 0.5, trim = TRUE, select.colour = "red")
 #'
 #' @seealso \code{\link{plotxs}}, \code{\link{ceplot}}, \code{\link{condtour}}
 
@@ -51,9 +64,13 @@
 ## space.
 
 plotxc <-
-function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
-  cex.axis = NULL, cex.lab = NULL, tck = NULL, select.cex = 1, ...)
+function (xc, xc.cond, name = NULL, trim = NULL, select.colour = NULL,
+  select.lwd = NULL, cex.axis = NULL, cex.lab = NULL, tck = NULL, select.cex = 1
+  , ...)
 {
+  trim <- if (is.null(trim))
+    TRUE
+  else trim
   select.colour <- if (is.null(select.colour))
     "black"
   else select.colour
@@ -84,11 +101,11 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
       ## Histogram
 
       ## To deal with long tails, we try chopping them off.
-
-      if (diff(range(xc, na.rm = TRUE)) / diff(range(xcnew <- xc[findInterval(
-        xc, quantile(xc, c(0.025, 0.975), na.rm = TRUE)) == 1], na.rm = TRUE)) >
-        3){
-        xc <- xcnew
+      if (trim){
+        if (diff(range(xc, na.rm = TRUE)) / diff(q1 <- quantile(xc,
+          c(0.05, 0.95), na.rm = TRUE)) > 3){
+          xc <- xc[findInterval(xc, q1) == 1]
+        }
       }
       histmp <- hist(xc, xlab = name, ylab = "", main = "", cex.axis = cex.axis,
         cex.lab = cex.lab, tcl = tck, mgp = c(1.5, 0.5, 0.1))
@@ -157,16 +174,18 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
 
           ## To deal with long tails, we try chopping them off.
 
-          index1 <- index2 <- rep(TRUE, nrow(xc))
-          if (diff(range(xc[, 1], na.rm = TRUE)) / diff(q1 <- quantile(xc[, 1],
-            c(0.05, 0.95), na.rm = TRUE))){
-            index1 <- findInterval(xc[, 1], q1) == 1
+          if (trim){
+            index1 <- index2 <- rep(TRUE, nrow(xc))
+            if (diff(range(xc[, 1], na.rm = TRUE)) / diff(q1 <- quantile(xc[, 1]
+              , c(0.05, 0.95), na.rm = TRUE)) > 3){
+              index1 <- findInterval(xc[, 1], q1) == 1
+            }
+            if (diff(range(xc[, 2], na.rm = TRUE)) / diff(q2 <- quantile(xc[, 2]
+              , c(0.05, 0.95), na.rm = TRUE)) > 3){
+              index2 <- findInterval(xc[, 2], q2) == 1
+            }
+            xc <- xc[index1 & index2, ]
           }
-          if (diff(range(xc[, 2], na.rm = TRUE)) / diff(q2 <- quantile(xc[, 2],
-            c(0.05, 0.95), na.rm = TRUE))){
-            index2 <- findInterval(xc[, 2], q2) == 1
-          }
-          xc <- xc[index1 & index2, ]
 
           if (nrow(xc) > 2000 && requireNamespace("gplots", quietly = TRUE)){
             b <- seq(0.35, 1, length.out = 16)
