@@ -86,11 +86,16 @@ function (object, xclick, yclick, xc.cond = NULL, user = FALSE, draw = TRUE,
         par(bg = "white")
         dev.hold()
         screen(new = TRUE)
-        object <- plotxc(xc = object$xc, xc.cond = xc.cond.new, name =
-          object$name, select.colour = object$select.colour, select.lwd =
-          object$select.lwd, cex.axis = object$cex.axis, cex.lab =
-          object$cex.lab, tck = object$tck)
+        b <- seq(0.35, 1, length.out = 16)
+        gplots::hist2d(object$xc[, 1], object$xc[, 2], nbins = 50, col =
+          c("white", rgb(1 - b, 1 - b, 1 - b)), xlab = colnames(object$xc)[1],
+          ylab = colnames(object$xc)[2], cex.axis = object$cex.axis, cex.lab =
+          object$cex.lab, tcl = object$tck)
+        abline(v = xc.cond.new.x, h = xc.cond.new.y, lwd = object$select.lwd,
+          col = object$select.colour)
+        box()
         dev.flush()
+        object$xc.cond.old <- xc.cond.new
       } else {
         if (draw){
           abline(v = object$xc.cond.old[1], h = object$xc.cond.old[2], lwd =

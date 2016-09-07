@@ -83,6 +83,8 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
 
       ## Histogram
 
+      ## To deal with long tails, we try chopping them off.
+
       if (diff(range(xc, na.rm = TRUE)) / diff(range(xcnew <- xc[findInterval(
         xc, quantile(xc, c(0.025, 0.975), na.rm = TRUE)) == 1], na.rm = TRUE)) >
         3){
@@ -152,6 +154,19 @@ function (xc, xc.cond, name = NULL, select.colour = NULL, select.lwd = NULL,
         } else {
 
           ## Scatterplot, going to 2-D histogram if required/possible
+
+          ## To deal with long tails, we try chopping them off.
+
+          index1 <- index2 <- rep(TRUE, nrow(xc))
+          if (diff(range(xc[, 1], na.rm = TRUE)) / diff(q1 <- quantile(xc[, 1],
+            c(0.05, 0.95), na.rm = TRUE))){
+            index1 <- findInterval(xc[, 1], q1) == 1
+          }
+          if (diff(range(xc[, 2], na.rm = TRUE)) / diff(q2 <- quantile(xc[, 2],
+            c(0.05, 0.95), na.rm = TRUE))){
+            index2 <- findInterval(xc[, 2], q2) == 1
+          }
+          xc <- xc[index1 & index2, ]
 
           if (nrow(xc) > 2000 && requireNamespace("gplots", quietly = TRUE)){
             b <- seq(0.35, 1, length.out = 16)
