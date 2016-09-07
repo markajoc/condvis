@@ -145,16 +145,19 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
 
     if (identical(ncol(xs), 1L)){
       # xs has one column
-      xs.min <- if (is.null(xlim))
-        min(xs[, 1L], na.rm = TRUE)
-      else xlim[1]
-      xs.max <- if (is.null(xlim))
-        max(xs[, 1L], na.rm = TRUE)
-      else xlim[2]
       if (is.null(xs.grid)){
-        xs.grid <- if (!is.factor(xs[, 1L]))
-          data.frame(seq(xs.min, xs.max, length.out = if (view3d) {20L} else 50L))
-        else data.frame(as.factor(levels(xs[, 1L])))
+        if (!is.factor(xs[, 1L])){
+          xs.min <- if (is.null(xlim))
+            min(xs[, 1L], na.rm = TRUE)
+          else xlim[1]
+          xs.max <- if (is.null(xlim))
+            max(xs[, 1L], na.rm = TRUE)
+          else xlim[2]
+          xs.grid <- data.frame(seq(xs.min, xs.max, length.out = if (view3d) 20L
+            else 50L))
+        } else {
+          xs.grid <- data.frame(as.factor(levels(xs[, 1L])))
+        }
         colnames(xs.grid) <- colnames(xs)
       }
       newdata <- makenewdata(xs = xs.grid, xc.cond = xc.cond)
