@@ -17,7 +17,7 @@
 #' @param lambda A constant to multiply by the number of categorical
 #'   mismatches, before adding to the Minkowski distance, to give a general
 #'   dissimilarity measure. If left \code{NULL}, behaves as though \code{lambda}
-#'   is set larger than \code{sigma}, meaning that one factor mismatch
+#'   is set larger than \code{threshold}, meaning that one factor mismatch
 #'   guarantees zero weight.
 #'
 #' @return A numeric vector or matrix, with values from 0 to 1. The similarity
