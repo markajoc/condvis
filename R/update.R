@@ -78,6 +78,8 @@ function (object, xclick, yclick, xc.cond = NULL, user = FALSE, draw = TRUE,
         min(object$xc[, 2], na.rm = TRUE), na.rm = TRUE)
       xc.cond.new <- c(xc.cond.new.x, xc.cond.new.y)
     } else {
+      xc.cond.new.x <- xc.cond[, 1]
+      xc.cond.new.y <- xc.cond[, 2]
       xc.cond.new <- xc.cond
     }
     if (any(xc.cond.new != object$xc.cond.old)){
@@ -126,6 +128,8 @@ function (object, xclick, yclick, xc.cond = NULL, user = FALSE, draw = TRUE,
       } else object$xc.cond.old[, 2]
       xc.cond.new <- c(xc.cond.new.x, xc.cond.new.y)
     } else {
+      xc.cond.new.x <- xc.cond[, 1]
+      xc.cond.new.y <- xc.cond[, 2]
       xc.cond.new <- xc.cond
     }
     if (any(xc.cond.new != object$xc.cond.old)){

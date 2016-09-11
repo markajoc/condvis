@@ -132,7 +132,7 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
         xsplot <<- update(xsplot, xc.cond = xc.cond, weights = k[pathindex, ])
         for (i in seq_along(C)){
           xcplots[[i]] <<- update(xcplots[[i]], xc.cond = path[pathindex,
-            colnames(data)[C[i]]])
+            C[[i]]])
         }
         vw$sigma <<- threshold
       }
@@ -170,7 +170,7 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
         xsplot <<- update(xsplot, xc.cond = xc.cond, weights = k[pathindex, ])
         for (i in seq_along(C)){
           xcplots[[i]] <<- update(xcplots[[i]], xc.cond = path[pathindex,
-            colnames(data)[C[i]]])
+            C[[i]]])
         }
         vw$sigma <<- threshold
       }
@@ -213,29 +213,37 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
   } else if (is.character(S))
     vapply(S, function(x) which(colnames(data) == x), numeric(1))
     else S
-  C <- if (is.null(C))
-    arrangeC(data[, -c(response, S)])
-  else C
-  try(
-    if (class(varnamestry) != "try-error"){
-      possibleC <- unique(unlist(lapply(lapply(model, getvarnames), `[[`, 2)))
-      possibleC <- possibleC[possibleC %in% colnames(data)]
-      C <- arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])],
-        drop = FALSE])
-    }
-    , silent = TRUE)
-  C <- if (all(vapply(C, is.numeric, logical(1))))
-    as.list(C)
-  else if (all(vapply(C, is.character, logical(1))))
-    lapply(C, match, table = colnames(data))
-  else stop("'C' should be a vector or list (containing vectors of length",
-    " 1 or 2) with integer column indices or character variable",
-    " names from 'data'.")
+
+  ## Set up conditioning predictors.
+
+  ## Hierarchy for specifying C
+  ##   1. If user supplies list, use that exactly (maybe chop length).
+  ##   2. If user supplies vector, use that but order/group it.
+  ##   3. If user supplies nothing, try to extract from model, then order.
+  ##   4. Else bung in everything from the data that isn't 'response' or 'S' and
+  ##        then try to order that and show the top 20.
+
+  if (is.list(C)){
+    C <- C[1:min(length(C), 20L)]
+  } else if (is.vector(C)){
+    C <- arrangeC(data[, setdiff(C, S), drop = FALSE], method = Corder)
+  } else if (!inherits(varnamestry, "try-error")){
+    possibleC <- unique(unlist(lapply(lapply(model, getvarnames), `[[`, 2)))
+    C <- arrangeC(data[, setdiff(intersect(possibleC, colnames(data)), S), drop
+      = FALSE], method = Corder)
+  } else {
+    C <- arrangeC(data[, setdiff(colnames(data), c(S, response)), drop = FALSE],
+      method = Corder)
+  }
+  C <- C[1:min(length(C), 20L)]
   uniqC <- unique(unlist(C))
-  C <- uniqC
+  #C <- uniqC
+
   threshold <- if (is.null(threshold))
     1
   else threshold
+
+print(C)
 
   ## Set up col so it is a vector with length equal to nrow(data). Default pch
   ## to 1, or 21 for using background colour to represent observed values.
@@ -334,13 +342,13 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
   devcond <- dev.cur()
   close.screen(all.screens = TRUE)
   xcscreens <- split.screen(c(n.selector.rows, n.selector.cols))
-  for (i in seq_along(uniqC)){
+  for (i in seq_along(C)){
     screen(xcscreens[i])
     xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = path[pathindex,
-      colnames(data)[C[i]]], name = colnames(data[, C[[i]], drop = FALSE]),
-      select.colour = select.colour)
+      C[[i]]], name = C[[i]], select.colour = select.colour)
     coords[i, ] <- par("fig")
   }
+
   setGraphicsEventHandlers(
     onMouseDown = mouseclick(),
     onKeybd = keystroke())
