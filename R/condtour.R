@@ -28,6 +28,8 @@
 #'   \code{"euclidean"} (default) or \code{"maxnorm"}.
 #' @param view3d Logical; if \code{TRUE}, plots a three-dimensional regression
 #'   surface when possible.
+#' @param Corder Character name for method of ordering conditioning variables.
+#'   See \code{\link{arrangeC}}.
 #' @param conf Logical; if \code{TRUE}, plots confidence bounds or equivalent
 #'   when possible.
 #' @param col Colour for observed data points.
@@ -73,8 +75,8 @@
 condtour <-
 function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
   NULL, threshold = NULL, lambda = NULL, distance = c("euclidean", "maxnorm"),
-  view3d = FALSE, conf = FALSE, col = "black", pch = NULL, xsplotpar = NULL,
-  modelpar = NULL, xcplotpar = NULL)
+  view3d = FALSE, Corder = "default", conf = FALSE, col = "black", pch = NULL,
+  xsplotpar = NULL, modelpar = NULL, xcplotpar = NULL)
 {
   ## Rename for internal
 
@@ -266,11 +268,6 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
   else if (is.character(response))
     which(colnames(data) == response)
     else response
-  S <- if(is.null(S)){
-    (1:ncol(data))[-response][1L]
-  } else if (is.character(S))
-    vapply(S, function(x) which(colnames(data) == x), numeric(1))
-    else S
 
   ## Set up conditioning predictors.
 
