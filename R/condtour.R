@@ -130,7 +130,7 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
         pathindex <<- max(min(pathindex + 1, max(pathindexrange)), min(
           pathindexrange))
         applot <<- update(applot, pathindex = pathindex)
-        xc.cond[, colnames(path)] <- path[pathindex, , drop = FALSE]
+        xc.cond[, colnames(path)] <<- path[pathindex, , drop = FALSE]
         xsplot <<- update(xsplot, xc.cond = xc.cond, weights = k[pathindex, ])
         for (i in seq_along(C)){
           xcplots[[i]] <<- update(xcplots[[i]], xc.cond = path[pathindex,
@@ -168,7 +168,7 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
         pathindex <<- max(min(pathindex + 1 * (key == "]") - 1 * (key == "["),
           max(pathindexrange)), min(pathindexrange))
         applot <<- update(applot, pathindex = pathindex)
-        xc.cond[, colnames(path)] <- path[pathindex, , drop = FALSE]
+        xc.cond[, colnames(path)] <<- path[pathindex, , drop = FALSE]
         xsplot <<- update(xsplot, xc.cond = xc.cond, weights = k[pathindex, ])
         for (i in seq_along(C)){
           xcplots[[i]] <<- update(xcplots[[i]], xc.cond = path[pathindex,
@@ -243,7 +243,7 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
         plotmaxk(apply(k, 2, max))
         screen(diagscreens[2L])
         par(mar = c(4, 4, 2, 2))
-        plotap(k)
+        plotap(k, pathindex = pathindex)
         dev.off()
         cat(paste("\nSnapshot saved: '", filename[3L],"'", sep = ""))
       }
