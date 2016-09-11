@@ -243,8 +243,6 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
     1
   else threshold
 
-print(C)
-
   ## Set up col so it is a vector with length equal to nrow(data). Default pch
   ## to 1, or 21 for using background colour to represent observed values.
 
@@ -276,9 +274,6 @@ print(C)
   width <- height + 0.5 * plotlegend
 
   ## Calculate the similarity weights for the entire tour.
-
-  #k <- similarityweight(x = path, data = data[, colnames(path), drop = FALSE],
-  #  threshold = sigma, distance = distance, lambda = lambda)
 
   vwfun <- .similarityweight(xc = data[, colnames(path), drop = FALSE])
   vw <- list(sigma = threshold, distance =
