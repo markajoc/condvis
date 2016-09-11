@@ -187,6 +187,64 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
           newdata = xsplot$newdata, prednew = xsplot$prednew)
       }
 
+      ## Save a snapshot.
+
+      if (key %in% c("s")){
+        filename <- paste("snapshot_", gsub(":", ".", gsub(" ", "_",
+          Sys.time())), c("-expectation.pdf", "-condition.pdf",
+          "-diagnostics.pdf"), sep = "")
+
+        ## Snapshot of section.
+
+        pdf(filename[1], height = 6, width = 6)
+        close.screen(all.screens = TRUE)
+        xsscreens <- if (plotlegend){
+          split.screen(figs = matrix(c(0, 1 - legendwidth, 1 - legendwidth, 1, 0, 0, 1
+            , 1), ncol = 4))
+        } else split.screen()
+        if (plotlegend){
+          screen(xsscreens[2L])
+          xslegend(data[, response], colnames(data)[response])
+        }
+        screen(xsscreens[1L])
+        par(mar = c(3, 3, 3, 3))
+        xsplot <- plotxs(xs = data[, S, drop = FALSE], data[, response, drop =
+          FALSE], xc.cond = xc.cond, model = model, weights = k[pathindex, ],
+          col = col, view3d = view3d, conf = conf, pch = pch, model.colour =
+          modelpar$col, model.lwd = modelpar$lwd, model.lty = modelpar$lty, main
+          = xsplotpar$main, xlim = xsplotpar$xlim, ylim = xsplotpar$ylim)
+        dev.off()
+        cat(paste("\nSnapshot saved: '", filename[1L],"'", sep = ""))
+
+        ## Snapshot of condition plots.
+
+        pdf(filename[2L], width = 2 * n.selector.cols, height = 2 *
+          n.selector.rows)
+        close.screen(all.screens = TRUE)
+        xcscreens <- split.screen(c(n.selector.rows, n.selector.cols))
+        for (i in seq_along(C)){
+          screen(xcscreens[i])
+          xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = path[pathindex,
+            C[[i]]], name = C[[i]], select.colour = select.colour)
+          coords[i, ] <- par("fig")
+        }
+        dev.off()
+        cat(paste("\nSnapshot saved: '", filename[2L],"'", sep = ""))
+
+        ## Snapshot of diagnostic plots.
+
+        pdf(filename[3L], width = 4, height = 6)
+        close.screen(all.screens = TRUE)
+        diagscreens <- split.screen(c(2, 1))
+        screen(diagscreens[1L])
+        par(mar = c(4, 4, 2, 2))
+        plotmaxk(apply(k, 2, max))
+        screen(diagscreens[2L])
+        par(mar = c(4, 4, 2, 2))
+        plotap(k)
+        dev.off()
+        cat(paste("\nSnapshot saved: '", filename[3L],"'", sep = ""))
+      }
       points(NULL)
     }
   }
