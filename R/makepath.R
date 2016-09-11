@@ -51,7 +51,7 @@ function (x, ncentroids, ninterp = 4)
         out <- c(out, seq(y[i], y[i + 1L], length.out = n + 1L)[-(n + 1L)])
       }
     }
-    out
+    c(out, tail(y, 1))
   }
 
   ## If we have factors, do partitioning around medoids (PAM) using the daisy
@@ -96,6 +96,7 @@ function (x, ncentroids, ninterp = 4)
     centers <- centers[orderindex, , drop = FALSE]
     centers <- as.data.frame(t(apply(t(apply(centers, 1L, `*`, sds)), 1L, `+`,
       means)))
+    rownames(centers) <- NULL
     path <- as.data.frame(apply(centers, 2L, interp))
   }
 
