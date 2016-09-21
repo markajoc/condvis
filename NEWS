@@ -17,6 +17,8 @@ Version 0.3-5
     predictor values instead of mouseclicks.
   * corrected problem in `condtour`, where interpolated path omitted the final
     row. Also removed rownames from cluster centres.
+  * diagnostic plot for `condtour`, `plotap` now shows approximate proportion
+    of data visible, rather than approximate number of observations visible.  
 
 Version 0.3-4 2016-08-04
   * fixed incorrect parameter names in demo files.

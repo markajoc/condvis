@@ -7,8 +7,8 @@
 plotap <-
 function (k, pathindex = 1, lcol = "blue")
 {
-  rsk <- rowSums(k)
-  plot(rsk, type = "l", xlab = "Path index", ylab = "sum of k")
+  rsk <- rowSums(k) / ncol(k)
+  plot(rsk, type = "l", xlab = "Path index", ylab = "sum of k/n")
   abline(v = pathindex, col = lcol)
   structure(list(k = k, rsk = rsk, pathindex = pathindex, device = dev.cur(),
     screen = screen(), mar = par()$mar, usr = par()$usr, lcol = lcol),
