@@ -325,7 +325,7 @@ function (object, xc.cond = NULL, weights = NULL, view3d = NULL, theta3d = NULL,
   } else {
     if (!identical(length(weights), nrow(object$y)))
       stop("'weights' should be of length equal to number of observations")
-    data.colour <- weightcolor(col, weights)
+    data.colour <- weightcolor(object$col, weights)
     data.order <- attr(data.colour, "order")
   }
   theta3d <- if (!is.null(theta3d))
