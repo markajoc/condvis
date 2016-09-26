@@ -325,13 +325,8 @@ function (object, xc.cond = NULL, weights = NULL, view3d = NULL, theta3d = NULL,
   } else {
     if (!identical(length(weights), nrow(object$y)))
       stop("'weights' should be of length equal to number of observations")
-    weightsgr0 <- which(weights > 0)
-    data.order <- weightsgr0[order(weights[weightsgr0])]
-    newcol <- (col2rgb(object$col[data.order]) * matrix(rep(weights[data.order], 3),
-      nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - weights[data.order], 3),
-      nrow = 3, byrow = TRUE)
-    data.colour <- rep(NA, object$ny)
-    data.colour[data.order] <- rgb(t(newcol))
+    data.colour <- weightcolor(col, weights)
+    data.order <- attr(data.colour, "order")
   }
   theta3d <- if (!is.null(theta3d))
     theta3d

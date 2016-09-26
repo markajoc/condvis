@@ -82,13 +82,8 @@ function (xs, y, xc.cond, model, model.colour = NULL, model.lwd = NULL,
   } else {
     if (!identical(length(weights), ny))
       stop("'weights' should be same length as number of observations")
-    weightsgr0 <- which(weights > 0)
-    data.order <- weightsgr0[order(weights[weightsgr0])]
-    newcol <- (col2rgb(col[data.order]) * matrix(rep(weights[data.order], 3),
-      nrow = 3, byrow = TRUE) / 255) + matrix(rep(1 - weights[data.order], 3),
-      nrow = 3, byrow = TRUE)
-    data.colour <- rep(NA, ny)
-    data.colour[data.order] <- rgb(t(newcol))
+    data.colour <- weightcolor(col, weights)
+    data.order <- attr(data.colour, "order")
   }
 
 ## Organise defaults and check inputs.
