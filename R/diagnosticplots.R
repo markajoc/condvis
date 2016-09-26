@@ -47,9 +47,9 @@ function (maxk)
 {
   seq01 <- seq(0, 1, 0.1)
   q <- quantile(maxk, probs = seq01)
-  plot(seq01, q, type = "l", xlab = "proportion of data", ylab =
+  plot(q, seq01, type = "l", ylab = "proportion of data", xlab =
     "max k attained", ylim = c(0, 1))
-  points(seq01, q, pch = 16)
+  points(q, seq01, pch = 16)
 }
 
 #update.maxk <-
