@@ -28,10 +28,16 @@
 #'   \code{"euclidean"} (default) or \code{"maxnorm"}.
 #' @param view3d Logical; if \code{TRUE}, plots a three-dimensional regression
 #'   surface when possible.
+#' @param Corder Character name for method of ordering conditioning variables.
+#'   See \code{\link{arrangeC}}.
 #' @param conf Logical; if \code{TRUE}, plots confidence bounds or equivalent
 #'   when possible.
 #' @param col Colour for observed data points.
 #' @param pch Plot symbols for observed data points.
+#' @param xsplotpar Plotting parameters for section visualisation as a list,
+#'   passed to \code{\link{plotxs}}. Not used.
+#' @param modelpar Plotting parameters for models as a list, passed to
+#'   \code{\link{plotxs}}. Not used.
 #' @param xcplotpar Plotting parameters for condition selector plots as a list,
 #'   passed to \code{\link{plotxc}}. Can specify \code{cex.axis}, \code{cex.lab}
 #'   , \code{tck}, \code{col} for highlighting current section, \code{cex}.
@@ -69,7 +75,8 @@
 condtour <-
 function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
   NULL, threshold = NULL, lambda = NULL, distance = c("euclidean", "maxnorm"),
-  view3d = FALSE, conf = FALSE, col = "black", pch = NULL, xcplotpar = NULL)
+  view3d = FALSE, Corder = "default", conf = FALSE, col = "black", pch = NULL,
+  xsplotpar = NULL, modelpar = NULL, xcplotpar = NULL)
 {
   ## Rename for internal
 
@@ -123,11 +130,11 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
         pathindex <<- max(min(pathindex + 1, max(pathindexrange)), min(
           pathindexrange))
         applot <<- update(applot, pathindex = pathindex)
-        xc.cond[, colnames(path)] <- path[pathindex, , drop = FALSE]
+        xc.cond[, colnames(path)] <<- path[pathindex, , drop = FALSE]
         xsplot <<- update(xsplot, xc.cond = xc.cond, weights = k[pathindex, ])
         for (i in seq_along(C)){
           xcplots[[i]] <<- update(xcplots[[i]], xc.cond = path[pathindex,
-            colnames(data)[C[i]]])
+            C[[i]]])
         }
         vw$sigma <<- threshold
       }
@@ -161,11 +168,11 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
         pathindex <<- max(min(pathindex + 1 * (key == "]") - 1 * (key == "["),
           max(pathindexrange)), min(pathindexrange))
         applot <<- update(applot, pathindex = pathindex)
-        xc.cond[, colnames(path)] <- path[pathindex, , drop = FALSE]
+        xc.cond[, colnames(path)] <<- path[pathindex, , drop = FALSE]
         xsplot <<- update(xsplot, xc.cond = xc.cond, weights = k[pathindex, ])
         for (i in seq_along(C)){
           xcplots[[i]] <<- update(xcplots[[i]], xc.cond = path[pathindex,
-            colnames(data)[C[i]]])
+            C[[i]]])
         }
         vw$sigma <<- threshold
       }
@@ -182,6 +189,64 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
           newdata = xsplot$newdata, prednew = xsplot$prednew)
       }
 
+      ## Save a snapshot.
+
+      if (key %in% c("s")){
+        filename <- paste("snapshot_", gsub(":", ".", gsub(" ", "_",
+          Sys.time())), c("-expectation.pdf", "-condition.pdf",
+          "-diagnostics.pdf"), sep = "")
+
+        ## Snapshot of section.
+
+        pdf(filename[1], height = 6, width = 6)
+        close.screen(all.screens = TRUE)
+        xsscreens <- if (plotlegend){
+          split.screen(figs = matrix(c(0, 1 - legendwidth, 1 - legendwidth, 1, 0, 0, 1
+            , 1), ncol = 4))
+        } else split.screen()
+        if (plotlegend){
+          screen(xsscreens[2L])
+          xslegend(data[, response], colnames(data)[response])
+        }
+        screen(xsscreens[1L])
+        par(mar = c(3, 3, 3, 3))
+        xsplot <- plotxs(xs = data[, S, drop = FALSE], data[, response, drop =
+          FALSE], xc.cond = xc.cond, model = model, weights = k[pathindex, ],
+          col = col, view3d = view3d, conf = conf, pch = pch, model.colour =
+          modelpar$col, model.lwd = modelpar$lwd, model.lty = modelpar$lty, main
+          = xsplotpar$main, xlim = xsplotpar$xlim, ylim = xsplotpar$ylim)
+        dev.off()
+        cat(paste("\nSnapshot saved: '", filename[1L],"'", sep = ""))
+
+        ## Snapshot of condition plots.
+
+        pdf(filename[2L], width = 2 * n.selector.cols, height = 2 *
+          n.selector.rows)
+        close.screen(all.screens = TRUE)
+        xcscreens <- split.screen(c(n.selector.rows, n.selector.cols))
+        for (i in seq_along(C)){
+          screen(xcscreens[i])
+          xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = path[pathindex,
+            C[[i]]], name = C[[i]], select.colour = select.colour)
+          coords[i, ] <- par("fig")
+        }
+        dev.off()
+        cat(paste("\nSnapshot saved: '", filename[2L],"'", sep = ""))
+
+        ## Snapshot of diagnostic plots.
+
+        pdf(filename[3L], width = 4, height = 6)
+        close.screen(all.screens = TRUE)
+        diagscreens <- split.screen(c(2, 1))
+        screen(diagscreens[1L])
+        par(mar = c(4, 4, 2, 2))
+        plotmaxk(apply(k, 2, max))
+        screen(diagscreens[2L])
+        par(mar = c(4, 4, 2, 2))
+        plotap(k, pathindex = pathindex)
+        dev.off()
+        cat(paste("\nSnapshot saved: '", filename[3L],"'", sep = ""))
+      }
       points(NULL)
     }
   }
@@ -203,37 +268,38 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
   else if (is.character(response))
     which(colnames(data) == response)
     else response
-  S <- if(is.null(S)){
-    (1:ncol(data))[-response][1L]
-  } else if (is.character(S))
-    vapply(S, function(x) which(colnames(data) == x), numeric(1))
-    else S
-  C <- if (is.null(C))
-    arrangeC(data[, -c(response, S)])
-  else C
-  try(
-    if (class(varnamestry) != "try-error"){
-      possibleC <- unique(unlist(lapply(lapply(model, getvarnames), `[[`, 2)))
-      possibleC <- possibleC[possibleC %in% colnames(data)]
-      C <- arrangeC(data[, possibleC[!(possibleC %in% colnames(data)[S])],
-        drop = FALSE])
-    }
-    , silent = TRUE)
-  C <- if (all(vapply(C, is.numeric, logical(1))))
-    as.list(C)
-  else if (all(vapply(C, is.character, logical(1))))
-    lapply(C, match, table = colnames(data))
-  else stop("'C' should be a vector or list (containing vectors of length",
-    " 1 or 2) with integer column indices or character variable",
-    " names from 'data'.")
+
+  ## Set up conditioning predictors.
+
+  ## Hierarchy for specifying C
+  ##   1. If user supplies list, use that exactly (maybe chop length).
+  ##   2. If user supplies vector, use that but order/group it.
+  ##   3. If user supplies nothing, try to extract from model, then order.
+  ##   4. Else bung in everything from the data that isn't 'response' or 'S' and
+  ##        then try to order that and show the top 20.
+
+  if (is.list(C)){
+    C <- C[1:min(length(C), 20L)]
+  } else if (is.vector(C)){
+    C <- arrangeC(data[, setdiff(C, S), drop = FALSE], method = Corder)
+  } else if (!inherits(varnamestry, "try-error")){
+    possibleC <- unique(unlist(lapply(lapply(model, getvarnames), `[[`, 2)))
+    C <- arrangeC(data[, setdiff(intersect(possibleC, colnames(data)), S), drop
+      = FALSE], method = Corder)
+  } else {
+    C <- arrangeC(data[, setdiff(colnames(data), c(S, response)), drop = FALSE],
+      method = Corder)
+  }
+  C <- C[1:min(length(C), 20L)]
   uniqC <- unique(unlist(C))
-  C <- uniqC
+  #C <- uniqC
+
   threshold <- if (is.null(threshold))
     1
   else threshold
 
-  ## Set up col so it is a vector with length equal to nrow(data). Default pch to
-  ## 1, or 21 for using background colour to represent observed values.
+  ## Set up col so it is a vector with length equal to nrow(data). Default pch
+  ## to 1, or 21 for using background colour to represent observed values.
 
   nr.data <- nrow(data)
   col <- rep(col, length.out = nr.data)
@@ -264,9 +330,6 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
 
   ## Calculate the similarity weights for the entire tour.
 
-  #k <- similarityweight(x = path, data = data[, colnames(path), drop = FALSE],
-  #  threshold = sigma, distance = distance, lambda = lambda)
-
   vwfun <- .similarityweight(xc = data[, colnames(path), drop = FALSE])
   vw <- list(sigma = threshold, distance =
     distance, lambda = lambda)
@@ -296,7 +359,9 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
   par(mar = c(3, 3, 3, 3))
   xsplot <- plotxs(xs = data[, S, drop = FALSE], data[, response, drop = FALSE]
     , xc.cond = xc.cond, model = model, weights = k[pathindex, ], col = col,
-    view3d = view3d, conf = conf, pch = pch)
+    view3d = view3d, conf = conf, pch = pch, model.colour = modelpar$col,
+    model.lwd = modelpar$lwd, model.lty = modelpar$lty, main = xsplotpar$main,
+    xlim = xsplotpar$xlim, ylim = xsplotpar$ylim)
   xscoords <- par("fig")
   setGraphicsEventHandlers(
     onMouseMove = mousemove(),
@@ -327,13 +392,13 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
   devcond <- dev.cur()
   close.screen(all.screens = TRUE)
   xcscreens <- split.screen(c(n.selector.rows, n.selector.cols))
-  for (i in seq_along(uniqC)){
+  for (i in seq_along(C)){
     screen(xcscreens[i])
     xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = path[pathindex,
-      colnames(data)[C[i]]], name = colnames(data[, C[[i]], drop = FALSE]),
-      select.colour = select.colour)
+      C[[i]]], name = C[[i]], select.colour = select.colour)
     coords[i, ] <- par("fig")
   }
+
   setGraphicsEventHandlers(
     onMouseDown = mouseclick(),
     onKeybd = keystroke())

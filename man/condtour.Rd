@@ -6,8 +6,9 @@
 \usage{
 condtour(data, model, path, response = NULL, sectionvars = NULL,
   conditionvars = NULL, threshold = NULL, lambda = NULL,
-  distance = c("euclidean", "maxnorm"), view3d = FALSE, conf = FALSE,
-  col = "black", pch = NULL, xcplotpar = NULL)
+  distance = c("euclidean", "maxnorm"), view3d = FALSE,
+  Corder = "default", conf = FALSE, col = "black", pch = NULL,
+  xsplotpar = NULL, modelpar = NULL, xcplotpar = NULL)
 }
 \arguments{
 \item{data}{A dataframe.}
@@ -41,12 +42,21 @@ Passed to \code{\link{similarityweight}}.}
 \item{view3d}{Logical; if \code{TRUE}, plots a three-dimensional regression
 surface when possible.}
 
+\item{Corder}{Character name for method of ordering conditioning variables.
+See \code{\link{arrangeC}}.}
+
 \item{conf}{Logical; if \code{TRUE}, plots confidence bounds or equivalent
 when possible.}
 
 \item{col}{Colour for observed data points.}
 
 \item{pch}{Plot symbols for observed data points.}
+
+\item{xsplotpar}{Plotting parameters for section visualisation as a list,
+passed to \code{\link{plotxs}}. Not used.}
+
+\item{modelpar}{Plotting parameters for models as a list, passed to
+\code{\link{plotxs}}. Not used.}
 
 \item{xcplotpar}{Plotting parameters for condition selector plots as a list,
 passed to \code{\link{plotxc}}. Can specify \code{cex.axis}, \code{cex.lab}

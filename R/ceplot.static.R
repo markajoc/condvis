@@ -4,7 +4,8 @@ ceplot.static <-
 function (data, model, response = NULL, S = NULL, C = NULL, weights = NULL, col
   = "black", cex.axis = NULL, cex.lab = NULL, tck = NULL, view3d = FALSE,
   theta3d = 45, phi3d = 20, Corder = "default", xc.cond = NULL, select.colour =
-  "blue", select.cex = 1, conf = FALSE, probs = FALSE)
+  "blue", select.cex = 1, conf = FALSE, probs = FALSE, xsplotpar = NULL,
+  modelpar = NULL, xcplotpar = NULL)
 {
   plotlegend <- length(S) == 2
   uniqC <- unique(unlist(C))
@@ -27,8 +28,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, weights = NULL, col
     for(i in seq_along(C)){
       screen(selectors[i])
       xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = xc.cond[1L, C[[i]]],
-        name = colnames(data[, C[[i]], drop = FALSE]), select.colour =
-        select.colour, select.cex = select.cex)
+        name = colnames(data[, C[[i]], drop = FALSE]), trim = xcplotpar$trim,
+        select.colour = select.colour, select.cex = select.cex)
     }
   }
   screen(main[1])
@@ -43,9 +44,10 @@ function (data, model, response = NULL, S = NULL, C = NULL, weights = NULL, col
   }
   screen(xsscreens[1L])
   xsplot <- plotxs(xs = data[, S, drop = FALSE], y = data[, response, drop =
-    FALSE], xc.cond = xc.cond, model = model, model.colour = NULL, model.lwd =
-    NULL, model.lty = NULL, yhat = NULL, mar = NULL, weights = weights, col =
-    col, view3d = view3d, theta3d = theta3d, phi3d = phi3d, conf = conf, probs =
-    probs)
+    FALSE], xc.cond = xc.cond, model = model, model.colour = modelpar$col,
+    model.lwd = modelpar$lwd, model.lty = modelpar$lty, yhat = NULL, mar = NULL,
+    weights = weights, col = col, view3d = view3d, theta3d = theta3d, phi3d =
+    phi3d, conf = conf, probs = probs, main = xsplotpar$main, xlim =
+    xsplotpar$xlim, ylim = xsplotpar$ylim)
   dev.flush()
 }

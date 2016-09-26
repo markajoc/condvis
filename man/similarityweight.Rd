@@ -24,7 +24,7 @@ types of Minkowski distance: \code{"euclidean"} (default), and
 \item{lambda}{A constant to multiply by the number of categorical
 mismatches, before adding to the Minkowski distance, to give a general
 dissimilarity measure. If left \code{NULL}, behaves as though \code{lambda}
-is set larger than \code{sigma}, meaning that one factor mismatch
+is set larger than \code{threshold}, meaning that one factor mismatch
 guarantees zero weight.}
 }
 \value{

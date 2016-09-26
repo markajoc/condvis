@@ -7,7 +7,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
   view3d = FALSE, Corder = "default", conf = FALSE, separate = TRUE,
   select.colour = "blue", select.cex = 1, select.lwd = 2, select.type =
   "minimal", probs = FALSE, col = "black", pch = 1, residuals = FALSE, xc.cond =
-  NULL)
+  NULL, xsplotpar = NULL, modelpar = NULL, xcplotpar = NULL)
 {
   uniqC <- unique(unlist(C))
   xc.cond <- if (is.null(xc.cond))
@@ -51,11 +51,16 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
     if (residuals){
       xsplot <- plotxsres(xs = data[, S, drop = FALSE], data[, response, drop =
         FALSE], xc.cond = xc.cond, model = model, col = col, weights = vw$k,
-        view3d = view3d, conf = conf, probs = probs, pch = pch)
+        view3d = view3d, conf = conf, probs = probs, pch = pch, model.colour =
+        modelpar$col, model.lwd = modelpar$lwd, model.lty =
+        modelpar$lty)
     } else {
       xsplot <- plotxs(xs = data[, S, drop = FALSE], data[, response, drop =
         FALSE], xc.cond = xc.cond, model = model, col = col, weights = vw$k,
-        view3d = view3d, conf = conf, probs = probs, pch = pch)
+        view3d = view3d, conf = conf, probs = probs, pch = pch, model.colour =
+        modelpar$col, model.lwd = modelpar$lwd, model.lty =
+        modelpar$lty, main = xsplotpar$main, xlim = xsplotpar$xlim, ylim =
+        xsplotpar$ylim)
     }
     xscoords <- par("fig")
 
@@ -73,19 +78,20 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
         xcscreens <- split.screen(c(n.selector.rows, n.selector.cols))
         for (i in seq_along(C)){
           screen(xcscreens[i])
-          xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = xc.cond[1L, C[[i]]
-            ], name = colnames(data[, C[[i]], drop = FALSE]), select.colour =
-            select.colour, select.cex = select.cex)
+          xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = xc.cond[1L, C[[
+            i]]], name = colnames(data[, C[[i]], drop = FALSE]), trim =
+            xcplotpar$trim, select.colour = select.colour, select.cex =
+            select.cex)
           coords[i, ] <- par("fig")
         }
       } else if (identical(select.type, "pcp")){
         xcwidth <- 7
         xcheight <- 3
         opendev(height = xcheight, width = xcwidth)
-        xcplots <- plotxc.pcp(Xc = data[, uniqC, drop = FALSE], Xc.cond = xc.cond[
-          1, uniqC, drop = FALSE], select.colour = select.colour, select.lwd =
-          select.lwd, cex.axis = cex.axis, cex.lab = cex.lab, tck = tck,
-          select.cex = select.cex)
+        xcplots <- plotxc.pcp(Xc = data[, uniqC, drop = FALSE], Xc.cond =
+          xc.cond[1, uniqC, drop = FALSE], select.colour = select.colour,
+          select.lwd = select.lwd, cex.axis = cex.axis, cex.lab = cex.lab, tck =
+          tck, select.cex = select.cex)
       } else if (identical(select.type, "full")){
         xcwidth <- 7
         opendev(height = xcwidth, width = xcwidth)
@@ -113,8 +119,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
       for (i in seq_along(C)){
         screen(xcscreens[i])
         xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = xc.cond[1L,
-          C[[i]]], name = colnames(data[, C[[i]], drop = FALSE]), select.colour
-          = select.colour, select.cex = select.cex)
+          C[[i]]], name = colnames(data[, C[[i]], drop = FALSE]), trim =
+          xcplotpar$trim, select.colour = select.colour, select.cex =
+          select.cex)
         coords[i, ] <- par("fig")
       }
     }
@@ -137,11 +144,16 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
     if (residuals){
       xsplot <- plotxsres(xs = data[, S, drop = FALSE], data[, response, drop =
         FALSE], xc.cond = xc.cond, model = model, col = col, weights = vw$k,
-        view3d = view3d, conf = conf, probs = probs, pch = pch)
+        view3d = view3d, conf = conf, probs = probs, pch = pch, model.colour =
+        modelpar$col, model.lwd = modelpar$lwd, model.lty =
+        modelpar$lty)
     } else {
       xsplot <- plotxs(xs = data[, S, drop = FALSE], data[, response, drop =
         FALSE], xc.cond = xc.cond, model = model, col = col, weights = vw$k,
-        view3d = view3d, conf = conf, probs = probs, pch = pch)
+        view3d = view3d, conf = conf, probs = probs, pch = pch, model.colour =
+        modelpar$col, model.lwd = modelpar$lwd, model.lty =
+        modelpar$lty, main = xsplotpar$main, xlim = xsplotpar$xlim, ylim =
+        xsplotpar$ylim)
     }
     xscoords <- par("fig")
     xold <- NULL
@@ -250,12 +262,17 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
             plotxsres(xs = data[, S, drop = FALSE], data[, response, drop =
               FALSE], xc.cond = xc.cond, model = model, col = col, weights =
               vw$k, view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
-              xsplot$phi3d, conf = conf, probs = probs, pch = pch)
+              xsplot$phi3d, conf = conf, probs = probs, pch = pch, model.colour
+              = modelpar$col, model.lwd = modelpar$lwd, model.lty = modelpar$lty
+              )
           } else {
             plotxs(xs = data[, S, drop = FALSE], data[, response, drop = FALSE],
               xc.cond = xc.cond, model = model, col = col, weights = vw$k,
               view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
-              xsplot$phi3d, conf = conf, probs = probs, pch = pch)
+              xsplot$phi3d, conf = conf, probs = probs, pch = pch, model.colour
+              = modelpar$col, model.lwd = modelpar$lwd, model.lty = modelpar$lty
+              , main = xsplotpar$main, xlim = xsplotpar$xlim, ylim =
+              xsplotpar$ylim)
           }
           dev.off()
           cat(paste("\nSnapshot saved: '", filename[1L],"'", sep = ""))
@@ -268,8 +285,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
           for (i in seq_along(C)){
             screen(xcscreens[i])
             plotxc(xc = xcplots[[i]]$xc, xc.cond = xcplots[[i]]$xc.cond.old,
-              name = xcplots[[i]]$name, select.colour = xcplots[[i]
-              ]$select.colour, select.cex = xcplots[[i]]$select.cex)
+              name = xcplots[[i]]$name, trim = FALSE, select.colour = xcplots[[i
+              ]]$select.colour, select.cex = xcplots[[i]]$select.cex)
           }
           dev.off()
           cat(paste("\nSnapshot saved: '", filename[2L],"'", sep = ""))
@@ -287,8 +304,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
           for (i in seq_along(C)){
             screen(xcscreens[i])
             plotxc(xc = xcplots[[i]]$xc, xc.cond = xcplots[[i]]$xc.cond.old,
-              name = xcplots[[i]]$name, select.colour = xcplots[[i]
-              ]$select.colour, select.cex = xcplots[[i]]$select.cex)
+              name = xcplots[[i]]$name, trim = FALSE, select.colour = xcplots[[i
+              ]]$select.colour, select.cex = xcplots[[i]]$select.cex)
           }
           xsscreens <- if (plotlegend){
             split.screen(figs = matrix(c(0, 1 - legendwidth, 1 - legendwidth, 1,
@@ -303,12 +320,17 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
             plotxsres(xs = data[, S, drop = FALSE], data[, response, drop =
               FALSE], xc.cond = xc.cond, model = model, col = col, weights =
               vw$k, view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
-              xsplot$phi3d, conf = conf, probs = probs, pch = 1)
+              xsplot$phi3d, conf = conf, probs = probs, pch = 1, model.colour =
+              modelpar$col, model.lwd = modelpar$lwd, model.lty =
+              modelpar$lty)
           } else {
             plotxs(xs = data[, S, drop = FALSE], data[, response, drop = FALSE],
               xc.cond = xc.cond, model = model, col = col, weights = vw$k,
               view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
-              xsplot$phi3d, conf = conf, probs = probs, pch = 1)
+              xsplot$phi3d, conf = conf, probs = probs, pch = 1, model.colour =
+              modelpar$col, model.lwd = modelpar$lwd, model.lty =
+              modelpar$lty, main = xsplotpar$main, xlim = xsplotpar$xlim, ylim =
+              xsplotpar$ylim)
           }
           dev.off()
           cat(paste("\nSnapshot saved: '", filename,"'\n", sep = ""))

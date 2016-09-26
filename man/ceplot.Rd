@@ -74,14 +74,14 @@ numeric predictors and the model's predict method provides this.}
 plot instead of the usual scale of raw response.}
 
 \item{xsplotpar}{Plotting parameters for section visualisation as a list,
-passed to \code{\link{plotxs}}. Not used.}
+passed to \code{\link{plotxs}}. Can specify \code{xlim}, \code{ylim}.}
 
 \item{modelpar}{Plotting parameters for models as a list, passed to
 \code{\link{plotxs}}. Not used.}
 
 \item{xcplotpar}{Plotting parameters for condition selector plots as a list,
 passed to \code{\link{plotxc}}. Can specify \code{col} for highlighting
-current section, \code{cex}.}
+current section, \code{cex}, and \code{trim} (see \code{\link{plotxc}}).}
 }
 \description{
 Creates an interactive conditional expectation plot, which

@@ -1,8 +1,8 @@
 Package: condvis
 Type: Package
 Title: Conditional Visualization for Statistical Models
-Version: 0.4
-Date: 2016-07-01
+Version: 0.4-0.9999
+Date: 2016-09-26
 Authors@R: c(
   person("Mark", "O'Connell", email = "mark.oconnell@maths.nuim.ie",
   role = c("aut", "cre")),

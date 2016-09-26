@@ -4,6 +4,26 @@ condvis: Conditional Visualisation for Statistical Models
 News
 ---------------------------------------------------------
 
+Version 0.3-5 2016-09-26
+  * In `plotxc`, can chop off long tails for scatterplot/2-d histogram,
+    controlled by `trim` parameter.
+  * pass plotting parameters for models from top-level `ceplot` call. See
+    parameter `modelpar`.
+  * allow `xlim` and `ylim` to be passed to section plot produced by `plotxs`.
+  * corrected typo in `?similarityweight`, sigma --> threshold.
+  * added snapshot feature to `condtour`.
+  * changed treatment of conditioning predictors in `condtour` to be more like
+    `ceplot`, plus a hacky fix to `update.xcplot` for `condtour` providing
+    predictor values instead of mouseclicks.
+  * corrected problem in `condtour`, where interpolated path omitted the final
+    row. Also removed rownames from cluster centres.
+  * diagnostic plot for `condtour`, `plotap` now shows approximate proportion
+    of data visible, rather than approximate number of observations visible.
+
+Version 0.3-4 2016-08-04
+  * fixed incorrect parameter names in demo files.
+  * fix to `plotxs` to allow `main` and `mar` to be specified.
+
 Version 0.3-3 2016-07-04
   * fixed treatment of `pch` by condtour, was previously defaulting to 1 when it
     should have been 21 for background colours.
