@@ -166,8 +166,9 @@ function (xc)
           distance, "maxnorm")) + if (any(arefactors) && !is.null(lambda))
           (lambda * (sum(arefactors) - nfactormatches[factormatches])) ^ p
           else 0
-        k[factormatches] <- c(1, 0.7, 0.4, 0)[findInterval(d, c(0, (0.3 * sigma)
-          ^ p, (0.6 * sigma) ^ p, sigma ^ p))]
+        k[factormatches] <- pmax(0, 1 - d / (sigma ^ p))  
+        #k[factormatches] <- c(1, 0.7, 0.4, 0)[findInterval(d, c(0, (0.3 * sigma)
+        #  ^ p, (0.6 * sigma) ^ p, sigma ^ p))]
       }
     }
     list(k = k, sigma = sigma, distance = distance)
