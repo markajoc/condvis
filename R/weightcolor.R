@@ -1,10 +1,10 @@
 ## Function to weight colours according to a weight vector. Not exported.
 
 weightcolor <-
-function(col, weights)
+function(col, weights, breaks)
 {
   n <- length(weights)
-  col <- rep(col, n)
+  col <- rep(col, length.out = n)
 
   ## We won't perform calculations on elements with `weight` == 0.
 
