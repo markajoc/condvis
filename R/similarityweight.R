@@ -150,10 +150,11 @@ function (xc)
     ##
     ## Convert the dissimilarity to similarity weights 'k', between 0 and 1.
 
-    if (length(factormatches) > 0){
+    if ((lfm <- length(factormatches)) > 0){
       if (all(arefactors)){
         if (is.null(lambda)){
-          k[factormatches] <- 1
+          #k[factormatches] <- 1
+          d <- rep(0, lfm)
         } else {
           d <- lambda * (sum(arefactors) - nfactormatches[factormatches]) ^ p
         }
