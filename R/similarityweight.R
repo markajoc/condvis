@@ -153,7 +153,6 @@ function (xc)
     if ((lfm <- length(factormatches)) > 0){
       if (all(arefactors)){
         if (is.null(lambda)){
-          #k[factormatches] <- 1
           d <- rep(0, lfm)
         } else {
           d <- lambda * (sum(arefactors) - nfactormatches[factormatches]) ^ p
