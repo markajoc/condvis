@@ -70,45 +70,95 @@
           >Examples</a></p>
       </header>
       <section>
-      <h3>
-        Examples
-      </h3>
-      <p>
-        <strong>
-          <a href = "example-fev.html">FEV data</a>
-        </strong><br>
-        A simple example introducing the use of <b>condvis</b> and showing the
-        importance of conditional visualisation.
-      </p>
-      <p>
-        <strong>
-          <a href = "example-wine.html">Wine data</a>
-        </strong><br>
-        An example using <b>condvis</b> to visualise a random forest classifier
-        in 6 dimensions.
-      </p>
-      <p>
-        <strong>
-          <a href = "example-powerplant.html">Power plant data</a>
-        </strong><br>
-        An example using <b>condvis</b> to visualise an additive model and a
-        support vector machine with radial kernel in a regression problem.
-      </p>
-      <p>
-        <strong>
-          <a href = "example-default.html"></a>Credit card default data
-        </strong><br>
-        An example using <b>condvis</b> to visualise a gradient boosted tree
-        model trained on data with 25 predictors.
-      </p>
-      <p>
-        <strong>
-          <a href = "example-blog.html">Blog comments data</a>
-        </strong><br>
-        An example using <b>condvis</b> to visualise an ensemble of <a href =
-        "https://github.com/dmlc/xgboost">XGBoost</a> gradient boosted tree
-        models trained on data with 280 predictors.
-      </p>
+        <h3>
+          <a id="welcome-to-github-pages" class="anchor" href="#example2"
+            aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span>
+         </a>Example: Blog comments data
+        </h3>
+        <p>
+          The blog comments data can be found on the <a href =
+          "https://archive.ics.uci.edu/ml/datasets/BlogFeedback">UCI
+          repository</a>. The original prediction task is for the number of
+          comments on a blog over the next 24 hours, but we will take the
+          simpler task of predicting if there will be <i>any</i> comments over
+          the next 24 hours, recasting the problem as a binary classification.
+          The main purpose of this example is to demonstrate the use of
+          <b>condvis</b> when model <code>predict</code> methods go slightly
+          off the beaten track, as happens with the <a href =
+          "https://CRAN.R-project.org/package=xgboost">xgboost</a>
+          package. We will train an ensemble of 5 boosted tree classifiers, in
+          the form of a cross-validated committee, where we only attempt to
+          optimise one parameter, the number of boosting iterations -- that is
+          <ul>
+            <li>randomly split the data into 5 folds</li>
+            <li>train 5 models, holding out one of the folds each time for
+              validation</li>
+            <li>choose the number of boosting iterations for each model which
+              minimises the validation loss</li>
+          </ul>
+        </p>
+        <h4>Read in the data</h4>
+        <p>
+          We can start with the basics and read in the data using <a href
+          ="https://CRAN.R-project.org/package=data.table">data.table</a>.
+        </p>
+        <div class="highlight highlight-source-r">
+          <pre>
+library(data.table)
+train <- fread("data/blogData_train.csv", data.table = FALSE,
+  stringsAsFactors = TRUE)
+colnames(train)[ncol(train)] <- "comments"</pre>
+        </div>
+        <p>
+          This gives us a dataframe with 52,397 observations on 281 variables.
+          The last column is the number of comments, so we name that one for
+          clarity. Next, we'll do a bit of tidying and set up our binary target
+          (or response).
+        </p>
+        <div class="highlight highlight-source-r">
+          <pre>
+## Remove predictors that have only one unique value.
+removevars <- which(vapply(train, function(x) length(
+  unique(x)), integer(1L)) <= 1)
+train <- train[, -removevars]
+
+## Create binary target, and remove 'comments' column.
+train$target <- as.integer(train$comments > 0)
+train$comments <- NULL</pre>
+        </div>
+        <h4>Train the ensemble</h4>
+
+        <div class="highlight highlight-source-r">
+          <pre>
+## Define the parameters we will use for the boosted tree
+## classifiers.
+classifier.params <- list(booster = "gbtree", objective =
+  "binary:logistic", eta = 0.03, gamma = 0.1, max_depth = 6,
+  min_child_weight = 1, colsample_bytree = 0.7, eval_metric
+  = "logloss")
+
+## Formula to create model matrix.
+f <- formula(paste0("~ 0+", paste(setdiff(colnames(train),
+  c("comments", "target")), collapse = "+")))
+
+## Function to train an XGBoost model, stopping when further
+## iterations increase the loss on the validation set.
+trainXGB <- function(params, formula, data, trainindex,
+  nrounds = 1500){
+  x.train <- xgb.DMatrix(model.matrix(formula, data =
+    data[trainindex, ]), label = target[trainindex])
+  x.validate <- xgb.DMatrix(model.matrix(formula, data
+    = data[-trainindex, ]), label = target[-trainindex])
+  suppressWarnings(
+    structure(list(model = xgb.train(nrounds = nrounds,
+      params = params, data = x.train, watchlist = list(
+      "validate" = x.validate, "train" = x.train),
+      print.every.n = 20, nthread = 4, early.stop.round =
+      200), formula = formula), class = "xgbpred")
+  )
+}</pre>
+        </div>
+      <h4>Visualise the ensemble</h4>
       </section>
       <footer>
         <p>Maintained by <a href="https://github.com/markajoc">Mark O'Connell</a></p>
