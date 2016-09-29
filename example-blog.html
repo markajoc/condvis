@@ -79,7 +79,7 @@
           The blog comments data can be found on the <a href =
           "https://archive.ics.uci.edu/ml/datasets/BlogFeedback">UCI
           repository</a>. The original prediction task is for the number of
-          comments on a blog over the next 24 hours, but we will take the
+          comments on a blog over the next 24 hours, but we will tackle the
           simpler task of predicting if there will be <i>any</i> comments over
           the next 24 hours, recasting the problem as a binary classification.
           The main purpose of this example is to demonstrate the use of
@@ -159,6 +159,27 @@ trainXGB <- function(params, formula, data, trainindex,
 }</pre>
         </div>
       <h4>Visualise the ensemble</h4>
+
+      <div class="highlight highlight-source-r">
+        <pre>
+library("condvis")
+library("xgboost")
+
+train$target <- jitter(train$target, amount = 0.05)
+
+ceplot(train, classifiers, "target", varimp$Feature[1],
+  varimp$Feature[2:10], xsplotpar = list(xlim = c(0,
+  50)), threshold = 0.6)
+
+model.colours <- c(rep("gray", length(classifiers)), "black")
+model.lwd <- c(rep(1.5, length(classifiers)), 4)
+
+ceplot(train, ensemble, "target", varimp$Feature[1],
+  varimp$Feature[2:10], xsplotpar = list(xlim = c(0, 50)),
+  threshold = 0.6, modelpar = list(col = model.colours, lwd =
+  model.lwd))</pre>
+      </div>
+
       </section>
       <footer>
         <p>Maintained by <a href="https://github.com/markajoc">Mark O'Connell</a></p>
