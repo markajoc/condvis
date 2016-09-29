@@ -259,6 +259,6 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
   dir.create(app.path, showWarnings = FALSE)
   write(ui(), file = paste0(app.path, "/ui.R"))
   write(server(), file = paste0(app.path, "/server.R"))
-  save(list = ls(), file = paste0(app.path, "/app.Rdata"))
+  save(list = union(ls(), ls(.GlobalEnv)), file = paste0(app.path, "/app.Rdata"))
   shiny::runApp(appDir = app.path)
 }
