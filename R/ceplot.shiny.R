@@ -163,7 +163,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
       i <- ", seqC, "
       xcplots[[i]] <<- plotxc(xc = data[, C[[i]]], xc.cond = rv$xc.cond[1L,
         C[[i]]], name = colnames(data[, C[[i]], drop = FALSE]), trim =
-        xcplotpar$trim, select.colour = select.colour, select.cex = select.cex)
+        xcplotpar$trim, select.colour = select.colour, select.cex = select.cex,
+        hist2d = xcplotpar$hist2d, fullbin = xcplotpar$fullbin)
+        )
     })"
     , sep = "", collapse = "\n"), '
 

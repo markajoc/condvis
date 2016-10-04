@@ -29,7 +29,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, weights = NULL, col
       screen(selectors[i])
       xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = xc.cond[1L, C[[i]]],
         name = colnames(data[, C[[i]], drop = FALSE]), trim = xcplotpar$trim,
-        select.colour = select.colour, select.cex = select.cex)
+        select.colour = select.colour, select.cex = select.cex, hist2d =
+        xcplotpar$hist2d, fullbin = xcplotpar$fullbin)
     }
   }
   screen(main[1])

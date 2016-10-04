@@ -15,6 +15,12 @@
 #' @param cex.lab Label text scaling
 #' @param tck Plot axis tick size
 #' @param select.cex Plot symbol size
+#' @param hist2d If \code{TRUE}, a scatterplot is visualised as a 2-D histogram.
+#'   Default behaviour is to use a 2-D histogram if there are over 2,000
+#'   observations.
+#' @param fullbin A cap on the counts in a bin for the 2-D histogram, helpful
+#'   with skewed data. Larger values give more detail about data density.
+#'   Defaults to 25.
 #' @param ... Passed to \code{condvis:::spineplot2}.
 #'
 #' @return Produces a plot, and returns a list containing the relevant
@@ -66,8 +72,11 @@
 plotxc <-
 function (xc, xc.cond, name = NULL, trim = NULL, select.colour = NULL,
   select.lwd = NULL, cex.axis = NULL, cex.lab = NULL, tck = NULL, select.cex = 1
-  , ...)
+  , hist2d = NULL, fullbin = NULL, ...)
 {
+  hist2d <- if (is.null(hist2d))
+    TRUE
+  else hist2d
   trim <- if (is.null(trim))
     TRUE
   else trim
@@ -187,11 +196,16 @@ function (xc, xc.cond, name = NULL, trim = NULL, select.colour = NULL,
             xc <- xc[index1 & index2, ]
           }
 
-          if (nrow(xc) > 2000 && requireNamespace("gplots", quietly = TRUE)){
+          if (hist2d && nrow(xc) > 2000 && requireNamespace("gplots", quietly =
+            TRUE)){
             b <- seq(0.35, 1, length.out = 16)
+            fullbin <- if (is.null(fullbin))
+              25
+            else fullbin
             gplots::hist2d(xc[, 1], xc[, 2], nbins = 50, col = c("white", rgb(1
               - b, 1 - b, 1 - b)), xlab = colnames(xc)[1], ylab = colnames(xc)[
-              2], cex.axis = cex.axis, cex.lab = cex.lab, tcl = tck)
+              2], cex.axis = cex.axis, cex.lab = cex.lab, tcl = tck, FUN =
+              function(x) min(length(x), fullbin))
             box()
           } else {
             plot.default(xc[, 1], xc[, 2], xlab = colnames(xc)[1], ylab =
@@ -212,7 +226,8 @@ function (xc, xc.cond, name = NULL, trim = NULL, select.colour = NULL,
     plot.type, sptmp = if (exists("sptmp")) sptmp else NULL, factorcoords = if (
     exists("factorcoords")) factorcoords else NULL, histmp = if (exists("histmp"
     )) histmp else NULL, bartmp = if (exists("bartmp")) bartmp else NULL, boxtmp
-    = if (exists("boxtmp")) boxtmp else NULL, ...), class = "xcplot")
+    = if (exists("boxtmp")) boxtmp else NULL, hist2d = hist2d, fullbin = fullbin
+    , ...), class = "xcplot")
 }
 
 #' @title Condition selector plot

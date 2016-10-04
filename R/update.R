@@ -83,8 +83,8 @@ function (object, xclick, yclick, xc.cond = NULL, user = FALSE, draw = TRUE,
       xc.cond.new <- xc.cond
     }
     if (any(xc.cond.new != object$xc.cond.old)){
-      if (nrow(object$xc) > 2000 && requireNamespace("gplots", quietly = TRUE)
-        && draw){
+      if (object$hist2d && nrow(object$xc) > 2000 && requireNamespace("gplots",
+        quietly = TRUE) && draw){
         par(bg = "white")
         dev.hold()
         screen(new = TRUE)
@@ -92,7 +92,8 @@ function (object, xclick, yclick, xc.cond = NULL, user = FALSE, draw = TRUE,
         gplots::hist2d(object$xc[, 1], object$xc[, 2], nbins = 50, col =
           c("white", rgb(1 - b, 1 - b, 1 - b)), xlab = colnames(object$xc)[1],
           ylab = colnames(object$xc)[2], cex.axis = object$cex.axis, cex.lab =
-          object$cex.lab, tcl = object$tck)
+          object$cex.lab, tcl = object$tck, FUN = function(x) min(length(x),
+          object$fullbin))
         abline(v = xc.cond.new.x, h = xc.cond.new.y, lwd = object$select.lwd,
           col = object$select.colour)
         box()

@@ -227,7 +227,8 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
         for (i in seq_along(C)){
           screen(xcscreens[i])
           xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = path[pathindex,
-            C[[i]]], name = C[[i]], select.colour = select.colour)
+            C[[i]]], name = C[[i]], select.colour = select.colour, hist2d =
+            xcplotpar$hist2d)
           coords[i, ] <- par("fig")
         }
         dev.off()
@@ -395,7 +396,8 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
   for (i in seq_along(C)){
     screen(xcscreens[i])
     xcplots[[i]] <- plotxc(xc = data[, C[[i]]], xc.cond = path[pathindex,
-      C[[i]]], name = C[[i]], select.colour = select.colour)
+      C[[i]]], name = C[[i]], select.colour = select.colour, hist2d =
+      xcplotpar$hist2d)
     coords[i, ] <- par("fig")
   }
 

@@ -6,7 +6,7 @@
 \usage{
 plotxc(xc, xc.cond, name = NULL, trim = NULL, select.colour = NULL,
   select.lwd = NULL, cex.axis = NULL, cex.lab = NULL, tck = NULL,
-  select.cex = 1, ...)
+  select.cex = 1, hist2d = NULL, fullbin = NULL, ...)
 }
 \arguments{
 \item{xc}{A numeric or factor vector, or a dataframe with two columns}
@@ -30,6 +30,14 @@ chopped off at the 5th and 95th percentiles.}
 \item{tck}{Plot axis tick size}
 
 \item{select.cex}{Plot symbol size}
+
+\item{hist2d}{If \code{TRUE}, a scatterplot is visualised as a 2-D histogram.
+Default behaviour is to use a 2-D histogram if there are over 2,000
+observations.}
+
+\item{fullbin}{A cap on the counts in a bin for the 2-D histogram, helpful
+with skewed data. Larger values give more detail about data density.
+Defaults to 25.}
 
 \item{...}{Passed to \code{condvis:::spineplot2}.}
 }
