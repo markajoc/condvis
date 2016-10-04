@@ -219,15 +219,15 @@ function (xc, xc.cond, name = NULL, trim = NULL, select.colour = NULL,
       }
     } else stop("Unexpected value for 'xc'")
   }
-  structure(list(xc = xc, xc.cond.old = xc.cond, name = name, select.colour =
-    select.colour, mar = mar, select.lwd = select.lwd, select.cex = select.cex,
-    cex.axis = cex.axis, cex.lab = cex.lab, tck = tck, device = dev.cur(), usr =
-    par("usr"), screen = screen(), screen.coords = par("fig"), plot.type =
-    plot.type, sptmp = if (exists("sptmp")) sptmp else NULL, factorcoords = if (
-    exists("factorcoords")) factorcoords else NULL, histmp = if (exists("histmp"
-    )) histmp else NULL, bartmp = if (exists("bartmp")) bartmp else NULL, boxtmp
-    = if (exists("boxtmp")) boxtmp else NULL, hist2d = hist2d, fullbin = fullbin
-    , ...), class = "xcplot")
+  invisible(structure(list(xc = xc, xc.cond.old = xc.cond, name = name,
+    select.colour = select.colour, mar = mar, select.lwd = select.lwd,
+    select.cex = select.cex, cex.axis = cex.axis, cex.lab = cex.lab, tck = tck,
+    device = dev.cur(), usr = par("usr"), screen = screen(), screen.coords =
+    par("fig"), plot.type = plot.type, sptmp = if (exists("sptmp")) sptmp else
+    NULL, factorcoords = if (exists("factorcoords")) factorcoords else NULL,
+    histmp = if (exists("histmp")) histmp else NULL, bartmp = if (exists(
+    "bartmp")) bartmp else NULL, boxtmp = if (exists("boxtmp")) boxtmp else
+    NULL, hist2d = hist2d, fullbin = fullbin, ...), class = "xcplot"))
 }
 
 #' @title Condition selector plot
@@ -284,12 +284,12 @@ function (Xc, Xc.cond, select.colour = NULL, select.lwd = 3,
   parcoord(Xc.num, main = "Condition selector")
   points(xcoord, ycoord, col = select.colour, type = "l", lwd = select.lwd)
   points(xcoord, ycoord, col = select.colour, pch = 16)
-  structure(list(Xc = Xc, Xc.cond = Xc.cond, Xc.num.scaled = Xc.num.scaled,
-    xc.num.max = apply(Xc.num, 2, max), xc.num.min = apply(Xc.num, 2, min),
-    xcoord = xcoord, ycoord = ycoord, plot.type = "pcp", select.colour =
-    select.colour, select.cex = select.cex, select.lwd = select.lwd, mar =
-    par("mar"), usr = par("usr"), factorindex = factorindex, device = dev.cur(),
-    screen = screen()), class = "xcplot")
+  invisible(structure(list(Xc = Xc, Xc.cond = Xc.cond, Xc.num.scaled =
+    Xc.num.scaled, xc.num.max = apply(Xc.num, 2, max), xc.num.min = apply(
+    Xc.num, 2, min), xcoord = xcoord, ycoord = ycoord, plot.type = "pcp",
+    select.colour = select.colour, select.cex = select.cex, select.lwd =
+    select.lwd, mar = par("mar"), usr = par("usr"), factorindex = factorindex,
+    device = dev.cur(), screen = screen()), class = "xcplot"))
 }
 
 #' @rdname plotxc.pcp
@@ -358,9 +358,10 @@ function (Xc, Xc.cond, select.colour = NULL, select.lwd = 3,
   names(coords) <- c("xleft", "xright", "ybottom", "ytop")
   coords$xcplots.index <- scr2
   dev.flush()
-  structure(list(Xc = Xc, Xc.cond = Xc.cond, Xc.num = Xc.num, Xc.cond.num =
-    Xc.cond.num, rows = rows, cols = cols, factorindex = factorindex, scr2 =
-    scr2, coords = coords, plot.type = "full", device = dev.cur(), select.colour
-    = select.colour, select.lwd = select.lwd, select.cex = select.cex,
-    mar.matrix = mar.matrix, usr.matrix = usr.matrix), class = "xcplot")
+  invisible(structure(list(Xc = Xc, Xc.cond = Xc.cond, Xc.num = Xc.num,
+    Xc.cond.num = Xc.cond.num, rows = rows, cols = cols, factorindex =
+    factorindex, scr2 = scr2, coords = coords, plot.type = "full", device =
+    dev.cur(), select.colour = select.colour, select.lwd = select.lwd,
+    select.cex = select.cex, mar.matrix = mar.matrix, usr.matrix = usr.matrix),
+    class = "xcplot"))
 }
