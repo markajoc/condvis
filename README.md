@@ -5,7 +5,7 @@
 [![CRAN](http://www.r-pkg.org/badges/version/condvis)](http://cran.r-project.org/package=condvis)
 [![Downloads](http://cranlogs.r-pkg.org/badges/condvis?color=brightgreen)](http://www.r-pkg.org/pkg/condvis)  
 
-### Interactively exploring fitted model structures
+### Interactively exploring fitted models
 
 Interactively take 2-D and 3-D sections in data space, showing where fitted  
 models intersect the section, and observed data near the section according to  

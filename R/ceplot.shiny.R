@@ -241,6 +241,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
       write(server(deploy = TRUE), file = paste0(deploy.path, "/server.R"))
       file.copy(from = paste0(app.path, "/app.Rdata"), to = paste0(deploy.path,
         "/app.Rdata"), overwrite = TRUE)
+      file.copy(from = paste0(app.path, "/global.R"), to = paste0(deploy.path,
+        "/global.R"), overwrite = TRUE)  
       if (input$deployLocation == "to web via rsconnect"){
         if (!requireNamespace("rsconnect", quietly = TRUE))
           stop("requires package \'rsconnect\'")
