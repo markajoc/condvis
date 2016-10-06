@@ -140,7 +140,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
   {
     ## Load the objects that were in the environment of the ceplot call.
 
-    load("app.Rdata")
+    #load("app.Rdata")
 
     ## Reactive value for the current condition/section
 
@@ -260,6 +260,9 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
   dir.create(app.path, showWarnings = FALSE)
   write(ui(), file = paste0(app.path, "/ui.R"))
   write(server(), file = paste0(app.path, "/server.R"))
-  save(list = union(ls(), ls(.GlobalEnv)), file = paste0(app.path, "/app.Rdata"))
+  write("load(app.Rdata, envir=.GlobalEnv)\n", file = paste0(app.path,
+    "/global.R"))
+  save(list = union(ls(), ls(.GlobalEnv)), file = paste0(app.path, "/app.Rdata")
+    )
   shiny::runApp(appDir = app.path)
 }
