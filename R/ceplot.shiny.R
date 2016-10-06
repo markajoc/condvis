@@ -165,7 +165,6 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
         C[[i]]], name = colnames(data[, C[[i]], drop = FALSE]), trim =
         xcplotpar$trim, select.colour = select.colour, select.cex = select.cex,
         hist2d = xcplotpar$hist2d, fullbin = xcplotpar$fullbin)
-        )
     })"
     , sep = "", collapse = "\n"), '
 
