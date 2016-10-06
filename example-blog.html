@@ -170,14 +170,6 @@ train$target <- jitter(train$target, amount = 0.05)
 ceplot(train, classifiers, "target", varimp$Feature[1],
   varimp$Feature[2:10], xsplotpar = list(xlim = c(0,
   50)), threshold = 0.6)
-
-model.colours <- c(rep("gray", length(classifiers)), "black")
-model.lwd <- c(rep(1.5, length(classifiers)), 4)
-
-ceplot(train, ensemble, "target", varimp$Feature[1],
-  varimp$Feature[2:10], xsplotpar = list(xlim = c(0, 50)),
-  threshold = 0.6, modelpar = list(col = model.colours, lwd =
-  model.lwd))</pre>
       </div>
       <iframe src="https://markajoc.shinyapps.io/blog-example/" width = 1100
         height = 650></iframe>
