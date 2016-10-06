@@ -134,14 +134,14 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
   paste(paste0("library(", packages, ")"), collapse = "\n  ")
   ,'
 
-  ## Load the objects that were in the environment of the ceplot call.
-
-  load("app.Rdata")
-
   ## Shiny server
 
   shinyServer(function (input, output)
   {
+    ## Load the objects that were in the environment of the ceplot call.
+
+    load("app.Rdata")
+
     ## Reactive value for the current condition/section
 
     rv <- reactiveValues(xc.cond = xc.cond)
