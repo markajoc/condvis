@@ -329,8 +329,8 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
             plotxs(xs = data[, S, drop = FALSE], data[, response, drop = FALSE],
               xc.cond = xc.cond, model = model, col = col, weights = vw$k,
               view3d = xsplot$view3d, theta3d = xsplot$theta3d, phi3d =
-              xsplot$phi3d, conf = conf, probs = probs, pch = 1, model.colour =
-              modelpar$col, model.lwd = modelpar$lwd, model.lty =
+              xsplot$phi3d, conf = conf, probs = probs, pch = pch, model.colour
+              = modelpar$col, model.lwd = modelpar$lwd, model.lty =
               modelpar$lty, main = xsplotpar$main, xlim = xsplotpar$xlim, ylim =
               xsplotpar$ylim)
           }

@@ -11,6 +11,7 @@ Version 0.4-0.9999
     values between 0 and 1 are allowed.
   * New unexported function `weightcolor` used to weight colours using
   similarity weight.
+  * Fixed bug; not passing `pch` to snapshot for `ceplot.interactive`.
 
 Version 0.3-5 2016-09-26
   * In `plotxc`, can chop off long tails for scatterplot/2-d histogram,
