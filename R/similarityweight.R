@@ -165,7 +165,7 @@ function (xc)
           (lambda * (sum(arefactors) - nfactormatches[factormatches])) ^ p
           else 0
       }
-      k[factormatches] <- pmax(0, 1 - d / (sigma ^ p))
+      k[factormatches] <- pmax(0, 1 - (d ^ (1 / p)) / (sigma))
     }
     list(k = k, sigma = sigma, distance = distance)
   }
