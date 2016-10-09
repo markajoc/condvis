@@ -6,6 +6,12 @@ function(col, weights, breaks)
   n <- length(weights)
   col <- rep(col, length.out = n)
 
+  ## Discretise `weights`. We just want 3 different shades, as it becomes
+  ## difficult to differentiate between them otherwise.
+
+  weights <- c(0, 0.4, 0.7, 1)[findInterval(weights, c(0, .Machine$double.eps,
+    0.4, 0.7, 1), rightmost.closed = TRUE)]
+
   ## We won't perform calculations on elements with `weight` == 0.
 
   weightsgr0 <- which(weights > 0)
