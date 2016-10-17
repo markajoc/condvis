@@ -4,7 +4,7 @@ condvis: Conditional Visualisation for Statistical Models
 News
 ---------------------------------------------------------
 
-Version 0.4-0.9999
+Version 0.4-0 2016-10-17
   * The 2-D histogram in `plotxc` has been made optional, and also allows a cap
     on the bin counts, to allow for skewed data.
   * In `similarityweight`, the weight values are no longer discretised. All

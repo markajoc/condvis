@@ -9,7 +9,8 @@
 
 Interactively take 2-D and 3-D sections in data space, showing where fitted  
 models intersect the section, and observed data near the section according to  
-a distance measure.
+a distance measure. See package [website](https://markajoc.github.io/condvis/)
+for examples.
 
 Works on Windows, Mac OS and Linux.
 
