@@ -44,7 +44,7 @@ function (x, xrange = NULL, breaks = NULL, colors = NULL)
     breaks - 1), max(x, max(xrange)) + 1)
   colors <- if (is.null(colors)){
     if (requireNamespace("RColorBrewer", quietly = TRUE))
-	    RColorBrewer::brewer.pal(n = max(breaks, 3L, na.rm = TRUE), name = "PiYG")
+	    RColorBrewer::brewer.pal(n = max(breaks, 3L, na.rm = TRUE), name = "PuOr")
 		else cm.colors(breaks)
   } else rep(colors, length.out = breaks)
   as.character(cut(x, br, labels = colors, include.lowest = TRUE))
