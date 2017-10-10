@@ -7,3 +7,4 @@ crancomments.txt
 ^\.travis\.yml$
 roxy.R
 ^.*\.tar\.gz
+condvis.Rcheck/

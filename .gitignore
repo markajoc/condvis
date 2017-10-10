@@ -4,3 +4,4 @@ src-i386/
 src-x64/
 .Rapp.history
 *.tar.gz
+condvis.Rcheck/
