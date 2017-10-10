@@ -20,13 +20,14 @@ Conditional Visualization for Statistical Models
   \tabular{ll}{
     Package: \tab condvis\cr
     Type: \tab Package\cr
-    Version: \tab 0.4-1\cr
-    Date: \tab 2016-10-17\cr
+    Version: \tab 0.4-2\cr
+    Date: \tab 2017-10-11\cr
     License: \tab GPL (>= 2)\cr
   }
 }
 \author{
-Mark O'Connell <mark.oconnell@maths.nuim.ie>
+Mark O'Connell <mark_ajoc@yahoo.ie>, Catherine Hurley <catherine.hurley@mu.ie>,
+Katarina Domijan <katarina.domijan@mu.ie>.
 }
 \keyword{ package }
 \examples{
@@ -41,4 +42,10 @@ model1 <- list(
 
 ceplot(data = mtcars, model = model1, sectionvars = "wt")
 }
+}
+\references{
+O'Connell M, Hurley CB and Domijan K (2017). “Conditional
+  Visualization for Statistical Models: An Introduction to the
+  \strong{condvis} Package in R.”\emph{Journal of Statistical Software},
+  \strong{81}(5), pp. 1-20. <URL:http://dx.doi.org/10.18637/jss.v081.i05>.
 }
