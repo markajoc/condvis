@@ -58,9 +58,9 @@
 #'
 #' @seealso \code{\link{plotxc}}, \code{\link{ceplot}}, \code{\link{condtour}}
 #'
-#' @references O'Connell M, Hurley CB and Domijan K (2017). “Conditional
+#' @references O'Connell M, Hurley CB and Domijan K (2017). ``Conditional
 #'   Visualization for Statistical Models: An Introduction to the
-#'   \strong{condvis} Package in R.”\emph{Journal of Statistical Software},
+#'   \strong{condvis} Package in R.''\emph{Journal of Statistical Software},
 #'   \strong{81}(5), pp. 1-20. <URL:http://dx.doi.org/10.18637/jss.v081.i05>.
 
 plotxs <-
