@@ -56,7 +56,7 @@ See \code{\link{arrangeC}}.}
 
 \item{selectortype}{Type of condition selector plots to use. Must be
 \code{"minimal"} if \code{type} is \code{"default"}. If \code{type} is
-\code{"separate"}, can be \code{"pcp"} (see \code{\link{plotxc.pcp}} or
+\code{"separate"}, can be \code{"pcp"} (see \code{\link{plotxc.pcp}}) or
 \code{"full"} (see \code{\link{plotxc.full}}).}
 
 \item{conf}{Logical; if \code{TRUE} plots confidence bounds (or equivalent)

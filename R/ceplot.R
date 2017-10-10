@@ -38,7 +38,7 @@
 #'   See \code{\link{arrangeC}}.
 #' @param selectortype Type of condition selector plots to use. Must be
 #'   \code{"minimal"} if \code{type} is \code{"default"}. If \code{type} is
-#'   \code{"separate"}, can be \code{"pcp"} (see \code{\link{plotxc.pcp}} or
+#'   \code{"separate"}, can be \code{"pcp"} (see \code{\link{plotxc.pcp}}) or
 #'   \code{"full"} (see \code{\link{plotxc.full}}).
 #' @param conf Logical; if \code{TRUE} plots confidence bounds (or equivalent)
 #'   for models which provide this.
