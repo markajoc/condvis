@@ -2,12 +2,12 @@ Package: condvis
 Type: Package
 Title: Conditional Visualization for Statistical Models
 Version: 0.4-1
-Date: 2016-10-17
+Date: 2017-10-11
 Authors@R: c(
   person("Mark", "O'Connell", email = "mark_ajoc@yahoo.ie",
   role = c("aut", "cre")),
-  person("Catherine", "Hurley", role = "ths"),
-  person("Katarina", "Domijan", role = "ths"),
+  person("Catherine", "Hurley", role = "aut"),
+  person("Katarina", "Domijan", role = "aut"),
   person("Achim", "Zeileis", role = "ctb", comment = "spineplot, see copied.R"),
   person("R Core Team", role = "ctb", comment = "barplot, see copied.R") )
 Depends:
