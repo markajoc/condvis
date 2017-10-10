@@ -43,6 +43,13 @@ for (i in seq_along(pairings)){
  plotxc(powerplant[, pairings[[i]]], powerplant[1, pairings[[i]]],
    select.col = NA)
 }
+
+}
+\references{
+O'Connell M, Hurley CB and Domijan K (2017). “Conditional
+  Visualization for Statistical Models: An Introduction to the
+  \strong{condvis} Package in R.”\emph{Journal of Statistical Software},
+  \strong{81}(5), pp. 1-20. <URL:http://dx.doi.org/10.18637/jss.v081.i05>.
 }
 \seealso{
 \code{\link{savingby2d}}

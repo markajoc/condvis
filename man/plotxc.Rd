@@ -85,6 +85,12 @@ plotxc(x, 0.5, trim = FALSE, select.colour = "red")
 plotxc(x, 0.5, trim = TRUE, select.colour = "red")
 
 }
+\references{
+O'Connell M, Hurley CB and Domijan K (2017). “Conditional
+  Visualization for Statistical Models: An Introduction to the
+  \strong{condvis} Package in R.”\emph{Journal of Statistical Software},
+  \strong{81}(5), pp. 1-20. <URL:http://dx.doi.org/10.18637/jss.v081.i05>.
+}
 \seealso{
 \code{\link{ceplot}},  \code{\link{plotxs}}.
 
