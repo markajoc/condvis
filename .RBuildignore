@@ -6,4 +6,4 @@ crancomments.txt
 .Rapp.history
 ^\.travis\.yml$
 roxy.R
-*\.tar\.gz
+^.*\.tar\.gz
