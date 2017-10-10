@@ -1,0 +1,18 @@
+bibentry(bibtype = "Article",
+  title        = "Conditional Visualization for Statistical Models: An Introduction to the {condvis} Package in {R}",
+  author       = c(person(given = "Mark",
+                          family = "O'Connell",
+                          email = "mark_ajoc@yahoo.ie"),
+                   person(given = c("Catherine", "B."),
+                          family = "Hurley"),
+                   person(given = "Katarina",
+                          family = "Domijan")),
+  journal      = "Journal of Statistical Software",
+  year         = "2017",
+  volume       = "81",
+  number       = "5",
+  pages        = "1--20",
+  doi          = "10.18637/jss.v081.i05",
+
+  header       = "To cite condvis in publications use:"
+)
