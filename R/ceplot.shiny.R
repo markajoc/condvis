@@ -15,7 +15,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
   ## Set up the initial section
 
   xc.cond <- if (is.null(xc.cond))
-    data[1, !colnames(data) %in% c(S, response)]
+    data[1L, !colnames(data) %in% c(S, response), drop = FALSE]
   else xc.cond
   #data.frame(lapply(data[, !colnames(data) %in% c(S, response)], mode1))
 
@@ -242,7 +242,7 @@ function (data, model, response = NULL, S = NULL, C = NULL, sigma = NULL, lambda
       file.copy(from = paste0(app.path, "/app.Rdata"), to = paste0(deploy.path,
         "/app.Rdata"), overwrite = TRUE)
       file.copy(from = paste0(app.path, "/global.R"), to = paste0(deploy.path,
-        "/global.R"), overwrite = TRUE)  
+        "/global.R"), overwrite = TRUE)
       if (input$deployLocation == "to web via rsconnect"){
         if (!requireNamespace("rsconnect", quietly = TRUE))
           stop("requires package \'rsconnect\'")
