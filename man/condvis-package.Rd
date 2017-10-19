@@ -20,8 +20,8 @@ Conditional Visualization for Statistical Models
   \tabular{ll}{
     Package: \tab condvis\cr
     Type: \tab Package\cr
-    Version: \tab 0.4-2\cr
-    Date: \tab 2017-10-11\cr
+    Version: \tab 0.4-3\cr
+    Date: \tab 2017-10-19\cr
     License: \tab GPL (>= 2)\cr
   }
 }
