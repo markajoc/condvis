@@ -36,6 +36,28 @@ function (model)
   list(response = response, predictors = predictors2)
 }
 
+## Interpolation function.
+
+interpolate <-
+function (x, ...)
+{
+  UseMethod("interpolate")
+}
+
+interpolate.numeric <-
+function (x, ninterp = 3L)
+{
+  xdiff <- diff(x) / (ninterp + 1L)
+  #add <- matrix(xdiff, nrow = ninterp + 1L, ncol = length(xdiff), byrow = TRUE)
+  cumsum(c(x[1L], rep(xdiff, each = ninterp + 1L)))
+}
+
+interpolate.factor <-
+function (x, ninterp = 3L)
+{
+
+}
+
 ## These are some helper functions to be used when plotxs is representing the
 ## predicted class probabilities using little barcharts (i.e., probs = TRUE)
 
