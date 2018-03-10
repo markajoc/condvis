@@ -54,12 +54,9 @@ function (x, ncentroids, ninterp = 4)
       d.centers <- cluster::daisy(centers)
       h <- hclust(d.centers, method = "single")
       o <- DendSer::DendSer(h, d.centers)
-      centers <- centers[o, ]
+      centers <- centers[o, , drop = FALSE]
     }
-
-browser()
-
-    path <- as.data.frame(lapply(centers, interpolate))
+    path <- as.data.frame(lapply(centers, interpolate, ninterp = ninterp))
   } else {
 
     ## For all continuous variables, cluster with 'kmeans'
@@ -82,7 +79,7 @@ browser()
     centers <- as.data.frame(t(apply(t(apply(centers, 1L, `*`, sds)), 1L, `+`,
       means)))
     rownames(centers) <- NULL
-    path <- as.data.frame(apply(centers, 2L, interpolate))
+    path <- as.data.frame(apply(centers, 2L, interpolate, ninterp = ninterp))
   }
 
   ## Return the cluster centres and the interpolated path.
