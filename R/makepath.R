@@ -68,9 +68,6 @@ function (x, ncentroids, ninterp = 4)
     x <- scale(x)
     means <- attr(x, "scaled:center")
     sds <- attr(x, "scaled:scale")
-    #means <- colMeans(x)
-    #sds <- apply(x, 2L, sd)
-    #x <- scale(x)[, ]
     clustering <- kmeans(x[, ], centers = ncentroids)
     centers <- clustering$centers
     o <- TSP::TSP(dist(centers))
@@ -79,7 +76,7 @@ function (x, ncentroids, ninterp = 4)
     centers <- as.data.frame(t(apply(t(apply(centers, 1L, `*`, sds)), 1L, `+`,
       means)))
     rownames(centers) <- NULL
-    path <- as.data.frame(apply(centers, 2L, interpolate, ninterp = ninterp))
+    path <- as.data.frame(lapply(centers, interpolate, ninterp = ninterp))
   }
 
   ## Return the cluster centres and the interpolated path.
