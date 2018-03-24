@@ -299,3 +299,5 @@ function (data, model, response = NULL, sectionvars = NULL, conditionvars = NULL
       xsplotpar = xsplotpar, modelpar = modelpar, xcplotpar = xcplotpar)
   }
 }
+
+##test
