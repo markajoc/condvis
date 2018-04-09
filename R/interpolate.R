@@ -7,8 +7,10 @@ function (x, ...)
 }
 
 interpolate.numeric <- interpolate.integer <-
-function (x, ninterp = 3L)
+function (x, ninterp = 4L)
 {
+  if (ninterp < 0)
+    stop("'ninterp' should be >= 0")
   xdiff <- diff(x) / (ninterp + 1L)
   #add <- matrix(xdiff, nrow = ninterp + 1L, ncol = length(xdiff), byrow = TRUE)
   cumsum(c(x[1L], rep(xdiff, each = ninterp + 1L)))
@@ -17,8 +19,10 @@ function (x, ninterp = 3L)
 ## Method dispatch does not seem to be working for factor/character.
 
 interpolate.factor <- interpolate.character <-
-function (x, ninterp = 2L)
+function (x, ninterp = 4L)
 {
+  if (ninterp < 0)
+    stop("'ninterp' should be >= 0")
   if (!identical(ninterp %% 2, 0))
     warning("'ninterp' should be even for factor/character vector")
   unlist(list(rep(head(x, 1L), 1L + floor(ninterp / 2L)),
