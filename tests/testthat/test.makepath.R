@@ -14,5 +14,5 @@ test_that("makepath returns dataframes with correct names", {
 
 test_that("makepath returns the correct number of centers and path points", {
   expect_equal(nrow(pathobject$centers), ncentroids)
-  expect_equal(nrow(pathobject$path), 1 + (ncentroids - 1) * ninterp)
+  expect_equal(nrow(pathobject$path), ncentroids + (ncentroids - 1L) * ninterp)
 })
