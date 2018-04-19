@@ -22,7 +22,6 @@ function (x, ninterp = 4L, ...)
   if (ninterp < 0)
     stop("'ninterp' should be >= 0")
   xdiff <- diff(x) / (ninterp + 1L)
-  #add <- matrix(xdiff, nrow = ninterp + 1L, ncol = length(xdiff), byrow = TRUE)
   cumsum(c(x[1L], rep(xdiff, each = ninterp + 1L)))
 }
 
@@ -31,12 +30,10 @@ function (x, ninterp = 4L, ...)
 
 interpolate.integer <- interpolate.numeric
 
-## Method dispatch does not seem to be working for factor/character.
-
 #' @rdname interpolate
 #' @method interpolate factor
 
-interpolate.factor <- 
+interpolate.factor <-
 function (x, ninterp = 4L, ...)
 {
   if (ninterp < 0)
