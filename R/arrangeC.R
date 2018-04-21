@@ -69,14 +69,17 @@ arrangeC <- function (data, method = "default")
       saving[j, i] <- savingby2d(data[, i], data[, j], method)
     }
   }
-  diag(saving) <- 1
+
+  ## Assign NA to the diagonal to avoid getting pairs of the same variable.
+
+  diag(saving) <- NA
 
 ## Simple greedy ordering of pairs
 
   C <- list()
   i <- 1L
   while(ncol(saving) > 2){
-    pair <- which(saving == min(saving), arr.ind = TRUE)[1L, ]
+    pair <- which(saving == min(saving, na.rm = TRUE), arr.ind = TRUE)[1L, ]
     C[[i]] <- colnames(saving)[pair]
     saving <- saving[-pair, -pair, drop = FALSE]
     i <- i + 1L

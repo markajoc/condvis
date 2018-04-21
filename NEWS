@@ -4,6 +4,11 @@ condvis: Conditional Visualisation for Statistical Models
 News
 ---------------------------------------------------------
 
+Version 0.5-devel
+
+  * Fixed bug where `arrangeC` would return pairs of the same variable if there
+    were no bivariate relationships detected by `savingby2d`.
+
 Version 0.4-3 2017-10-19
 
   * Fixed bug where `ceplot.shiny` dropped `xc.cond` to a vector and threw an
