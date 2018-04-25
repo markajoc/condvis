@@ -61,6 +61,9 @@
 similarityweight <-
 function (x, data, threshold = NULL, distance = NULL, lambda = NULL)
 {
+  if (threshold < 0)
+    stop("cannot have negative dissimilarity 'threshold'")
+
   ## Initialise the internal function
 
   vwfun <- .similarityweight(xc = data)
