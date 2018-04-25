@@ -8,6 +8,8 @@ Version 0.5-devel
 
   * Fixed bug where `arrangeC` would return pairs of the same variable if there
     were no bivariate relationships detected by `savingby2d`.
+  * Added a generic function `interpolate`, with methods for standard data
+    types.  
 
 Version 0.4-3 2017-10-19
 
