@@ -98,9 +98,12 @@ function (xc)
   if (nrow.xc < 2)
     stop("cannot apply scale to data.frame with less than 2 rows")
   colnames.xc <- colnames(xc)
-  arefactors <- vapply(xc, is.factor, logical(1))
-  xc.factors <- data.matrix(xc[, arefactors, drop = FALSE])
-  xc.num <- data.matrix(xc[, !arefactors, drop = FALSE])
+  arefactors <- vapply(xc, is.factor, logical(1L))
+  zerovar <- vapply(xc, var, numeric(1L)) == 0
+  factorindex <- arefactors & !zerovar
+  numindex <- !arefactors & !zerovar
+  xc.factors <- data.matrix(xc[, factorindex, drop = FALSE])
+  xc.num <- data.matrix(xc[, numindex, drop = FALSE])
   x.scaled <- scale(xc.num)
   k <- rep(0, nrow.xc)
 
@@ -126,8 +129,8 @@ function (xc)
     ## Get the arbitary point in order.
 
     xc.cond <- xc.cond[, colnames.xc, drop = FALSE]
-    xc.cond.factors <- data.matrix(xc.cond[, arefactors, drop = FALSE])
-    xc.cond.num <- data.matrix(xc.cond[, !arefactors, drop = FALSE])
+    xc.cond.factors <- data.matrix(xc.cond[, factorindex, drop = FALSE])
+    xc.cond.num <- data.matrix(xc.cond[, numindex, drop = FALSE])
 
     ## 'factormatches' is the index of observations on which we will calculate
     ## the Minkowski distance. Basically pre-filtering for speed.
@@ -140,7 +143,7 @@ function (xc)
     ##
     ## If there are no factors, want all rows.
 
-    factormatches <- if (any(arefactors)){
+    factormatches <- if (any(factorindex)){
       if (is.null(lambda)){
         which((nfactormatches <- rowSums(xc.factors == matrix(xc.cond.factors,
           ncol = length(xc.cond.factors), nrow = nrow.xc, byrow = TRUE))) ==
@@ -159,18 +162,18 @@ function (xc)
     ## Convert the dissimilarity to similarity weights 'k', between 0 and 1.
 
     if ((lfm <- length(factormatches)) > 0){
-      if (all(arefactors)){
+      if (all(factorindex)){
         if (is.null(lambda)){
           d <- rep(0, lfm)
         } else {
-          d <- lambda * (sum(arefactors) - nfactormatches[factormatches]) ^ p
+          d <- lambda * (sum(factorindex) - nfactormatches[factormatches]) ^ p
         }
       } else {
         xcond.scaled <- (xc.cond.num - attr(x.scaled, "scaled:center")) / attr(
           x.scaled, "scaled:scale")
         d <- dist1(xcond.scaled, x.scaled[factormatches, ], inf = identical(
-          distance, "maxnorm")) + if (any(arefactors) && !is.null(lambda))
-          (lambda * (sum(arefactors) - nfactormatches[factormatches])) ^ p
+          distance, "maxnorm")) + if (any(factorindex) && !is.null(lambda))
+          (lambda * (sum(factorindex) - nfactormatches[factormatches])) ^ p
           else 0
       }
       k[factormatches] <- pmax(0, 1 - (d ^ (1 / p)) / (sigma))
