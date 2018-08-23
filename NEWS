@@ -10,7 +10,9 @@ Version 0.5-devel
     were no bivariate relationships detected by `savingby2d`.
   * Added a generic function `interpolate`, with methods for standard data
     types.
-  * Added an error for negative threshold dissimilarities in `similarityweight`.  
+  * Added an error for negative threshold dissimilarities in `similarityweight`.
+  * Fixed bug where variables with zero variance caused an error in
+    `similarityweight`.
 
 Version 0.4-3 2017-10-19
 
