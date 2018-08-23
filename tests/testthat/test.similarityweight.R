@@ -63,6 +63,24 @@ test_that("internal visual weight function returns a function", {
   expect_error(.similarityweight())
 })
 
+zerovartest <- powerplant
+zerovartest$zerovar_numeric <- 1
+
+test_that("a numeric with all values equal has no impact", {
+  expect_equal(similarityweight(zerovartest[1:5, ], zerovartest, distance =
+    "euclidean"), similarityweight(powerplant[1:5, ], powerplant, distance =
+    "euclidean"))
+})
+
+zerovartest$zerovar_numeric <- NULL
+zerovartest$zerovar_factor <- as.factor("a")
+
+test_that("a factor with all values equal has no impact", {
+  expect_equal(similarityweight(zerovartest[1:5, ], zerovartest, distance =
+    "euclidean"), similarityweight(powerplant[1:5, ], powerplant, distance =
+    "euclidean"))
+})
+
 #test_that("similarityweight is not too slow", {
 #  takes_less_than(3)(similarityweight(x = dat[1, ], data = dat))
 #  takes_less_than(6)(similarityweight(x = dat[1:15, ], data = dat))
