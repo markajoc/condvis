@@ -4,7 +4,7 @@ condvis: Conditional Visualisation for Statistical Models
 News
 ---------------------------------------------------------
 
-Version 0.5-devel
+Version 0.5-0 2018-09-01
 
   * Fixed bug where `arrangeC` would return pairs of the same variable if there
     were no bivariate relationships detected by `savingby2d`.
