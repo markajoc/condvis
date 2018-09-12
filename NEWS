@@ -4,6 +4,11 @@ condvis: Conditional Visualisation for Statistical Models
 News
 ---------------------------------------------------------
 
+Version 0.5-1 2018-09-13
+
+  * Changed check for zero variance (introduced in 0.5-0) to work for factors.
+  * Fixed S3 method treatment for `interpolate`.
+
 Version 0.5-0 2018-09-01
 
   * Fixed bug where `arrangeC` would return pairs of the same variable if there
