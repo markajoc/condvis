@@ -1,7 +1,5 @@
-export(arrangeC, ceplot, cont2color, factor2color, interpolate,
-  interpolate.numeric, interpolate.integer, interpolate.factor,
-  interpolate.character, dist1, plotxc, plotxs, savingby2d, similarityweight,
-  condtour, makepath)
+export(arrangeC, ceplot, cont2color, factor2color, interpolate, dist1, plotxc,
+  plotxs, savingby2d, similarityweight, condtour, makepath)
 S3method(interpolate, numeric)
 S3method(interpolate, integer)
 S3method(interpolate, factor)
