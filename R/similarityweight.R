@@ -99,7 +99,7 @@ function (xc)
     stop("cannot apply scale to data.frame with less than 2 rows")
   colnames.xc <- colnames(xc)
   arefactors <- vapply(xc, is.factor, logical(1L))
-  zerovar <- vapply(xc, function (x) all(duplicated(x)[-1L]) , numeric(1L)) == 0
+  zerovar <- vapply(xc, function (x) all(duplicated(x)[-1L]) , logical(1L))
   factorindex <- arefactors & !zerovar
   numindex <- !arefactors & !zerovar
   xc.factors <- data.matrix(xc[, factorindex, drop = FALSE])
