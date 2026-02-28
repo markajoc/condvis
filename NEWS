@@ -4,6 +4,10 @@ condvis: Conditional Visualisation for Statistical Models
 News
 ---------------------------------------------------------
 
+Version 0.5-2 2026-02-28
+
+  * Added package requirement for demo to DESCRIPTION Suggests.
+
 Version 0.5-1 2018-09-13
 
   * Changed check for zero variance (introduced in 0.5-0) to work for factors.

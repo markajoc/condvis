@@ -1,8 +1,8 @@
 Package: condvis
 Type: Package
 Title: Conditional Visualization for Statistical Models
-Version: 0.5-1
-Date: 2018-09-13
+Version: 0.5-2
+Date: 2026-02-28
 Authors@R: c(
   person("Mark", "O'Connell", email = "mark_ajoc@yahoo.ie",
   role = c("aut", "cre")),
@@ -27,7 +27,8 @@ Suggests:
     gplots,
     TSP,
     DendSer,
-    testthat
+    testthat,
+    e1071
 Description: Exploring fitted models by interactively taking 2-D and 3-D
   sections in data space.
 License: GPL (>= 2)
