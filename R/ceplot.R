@@ -190,7 +190,7 @@ function (data, model, response = NULL, sectionvars = NULL, conditionvars = NULL
   else paste("model", 1:length(model), sep = "_")
   varnamestry <- try(getvarnames(model[[1]]), silent = TRUE)
   response <- if (is.null(response))
-    if (class(varnamestry) != "try-error")
+    if (!inherits(varnamestry, "try-error"))
       varnamestry$response[1L]
     else stop("could not extract response from 'model'.")
   else if (is.integer(response)){

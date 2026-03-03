@@ -263,7 +263,7 @@ function(data, model, path, response = NULL, sectionvars = NULL, conditionvars =
   else NULL
   varnamestry <- try(getvarnames(model[[1]]), silent = TRUE)
   response <- if (is.null(response))
-    if (class(varnamestry) != "try-error")
+    if (!inherits(varnamestry, "try-error"))
       which(colnames(data) == varnamestry$response[1])
     else stop("could not extract response from 'model'.")
   else if (is.character(response))
