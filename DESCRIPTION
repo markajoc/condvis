@@ -34,5 +34,5 @@ Description: Exploring fitted models by interactively taking 2-D and 3-D
 License: GPL (>= 2)
 LazyData: false
 BugReports: https://github.com/markajoc/condvis/issues
-URL: http://markajoc.github.io/condvis/
+URL: https://markajoc.github.io/condvis/
 RoxygenNote: 5.0.1.9000
