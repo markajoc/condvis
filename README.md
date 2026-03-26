@@ -1,8 +1,8 @@
 ## condvis: Conditional Visualisation for Statistical Models
 
-[![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html)
+[![License](https://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)]
 [![CRAN](https://www.r-pkg.org:443/pkg/condvis)](https://cran.r-project.org/package=condvis)
-[![Downloads](http://cranlogs.r-pkg.org/badges/condvis?color=brightgreen)](https://www.r-pkg.org/pkg/condvis)
+[![Downloads](https://cranlogs.r-pkg.org/badges/condvis?color=brightgreen)](https://www.r-pkg.org/pkg/condvis)
 
 ### Interactively exploring fitted models
 
