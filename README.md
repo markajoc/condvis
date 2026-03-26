@@ -1,6 +1,6 @@
 ## condvis: Conditional Visualisation for Statistical Models
 
-[![License](https://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)]
+[![License](https://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)]()
 [![CRAN](https://www.r-pkg.org/badges/version/condvis)](https://cran.r-project.org/package=condvis)
 [![Downloads](https://cranlogs.r-pkg.org/badges/condvis?color=brightgreen)](https://www.r-pkg.org/pkg/condvis)
 
