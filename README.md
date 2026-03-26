@@ -2,7 +2,7 @@
 
 [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![CRAN](https://www.r-pkg.org:443/pkg/condvis)](https://cran.r-project.org/package=condvis)
-[![Downloads](http://cranlogs.r-pkg.org/badges/condvis?color=brightgreen)](http://www.r-pkg.org/pkg/condvis)
+[![Downloads](http://cranlogs.r-pkg.org/badges/condvis?color=brightgreen)](https://www.r-pkg.org/pkg/condvis)
 
 ### Interactively exploring fitted models
 
